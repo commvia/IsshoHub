@@ -1,0 +1,2316 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>IsshoHub — Everything you need in Japan</title>
+<meta name="description" content="繁體中文與英文雙語資訊平台，專為在日本生活或準備移居日本的外國人而設。" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700&family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+<style>
+/* IsshoHub — base styles */
+:root {
+  --navy: #0d2444;
+  --navy-2: #142f55;
+  --navy-ink: #0a1a31;
+  --accent: #378ADD;
+  --accent-2: #6FB0EC;
+  --accent-ink: #1f6bb8;
+  --paper: #FBFAF7;
+  --paper-2: #F3EFE6;
+  --line: #E4DFD3;
+  --ink: #1a1f2b;
+  --ink-2: #4a5366;
+  --ink-3: #7d8598;
+  --warm: #E8C56B;
+  --rose: #D97766;
+  --green: #5A8F6B;
+
+  --serif-jp: "Shippori Mincho", "Noto Serif JP", serif;
+  --sans-jp: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
+  --sans-tc: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --sans-en: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --r-sm: 6px;
+  --r: 10px;
+  --r-lg: 16px;
+  --r-xl: 22px;
+
+  --container: 1240px;
+  --dens: 1; /* tweak: density multiplier */
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--sans-tc), var(--sans-jp), var(--sans-en);
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "palt" 1;
+  line-height: 1.55;
+}
+
+body[data-lang="en"] {
+  font-family: var(--sans-en), var(--sans-jp), var(--sans-tc);
+}
+
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+@media (min-width: 900px) { .container { padding: 0 32px; } }
+
+/* ============ TOP BAR ============ */
+.topbar {
+  background: var(--navy);
+  color: #DCE5F2;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+.topbar .row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 34px;
+  gap: 16px;
+}
+.topbar .ticker {
+  display: flex;
+  gap: 20px;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0.85;
+  flex: 1;
+  min-width: 0;
+}
+.topbar .ticker span { display: inline-flex; gap: 8px; align-items: center; }
+.topbar .ticker i {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--accent-2); display: inline-block;
+}
+.topbar .meta {
+  display: flex; gap: 14px; align-items: center;
+  white-space: nowrap;
+}
+.topbar .meta b { color: #fff; font-weight: 500; }
+
+/* ============ NAV ============ */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(251,250,247,0.92);
+  backdrop-filter: saturate(140%) blur(12px);
+  -webkit-backdrop-filter: saturate(140%) blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+.nav .row {
+  display: flex; align-items: center; gap: 18px;
+  height: 68px;
+}
+.brand {
+  display: flex; align-items: center; gap: 10px;
+  flex-shrink: 0;
+}
+.brand-mark {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--navy);
+  color: #fff;
+  display: grid; place-items: center;
+  font-family: var(--serif-jp);
+  font-size: 20px;
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+}
+.brand-mark::after {
+  content: "";
+  position: absolute; inset: auto 0 0 0; height: 6px;
+  background: var(--accent);
+}
+.brand-name {
+  font-family: var(--sans-en);
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  color: var(--navy-ink);
+  line-height: 1;
+}
+.brand-tag {
+  font-size: 10.5px;
+  color: var(--ink-3);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-top: 3px;
+  line-height: 1;
+}
+
+.nav-links {
+  display: none;
+  flex: 1;
+  gap: 2px;
+  justify-content: center;
+  font-size: 13px;
+}
+@media (min-width: 1100px) { .nav-links { display: flex; } }
+.nav-links a,
+.nav-links .nav-item > a {
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: var(--ink-2);
+  font-weight: 500;
+  white-space: nowrap;
+  transition: all .15s;
+}
+.nav-links a:hover,
+.nav-links .nav-item > a:hover { background: var(--paper-2); color: var(--navy-ink); }
+.nav-links .nav-item > a.active { color: var(--navy-ink); }
+.nav-links a.active::after {
+  content: ""; display: block; height: 2px; background: var(--accent);
+  margin-top: 4px; border-radius: 2px;
+}
+
+/* Dropdown submenus */
+.nav-item { position: relative; }
+.nav-item > a { display: inline-flex; align-items: center; gap: 4px; }
+.nav-caret { opacity: 0.55; transition: transform .2s; }
+.nav-item:hover .nav-caret { transform: rotate(180deg); opacity: 1; }
+.nav-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  min-width: 280px;
+  max-width: 360px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 24px 60px -20px rgba(13,36,68,0.28);
+  padding: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s, transform .18s;
+  z-index: 60;
+  margin-top: 8px;
+}
+/* invisible hover bridge so cursor can cross the gap */
+.nav-dropdown::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  top: -12px; height: 12px;
+}
+.nav-item.has-sub:hover .nav-dropdown,
+.nav-item.has-sub:focus-within .nav-dropdown {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+.nav-dropdown::before {
+  content: "";
+  position: absolute;
+  top: -6px; left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 10px; height: 10px;
+  background: #fff;
+  border-left: 1px solid var(--line);
+  border-top: 1px solid var(--line);
+}
+.nav-dropdown-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 6px 10px 10px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--line);
+}
+.nav-dropdown-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--navy-ink);
+  letter-spacing: 0.02em;
+}
+.nav-dropdown-all {
+  font-family: var(--sans-en);
+  font-size: 11px;
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+.nav-dropdown-list {
+  display: flex; flex-direction: column;
+}
+.nav-dropdown-list a {
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-2);
+  transition: all .12s;
+  line-height: 1.3;
+}
+.nav-dropdown-list a:hover {
+  background: var(--paper-2);
+  color: var(--navy-ink);
+}
+
+.nav-right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+.search-btn {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  display: grid; place-items: center;
+  color: var(--navy-ink);
+  border: 1px solid var(--line);
+  transition: all .15s;
+}
+.search-btn:hover { background: var(--paper-2); }
+
+.lang-toggle {
+  display: flex; padding: 3px; background: var(--paper-2);
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  font-family: var(--sans-en);
+  font-size: 12px;
+  font-weight: 600;
+}
+.lang-toggle button {
+  padding: 6px 12px;
+  border-radius: 999px;
+  color: var(--ink-3);
+  transition: all .18s;
+}
+.lang-toggle button.on {
+  background: var(--navy);
+  color: #fff;
+}
+
+.menu-btn {
+  display: grid; place-items: center;
+  width: 38px; height: 38px; border-radius: 10px;
+  color: var(--navy-ink);
+  border: 1px solid var(--line);
+}
+@media (min-width: 1100px) { .menu-btn { display: none; } }
+
+/* ============ CATEGORY STRIP (mobile) ============ */
+.catstrip {
+  display: flex; gap: 6px; overflow-x: auto;
+  padding: 10px 20px 14px;
+  scrollbar-width: none;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+}
+.catstrip::-webkit-scrollbar { display: none; }
+@media (min-width: 1100px) { .catstrip { display: none; } }
+.catstrip a {
+  flex-shrink: 0;
+  padding: 7px 13px;
+  border-radius: 999px;
+  background: var(--paper-2);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+.catstrip a.active { background: var(--navy); color: #fff; }
+
+/* ============ HERO ============ */
+.hero {
+  padding: calc(28px * var(--dens)) 0 calc(40px * var(--dens));
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+@media (min-width: 900px) {
+  .hero-grid { grid-template-columns: 1.65fr 1fr; gap: 28px; }
+}
+
+.hero-main {
+  position: relative;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--navy);
+  aspect-ratio: 16 / 11;
+  min-height: 380px;
+  color: #fff;
+}
+@media (min-width: 900px) { .hero-main { aspect-ratio: 16/10; min-height: 460px; } }
+
+.hero-img {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  filter: saturate(1.05);
+}
+.hero-img::after {
+  content: ""; position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, rgba(13,36,68,0.05) 0%, rgba(13,36,68,0.15) 40%, rgba(13,36,68,0.92) 100%);
+}
+.hero-body {
+  position: relative;
+  height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: space-between;
+  padding: 24px;
+}
+@media (min-width: 900px) { .hero-body { padding: 36px; } }
+.hero-top { display: flex; justify-content: space-between; align-items: flex-start; }
+.hero-chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.14);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.22);
+  color: #fff;
+  padding: 6px 12px 6px 10px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+.hero-chip i {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent-2);
+  box-shadow: 0 0 0 3px rgba(111,176,236,0.25);
+}
+.hero-issue {
+  font-family: var(--sans-en);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+}
+
+.hero-kicker {
+  font-family: var(--sans-en);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  margin-bottom: 14px;
+}
+.hero-title {
+  font-family: var(--sans-tc);
+  font-weight: 700;
+  font-size: clamp(26px, 4vw, 44px);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin: 0 0 12px;
+  text-wrap: balance;
+  max-width: 22ch;
+}
+body[data-lang="en"] .hero-title {
+  font-family: var(--sans-en);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.hero-sub {
+  font-size: 14.5px;
+  color: rgba(255,255,255,0.82);
+  max-width: 48ch;
+  margin-bottom: 18px;
+  text-wrap: pretty;
+}
+.hero-meta {
+  display: flex; align-items: center; gap: 14px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.75);
+}
+.hero-meta .avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #fff;
+  display: grid; place-items: center;
+  font-size: 11px; font-weight: 700;
+  font-family: var(--sans-en);
+}
+.hero-meta .dot { width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,0.4); }
+
+/* hero side */
+.hero-side {
+  display: flex; flex-direction: column; gap: 14px;
+}
+.side-card {
+  display: flex;
+  gap: 14px;
+  padding: 14px;
+  background: #fff;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--line);
+  transition: all .18s;
+}
+.side-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px -12px rgba(13,36,68,0.18); }
+.side-thumb {
+  width: 96px; height: 96px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: var(--paper-2);
+  background-size: cover; background-position: center;
+  position: relative;
+  overflow: hidden;
+}
+.side-thumb-num {
+  position: absolute;
+  left: 6px; top: 4px;
+  font-family: var(--serif-jp);
+  font-size: 22px;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.35);
+}
+.side-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.side-tag {
+  font-family: var(--sans-en);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+.side-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--navy-ink);
+  line-height: 1.35;
+  text-wrap: balance;
+  margin: 0;
+}
+.side-meta {
+  margin-top: auto;
+  font-size: 11.5px;
+  color: var(--ink-3);
+  font-family: var(--sans-en);
+}
+
+/* ============ HOT SEARCH ============ */
+.hotsearch {
+  padding-bottom: calc(40px * var(--dens));
+}
+.hotsearch-inner {
+  display: flex; align-items: center; gap: 14px;
+  flex-wrap: wrap;
+  padding: 18px 22px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: 0 2px 0 rgba(13,36,68,0.02);
+}
+.hotsearch-label {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--navy-ink);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-family: var(--sans-en);
+  white-space: nowrap;
+  padding-right: 14px;
+  border-right: 1px solid var(--line);
+}
+.hotsearch-label svg { color: var(--rose); }
+.hot-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: var(--paper-2);
+  border: 1px solid transparent;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink);
+  transition: all .15s;
+  cursor: pointer;
+}
+.pill:hover {
+  background: #fff;
+  border-color: var(--accent);
+  color: var(--accent-ink);
+  transform: translateY(-1px);
+}
+.pill .rank {
+  font-family: var(--sans-en);
+  font-size: 10.5px;
+  color: var(--accent);
+  font-weight: 700;
+}
+.pill.fire .rank { color: var(--rose); }
+
+/* ============ SECTION HEADINGS ============ */
+.section { padding: calc(48px * var(--dens)) 0; }
+.section.tight { padding: calc(32px * var(--dens)) 0; }
+.section-head {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+.section-eyebrow {
+  font-family: var(--sans-en);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.section-title {
+  font-size: clamp(24px, 3vw, 34px);
+  font-weight: 700;
+  color: var(--navy-ink);
+  margin: 0;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  font-family: var(--sans-tc);
+}
+body[data-lang="en"] .section-title { font-family: var(--sans-en); letter-spacing: -0.02em; }
+.section-sub {
+  font-size: 14px;
+  color: var(--ink-2);
+  margin-top: 8px;
+  max-width: 54ch;
+}
+.section-actions { display: flex; gap: 10px; align-items: center; }
+.link-more {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px;
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+.link-more:hover { gap: 10px; }
+
+/* ============ CATEGORY GRID ============ */
+.cat-section { background: #fff; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+
+.cats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+@media (min-width: 640px) { .cats { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1000px) { .cats { grid-template-columns: repeat(9, 1fr); } }
+
+.cat {
+  background: #fff;
+  padding: 22px 14px;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 12px;
+  text-align: center;
+  transition: all .2s;
+  position: relative;
+  cursor: pointer;
+}
+.cat-link {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+.cat:hover { background: var(--paper); }
+.cat:hover .cat-icon { transform: translateY(-3px); }
+
+/* Category popover */
+.cat-popover {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  min-width: 260px;
+  max-width: 340px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 24px 60px -20px rgba(13,36,68,0.28);
+  padding: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s, transform .18s;
+  z-index: 40;
+  text-align: left;
+  margin-top: 10px;
+}
+.cat-popover::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  top: -14px; height: 14px;
+}
+.cat.has-sub:hover .cat-popover,
+.cat.has-sub:focus-within .cat-popover {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+.cat-pop-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 6px 10px 10px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--line);
+}
+.cat-pop-title { font-size: 12px; font-weight: 700; color: var(--navy-ink); }
+.cat-pop-all { font-family: var(--sans-en); font-size: 11px; color: var(--accent-ink); font-weight: 600; }
+.cat-pop-list { display: flex; flex-direction: column; }
+.cat-pop-list a {
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-2);
+  line-height: 1.3;
+  transition: all .12s;
+}
+.cat-pop-list a:hover { background: var(--paper-2); color: var(--navy-ink); }
+.cat-icon {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  background: var(--paper-2);
+  display: grid; place-items: center;
+  transition: transform .25s;
+  color: var(--navy);
+}
+.cat:hover .cat-icon { background: var(--accent); color: #fff; }
+.cat-labels { display: flex; flex-direction: column; gap: 2px; }
+.cat-label-tc {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--navy-ink);
+  line-height: 1.2;
+}
+.cat-label-en {
+  font-family: var(--sans-en);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+  font-weight: 500;
+}
+.cat-count {
+  position: absolute; top: 10px; right: 12px;
+  font-family: var(--sans-en);
+  font-size: 10.5px;
+  color: var(--ink-3);
+  font-weight: 600;
+}
+
+/* ============ ARTICLE CARDS ============ */
+.article-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+@media (min-width: 720px) { .article-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .article-grid { grid-template-columns: repeat(3, 1fr); } }
+
+.card {
+  display: flex; flex-direction: column;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  transition: all .25s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px -20px rgba(13,36,68,0.22);
+  border-color: rgba(55,138,221,0.35);
+}
+.card-media {
+  aspect-ratio: 16/10;
+  background: var(--paper-2);
+  background-size: cover; background-position: center;
+  position: relative;
+}
+.card-tag {
+  position: absolute; left: 12px; top: 12px;
+  background: rgba(13,36,68,0.88);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.card-tag.cat-visa { background: #0d2444; }
+.card-tag.cat-biz { background: #1a4b7a; }
+.card-tag.cat-house { background: #5A8F6B; }
+.card-tag.cat-tax { background: #8a6e2f; }
+.card-tag.cat-life { background: #D97766; }
+.card-tag.cat-places { background: #7a4b82; }
+.card-tag.cat-pets { background: #b06a3f; }
+.card-tag.cat-story { background: #378ADD; }
+
+.card-body {
+  padding: 18px;
+  display: flex; flex-direction: column; gap: 10px;
+  flex: 1;
+}
+.card-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--navy-ink);
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+  margin: 0;
+  text-wrap: balance;
+}
+.card-excerpt {
+  font-size: 13.5px;
+  color: var(--ink-2);
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.card-meta {
+  display: flex; align-items: center; gap: 10px;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  font-family: var(--sans-en);
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+.card-meta .author { color: var(--ink-2); font-weight: 500; }
+.card-meta .dot { width: 2px; height: 2px; border-radius: 50%; background: var(--ink-3); }
+.card-meta .reading {
+  margin-left: auto;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+
+/* Featured large card variant */
+.card.featured {
+  grid-column: span 1;
+}
+@media (min-width: 720px) { .card.featured { grid-column: span 2; flex-direction: row; } }
+.card.featured .card-media { aspect-ratio: 4/3; min-height: 100%; flex: 1.2; }
+.card.featured .card-body { flex: 1; justify-content: center; padding: 28px; }
+.card.featured .card-title { font-size: 22px; }
+.card.featured .card-excerpt { -webkit-line-clamp: 3; font-size: 14px; }
+
+/* ============ CHECKLIST MODULE ============ */
+.checklist {
+  background: var(--navy);
+  color: #fff;
+  border-radius: var(--r-xl);
+  padding: 40px 28px;
+  position: relative;
+  overflow: hidden;
+}
+@media (min-width: 900px) { .checklist { padding: 56px 48px; } }
+.checklist::before {
+  content: "一緒";
+  position: absolute;
+  right: -20px; bottom: -60px;
+  font-family: var(--serif-jp);
+  font-size: 260px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.04);
+  line-height: 1;
+  pointer-events: none;
+}
+.checklist-grid {
+  display: grid;
+  gap: 32px;
+  grid-template-columns: 1fr;
+  position: relative;
+}
+@media (min-width: 900px) { .checklist-grid { grid-template-columns: 1fr 1.3fr; gap: 56px; align-items: center; } }
+.checklist h3 {
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 700;
+  margin: 0 0 12px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+.checklist p {
+  font-size: 14.5px;
+  color: rgba(255,255,255,0.75);
+  margin: 0 0 24px;
+  max-width: 42ch;
+}
+.checklist-items { display: flex; flex-direction: column; gap: 10px; }
+.checklist-item {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  transition: all .18s;
+}
+.checklist-item:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(111,176,236,0.4);
+}
+.check-num {
+  font-family: var(--sans-en);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--accent-2);
+  min-width: 24px;
+  padding-top: 2px;
+}
+.check-body { flex: 1; }
+.check-title {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 3px;
+}
+.check-desc {
+  font-size: 12.5px;
+  color: rgba(255,255,255,0.6);
+}
+.check-status {
+  margin-left: auto;
+  font-family: var(--sans-en);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  padding-top: 3px;
+}
+.check-status.done { color: var(--accent-2); }
+
+/* ============ STORIES ============ */
+.stories {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+@media (min-width: 760px) { .stories { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) { .stories { grid-template-columns: repeat(3, 1fr); } }
+
+.story {
+  position: relative;
+  aspect-ratio: 4/5;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--navy);
+  display: flex;
+  align-items: flex-end;
+  color: #fff;
+  cursor: pointer;
+  isolation: isolate;
+}
+.story .bg {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  transition: transform .6s ease;
+  z-index: -1;
+}
+.story:hover .bg { transform: scale(1.05); }
+.story::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(13,36,68,0) 40%, rgba(13,36,68,0.92) 100%);
+  z-index: -1;
+}
+.story-inner { padding: 24px; width: 100%; }
+.story-quote {
+  font-family: var(--serif-jp);
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.35;
+  margin-bottom: 14px;
+  text-wrap: balance;
+  letter-spacing: -0.01em;
+}
+body[data-lang="en"] .story-quote {
+  font-family: "Shippori Mincho", Georgia, serif;
+  font-style: italic;
+}
+.story-quote::before {
+  content: "「";
+  font-family: var(--serif-jp);
+  opacity: 0.55;
+  margin-right: -2px;
+}
+.story-quote::after {
+  content: "」";
+  font-family: var(--serif-jp);
+  opacity: 0.55;
+}
+body[data-lang="en"] .story-quote::before { content: "“"; font-family: Georgia, serif; }
+body[data-lang="en"] .story-quote::after { content: "”"; font-family: Georgia, serif; }
+.story-person {
+  display: flex; align-items: center; gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.2);
+}
+.story-person .avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.3);
+  display: grid; place-items: center;
+  font-family: var(--sans-en);
+  font-weight: 700;
+  font-size: 13px;
+}
+.story-name { font-size: 13px; font-weight: 600; }
+.story-role {
+  font-family: var(--sans-en);
+  font-size: 11px;
+  color: rgba(255,255,255,0.7);
+  margin-top: 2px;
+}
+
+/* ============ NEWSLETTER ============ */
+.newsletter {
+  background: var(--paper-2);
+  border-radius: var(--r-xl);
+  padding: 40px 28px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+@media (min-width: 760px) { .newsletter { padding: 52px; } }
+.newsletter h3 {
+  font-size: clamp(22px, 2.5vw, 28px);
+  font-weight: 700;
+  color: var(--navy-ink);
+  margin: 0 0 8px;
+  letter-spacing: -0.01em;
+}
+.newsletter p {
+  font-size: 14px;
+  color: var(--ink-2);
+  max-width: 48ch;
+  margin: 0 auto 24px;
+}
+.newsletter-form {
+  display: flex;
+  gap: 8px;
+  max-width: 460px;
+  margin: 0 auto;
+  flex-direction: column;
+}
+@media (min-width: 520px) { .newsletter-form { flex-direction: row; } }
+.newsletter-form input {
+  flex: 1;
+  padding: 14px 18px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font: inherit;
+  font-size: 14px;
+  background: #fff;
+  outline: none;
+  transition: border-color .18s;
+}
+.newsletter-form input:focus { border-color: var(--accent); }
+.newsletter-form button {
+  padding: 14px 24px;
+  background: var(--navy);
+  color: #fff;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all .18s;
+  white-space: nowrap;
+}
+.newsletter-form button:hover { background: var(--accent); }
+
+/* ============ FOOTER ============ */
+.footer {
+  background: var(--navy-ink);
+  color: rgba(255,255,255,0.75);
+  padding: 56px 0 24px;
+  margin-top: 48px;
+}
+.footer .container > .grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 36px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+@media (min-width: 760px) { .footer .container > .grid { grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; } }
+.footer-brand { max-width: 38ch; }
+.footer-brand .brand-name { color: #fff; }
+.footer-brand p { font-size: 13px; line-height: 1.6; margin: 16px 0 20px; color: rgba(255,255,255,0.65); }
+.footer-socials { display: flex; gap: 10px; }
+.footer-socials a {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  display: grid; place-items: center;
+  transition: background .18s;
+}
+.footer-socials a:hover { background: var(--accent); color: #fff; }
+
+.footer-col h5 {
+  font-family: var(--sans-en);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0 0 16px;
+  font-weight: 600;
+}
+.footer-col a {
+  display: block;
+  font-size: 13.5px;
+  padding: 5px 0;
+  color: rgba(255,255,255,0.65);
+  transition: color .15s;
+}
+.footer-col a:hover { color: var(--accent-2); }
+
+.footer-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 24px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  font-family: var(--sans-en);
+  gap: 16px; flex-wrap: wrap;
+}
+
+/* ============ CURRENCY CALCULATOR (floating) ============ */
+.fx {
+  position: fixed;
+  right: 20px; bottom: 20px;
+  z-index: 80;
+  font-family: var(--sans-en);
+}
+.fx-trigger {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 18px 12px 14px;
+  background: var(--navy);
+  color: #fff;
+  border-radius: 999px;
+  box-shadow: 0 12px 32px -10px rgba(13,36,68,0.45);
+  font-weight: 600;
+  font-size: 13px;
+  transition: all .2s;
+}
+.fx-trigger:hover { background: var(--accent); transform: translateY(-2px); }
+.fx-trigger .badge {
+  background: var(--accent);
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.fx-panel {
+  position: absolute;
+  right: 0; bottom: 56px;
+  width: 320px;
+  background: #fff;
+  border-radius: var(--r-lg);
+  box-shadow: 0 24px 60px -20px rgba(13,36,68,0.3), 0 0 0 1px var(--line);
+  padding: 20px;
+  display: none;
+  animation: fxIn .2s ease;
+}
+@keyframes fxIn {
+  from { transform: translateY(8px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.fx.open .fx-panel { display: block; }
+.fx.open .fx-trigger { background: var(--accent); }
+.fx-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 4px;
+}
+.fx-head h4 {
+  font-size: 14px; font-weight: 700;
+  color: var(--navy-ink);
+  margin: 0;
+  font-family: var(--sans-tc);
+}
+body[data-lang="en"] .fx-head h4 { font-family: var(--sans-en); }
+.fx-head .live {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10.5px;
+  color: var(--green);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.fx-head .live i {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+.fx-asof {
+  font-size: 10.5px;
+  color: var(--ink-3);
+  margin-bottom: 14px;
+}
+.fx-row {
+  display: flex; align-items: stretch;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 8px;
+  transition: border-color .15s;
+}
+.fx-row:focus-within { border-color: var(--accent); }
+.fx-ccy {
+  display: flex; align-items: center; gap: 6px;
+  padding: 12px 12px;
+  background: var(--paper-2);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--navy-ink);
+  border-right: 1px solid var(--line);
+  cursor: pointer;
+  position: relative;
+}
+.fx-ccy select {
+  position: absolute; inset: 0;
+  opacity: 0; cursor: pointer;
+}
+.fx-ccy .flag {
+  width: 22px; height: 16px; border-radius: 3px;
+  background: #888;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.fx-input {
+  flex: 1;
+  padding: 12px 14px;
+  border: 0;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--navy-ink);
+  outline: none;
+  text-align: right;
+  width: 100%;
+  min-width: 0;
+  background: #fff;
+}
+.fx-equals {
+  text-align: center;
+  font-size: 14px;
+  color: var(--ink-3);
+  margin: 6px 0 8px;
+}
+.fx-row.to {
+  background: var(--paper);
+  border-color: var(--accent);
+}
+.fx-row.to .fx-input { background: transparent; color: var(--accent-ink); }
+.fx-rates {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line);
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  text-align: center;
+}
+.fx-rate-item .k { font-size: 10px; color: var(--ink-3); letter-spacing: 0.04em; }
+.fx-rate-item .v {
+  font-size: 13px; font-weight: 700; color: var(--navy-ink);
+  margin-top: 2px;
+}
+.fx-rate-item .d {
+  font-size: 10px;
+  margin-top: 2px;
+}
+.fx-rate-item .d.up { color: var(--green); }
+.fx-rate-item .d.down { color: var(--rose); }
+.fx-close {
+  position: absolute;
+  right: 12px; top: 12px;
+  width: 24px; height: 24px;
+  border-radius: 6px;
+  color: var(--ink-3);
+  display: grid; place-items: center;
+}
+.fx-close:hover { background: var(--paper-2); color: var(--navy-ink); }
+
+/* Flag styles */
+.flag-hk { background: linear-gradient(#de2910 50%, #de2910); position: relative; }
+.flag-hk::after { content: "✺"; position: absolute; inset: 0; display: grid; place-items: center; color: #fff; font-size: 10px; }
+.flag-tw { background: linear-gradient(#fe0000 50%, #fe0000); position: relative; }
+.flag-tw::before { content: ""; position: absolute; left: 0; top: 0; width: 11px; height: 8px; background: #000095; }
+.flag-us { background: repeating-linear-gradient(#b22234 0 2px, #fff 2px 4px); position: relative; }
+.flag-us::before { content: ""; position: absolute; left: 0; top: 0; width: 10px; height: 8px; background: #3c3b6e; }
+.flag-jp { background: #fff; position: relative; }
+.flag-jp::after { content: ""; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 8px; height: 8px; border-radius: 50%; background: #bc002d; }
+
+/* ============ TWEAKS PANEL ============ */
+.tweaks {
+  position: fixed;
+  left: 20px; bottom: 20px;
+  z-index: 90;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 24px 60px -20px rgba(13,36,68,0.35), 0 0 0 1px var(--line);
+  padding: 18px;
+  width: 260px;
+  display: none;
+  font-family: var(--sans-en);
+}
+.tweaks.on { display: block; }
+.tweaks h5 {
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--navy-ink); margin: 0 0 14px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.tweaks .group { margin-bottom: 14px; }
+.tweaks label { font-size: 11px; color: var(--ink-3); display: block; margin-bottom: 6px; letter-spacing: 0.04em; }
+.tweaks .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.tweaks .chip {
+  padding: 5px 10px; border-radius: 999px;
+  background: var(--paper-2); font-size: 11px;
+  font-weight: 600; color: var(--ink-2);
+  cursor: pointer;
+}
+.tweaks .chip.on { background: var(--navy); color: #fff; }
+.tweaks .swatch {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 2px solid #fff; outline: 1px solid var(--line);
+  cursor: pointer;
+}
+.tweaks .swatch.on { outline: 2px solid var(--navy); }
+.tweaks .swatches { display: flex; gap: 8px; }
+
+/* Big type splash (lang switch accent) */
+.bigtype {
+  font-family: var(--serif-jp);
+  font-weight: 500;
+  font-size: clamp(36px, 6vw, 80px);
+  line-height: 1;
+  color: var(--navy-ink);
+  letter-spacing: -0.02em;
+}
+.bigtype em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+</style>
+
+
+</head>
+<body data-lang="tc" data-density="comfortable">
+
+<!-- =============== TOP BAR =============== -->
+<div class="topbar">
+  <div class="container row">
+    <div class="ticker">
+      <span data-i18n="ticker1"><i></i>新政策：2026 年 4 月起，香港、台灣駕照可免筆試直接切換。</span>
+      <span data-i18n="ticker2"><i></i>本週 IsshoHub Meetup：4月25日・東京澀谷，名額將滿。</span>
+    </div>
+    <div class="meta">
+      <span data-i18n="weather">東京 · 17° · 晴れ</span>
+      <span>·</span>
+      <span data-i18n="rate">HKD <b>¥19.42</b> &nbsp; TWD <b>¥4.71</b></span>
+    </div>
+  </div>
+</div>
+
+<!-- =============== NAV =============== -->
+<nav class="nav">
+  <div class="container row">
+    <a class="brand" href="#">
+      <div class="brand-mark">一</div>
+      <div>
+        <div class="brand-name">IsshoHub</div>
+        <div class="brand-tag" data-i18n="tagline-nav">Everything you need in Japan</div>
+      </div>
+    </a>
+    <div class="nav-links" id="navLinks"></div>
+    <div class="nav-right">
+      <button class="search-btn" aria-label="Search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      </button>
+      <div class="lang-toggle" id="langToggle">
+        <button data-lang-set="tc">繁中</button>
+        <button data-lang-set="en">EN</button>
+      </div>
+      <button class="menu-btn" aria-label="Menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="catstrip" id="catstrip"></div>
+</nav>
+
+<!-- =============== HERO =============== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <article class="hero-main" id="heroMain"></article>
+      <aside class="hero-side" id="heroSide"></aside>
+    </div>
+  </div>
+</section>
+
+<!-- =============== HOT SEARCH =============== -->
+<section class="hotsearch">
+  <div class="container">
+    <div class="hotsearch-inner">
+      <div class="hotsearch-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 0.5c0 3-1.5 4-3 5.5C9 7.5 7.5 9.5 7.5 12c0 4.2 3 7.5 7 7.5s7-3.3 7-7.5c0-5-4-8-8-11.5zM12 17.5c-1.7 0-3-1.3-3-3 0-1.2 0.7-2 1.5-2.8 0.5-0.5 1-1.2 1-2.2 2 1.5 3.5 3 3.5 5 0 1.7-1.3 3-3 3z"/></svg>
+        <span data-i18n="hot_search">熱門搜尋</span>
+      </div>
+      <div class="hot-pills" id="hotPills"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============== CATEGORIES =============== -->
+<section class="cat-section section tight">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow">— 09 Categories</div>
+        <h2 class="section-title" data-i18n="browse_cat">瀏覽分類</h2>
+        <div class="section-sub" data-i18n="browse_cat_sub">從簽證到寵物、從稅務到好去處，一站式覆蓋在日生活所有面向。</div>
+      </div>
+    </div>
+    <div class="cats" id="catsGrid"></div>
+  </div>
+</section>
+
+<!-- =============== EDITOR PICKS =============== -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow">— Editor's picks</div>
+        <h2 class="section-title" data-i18n="editor_picks">編輯精選</h2>
+        <div class="section-sub" data-i18n="editor_picks_sub"></div>
+      </div>
+      <div class="section-actions">
+        <a class="link-more" href="#"><span data-i18n="view_all">查看全部</span> →</a>
+      </div>
+    </div>
+    <div class="article-grid" id="editorGrid"></div>
+  </div>
+</section>
+
+<!-- =============== CHECKLIST =============== -->
+<section class="section">
+  <div class="container">
+    <div class="checklist">
+      <div class="checklist-grid">
+        <div>
+          <div class="section-eyebrow" style="color: var(--accent-2);">— Quick start</div>
+          <h3 data-i18n="checklist_title"></h3>
+          <p data-i18n="checklist_sub"></p>
+          <a href="#" class="link-more" style="color: var(--accent-2);">
+            <span data-i18n="checklist_cta"></span> →
+          </a>
+        </div>
+        <div class="checklist-items" id="checklistItems"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============== LATEST =============== -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow">— Fresh this week</div>
+        <h2 class="section-title" data-i18n="latest">最新文章</h2>
+        <div class="section-sub" data-i18n="latest_sub"></div>
+      </div>
+      <div class="section-actions">
+        <a class="link-more" href="#"><span data-i18n="view_all">查看全部</span> →</a>
+      </div>
+    </div>
+    <div class="article-grid" id="latestGrid"></div>
+  </div>
+</section>
+
+<!-- =============== STORIES =============== -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow">— In their words</div>
+        <h2 class="section-title" data-i18n="stories_title">人物故事</h2>
+        <div class="section-sub" data-i18n="stories_sub"></div>
+      </div>
+      <div class="section-actions">
+        <a class="link-more" href="#"><span data-i18n="view_all">查看全部</span> →</a>
+      </div>
+    </div>
+    <div class="stories" id="storiesGrid"></div>
+  </div>
+</section>
+
+<!-- =============== NEWSLETTER =============== -->
+<section class="section">
+  <div class="container">
+    <div class="newsletter">
+      <div class="section-eyebrow" style="justify-content: center;">— Weekly digest</div>
+      <h3 data-i18n="newsletter_title"></h3>
+      <p data-i18n="newsletter_sub"></p>
+      <form class="newsletter-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent = '✓';">
+        <input type="email" data-i18n-attr="email_placeholder" placeholder="your@email.com" required />
+        <button type="submit" data-i18n="newsletter_cta">訂閱電子報</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- =============== FOOTER =============== -->
+<footer class="footer">
+  <div class="container">
+    <div class="grid">
+      <div class="footer-brand">
+        <div class="brand" style="color: #fff;">
+          <div class="brand-mark">一</div>
+          <div>
+            <div class="brand-name" style="color: #fff;">IsshoHub</div>
+            <div class="brand-tag">一緒 · Together in Japan</div>
+          </div>
+        </div>
+        <p data-i18n="footer_about">IsshoHub 是一個繁中與英文雙語資訊平台，為移居日本的香港、台灣朋友與希望在日創業的團隊整理最實用的資源。外國人與日本人，一起生活、共同成長。</p>
+        <div class="footer-socials">
+          <a href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.16c3.2 0 3.58 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s0 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.72 3.72 0 01-1.38-.9 3.72 3.72 0 01-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s0-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zm0 5.84a4 4 0 100 8 4 4 0 000-8zm5.2-.4a.96.96 0 110 1.92.96.96 0 010-1.92zM12 9.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8z"/></svg></a>
+          <a href="#" aria-label="Twitter"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 3h3.4l-7.4 8.4L23.5 21h-6.8l-5.3-6.9L5.3 21H1.9l7.9-9L1 3h7l4.8 6.4L18.9 3zm-1.2 16h1.9L7.4 5H5.4l12.3 14z"/></svg></a>
+          <a href="#" aria-label="YouTube"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.3c-.3-1-1-1.8-2-2.1C19.1 4.7 12 4.7 12 4.7s-7.1 0-9 .5c-1 .3-1.8 1-2.1 2.1C.4 9.2.4 12 .4 12s0 2.8.5 4.7c.3 1 1 1.8 2.1 2.1 1.9.5 9 .5 9 .5s7.1 0 9-.5c1-.3 1.8-1 2.1-2.1.5-1.9.5-4.7.5-4.7s0-2.8-.6-4.7zM9.7 15.5V8.5l6 3.5-6 3.5z"/></svg></a>
+          <a href="#" aria-label="LINE"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.37 9.2c.4 0 .72.33.72.73s-.32.73-.72.73h-2v1.27h2c.4 0 .72.33.72.73s-.32.73-.72.73h-2.72a.73.73 0 01-.72-.73V7.72c0-.4.32-.72.72-.72h2.72c.4 0 .72.32.72.72s-.32.73-.72.73h-2v1.27h2zm-4.9 3.46c0 .31-.2.59-.5.68l-.22.04a.72.72 0 01-.58-.28l-2.79-3.78v3.35c0 .4-.33.72-.73.72s-.72-.32-.72-.72V7.72c0-.32.2-.6.5-.7.08 0 .14-.02.22-.02.22 0 .45.1.58.28l2.8 3.78V7.72c0-.4.32-.72.72-.72s.72.32.72.72v4.94zm-7.6 0c0 .4-.32.72-.72.72s-.72-.32-.72-.72V7.72c0-.4.32-.72.72-.72s.72.32.72.72v4.94zm-2.2.72H1.96c-.4 0-.72-.32-.72-.72V7.72c0-.4.32-.72.72-.72s.72.32.72.72v4.21h2c.4 0 .72.33.72.73s-.32.72-.72.72zM12 2C5.37 2 0 6.36 0 11.74c0 4.82 4.24 8.86 9.97 9.63.39.08.92.26 1.05.6.12.3.08.79.04 1.08L11 24c-.05.32-.25 1.23 1.09.67 1.34-.57 7.22-4.26 9.85-7.28C23.73 15.4 24 13.6 24 11.74 24 6.36 18.63 2 12 2z"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5 data-i18n="footer_col1">Explore</h5>
+        <div id="footerExplore"></div>
+      </div>
+      <div class="footer-col">
+        <h5 data-i18n="footer_col2">Resources</h5>
+        <a href="#" data-i18n="footer_r1">新手必讀</a>
+        <a href="#" data-i18n="footer_r2">實用連結</a>
+        <a href="#" data-i18n="footer_r3">社群活動</a>
+        <a href="#" data-i18n="footer_r4">匯率換算</a>
+        <a href="#" data-i18n="footer_r5">電子報</a>
+      </div>
+      <div class="footer-col">
+        <h5 data-i18n="footer_col3">About</h5>
+        <a href="#" data-i18n="footer_a1">關於我們</a>
+        <a href="#" data-i18n="footer_a2">編輯團隊</a>
+        <a href="#" data-i18n="footer_a3">投稿合作</a>
+        <a href="#" data-i18n="footer_a4">聯絡我們</a>
+        <a href="#" data-i18n="footer_a5">隱私政策</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 IsshoHub · 一緒 · Made with care in Tokyo &amp; Hong Kong</div>
+      <div><span data-i18n="footer_lang">繁體中文</span> / English</div>
+    </div>
+  </div>
+</footer>
+
+<!-- =============== FX CALCULATOR =============== -->
+<div class="fx" id="fx">
+  <button class="fx-trigger" id="fxTrigger">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16v16H4z"/><path d="M8 10h8M8 14h8"/></svg>
+    <span data-i18n="fx_trigger">匯率</span>
+    <span class="badge">¥</span>
+  </button>
+  <div class="fx-panel">
+    <button class="fx-close" id="fxClose">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="fx-head">
+      <h4 data-i18n="fx_title">匯率換算</h4>
+      <span class="live"><i></i><span data-i18n="fx_live">即時</span></span>
+    </div>
+    <div class="fx-asof" data-i18n="fx_asof">更新於 4月21日 14:32 JST · 參考匯率</div>
+
+    <div class="fx-row">
+      <label class="fx-ccy">
+        <span class="flag flag-hk" id="fxFromFlag"></span>
+        <span id="fxFromLabel">HKD</span>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+        <select id="fxFrom">
+          <option value="HKD">HKD 港幣</option>
+          <option value="TWD">TWD 新台幣</option>
+          <option value="USD">USD 美元</option>
+          <option value="EUR">EUR 歐元</option>
+        </select>
+      </label>
+      <input type="number" class="fx-input" id="fxInput" value="1000" min="0" />
+    </div>
+
+    <div class="fx-equals">=</div>
+
+    <div class="fx-row to">
+      <div class="fx-ccy">
+        <span class="flag flag-jp"></span>
+        JPY
+      </div>
+      <input type="text" class="fx-input" id="fxOutput" value="¥19,420" readonly />
+    </div>
+
+    <div class="fx-rates">
+      <div class="fx-rate-item">
+        <div class="k">HKD / JPY</div>
+        <div class="v">19.42</div>
+        <div class="d up">▲ 0.12</div>
+      </div>
+      <div class="fx-rate-item">
+        <div class="k">TWD / JPY</div>
+        <div class="v">4.71</div>
+        <div class="d down">▼ 0.04</div>
+      </div>
+      <div class="fx-rate-item">
+        <div class="k">USD / JPY</div>
+        <div class="v">151.83</div>
+        <div class="d up">▲ 0.31</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =============== TWEAKS =============== -->
+<div class="tweaks" id="tweaks">
+  <h5><span>TWEAKS</span> <span style="color: var(--ink-3); font-weight: 500;">一緒</span></h5>
+  <div class="group">
+    <label>LANGUAGE</label>
+    <div class="chips" data-tweak="lang">
+      <div class="chip on" data-v="tc">繁中</div>
+      <div class="chip" data-v="en">English</div>
+    </div>
+  </div>
+  <div class="group">
+    <label>ACCENT</label>
+    <div class="swatches" data-tweak="accent">
+      <div class="swatch on" data-v="#378ADD" style="background: #378ADD"></div>
+      <div class="swatch" data-v="#5A8F6B" style="background: #5A8F6B"></div>
+      <div class="swatch" data-v="#D97766" style="background: #D97766"></div>
+      <div class="swatch" data-v="#8a6e2f" style="background: #8a6e2f"></div>
+      <div class="swatch" data-v="#7a4b82" style="background: #7a4b82"></div>
+    </div>
+  </div>
+  <div class="group">
+    <label>DENSITY</label>
+    <div class="chips" data-tweak="density">
+      <div class="chip on" data-v="comfortable">Comfort</div>
+      <div class="chip" data-v="compact">Compact</div>
+    </div>
+  </div>
+  <div class="group">
+    <label>HERO LAYOUT</label>
+    <div class="chips" data-tweak="hero">
+      <div class="chip on" data-v="overlay">Overlay</div>
+      <div class="chip" data-v="split">Split</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// IsshoHub — content data (bilingual)
+window.ISSHO_DATA = {
+  nav: [
+    { key: "news",   tc: "新聞・資訊",      en: "News & Information", short_tc: "新聞",   short_en: "News" },
+    { key: "visa",   tc: "簽證・在留資格", en: "Visa & Residency",  short_tc: "簽證",   short_en: "Visa",
+      sub: [
+        { tc: "在留政策",                       en: "Residency Policy" },
+        { tc: "經營・管理簽證",                 en: "Business Manager Visa" },
+        { tc: "技術・人文知識・國際業務",       en: "Engineer / Specialist in Humanities / Int'l Services" },
+        { tc: "高度專門職",                     en: "Highly Skilled Professional" },
+        { tc: "未來創造人材（J-Find）",         en: "Future Creation Talent (J-Find)" },
+        { tc: "數位遊牧簽證",                   en: "Digital Nomad Visa" },
+        { tc: "留學簽證",                       en: "Student Visa" },
+        { tc: "家族滯在",                       en: "Dependent Visa" },
+        { tc: "永住權",                         en: "Permanent Residency" },
+        { tc: "度假打工",                       en: "Working Holiday" },
+        { tc: "其他在留資格",                   en: "Other Statuses" },
+      ]
+    },
+    { key: "biz",    tc: "創業・工作",      en: "Business & Work",   short_tc: "創業",   short_en: "Business",
+      sub: [
+        { tc: "如何在日本創業",         en: "How to Start a Business in Japan" },
+        { tc: "公司法人銀行戶口",       en: "Corporate Bank Accounts" },
+        { tc: "創業資助及補助金",       en: "Startup Grants & Subsidies" },
+        { tc: "Startup 簽證支援",       en: "Startup Visa Support" },
+        { tc: "稅務・會計基礎",         en: "Tax & Accounting Basics" },
+        { tc: "僱用外國員工",           en: "Hiring Foreign Employees" },
+        { tc: "各地創業支援中心",       en: "Regional Startup Support Centers" },
+        { tc: "創業者故事",             en: "Founder Stories" },
+      ]
+    },
+    { key: "house",  tc: "住屋",            en: "Housing",           short_tc: "住屋",   short_en: "Housing",
+      sub: [
+        { tc: "租務資訊",       en: "Renting" },
+        { tc: "買樓需知",       en: "Buying Property" },
+        { tc: "注文住宅",       en: "Custom-Built Homes" },
+        { tc: "物業資訊",       en: "Property Information" },
+        { tc: "寵物友善住宅",   en: "Pet-Friendly Housing" },
+      ]
+    },
+    { key: "tax",    tc: "稅務・保險・年金", en: "Tax, Insurance & Pension", short_tc: "稅務", short_en: "Tax",
+      sub: [
+        { tc: "稅務",   en: "Tax" },
+        { tc: "保險",   en: "Insurance" },
+        { tc: "年金",   en: "Pension" },
+      ]
+    },
+    { key: "life",   tc: "日常手續",        en: "Daily Life",        short_tc: "生活",   short_en: "Daily Life",
+      sub: [
+        { tc: "外免切替",   en: "Driver's Licence Conversion" },
+        { tc: "交通規則",   en: "Traffic Rules" },
+        { tc: "銀行戶口",   en: "Bank Accounts" },
+        { tc: "電話卡",     en: "SIM & Phone Plans" },
+        { tc: "其他",       en: "Other" },
+      ]
+    },
+    { key: "places", tc: "好去處",          en: "Leisure",           short_tc: "好去處", short_en: "Leisure" },
+    { key: "pets",   tc: "寵物",            en: "Pets in Japan",     short_tc: "寵物",   short_en: "Pets" },
+    { key: "story",  tc: "人物故事",        en: "Stories",           short_tc: "故事",   short_en: "Stories" },
+  ],
+
+  ui: {
+    tagline: { tc: "在日生活，一緒開始", en: "Everything you need in Japan" },
+    search_placeholder: { tc: "搜尋文章、簽證、在日資訊…", en: "Search articles, visas, guides…" },
+    hot_search: { tc: "熱門搜尋", en: "Hot searches" },
+    issue: { tc: "2026 · 04月號", en: "April 2026 Issue" },
+    featured_kicker: { tc: "本週焦點", en: "This week's focus" },
+    read_more: { tc: "閱讀全文", en: "Read more" },
+    editor_picks: { tc: "編輯精選", en: "Editor's picks" },
+    editor_picks_sub: { tc: "本月最多人閱讀、最實用的在日指南。", en: "The most-read, most-useful guides this month." },
+    view_all: { tc: "查看全部", en: "View all" },
+    browse_cat: { tc: "瀏覽分類", en: "Browse categories" },
+    browse_cat_sub: { tc: "從簽證到寵物、從稅務到好去處，一站式覆蓋在日生活所有面向。", en: "From visas to pets, tax to travel — every corner of life in Japan." },
+    latest: { tc: "最新文章", en: "Latest articles" },
+    latest_sub: { tc: "本週更新。來自編輯團隊與在地撰稿人。", en: "Fresh this week — from the editors and our local contributors." },
+    stories_title: { tc: "人物故事", en: "Stories" },
+    stories_sub: { tc: "他們為什麼選擇日本？在這裡如何生活、工作、扎根？", en: "Why did they choose Japan? How do they live, work, and belong here?" },
+    checklist_title: { tc: "抵日首 30 天：必辦清單", en: "Your first 30 days in Japan" },
+    checklist_sub: { tc: "從在留卡到電話號碼，我們把所有關鍵步驟整理成清單。", en: "From residence card to phone number — we mapped out every essential step." },
+    checklist_cta: { tc: "開啟完整清單", en: "Open full checklist" },
+    newsletter_title: { tc: "每週一封，剛剛好。", en: "One email a week. That's it." },
+    newsletter_sub: { tc: "在日新政策、最新文章、社群活動——整理好，送到你的信箱。", en: "New policies, fresh articles, community events — curated for your inbox." },
+    newsletter_cta: { tc: "訂閱電子報", en: "Subscribe" },
+    email_placeholder: { tc: "你的電郵地址", en: "your@email.com" },
+    fx_title: { tc: "匯率換算", en: "Currency Calculator" },
+    fx_trigger: { tc: "匯率", en: "FX" },
+    fx_live: { tc: "即時", en: "Live" },
+    fx_asof: { tc: "更新於 4月21日 14:32 JST · 參考匯率", en: "Updated Apr 21, 14:32 JST · Reference rates" },
+    min_read: { tc: "分鐘閱讀", en: "min read" },
+    by: { tc: "文／", en: "By " },
+  },
+
+  hero: {
+    tag: { tc: "簽證・在留資格", en: "Visa & Residency" },
+    kicker: { tc: "2026 最新政策解讀", en: "2026 policy deep-dive" },
+    title: {
+      tc: "經營管理簽證 2026：為什麼現在是從香港、台灣創業者搬到日本的最佳時機",
+      en: "The Business Manager Visa in 2026: Why it's the best window yet for Hong Kong and Taiwan founders moving to Japan"
+    },
+    sub: {
+      tc: "500 萬日圓資本金、辦公空間、事業計劃書——新版審查重點與我們整理的 12 份必備文件。",
+      en: "¥5M capital, office space, and a business plan — what the updated screening looks for, plus the 12 documents you'll need."
+    },
+    author: { tc: "山田 綾 Aya Yamada", en: "Aya Yamada" },
+    avatar: "AY",
+    meta: { tc: "14 分鐘閱讀", en: "14 min read" },
+    date: { tc: "2026年4月18日", en: "Apr 18, 2026" },
+    img: "https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&w=1600&q=70"
+  },
+
+  hero_side: [
+    {
+      cat: "biz",
+      num: "01",
+      tc_tag: "創業・工作", en_tag: "Business",
+      tc: "開法人銀行戶口完整攻略：五大銀行比較", en: "Opening a corporate bank account: 5 banks compared",
+      meta: { tc: "8 分鐘閱讀 · 4月17日", en: "8 min · Apr 17" },
+      img: "https://images.unsplash.com/photo-1460317442991-0ec209397118?auto=format&fit=crop&w=600&q=70"
+    },
+    {
+      cat: "house",
+      num: "02",
+      tc_tag: "住屋", en_tag: "Housing",
+      tc: "禮金、敷金、保證人——外國人租屋三大難關怎麼過", en: "Key money, deposits, guarantors: three hurdles for foreign renters",
+      meta: { tc: "11 分鐘閱讀 · 4月15日", en: "11 min · Apr 15" },
+      img: "https://images.unsplash.com/photo-1580584126903-c17d41830450?auto=format&fit=crop&w=600&q=70"
+    },
+    {
+      cat: "life",
+      num: "03",
+      tc_tag: "日常手續", en_tag: "Daily Life",
+      tc: "外免切替 2026：香港台灣駕照轉換完整時間線", en: "Driver's licence conversion 2026: the full timeline",
+      meta: { tc: "6 分鐘閱讀 · 4月14日", en: "6 min · Apr 14" },
+      img: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=600&q=70"
+    }
+  ],
+
+  hot: [
+    { rank: 1, tc: "外免切替", en: "Licence conversion", fire: true },
+    { rank: 2, tc: "經營管理簽證", en: "Business Manager visa", fire: true },
+    { rank: 3, tc: "寵物入境", en: "Bringing pets" },
+    { rank: 4, tc: "垃圾分類", en: "Garbage sorting" },
+    { rank: 5, tc: "確定申告", en: "Tax filing" },
+    { rank: 6, tc: "永住權", en: "Permanent residency" },
+    { rank: 7, tc: "法人口座", en: "Corporate bank account" },
+    { rank: 8, tc: "敷金禮金", en: "Key money & deposits" },
+  ],
+
+  cats: [
+    { key: "news",   count: 37, tc: "新聞・資訊",      en: "News & Information", icon: "news" },
+    { key: "visa",   count: 84, tc: "簽證・在留資格", en: "Visa & Residency", icon: "passport" },
+    { key: "biz",    count: 62, tc: "創業・工作",      en: "Business & Work", icon: "briefcase" },
+    { key: "house",  count: 51, tc: "住屋",            en: "Housing",         icon: "home" },
+    { key: "tax",    count: 47, tc: "稅務・保險・年金", en: "Tax, Insurance & Pension", icon: "yen" },
+    { key: "life",   count: 93, tc: "日常手續",        en: "Daily Life",      icon: "life" },
+    { key: "places", count: 68, tc: "好去處",          en: "Leisure",         icon: "torii" },
+    { key: "pets",   count: 29, tc: "寵物",            en: "Pets in Japan",   icon: "paw" },
+    { key: "story",  count: 41, tc: "人物故事",        en: "Stories",         icon: "quote" },
+  ],
+
+  featured: {
+    cat: "story",
+    tc_tag: "人物故事", en_tag: "Stories",
+    tc: "從中環到谷中：一位設計師在東京開第二人生的 18 個月",
+    en: "From Central to Yanaka: 18 months of a designer's second act in Tokyo",
+    tc_excerpt: "Kelly 離開香港的廣告公司後，在谷中巷弄租下一間小店。她說最難的不是語言，是學會「不急著解釋自己」。",
+    en_excerpt: "After leaving a Hong Kong agency, Kelly opened a small shop in Yanaka's back streets. The hardest part, she says, wasn't the language — it was learning not to rush to explain herself.",
+    author: { tc: "陳慧敏", en: "Wai-Man Chan" },
+    meta: { tc: "18 分鐘閱讀", en: "18 min read" },
+    date: { tc: "4月20日", en: "Apr 20" },
+    img: "https://images.unsplash.com/photo-1528164344705-47542687000d?auto=format&fit=crop&w=1200&q=70"
+  },
+
+  latest: [
+    {
+      cat: "tax",
+      tc_tag: "稅務", en_tag: "Tax",
+      tc: "確定申告 2026：自由業者、小店主、副業收入的三份報稅模板",
+      en: "Tax filing 2026: templates for freelancers, shop owners, and side-income earners",
+      tc_excerpt: "日本所得稅申告表看似嚇人，但 80% 的欄位其實可以跳過。我們整理了三種最常見的情境模板。",
+      en_excerpt: "The Japanese tax form looks intimidating, but 80% of the fields don't apply. Here are three templates for the most common situations.",
+      author: { tc: "李俊賢", en: "Chun-Hin Lee" },
+      meta: { tc: "12 分鐘", en: "12 min" },
+      date: { tc: "4月19日", en: "Apr 19" },
+      img: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=800&q=70"
+    },
+    {
+      cat: "pets",
+      tc_tag: "寵物", en_tag: "Pets",
+      tc: "帶貓咪飛東京：檢疫所實地走訪，180 天倒數從哪天開始算",
+      en: "Flying your cat to Tokyo: inside the quarantine office and when the 180-day clock actually starts",
+      tc_excerpt: "狂犬病疫苗、微晶片、FAVN 抽血——我們跟著一對香港夫妻走完整個流程。",
+      en_excerpt: "Rabies vaccine, microchip, FAVN blood test — we followed a Hong Kong couple through the complete process.",
+      author: { tc: "山田 綾", en: "Aya Yamada" },
+      meta: { tc: "9 分鐘", en: "9 min" },
+      date: { tc: "4月18日", en: "Apr 18" },
+      img: "https://images.unsplash.com/photo-1574144611937-0df059b5ef3e?auto=format&fit=crop&w=800&q=70"
+    },
+    {
+      cat: "places",
+      tc_tag: "好去處", en_tag: "Leisure",
+      tc: "不只賞櫻：春末初夏，編輯部私藏的 6 個關東近郊半日行程",
+      en: "Beyond cherry blossoms: 6 editor-favourite half-day trips near Tokyo for late spring",
+      tc_excerpt: "鐮倉的繡球花、奧多摩的溪流、川越的老街——都在新宿一小時車程內。",
+      en_excerpt: "Kamakura's hydrangeas, Okutama's streams, Kawagoe's old town — all within an hour of Shinjuku.",
+      author: { tc: "森田 直樹", en: "Naoki Morita" },
+      meta: { tc: "7 分鐘", en: "7 min" },
+      date: { tc: "4月17日", en: "Apr 17" },
+      img: "https://images.unsplash.com/photo-1480796927426-f609979314bd?auto=format&fit=crop&w=800&q=70"
+    },
+    {
+      cat: "life",
+      tc_tag: "日常手續", en_tag: "Daily Life",
+      tc: "區公所日文太難？我們整理了 23 句轉入手續常用對話",
+      en: "City hall Japanese too hard? 23 phrases you actually need for moving-in paperwork",
+      tc_excerpt: "從住民票到國民健康保險，附上漢字、假名、羅馬拼音對照。",
+      en_excerpt: "From resident registration to national health insurance — with kanji, kana, and romaji side by side.",
+      author: { tc: "鈴木 美咲", en: "Misaki Suzuki" },
+      meta: { tc: "5 分鐘", en: "5 min" },
+      date: { tc: "4月16日", en: "Apr 16" },
+      img: "https://images.unsplash.com/photo-1542640244-7e672d6cef4e?auto=format&fit=crop&w=800&q=70"
+    },
+    {
+      cat: "visa",
+      tc_tag: "簽證", en_tag: "Visa",
+      tc: "永住權申請：10 年？5 年？高度人才？三條路線實際算給你看",
+      en: "Permanent residency: 10-year, 5-year, or High-Skilled — three paths with the math laid out",
+      tc_excerpt: "入管局的點數表很複雜，我們用真實案例拆解出最適合不同職業的路徑。",
+      en_excerpt: "The immigration points table is dense. We break it down with real cases matched to common careers.",
+      author: { tc: "高橋 健太", en: "Kenta Takahashi" },
+      meta: { tc: "16 分鐘", en: "16 min" },
+      date: { tc: "4月15日", en: "Apr 15" },
+      img: "https://images.unsplash.com/photo-1504198266287-1659872e6590?auto=format&fit=crop&w=800&q=70"
+    }
+  ],
+
+  checklist: [
+    { n: "01", tc: { t: "機場領取在留卡", d: "在成田或羽田的入境櫃台當場領取，背面寫上住址。" },
+              en: { t: "Pick up your residence card", d: "Collect it at the immigration desk at Narita or Haneda. Address goes on the back." },
+              status_tc: "機場", status_en: "Airport", done: true },
+    { n: "02", tc: { t: "區役所轉入申告", d: "抵達住址 14 天內登記住民票，同時辦國民健康保險。" },
+              en: { t: "Register at city hall", d: "Within 14 days of arrival — submit your moving-in form and enrol in national health insurance." },
+              status_tc: "14日內", status_en: "Within 14d", done: true },
+    { n: "03", tc: { t: "開設銀行帳戶", d: "JP 郵便局最容易，但大型銀行通常需要住滿 6 個月。" },
+              en: { t: "Open a bank account", d: "Japan Post is the easiest start — major banks often require 6 months of residency." },
+              status_tc: "本週", status_en: "This week" },
+    { n: "04", tc: { t: "申辦手機號碼", d: "樂天、povo、LINEMO 對外國人最友善，可線上完成。" },
+              en: { t: "Get a phone number", d: "Rakuten, povo, and LINEMO are the most foreigner-friendly and can be set up online." },
+              status_tc: "本週", status_en: "This week" },
+      { n: "05", tc: { t: "My Number 通知書", d: "約 2–3 週後寄到住址，這是之後所有行政事務的關鍵。" },
+              en: { t: "Receive your My Number", d: "Arrives by mail in 2–3 weeks — it's the key to every administrative task afterward." },
+              status_tc: "2-3週", status_en: "2–3 weeks" },
+  ],
+
+  stories: [
+    {
+      tc: "我以為我只是換了個城市，後來才發現我換了一整套人生節奏。",
+      en: "I thought I was just changing cities. Turns out I was changing the tempo of a whole life.",
+      name_tc: "阿 Ken", name_en: "Ken",
+      role_tc: "前港島金融業 · 現在長野經營民宿", role_en: "Ex-finance, HK → guesthouse owner, Nagano",
+      avatar: "K",
+      img: "https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=800&q=70"
+    },
+    {
+      tc: "台北的朋友問我：日本不是很壓抑嗎？我想了想，這裡讓我終於可以慢下來。",
+      en: "Friends back in Taipei ask me: isn't Japan suffocating? Thinking about it — it's the first place that let me slow down.",
+      name_tc: "Emma 林", name_en: "Emma Lin",
+      role_tc: "獨立設計師 · 京都", role_en: "Independent designer, Kyoto",
+      avatar: "E",
+      img: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=70"
+    },
+    {
+      tc: "我們夫妻帶兩隻柴犬搬來。牠們比我們更快交到日本朋友。",
+      en: "My wife and I moved here with two Shibas. They made Japanese friends faster than we did.",
+      name_tc: "Derek & Joyce", name_en: "Derek & Joyce",
+      role_tc: "自由接案 · 橫濱", role_en: "Freelancers, Yokohama",
+      avatar: "DJ",
+      img: "https://images.unsplash.com/photo-1583511655826-05700d52f4d9?auto=format&fit=crop&w=800&q=70"
+    }
+  ],
+
+  rates: {
+    // JPY per 1 unit. Reference only.
+    HKD: 19.42,
+    TWD: 4.71,
+    USD: 151.83,
+    EUR: 164.22
+  },
+
+  rate_deltas: { HKD: +0.12, TWD: -0.04, USD: +0.31 },
+};
+
+</script>
+<script>
+// IsshoHub — app logic (vanilla JS)
+(function () {
+  const D = window.ISSHO_DATA;
+  const state = {
+    lang: localStorage.getItem("issho.lang") || "tc",
+    accent: localStorage.getItem("issho.accent") || "#378ADD",
+    density: localStorage.getItem("issho.density") || "comfortable",
+    hero: localStorage.getItem("issho.hero") || "overlay",
+  };
+
+  // ----- icon library -----
+  const ICONS = {
+    passport: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><circle cx="12" cy="11" r="3.2"/><path d="M8 17h8"/></svg>`,
+    briefcase: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M3 12h18"/></svg>`,
+    home: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1v-9"/></svg>`,
+    yen: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4l6 8 6-8"/><path d="M12 12v9"/><path d="M7 15h10"/><path d="M7 19h10"/></svg>`,
+    life: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4M16 3v4"/><circle cx="12" cy="15" r="2"/></svg>`,
+    torii: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6c4 1 14 1 18 0"/><path d="M3 9h18"/><path d="M6 9v12"/><path d="M18 9v12"/><path d="M8 13h8"/></svg>`,
+    paw: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="10" r="2"/><circle cx="9" cy="5" r="2"/><circle cx="15" cy="5" r="2"/><circle cx="19" cy="10" r="2"/><path d="M12 12c-3 0-6 2-6 5 0 1.5 1 3 3 3 1 0 2-.5 3-.5s2 .5 3 .5c2 0 3-1.5 3-3 0-3-3-5-6-5z"/></svg>`,
+    quote: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7c-2 0-3 2-3 4v6h5v-6H5"/><path d="M17 7c-2 0-3 2-3 4v6h5v-6h-4"/></svg>`,
+    news: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="15" height="14" rx="1"/><path d="M18 9h3v8a2 2 0 01-2 2H6"/><path d="M6 9h8M6 13h8M6 17h4"/></svg>`,
+  };
+
+  // ----- rendering helpers -----
+  const T = (k) => {
+    if (D.ui[k]) return D.ui[k][state.lang] || D.ui[k].tc;
+    return k;
+  };
+  const pick = (obj, suffix) => obj[`${suffix}_${state.lang}`] || obj[state.lang] || obj[`${state.lang}_tag`] || obj.tc || "";
+  const getText = (obj) => obj && (obj[state.lang] || obj.tc || obj.en || "");
+
+  function renderNav() {
+    const el = document.getElementById("navLinks");
+    el.innerHTML = D.nav.map((c, i) => {
+      const label = state.lang === "tc" ? c.short_tc : c.short_en;
+      const hasSub = c.sub && c.sub.length;
+      const subHTML = hasSub ? `
+        <div class="nav-dropdown">
+          <div class="nav-dropdown-head">
+            <div class="nav-dropdown-title">${state.lang === "tc" ? c.tc : c.en}</div>
+            <a href="#" class="nav-dropdown-all">${state.lang === "tc" ? "查看全部" : "View all"} →</a>
+          </div>
+          <div class="nav-dropdown-list">
+            ${c.sub.map(s => `<a href="#">${state.lang === "tc" ? s.tc : s.en}</a>`).join("")}
+          </div>
+        </div>` : "";
+      return `<div class="nav-item${hasSub ? " has-sub" : ""}">
+        <a href="#" class="${i === 0 ? "active" : ""}">${label}${hasSub ? ' <svg class="nav-caret" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>' : ""}</a>
+        ${subHTML}
+      </div>`;
+    }).join("");
+
+    const strip = document.getElementById("catstrip");
+    strip.innerHTML = D.nav.map((c, i) => {
+      const label = state.lang === "tc" ? c.short_tc : c.short_en;
+      return `<a href="#" class="${i === 0 ? "active" : ""}">${label}</a>`;
+    }).join("");
+
+    const fe = document.getElementById("footerExplore");
+    if (fe) fe.innerHTML = D.nav.map(c => {
+      const label = state.lang === "tc" ? c.tc : c.en;
+      return `<a href="#">${label}</a>`;
+    }).join("");
+  }
+
+  function renderHero() {
+    const h = D.hero;
+    const img = h.img;
+    const tag = getText({ tc: h.tag.tc, en: h.tag.en });
+    const kicker = getText(h.kicker);
+    const title = getText(h.title);
+    const sub = getText(h.sub);
+    const author = getText(h.author);
+    const meta = getText(h.meta);
+    const date = getText(h.date);
+    document.getElementById("heroMain").innerHTML = `
+      <div class="hero-img" style="background-image: url('${img}')"></div>
+      <div class="hero-body">
+        <div class="hero-top">
+          <div class="hero-chip"><i></i>${tag}</div>
+          <div class="hero-issue">${getText(D.ui.issue)}</div>
+        </div>
+        <div>
+          <div class="hero-kicker">${kicker}</div>
+          <h1 class="hero-title">${title}</h1>
+          <p class="hero-sub">${sub}</p>
+          <div class="hero-meta">
+            <div class="avatar">${h.avatar}</div>
+            <div>${state.lang === "tc" ? "文／" : "By "}<b style="color:#fff;font-weight:500">${author}</b></div>
+            <div class="dot"></div>
+            <div>${meta}</div>
+            <div class="dot"></div>
+            <div>${date}</div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const side = document.getElementById("heroSide");
+    side.innerHTML = D.hero_side.map(a => `
+      <a class="side-card" href="#">
+        <div class="side-thumb" style="background-image: url('${a.img}')">
+          <div class="side-thumb-num">${a.num}</div>
+        </div>
+        <div class="side-body">
+          <div class="side-tag">${state.lang === "tc" ? a.tc_tag : a.en_tag}</div>
+          <div class="side-title">${state.lang === "tc" ? a.tc : a.en}</div>
+          <div class="side-meta">${getText(a.meta)}</div>
+        </div>
+      </a>
+    `).join("");
+  }
+
+  function renderHot() {
+    const el = document.getElementById("hotPills");
+    el.innerHTML = D.hot.map(p => {
+      const label = state.lang === "tc" ? p.tc : p.en;
+      return `<button class="pill ${p.fire ? "fire" : ""}"><span class="rank">${String(p.rank).padStart(2,"0")}</span>${label}</button>`;
+    }).join("");
+  }
+
+  function renderCats() {
+    const el = document.getElementById("catsGrid");
+    // find sub-categories from nav by key
+    const navByKey = Object.fromEntries(D.nav.map(n => [n.key, n]));
+    el.innerHTML = D.cats.map(c => {
+      const nav = navByKey[c.key];
+      const hasSub = nav && nav.sub && nav.sub.length;
+      const subHTML = hasSub ? `
+        <div class="cat-popover">
+          <div class="cat-pop-head">
+            <div class="cat-pop-title">${state.lang === "tc" ? c.tc : c.en}</div>
+            <a href="#" class="cat-pop-all">${state.lang === "tc" ? "查看全部" : "View all"} →</a>
+          </div>
+          <div class="cat-pop-list">
+            ${nav.sub.map(s => `<a href="#">${state.lang === "tc" ? s.tc : s.en}</a>`).join("")}
+          </div>
+        </div>` : "";
+      return `<div class="cat${hasSub ? ' has-sub' : ''}">
+        <a class="cat-link" href="#">
+          <span class="cat-count">${c.count}</span>
+          <div class="cat-icon">${ICONS[c.icon] || ""}</div>
+          <div class="cat-labels">
+            <div class="cat-label-tc">${state.lang === "tc" ? c.tc : c.en}</div>
+            <div class="cat-label-en">${state.lang === "tc" ? c.en : c.tc}</div>
+          </div>
+        </a>
+        ${subHTML}
+      </div>`;
+    }).join("");
+  }
+
+  function cardHTML(a, opts = {}) {
+    const tag = state.lang === "tc" ? a.tc_tag : a.en_tag;
+    const title = state.lang === "tc" ? a.tc : a.en;
+    const excerpt = state.lang === "tc" ? a.tc_excerpt : a.en_excerpt;
+    const author = getText(a.author);
+    const meta = getText(a.meta);
+    const date = getText(a.date);
+    return `
+      <article class="card ${opts.featured ? "featured" : ""}">
+        <a class="card-media" href="#" style="background-image: url('${a.img}')">
+          <span class="card-tag cat-${a.cat}">${tag}</span>
+        </a>
+        <div class="card-body">
+          <h3 class="card-title">${title}</h3>
+          <p class="card-excerpt">${excerpt}</p>
+          <div class="card-meta">
+            <span class="author">${author}</span>
+            <span class="dot"></span>
+            <span>${date}</span>
+            <span class="reading">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+              ${meta}
+            </span>
+          </div>
+        </div>
+      </article>
+    `;
+  }
+
+  function renderEditor() {
+    const el = document.getElementById("editorGrid");
+    // 1 featured (spans 2 cols) + 1 small = fills row 1 of a 3-col grid cleanly
+    el.innerHTML =
+      cardHTML(D.featured, { featured: true }) +
+      cardHTML(D.latest[0]);
+  }
+
+  function renderLatest() {
+    const el = document.getElementById("latestGrid");
+    // remaining 4 articles = perfect 1 row on desktop? No, 3 cols: show all 4 across 2 rows (4 cards fill 3+1, so show 3)
+    // Use remaining 4: fits 1 row of 3 + 1 leftover → show just first 3 on desktop, feels cleaner
+    el.innerHTML = D.latest.slice(1, 4).map(a => cardHTML(a)).join("");
+  }
+
+  function renderChecklist() {
+    const el = document.getElementById("checklistItems");
+    el.innerHTML = D.checklist.map(c => {
+      const t = state.lang === "tc" ? c.tc.t : c.en.t;
+      const d = state.lang === "tc" ? c.tc.d : c.en.d;
+      const status = state.lang === "tc" ? c.status_tc : c.status_en;
+      return `
+        <div class="checklist-item">
+          <div class="check-num">${c.n}</div>
+          <div class="check-body">
+            <div class="check-title">${t}</div>
+            <div class="check-desc">${d}</div>
+          </div>
+          <div class="check-status ${c.done ? "done" : ""}">${c.done ? "✓ " : ""}${status}</div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function renderStories() {
+    const el = document.getElementById("storiesGrid");
+    el.innerHTML = D.stories.map(s => {
+      const quote = state.lang === "tc" ? s.tc : s.en;
+      const name = state.lang === "tc" ? s.name_tc : s.name_en;
+      const role = state.lang === "tc" ? s.role_tc : s.role_en;
+      return `
+        <div class="story">
+          <div class="bg" style="background-image: url('${s.img}')"></div>
+          <div class="story-inner">
+            <div class="story-quote">${quote}</div>
+            <div class="story-person">
+              <div class="avatar">${s.avatar}</div>
+              <div>
+                <div class="story-name">${name}</div>
+                <div class="story-role">${role}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function renderStaticI18n() {
+    const translations = {
+      "tagline-nav": { tc: "在日生活，一緒開始", en: "Everything you need in Japan" },
+      ticker1: { tc: "新政策：2026 年 4 月起，香港、台灣駕照可免筆試直接切換。", en: "New policy: From Apr 2026, HK & TW licences convert without a written test." },
+      ticker2: { tc: "本週 IsshoHub Meetup：4月25日・東京澀谷，名額將滿。", en: "This week's Meetup: Apr 25, Shibuya — nearly full." },
+      weather: { tc: "東京 · 17° · 晴れ", en: "Tokyo · 17° · Clear" },
+      rate: { tc: "HKD <b>¥19.42</b> &nbsp; TWD <b>¥4.71</b>", en: "HKD <b>¥19.42</b> &nbsp; TWD <b>¥4.71</b>" },
+      hot_search: { tc: "熱門搜尋", en: "Hot searches" },
+      browse_cat: { tc: "瀏覽分類", en: "Browse categories" },
+      browse_cat_sub: { tc: "從簽證到寵物、從稅務到好去處，一站式覆蓋在日生活所有面向。", en: "From visas to pets, tax to travel — every corner of life in Japan." },
+      editor_picks: { tc: "編輯精選", en: "Editor's picks" },
+      editor_picks_sub: { tc: "本月最多人閱讀、最實用的在日指南。", en: "The most-read, most-useful guides this month." },
+      view_all: { tc: "查看全部", en: "View all →" },
+      latest: { tc: "最新文章", en: "Latest articles" },
+      latest_sub: { tc: "本週更新。來自編輯團隊與在地撰稿人。", en: "Fresh this week — from the editors and our local contributors." },
+      stories_title: { tc: "人物故事", en: "Stories" },
+      stories_sub: { tc: "他們為什麼選擇日本？在這裡如何生活、工作、扎根？", en: "Why did they choose Japan? How do they live, work, and belong here?" },
+      checklist_title: { tc: "抵日首 30 天：必辦清單", en: "Your first 30 days in Japan" },
+      checklist_sub: { tc: "從在留卡到電話號碼，我們把所有關鍵步驟整理成清單。", en: "From residence card to phone number — we mapped out every essential step." },
+      checklist_cta: { tc: "開啟完整清單", en: "Open full checklist" },
+      newsletter_title: { tc: "每週一封，剛剛好。", en: "One email a week. That's it." },
+      newsletter_sub: { tc: "在日新政策、最新文章、社群活動——整理好，送到你的信箱。", en: "New policies, fresh articles, community events — curated for your inbox." },
+      newsletter_cta: { tc: "訂閱電子報", en: "Subscribe" },
+      footer_about: { tc: "IsshoHub 是一個繁中與英文雙語資訊平台，為移居日本的香港、台灣朋友與希望在日創業的團隊整理最實用的資源。外國人與日本人，一起生活、共同成長。", en: "IsshoHub is a bilingual (Traditional Chinese + English) resource hub for foreigners living in or moving to Japan — and for startups making Japan home. Foreigners and Japanese, growing together." },
+      footer_col1: { tc: "瀏覽", en: "Explore" },
+      footer_col2: { tc: "資源", en: "Resources" },
+      footer_col3: { tc: "關於", en: "About" },
+      footer_r1: { tc: "新手必讀", en: "Start here" },
+      footer_r2: { tc: "實用連結", en: "Useful links" },
+      footer_r3: { tc: "社群活動", en: "Community events" },
+      footer_r4: { tc: "匯率換算", en: "Currency calculator" },
+      footer_r5: { tc: "電子報", en: "Newsletter" },
+      footer_a1: { tc: "關於我們", en: "About us" },
+      footer_a2: { tc: "編輯團隊", en: "Editorial team" },
+      footer_a3: { tc: "投稿合作", en: "Contribute" },
+      footer_a4: { tc: "聯絡我們", en: "Contact" },
+      footer_a5: { tc: "隱私政策", en: "Privacy" },
+      footer_lang: { tc: "繁體中文", en: "Traditional Chinese" },
+      fx_title: { tc: "匯率換算", en: "Currency Calculator" },
+      fx_live: { tc: "即時", en: "Live" },
+      fx_trigger: { tc: "匯率", en: "FX" },
+      fx_asof: { tc: "更新於 4月21日 14:32 JST · 參考匯率", en: "Updated Apr 21, 14:32 JST · Reference rates" },
+      email_placeholder: { tc: "你的電郵地址", en: "your@email.com" },
+    };
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const k = el.getAttribute("data-i18n");
+      if (translations[k]) el.innerHTML = translations[k][state.lang];
+    });
+    document.querySelectorAll("[data-i18n-attr]").forEach(el => {
+      const k = el.getAttribute("data-i18n-attr");
+      if (translations[k]) el.setAttribute("placeholder", translations[k][state.lang].replace(/<[^>]*>/g, ""));
+    });
+  }
+
+  function applyLangButtons() {
+    document.querySelectorAll("[data-lang-set]").forEach(b => {
+      b.classList.toggle("on", b.getAttribute("data-lang-set") === state.lang);
+    });
+    document.body.setAttribute("data-lang", state.lang);
+    document.documentElement.setAttribute("lang", state.lang === "tc" ? "zh-Hant" : "en");
+  }
+
+  function applyAccent() {
+    document.documentElement.style.setProperty("--accent", state.accent);
+    // derive a lighter accent-2 via color-mix (or fallback)
+    document.documentElement.style.setProperty("--accent-ink", state.accent);
+  }
+
+  function applyDensity() {
+    document.documentElement.style.setProperty("--dens", state.density === "compact" ? "0.7" : "1");
+  }
+
+  function applyHero() {
+    // just re-render (could swap to split layout here — keeping simple)
+    renderHero();
+  }
+
+  // ----- FX calculator -----
+  function formatJPY(n) {
+    return "¥" + Math.round(n).toLocaleString("en-US");
+  }
+  function updateFX() {
+    const from = document.getElementById("fxFrom").value;
+    const amt = parseFloat(document.getElementById("fxInput").value) || 0;
+    const rate = D.rates[from] || 1;
+    document.getElementById("fxOutput").value = formatJPY(amt * rate);
+    const fl = document.getElementById("fxFromFlag");
+    fl.className = "flag flag-" + from.slice(0,2).toLowerCase();
+    document.getElementById("fxFromLabel").textContent = from;
+  }
+
+  function wireFX() {
+    const fx = document.getElementById("fx");
+    document.getElementById("fxTrigger").addEventListener("click", () => fx.classList.toggle("open"));
+    document.getElementById("fxClose").addEventListener("click", () => fx.classList.remove("open"));
+    document.getElementById("fxInput").addEventListener("input", updateFX);
+    document.getElementById("fxFrom").addEventListener("change", updateFX);
+    updateFX();
+  }
+
+  function wireLang() {
+    document.getElementById("langToggle").addEventListener("click", (e) => {
+      const b = e.target.closest("[data-lang-set]");
+      if (!b) return;
+      state.lang = b.getAttribute("data-lang-set");
+      localStorage.setItem("issho.lang", state.lang);
+      renderAll();
+    });
+  }
+
+  // ----- tweaks -----
+  function wireTweaks() {
+    const panel = document.getElementById("tweaks");
+    // listener MUST be registered before announcing availability
+    window.addEventListener("message", (e) => {
+      if (!e.data) return;
+      if (e.data.type === "__activate_edit_mode") panel.classList.add("on");
+      if (e.data.type === "__deactivate_edit_mode") panel.classList.remove("on");
+    });
+    window.parent.postMessage({ type: "__edit_mode_available" }, "*");
+
+    panel.addEventListener("click", (e) => {
+      const tile = e.target.closest("[data-v]");
+      if (!tile) return;
+      const group = tile.closest("[data-tweak]").getAttribute("data-tweak");
+      tile.parentElement.querySelectorAll("[data-v]").forEach(x => x.classList.remove("on"));
+      tile.classList.add("on");
+      const v = tile.getAttribute("data-v");
+      if (group === "lang") { state.lang = v; localStorage.setItem("issho.lang", v); renderAll(); }
+      if (group === "accent") { state.accent = v; localStorage.setItem("issho.accent", v); applyAccent(); }
+      if (group === "density") { state.density = v; localStorage.setItem("issho.density", v); applyDensity(); }
+      if (group === "hero") { state.hero = v; localStorage.setItem("issho.hero", v); applyHero(); }
+    });
+
+    // sync panel UI with state
+    const syncPanel = () => {
+      panel.querySelectorAll("[data-tweak] [data-v]").forEach(t => {
+        const g = t.closest("[data-tweak]").getAttribute("data-tweak");
+        t.classList.toggle("on", t.getAttribute("data-v") === state[g]);
+      });
+    };
+    syncPanel();
+  }
+
+  function renderAll() {
+    applyLangButtons();
+    renderStaticI18n();
+    renderNav();
+    renderHero();
+    renderHot();
+    renderCats();
+    renderEditor();
+    renderLatest();
+    renderChecklist();
+    renderStories();
+  }
+
+  // initial render
+  applyAccent();
+  applyDensity();
+  renderAll();
+  wireLang();
+  wireFX();
+  wireTweaks();
+})();
+
+</script>
+</body>
+</html>

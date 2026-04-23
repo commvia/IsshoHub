@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>創業・工作 — IsshoHub</title>
+<meta name="description" content="在日本創業、開公司的完整指南：法人設立、銀行戶口、補助金、稅務會計、僱用外國員工，雙語一站式資源。" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700&family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/styles.css">
+<style>
+  /* Biz accent override */
+  .cat-hero { background: linear-gradient(135deg, #0d2444 0%, #1a4b7a 100%); }
+</style>
+</head>
+<body data-lang="tc">
+
+<!-- =============== TOP BAR =============== -->
+<div class="topbar">
+  <div class="container row">
+    <div class="ticker">
+      <span data-i18n="ticker1"></span>
+      <span data-i18n="ticker2"></span>
+    </div>
+    <div class="meta">
+      <span data-i18n="ticker-weather"></span>
+      <span>·</span>
+      <span data-i18n="ticker-rate"></span>
+    </div>
+  </div>
+</div>
+
+<!-- =============== NAV =============== -->
+<nav class="nav">
+  <div class="container row">
+    <a class="brand" href="/">
+      <div class="brand-mark">一</div>
+      <div>
+        <div class="brand-name">IsshoHub</div>
+        <div class="brand-tag" data-i18n="tagline-nav"></div>
+      </div>
+    </a>
+    <div class="nav-links" id="navLinks"></div>
+    <div class="nav-right">
+      <button class="search-btn" aria-label="Search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      </button>
+      <div class="lang-toggle" id="langToggle">
+        <button data-lang-set="tc">繁中</button>
+        <button data-lang-set="en">EN</button>
+      </div>
+      <button class="btn-login" data-open-login>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <span data-i18n="login_btn"></span>
+      </button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="catstrip" id="catstrip"></div>
+</nav>
+
+<!-- =============== MOBILE MENU =============== -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+  <div class="mobile-menu-drawer">
+    <div class="mobile-menu-head">
+      <a class="brand" href="/" style="color: var(--navy-ink);">
+        <div class="brand-mark">一</div>
+        <div class="brand-name">IsshoHub</div>
+      </a>
+      <button class="mobile-close" id="mobileMenuClose">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <nav class="mobile-nav-list" id="mobileNavList"></nav>
+    <div class="mobile-menu-footer">
+      <button class="mobile-login-btn" id="mobileLoginBtn" data-open-login>
+        <span data-i18n="login_btn"></span>
+      </button>
+      <div class="lang-toggle" style="justify-content: center;">
+        <button data-lang-set="tc">繁中</button>
+        <button data-lang-set="en">EN</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =============== CATEGORY HERO =============== -->
+<section class="cat-hero">
+  <div class="cat-hero-watermark" id="catHeroWatermark">起業</div>
+  <div class="container">
+    <div class="cat-hero-inner">
+      <div class="cat-hero-icon-wrap">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M3 12h18"/></svg>
+      </div>
+      <div class="cat-hero-body">
+        <div class="cat-hero-breadcrumb">
+          <a href="/" data-i18n="home_breadcrumb"></a>
+          <span class="breadcrumb-sep">/</span>
+          <span class="current" id="heroBreadcrumbCurrent"></span>
+        </div>
+        <h1 class="cat-hero-title" id="catHeroTitle"></h1>
+        <div class="cat-hero-en" id="catHeroEn"></div>
+        <p class="cat-hero-desc" id="catHeroDesc"></p>
+        <div class="cat-hero-stats">
+          <div class="cat-stat">
+            <div class="cat-stat-num">62</div>
+            <div class="cat-stat-label" id="catStatLabel"></div>
+          </div>
+          <div class="cat-stat">
+            <div class="cat-stat-num">8</div>
+            <div class="cat-stat-label" id="catStatSubs"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============== SUB-CATEGORY NAV =============== -->
+<nav class="subcat-nav">
+  <div class="container">
+    <div class="subcat-scroll" id="subcatScroll"></div>
+  </div>
+</nav>
+
+<!-- =============== STARTUP CHECKLIST BANNER =============== -->
+<section style="padding: calc(40px * var(--dens)) 0 0;">
+  <div class="container">
+    <div class="checklist">
+      <div class="checklist-grid">
+        <div>
+          <div class="section-eyebrow" style="color: var(--accent-2);">— Quick start</div>
+          <h3 id="checklistTitle"></h3>
+          <p id="checklistDesc"></p>
+          <a href="/visa/" class="link-more" style="color: var(--accent-2);" id="checklistCta"></a>
+        </div>
+        <div class="checklist-items" id="bizChecklistItems"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============== FEATURED ARTICLE =============== -->
+<section class="cat-featured-section">
+  <div class="container">
+    <div class="section-head" style="margin-bottom: 20px;">
+      <div class="section-eyebrow">— Featured</div>
+    </div>
+    <div class="article-grid" id="bizFeaturedGrid"></div>
+  </div>
+</section>
+
+<!-- =============== ALL ARTICLES =============== -->
+<section class="cat-articles-section">
+  <div class="container">
+    <div class="cat-articles-header">
+      <div class="cat-articles-title" id="articlesTitle"></div>
+      <a class="link-more" href="#">
+        <span data-i18n="view_all"></span> →
+      </a>
+    </div>
+    <div class="article-grid" id="bizArticlesGrid"></div>
+  </div>
+</section>
+
+<!-- =============== NEWSLETTER =============== -->
+<section class="section">
+  <div class="container">
+    <div class="newsletter">
+      <div class="section-eyebrow" style="display:flex;justify-content:center;">— Weekly digest</div>
+      <h3 data-i18n="newsletter_title"></h3>
+      <p data-i18n="newsletter_sub"></p>
+      <form class="newsletter-form">
+        <input type="email" data-i18n-placeholder="email_placeholder" placeholder="your@email.com" required />
+        <button type="submit" data-i18n="newsletter_cta"></button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- =============== FOOTER =============== -->
+<footer class="footer">
+  <div class="container">
+    <div class="grid">
+      <div class="footer-brand">
+        <div class="brand">
+          <div class="brand-mark">一</div>
+          <div>
+            <div class="brand-name" style="color:#fff;">IsshoHub</div>
+            <div class="brand-tag" style="color:rgba(255,255,255,0.45);">一緒 · Together in Japan</div>
+          </div>
+        </div>
+        <p data-i18n="footer_about"></p>
+        <div class="footer-socials">
+          <a href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.72 3.72 0 01-1.38-.9 3.72 3.72 0 01-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zm0 5.84a4 4 0 100 8 4 4 0 000-8zm5.2-.4a.96.96 0 110 1.92.96.96 0 010-1.92zM12 9.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8z"/></svg></a>
+          <a href="#" aria-label="Twitter / X"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 3h3.4l-7.4 8.4L23.5 21h-6.8l-5.3-6.9L5.3 21H1.9l7.9-9L1 3h7l4.8 6.4L18.9 3zm-1.2 16h1.9L7.4 5H5.4l12.3 14z"/></svg></a>
+          <a href="#" aria-label="LINE"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C5.37 2 0 6.36 0 11.74c0 4.82 4.24 8.86 9.97 9.63.39.08.92.26 1.05.6.12.3.08.79.04 1.08L11 24c-.05.32-.25 1.23 1.09.67 1.34-.57 7.22-4.26 9.85-7.28C23.73 15.4 24 13.6 24 11.74 24 6.36 18.63 2 12 2z"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5 data-i18n="footer_col1"></h5>
+        <div id="footerExplore"></div>
+      </div>
+      <div class="footer-col">
+        <h5 data-i18n="footer_col2"></h5>
+        <a href="#" data-i18n="footer_r1"></a>
+        <a href="#" data-i18n="footer_r2"></a>
+        <a href="#" data-i18n="footer_r3"></a>
+        <a href="#" data-i18n="footer_r4"></a>
+      </div>
+      <div class="footer-col">
+        <h5 data-i18n="footer_col3"></h5>
+        <a href="#" data-i18n="footer_a1"></a>
+        <a href="#" data-i18n="footer_a2"></a>
+        <a href="#" data-i18n="footer_a3"></a>
+        <a href="#" data-i18n="footer_a4"></a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 IsshoHub · 一緒 · Made with care in Tokyo &amp; Hong Kong</div>
+      <div><span data-i18n="footer_lang"></span> / English</div>
+    </div>
+  </div>
+</footer>
+
+<!-- =============== FX CALCULATOR =============== -->
+<div class="fx" id="fx">
+  <button class="fx-trigger" id="fxTrigger">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 100 7h5a3.5 3.5 0 110 7H6"/></svg>
+    <span data-i18n="fx_trigger"></span>
+    <span class="badge">¥</span>
+  </button>
+  <div class="fx-panel" style="position:relative;">
+    <button class="fx-close" id="fxClose">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="fx-head">
+      <h4 data-i18n="fx_title"></h4>
+      <span class="live"><i></i><span data-i18n="fx_live"></span></span>
+    </div>
+    <div class="fx-asof" data-i18n="fx_asof"></div>
+    <div class="fx-row">
+      <label class="fx-ccy">
+        <span class="flag flag-hk" id="fxFromFlag"></span>
+        <span id="fxFromLabel">HKD</span>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+        <select id="fxFrom">
+          <option value="HKD">HKD 港幣</option>
+          <option value="TWD">TWD 新台幣</option>
+          <option value="USD">USD 美元</option>
+          <option value="EUR">EUR 歐元</option>
+        </select>
+      </label>
+      <input type="number" class="fx-input" id="fxInput" value="1000" min="0" />
+    </div>
+    <div class="fx-equals">=</div>
+    <div class="fx-row to">
+      <div class="fx-ccy"><span class="flag flag-jp"></span>JPY</div>
+      <input type="text" class="fx-input" id="fxOutput" value="¥19,420" readonly />
+    </div>
+    <div class="fx-rates">
+      <div class="fx-rate-item"><div class="k">HKD/JPY</div><div class="v">19.42</div><div class="d up">▲ 0.12</div></div>
+      <div class="fx-rate-item"><div class="k">TWD/JPY</div><div class="v">4.71</div><div class="d down">▼ 0.04</div></div>
+      <div class="fx-rate-item"><div class="k">USD/JPY</div><div class="v">151.83</div><div class="d up">▲ 0.31</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- =============== LOGIN MODAL =============== -->
+<div class="modal-overlay" id="loginModal" role="dialog" aria-modal="true">
+  <div class="modal">
+    <button class="modal-close" id="modalClose" aria-label="Close">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="modal-brand">
+      <div class="brand-mark">一</div>
+      <div class="brand-name">IsshoHub</div>
+    </div>
+    <h2 class="modal-title" data-i18n="login_title"></h2>
+    <p class="modal-sub" data-i18n="login_sub"></p>
+    <div class="social-login">
+      <button class="btn-social">
+        <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        <span data-i18n="login_google"></span>
+      </button>
+    </div>
+    <div class="modal-divider"><span data-i18n="login_or"></span></div>
+    <form class="login-form" id="loginForm">
+      <div class="form-group">
+        <label data-i18n="login_email"></label>
+        <input type="email" placeholder="your@email.com" autocomplete="email" required />
+      </div>
+      <div class="form-group">
+        <label data-i18n="login_password"></label>
+        <input type="password" placeholder="••••••••" autocomplete="current-password" required />
+      </div>
+      <button type="submit" class="btn-submit" data-i18n="login_submit"></button>
+    </form>
+    <div class="modal-footer">
+      <a href="#" data-i18n="login_forgot"></a>
+      <span>·</span>
+      <a href="#" data-i18n="login_register"></a>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/js/data.js"></script>
+<script src="/assets/js/core.js"></script>
+<script>
+(function () {
+  const D = window.ISSHO_DATA;
+  const C = window.IsshoCore;
+
+  const SUBS = D.nav.find(n => n.key === 'biz').sub;
+  let activeSub = 'all';
+
+  function getLang() { return C.getLang(); }
+
+  /* Startup checklist data */
+  const BIZ_CHECKLIST = [
+    { n: '01',
+      tc: { t: '確定法人形態', d: '株式會社（KK）或合同會社（GK）各有優缺點，根據規模與稅務考量選擇。' },
+      en: { t: 'Choose your entity type', d: 'KK (Kabushiki Kaisha) vs GK (Godo Kaisha) — different tax implications and prestige. Choose based on your scale.' },
+      status_tc: '第一步', status_en: 'Step 1', done: true },
+    { n: '02',
+      tc: { t: '準備資本金（最低 1 円，建議 500 萬）', d: '技術簽證申請經營管理需要 500 萬日圓資本金，建議在設立前確認簽證要求。' },
+      en: { t: 'Prepare capital (min ¥1, recommended ¥5M)', d: 'The Business Manager Visa requires ¥5M capital. Confirm visa requirements before incorporation.' },
+      status_tc: '設立前', status_en: 'Pre-setup', done: true },
+    { n: '03',
+      tc: { t: '辦理法人登記（法務局）', d: '準備定款、申請書、印鑑等文件，委託司法書士可加快流程。' },
+      en: { t: 'Register at the Legal Affairs Bureau', d: 'Prepare articles of incorporation, application forms, and company seals. A judicial scrivener can speed this up.' },
+      status_tc: '2週', status_en: '~2 weeks' },
+    { n: '04',
+      tc: { t: '開設法人銀行戶口', d: '法人登記完成後立即申請，部分銀行需等待 1-3 個月。盡早開始。' },
+      en: { t: 'Open a corporate bank account', d: 'Apply immediately after registration. Some banks take 1–3 months. Start early.' },
+      status_tc: '盡早', status_en: 'ASAP' },
+    { n: '05',
+      tc: { t: '向稅務署申報設立', d: '法人設立後 2 個月內向稅務署提交開業屆，建議委託稅理士處理。' },
+      en: { t: 'File incorporation notice with tax office', d: 'Within 2 months of establishment — a tax accountant (zeirishi) is strongly recommended.' },
+      status_tc: '2月內', status_en: 'Within 2mo' },
+  ];
+
+  function renderCatHero() {
+    const lang = getLang();
+    const title = lang === 'tc' ? '創業・工作' : 'Business & Work';
+    const enSub = lang === 'tc' ? 'Business & Work' : '創業・工作';
+    const desc = lang === 'tc'
+      ? '在日本創業、設立法人的完整指南。從選擇法人形態、開設銀行戶口，到申請補助金、僱用外國員工——每個環節都有雙語深度解說。'
+      : 'Complete guides to starting a business and incorporating in Japan. From choosing your entity type and opening a bank account to grants, hiring, and tax basics.';
+    const breadcrumb = lang === 'tc' ? '創業・工作' : 'Business & Work';
+    const statLabel = lang === 'tc' ? '篇文章' : 'articles';
+    const statSubs = lang === 'tc' ? '個子分類' : 'sub-categories';
+
+    document.getElementById('catHeroTitle').textContent = title;
+    document.getElementById('catHeroEn').textContent = enSub;
+    document.getElementById('catHeroDesc').textContent = desc;
+    document.getElementById('heroBreadcrumbCurrent').textContent = breadcrumb;
+    document.getElementById('catStatLabel').textContent = statLabel;
+    document.getElementById('catStatSubs').textContent = statSubs;
+    document.getElementById('catHeroWatermark').textContent = lang === 'tc' ? '起業' : 'BIZ';
+
+    /* startup checklist banner */
+    const title2 = lang === 'tc' ? '在日本設立法人：五個關鍵步驟' : 'Incorporating in Japan: five critical steps';
+    const desc2 = lang === 'tc' ? '從選擇法人形態到第一份稅務申報，我們把最容易踩坑的環節整理清楚。' : 'From entity type to your first tax filing — we mapped out the steps where most founders get tripped up.';
+    const cta = lang === 'tc' ? '取得創業簽證支援 →' : 'Get startup visa support →';
+    document.getElementById('checklistTitle').textContent = title2;
+    document.getElementById('checklistDesc').textContent = desc2;
+    const ctaEl = document.getElementById('checklistCta');
+    ctaEl.textContent = cta;
+    ctaEl.style.color = 'var(--accent-2)';
+
+    document.getElementById('articlesTitle').textContent = lang === 'tc' ? '最新創業文章' : 'Latest business articles';
+  }
+
+  function renderSubcatNav() {
+    const lang = getLang();
+    const tabs = [{ key: 'all', tc: '全部', en: 'All', count: 62 }];
+    const counts = [12, 9, 11, 8, 10, 7, 6, 9];
+    SUBS.forEach((s, i) => tabs.push({ key: i, tc: s.tc, en: s.en, count: counts[i] || 8 }));
+
+    document.getElementById('subcatScroll').innerHTML = tabs.map(tab => {
+      const label = lang === 'tc' ? tab.tc : tab.en;
+      const isActive = tab.key === activeSub;
+      return `<a href="javascript:void(0)" class="subcat-tab${isActive ? ' active' : ''}" data-sub="${tab.key}">
+        ${label}<span class="count">${tab.count}</span>
+      </a>`;
+    }).join('');
+
+    document.getElementById('subcatScroll').addEventListener('click', e => {
+      const tab = e.target.closest('.subcat-tab');
+      if (!tab) return;
+      activeSub = tab.getAttribute('data-sub');
+      document.querySelectorAll('.subcat-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  }
+
+  function renderChecklist() {
+    const lang = getLang();
+    document.getElementById('bizChecklistItems').innerHTML = BIZ_CHECKLIST.map(c => {
+      const title = lang === 'tc' ? c.tc.t : c.en.t;
+      const desc = lang === 'tc' ? c.tc.d : c.en.d;
+      const status = lang === 'tc' ? c.status_tc : c.status_en;
+      return `
+        <div class="checklist-item">
+          <div class="check-num">${c.n}</div>
+          <div class="check-body">
+            <div class="check-title">${title}</div>
+            <div class="check-desc">${desc}</div>
+          </div>
+          <div class="check-status ${c.done ? 'done' : ''}">${c.done ? '✓ ' : ''}${status}</div>
+        </div>`;
+    }).join('');
+  }
+
+  function renderFeatured() {
+    document.getElementById('bizFeaturedGrid').innerHTML =
+      C.cardHTML(D.biz_featured, { featured: true });
+  }
+
+  function renderArticles() {
+    document.getElementById('bizArticlesGrid').innerHTML =
+      D.biz_articles.map(a => C.cardHTML(a)).join('');
+  }
+
+  function renderAll() {
+    renderCatHero();
+    renderSubcatNav();
+    renderChecklist();
+    renderFeatured();
+    renderArticles();
+  }
+
+  window.onLangChange = function () { renderAll(); };
+
+  C.init('biz');
+  renderAll();
+})();
+</script>
+</body>
+</html>

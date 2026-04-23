@@ -1,0 +1,511 @@
+/* IsshoHub — bilingual content data */
+window.ISSHO_DATA = {
+
+  nav: [
+    { key: "visa",   url: "/visa/",   tc: "簽證・在留資格",   en: "Visa & Residency",        short_tc: "簽證",   short_en: "Visa",
+      sub: [
+        { tc: "在留政策",                       en: "Residency Policy",                              url: "/visa/#policy" },
+        { tc: "經營・管理簽證",                 en: "Business Manager Visa",                          url: "/visa/#business-manager" },
+        { tc: "技術・人文知識・國際業務",       en: "Engineer / Specialist in Humanities",            url: "/visa/#engineer" },
+        { tc: "高度專門職",                     en: "Highly Skilled Professional",                   url: "/visa/#hsp" },
+        { tc: "未來創造人材（J-Find）",         en: "Future Creation Talent (J-Find)",               url: "/visa/#jfind" },
+        { tc: "數位遊牧簽證",                   en: "Digital Nomad Visa",                            url: "/visa/#nomad" },
+        { tc: "留學簽證",                       en: "Student Visa",                                  url: "/visa/#student" },
+        { tc: "家族滯在",                       en: "Dependent Visa",                                url: "/visa/#dependent" },
+        { tc: "永住權",                         en: "Permanent Residency",                           url: "/visa/#pr" },
+        { tc: "度假打工",                       en: "Working Holiday",                               url: "/visa/#wh" },
+        { tc: "其他在留資格",                   en: "Other Statuses",                                url: "/visa/#other" },
+      ]
+    },
+    { key: "biz",    url: "/biz/",    tc: "創業・工作",       en: "Business & Work",         short_tc: "創業",   short_en: "Business",
+      sub: [
+        { tc: "如何在日本創業",         en: "How to Start a Business in Japan",  url: "/biz/#how-to" },
+        { tc: "公司法人銀行戶口",       en: "Corporate Bank Accounts",           url: "/biz/#bank" },
+        { tc: "創業資助及補助金",       en: "Startup Grants & Subsidies",        url: "/biz/#grants" },
+        { tc: "Startup 簽證支援",       en: "Startup Visa Support",              url: "/biz/#visa" },
+        { tc: "稅務・會計基礎",         en: "Tax & Accounting Basics",           url: "/biz/#tax" },
+        { tc: "僱用外國員工",           en: "Hiring Foreign Employees",          url: "/biz/#hiring" },
+        { tc: "各地創業支援中心",       en: "Regional Startup Support Centers",  url: "/biz/#support" },
+        { tc: "創業者故事",             en: "Founder Stories",                   url: "/biz/#stories" },
+      ]
+    },
+    { key: "house",  url: "/house/",  tc: "住屋",             en: "Housing",                 short_tc: "住屋",   short_en: "Housing",
+      sub: [
+        { tc: "租務資訊",       en: "Renting",               url: "/house/#renting" },
+        { tc: "買樓需知",       en: "Buying Property",        url: "/house/#buying" },
+        { tc: "注文住宅",       en: "Custom-Built Homes",     url: "/house/#custom" },
+        { tc: "物業資訊",       en: "Property Information",   url: "/house/#info" },
+        { tc: "寵物友善住宅",   en: "Pet-Friendly Housing",   url: "/house/#pets" },
+      ]
+    },
+    { key: "tax",    url: "/tax/",    tc: "稅務・保險・年金", en: "Tax, Insurance & Pension", short_tc: "稅務",   short_en: "Tax",
+      sub: [
+        { tc: "稅務",   en: "Tax",       url: "/tax/#tax" },
+        { tc: "保險",   en: "Insurance", url: "/tax/#insurance" },
+        { tc: "年金",   en: "Pension",   url: "/tax/#pension" },
+      ]
+    },
+    { key: "life",   url: "/life/",   tc: "日常手續",         en: "Daily Life",              short_tc: "生活",   short_en: "Daily Life",
+      sub: [
+        { tc: "外免切替",   en: "Driver's Licence Conversion", url: "/life/#licence" },
+        { tc: "交通規則",   en: "Traffic Rules",               url: "/life/#traffic" },
+        { tc: "銀行戶口",   en: "Bank Accounts",               url: "/life/#bank" },
+        { tc: "電話卡",     en: "SIM & Phone Plans",           url: "/life/#sim" },
+        { tc: "其他",       en: "Other",                       url: "/life/#other" },
+      ]
+    },
+    { key: "places", url: "/places/", tc: "好去處",           en: "Leisure",                 short_tc: "好去處", short_en: "Leisure" },
+    { key: "pets",   url: "/pets/",   tc: "寵物",             en: "Pets in Japan",           short_tc: "寵物",   short_en: "Pets" },
+    { key: "story",  url: "/story/",  tc: "人物故事",         en: "Stories",                 short_tc: "故事",   short_en: "Stories" },
+  ],
+
+  ui: {
+    tagline: { tc: "在日生活，一緒開始", en: "Everything you need in Japan" },
+    search_placeholder: { tc: "搜尋文章、簽證、在日資訊…", en: "Search articles, visas, guides…" },
+    hot_search: { tc: "熱門搜尋", en: "Hot searches" },
+    issue: { tc: "2026 · 04月號", en: "April 2026 Issue" },
+    featured_kicker: { tc: "本週焦點", en: "This week's focus" },
+    read_more: { tc: "閱讀全文", en: "Read more" },
+    editor_picks: { tc: "編輯精選", en: "Editor's picks" },
+    editor_picks_sub: { tc: "本月最多人閱讀、最實用的在日指南。", en: "The most-read, most-useful guides this month." },
+    view_all: { tc: "查看全部", en: "View all" },
+    browse_cat: { tc: "瀏覽分類", en: "Browse categories" },
+    browse_cat_sub: { tc: "從簽證到寵物、從稅務到好去處，一站式覆蓋在日生活所有面向。", en: "From visas to pets, tax to travel — every corner of life in Japan." },
+    latest: { tc: "最新文章", en: "Latest articles" },
+    latest_sub: { tc: "本週更新。來自編輯團隊與在地撰稿人。", en: "Fresh this week — from the editors and our local contributors." },
+    stories_title: { tc: "人物故事", en: "Stories" },
+    stories_sub: { tc: "他們為什麼選擇日本？在這裡如何生活、工作、扎根？", en: "Why did they choose Japan? How do they live, work, and belong here?" },
+    checklist_title: { tc: "抵日首 30 天：必辦清單", en: "Your first 30 days in Japan" },
+    checklist_sub: { tc: "從在留卡到電話號碼，我們把所有關鍵步驟整理成清單。", en: "From residence card to phone number — we mapped out every essential step." },
+    checklist_cta: { tc: "開啟完整清單", en: "Open full checklist" },
+    newsletter_title: { tc: "每週一封，剛剛好。", en: "One email a week. That's it." },
+    newsletter_sub: { tc: "在日新政策、最新文章、社群活動——整理好，送到你的信箱。", en: "New policies, fresh articles, community events — curated for your inbox." },
+    newsletter_cta: { tc: "訂閱電子報", en: "Subscribe" },
+    email_placeholder: { tc: "你的電郵地址", en: "your@email.com" },
+    fx_title: { tc: "匯率換算", en: "Currency Calculator" },
+    fx_trigger: { tc: "匯率", en: "FX" },
+    fx_live: { tc: "即時", en: "Live" },
+    fx_asof: { tc: "更新於 4月21日 14:32 JST · 參考匯率", en: "Updated Apr 21, 14:32 JST · Reference rates" },
+    min_read: { tc: "分鐘閱讀", en: "min read" },
+    by: { tc: "文／", en: "By " },
+    login: { tc: "登入", en: "Login" },
+    login_title: { tc: "歡迎回來", en: "Welcome back" },
+    login_sub: { tc: "登入以存取個人化內容與書籤功能", en: "Sign in to access personalised content and bookmarks" },
+    login_email: { tc: "電郵地址", en: "Email address" },
+    login_password: { tc: "密碼", en: "Password" },
+    login_submit: { tc: "登入", en: "Sign in" },
+    login_forgot: { tc: "忘記密碼？", en: "Forgot password?" },
+    login_register: { tc: "立即注冊", en: "Create account" },
+    login_or: { tc: "或", en: "or" },
+    login_google: { tc: "以 Google 帳號登入", en: "Continue with Google" },
+    all_articles: { tc: "全部文章", en: "All articles" },
+    articles_count: { tc: "篇文章", en: "articles" },
+    home: { tc: "首頁", en: "Home" },
+  },
+
+  hero: {
+    tag: { tc: "簽證・在留資格", en: "Visa & Residency" },
+    tag_cat: "visa",
+    kicker: { tc: "2026 最新政策解讀", en: "2026 policy deep-dive" },
+    title: {
+      tc: "經營管理簽證 2026：為什麼現在是香港、台灣創業者移居日本的最佳時機",
+      en: "The Business Manager Visa in 2026: Why it's the best window yet for Hong Kong and Taiwan founders moving to Japan"
+    },
+    sub: {
+      tc: "500 萬日圓資本金、辦公空間、事業計劃書——新版審查重點與必備的 12 份文件。",
+      en: "¥5M capital, office space, and a business plan — what the updated screening looks for, plus the 12 documents you'll need."
+    },
+    author: { tc: "山田 綾 Aya Yamada", en: "Aya Yamada" },
+    avatar: "AY",
+    meta: { tc: "14 分鐘閱讀", en: "14 min read" },
+    date: { tc: "2026年4月18日", en: "Apr 18, 2026" },
+    img: "https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&w=1600&q=70"
+  },
+
+  hero_side: [
+    {
+      cat: "biz",
+      num: "01",
+      tc_tag: "創業・工作", en_tag: "Business",
+      tc: "開法人銀行戶口完整攻略：五大銀行比較", en: "Opening a corporate bank account: 5 banks compared",
+      meta: { tc: "8 分鐘閱讀 · 4月17日", en: "8 min · Apr 17" },
+      img: "https://images.unsplash.com/photo-1460317442991-0ec209397118?auto=format&fit=crop&w=600&q=70",
+      url: "/biz/"
+    },
+    {
+      cat: "house",
+      num: "02",
+      tc_tag: "住屋", en_tag: "Housing",
+      tc: "禮金、敷金、保證人——外國人租屋三大難關怎麼過", en: "Key money, deposits, guarantors: three hurdles for foreign renters",
+      meta: { tc: "11 分鐘閱讀 · 4月15日", en: "11 min · Apr 15" },
+      img: "https://images.unsplash.com/photo-1580584126903-c17d41830450?auto=format&fit=crop&w=600&q=70",
+      url: "/house/"
+    },
+    {
+      cat: "life",
+      num: "03",
+      tc_tag: "日常手續", en_tag: "Daily Life",
+      tc: "外免切替 2026：香港台灣駕照轉換完整時間線", en: "Driver's licence conversion 2026: the full timeline",
+      meta: { tc: "6 分鐘閱讀 · 4月14日", en: "6 min · Apr 14" },
+      img: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=600&q=70",
+      url: "/life/"
+    }
+  ],
+
+  hot: [
+    { rank: 1, tc: "外免切替", en: "Licence conversion", fire: true },
+    { rank: 2, tc: "經營管理簽證", en: "Business Manager visa", fire: true },
+    { rank: 3, tc: "寵物入境", en: "Bringing pets" },
+    { rank: 4, tc: "垃圾分類", en: "Garbage sorting" },
+    { rank: 5, tc: "確定申告", en: "Tax filing" },
+    { rank: 6, tc: "永住權", en: "Permanent residency" },
+    { rank: 7, tc: "法人口座", en: "Corporate bank account" },
+    { rank: 8, tc: "敷金禮金", en: "Key money & deposits" },
+  ],
+
+  cats: [
+    { key: "visa",   count: 84, tc: "簽證・在留資格",   en: "Visa & Residency",        icon: "passport", url: "/visa/" },
+    { key: "biz",    count: 62, tc: "創業・工作",        en: "Business & Work",         icon: "briefcase", url: "/biz/" },
+    { key: "house",  count: 51, tc: "住屋",              en: "Housing",                 icon: "home",     url: "/house/" },
+    { key: "tax",    count: 47, tc: "稅務・保險・年金",  en: "Tax, Insurance & Pension",icon: "yen",      url: "/tax/" },
+    { key: "life",   count: 93, tc: "日常手續",          en: "Daily Life",              icon: "life",     url: "/life/" },
+    { key: "places", count: 68, tc: "好去處",            en: "Leisure",                 icon: "torii",    url: "/places/" },
+    { key: "pets",   count: 29, tc: "寵物",              en: "Pets in Japan",           icon: "paw",      url: "/pets/" },
+    { key: "story",  count: 41, tc: "人物故事",          en: "Stories",                 icon: "quote",    url: "/story/" },
+  ],
+
+  featured: {
+    cat: "story",
+    tc_tag: "人物故事", en_tag: "Stories",
+    tc: "從中環到谷中：一位設計師在東京開第二人生的 18 個月",
+    en: "From Central to Yanaka: 18 months of a designer's second act in Tokyo",
+    tc_excerpt: "Kelly 離開香港廣告公司後，在谷中巷弄租下一間小店。她說最難的不是語言，是學會「不急著解釋自己」。",
+    en_excerpt: "After leaving a Hong Kong agency, Kelly opened a small shop in Yanaka's back streets. The hardest part, she says, wasn't the language — it was learning not to rush to explain herself.",
+    author: { tc: "陳慧敏", en: "Wai-Man Chan" },
+    meta: { tc: "18 分鐘閱讀", en: "18 min read" },
+    date: { tc: "4月20日", en: "Apr 20" },
+    img: "https://images.unsplash.com/photo-1528164344705-47542687000d?auto=format&fit=crop&w=1200&q=70",
+    url: "/story/"
+  },
+
+  latest: [
+    {
+      cat: "tax",
+      tc_tag: "稅務", en_tag: "Tax",
+      tc: "確定申告 2026：自由業者、小店主、副業收入的三份報稅模板",
+      en: "Tax filing 2026: templates for freelancers, shop owners, and side-income earners",
+      tc_excerpt: "日本所得稅申告表看似嚇人，但 80% 的欄位其實可以跳過。我們整理了三種最常見的情境模板。",
+      en_excerpt: "The Japanese tax form looks intimidating, but 80% of the fields don't apply. Here are three templates.",
+      author: { tc: "李俊賢", en: "Chun-Hin Lee" },
+      meta: { tc: "12 分鐘", en: "12 min" },
+      date: { tc: "4月19日", en: "Apr 19" },
+      img: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=800&q=70",
+      url: "/tax/"
+    },
+    {
+      cat: "pets",
+      tc_tag: "寵物", en_tag: "Pets",
+      tc: "帶貓咪飛東京：檢疫所實地走訪，180 天倒數從哪天開始算",
+      en: "Flying your cat to Tokyo: inside the quarantine office and when the 180-day clock actually starts",
+      tc_excerpt: "狂犬病疫苗、微晶片、FAVN 抽血——我們跟著一對香港夫妻走完整個流程。",
+      en_excerpt: "Rabies vaccine, microchip, FAVN blood test — we followed a Hong Kong couple through the complete process.",
+      author: { tc: "山田 綾", en: "Aya Yamada" },
+      meta: { tc: "9 分鐘", en: "9 min" },
+      date: { tc: "4月18日", en: "Apr 18" },
+      img: "https://images.unsplash.com/photo-1574144611937-0df059b5ef3e?auto=format&fit=crop&w=800&q=70",
+      url: "/pets/"
+    },
+    {
+      cat: "places",
+      tc_tag: "好去處", en_tag: "Leisure",
+      tc: "不只賞櫻：春末初夏，編輯部私藏的 6 個關東近郊半日行程",
+      en: "Beyond cherry blossoms: 6 editor-favourite half-day trips near Tokyo for late spring",
+      tc_excerpt: "鐮倉的繡球花、奧多摩的溪流、川越的老街——都在新宿一小時車程內。",
+      en_excerpt: "Kamakura's hydrangeas, Okutama's streams, Kawagoe's old town — all within an hour of Shinjuku.",
+      author: { tc: "森田 直樹", en: "Naoki Morita" },
+      meta: { tc: "7 分鐘", en: "7 min" },
+      date: { tc: "4月17日", en: "Apr 17" },
+      img: "https://images.unsplash.com/photo-1480796927426-f609979314bd?auto=format&fit=crop&w=800&q=70",
+      url: "/places/"
+    },
+    {
+      cat: "life",
+      tc_tag: "日常手續", en_tag: "Daily Life",
+      tc: "區公所日文太難？我們整理了 23 句轉入手續常用對話",
+      en: "City hall Japanese too hard? 23 phrases you actually need for moving-in paperwork",
+      tc_excerpt: "從住民票到國民健康保險，附上漢字、假名、羅馬拼音對照。",
+      en_excerpt: "From resident registration to national health insurance — with kanji, kana, and romaji side by side.",
+      author: { tc: "鈴木 美咲", en: "Misaki Suzuki" },
+      meta: { tc: "5 分鐘", en: "5 min" },
+      date: { tc: "4月16日", en: "Apr 16" },
+      img: "https://images.unsplash.com/photo-1542640244-7e672d6cef4e?auto=format&fit=crop&w=800&q=70",
+      url: "/life/"
+    },
+    {
+      cat: "visa",
+      tc_tag: "簽證", en_tag: "Visa",
+      tc: "永住權申請：10 年？5 年？高度人才？三條路線實際算給你看",
+      en: "Permanent residency: 10-year, 5-year, or High-Skilled — three paths with the math laid out",
+      tc_excerpt: "入管局的點數表很複雜，我們用真實案例拆解出最適合不同職業的路徑。",
+      en_excerpt: "The immigration points table is dense. We break it down with real cases matched to common careers.",
+      author: { tc: "高橋 健太", en: "Kenta Takahashi" },
+      meta: { tc: "16 分鐘", en: "16 min" },
+      date: { tc: "4月15日", en: "Apr 15" },
+      img: "https://images.unsplash.com/photo-1504198266287-1659872e6590?auto=format&fit=crop&w=800&q=70",
+      url: "/visa/"
+    }
+  ],
+
+  checklist: [
+    { n: "01",
+      tc: { t: "機場領取在留卡", d: "在成田或羽田的入境櫃台當場領取，背面填寫住址。" },
+      en: { t: "Pick up your residence card", d: "Collect it at the immigration desk at Narita or Haneda. Address goes on the back." },
+      status_tc: "機場", status_en: "Airport", done: true },
+    { n: "02",
+      tc: { t: "區役所轉入申告", d: "抵達住址 14 天內登記住民票，同時辦國民健康保險。" },
+      en: { t: "Register at city hall", d: "Within 14 days of arrival — submit your moving-in form and enrol in national health insurance." },
+      status_tc: "14日內", status_en: "Within 14d", done: true },
+    { n: "03",
+      tc: { t: "開設銀行帳戶", d: "JP 郵便局最容易，但大型銀行通常需要住滿 6 個月。" },
+      en: { t: "Open a bank account", d: "Japan Post is the easiest start — major banks often require 6 months of residency." },
+      status_tc: "本週", status_en: "This week" },
+    { n: "04",
+      tc: { t: "申辦手機號碼", d: "樂天、povo、LINEMO 對外國人最友善，可線上完成。" },
+      en: { t: "Get a phone number", d: "Rakuten, povo, and LINEMO are the most foreigner-friendly and can be set up online." },
+      status_tc: "本週", status_en: "This week" },
+    { n: "05",
+      tc: { t: "My Number 通知書", d: "約 2–3 週後寄到住址，這是之後所有行政事務的關鍵。" },
+      en: { t: "Receive your My Number", d: "Arrives by mail in 2–3 weeks — it's the key to every administrative task afterward." },
+      status_tc: "2-3週", status_en: "2–3 weeks" },
+  ],
+
+  stories: [
+    {
+      tc: "我以為我只是換了個城市，後來才發現我換了一整套人生節奏。",
+      en: "I thought I was just changing cities. Turns out I was changing the tempo of a whole life.",
+      name_tc: "阿 Ken", name_en: "Ken",
+      role_tc: "前港島金融業 · 現在長野經營民宿", role_en: "Ex-finance, HK → guesthouse owner, Nagano",
+      avatar: "K",
+      img: "https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=800&q=70"
+    },
+    {
+      tc: "台北的朋友問我：日本不是很壓抑嗎？我想了想，這裡讓我終於可以慢下來。",
+      en: "Friends back in Taipei ask me: isn't Japan suffocating? Thinking about it — it's the first place that let me slow down.",
+      name_tc: "Emma 林", name_en: "Emma Lin",
+      role_tc: "獨立設計師 · 京都", role_en: "Independent designer, Kyoto",
+      avatar: "E",
+      img: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=70"
+    },
+    {
+      tc: "我們夫妻帶兩隻柴犬搬來。牠們比我們更快交到日本朋友。",
+      en: "My wife and I moved here with two Shibas. They made Japanese friends faster than we did.",
+      name_tc: "Derek & Joyce", name_en: "Derek & Joyce",
+      role_tc: "自由接案 · 橫濱", role_en: "Freelancers, Yokohama",
+      avatar: "DJ",
+      img: "https://images.unsplash.com/photo-1583511655826-05700d52f4d9?auto=format&fit=crop&w=800&q=70"
+    }
+  ],
+
+  rates: {
+    HKD: 19.42,
+    TWD: 4.71,
+    USD: 151.83,
+    EUR: 164.22
+  },
+  rate_deltas: { HKD: +0.12, TWD: -0.04, USD: +0.31 },
+
+  /* ── Visa category page articles ── */
+  visa_featured: {
+    cat: "visa",
+    tc_tag: "簽證・在留資格", en_tag: "Visa & Residency",
+    sub_tc: "經營・管理簽證", sub_en: "Business Manager Visa",
+    tc: "經營管理簽證完全指南 2026：從申請、審查到核發的全流程拆解",
+    en: "Business Manager Visa Complete Guide 2026: The full process from application to approval",
+    tc_excerpt: "新版審查標準收緊了辦公室要求，但對創業者其實更清晰。我們採訪了三位成功申請者，整理出最實用的文件清單與常見拒籤原因。",
+    en_excerpt: "The revised standards tighten office requirements but actually make things clearer for founders. We interviewed three successful applicants and compiled the most practical document checklist.",
+    author: { tc: "山田 綾", en: "Aya Yamada" },
+    meta: { tc: "22 分鐘閱讀", en: "22 min read" },
+    date: { tc: "2026年4月18日", en: "Apr 18, 2026" },
+    img: "https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&w=1200&q=70",
+    url: "#"
+  },
+
+  visa_articles: [
+    {
+      cat: "visa", sub: "policy",
+      tc_tag: "在留政策", en_tag: "Residency Policy",
+      tc: "2026 年在留資格最新動向：四項重點政策變化",
+      en: "2026 residency policy update: four key changes you need to know",
+      tc_excerpt: "入管廳今年修訂了多項審查標準，包括高度人才積分表調整及數位遊牧簽證細則，這裡是完整解讀。",
+      en_excerpt: "The immigration bureau revised several assessment criteria this year, including the HSP points table and digital nomad visa details.",
+      author: { tc: "高橋 健太", en: "Kenta Takahashi" },
+      meta: { tc: "10 分鐘", en: "10 min" },
+      date: { tc: "4月20日", en: "Apr 20" },
+      img: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=800&q=70",
+      url: "#"
+    },
+    {
+      cat: "visa", sub: "hsp",
+      tc_tag: "高度專門職", en_tag: "Highly Skilled Prof.",
+      tc: "高度人才積分制度攻略：IT 工程師、研究員、企業管理者三條路線",
+      en: "HSP points system: three paths for IT engineers, researchers, and business managers",
+      tc_excerpt: "從 70 分到 80 分，每一分的算法都大不相同。我們用真實案例計算出最快取得永住的路徑。",
+      en_excerpt: "From 70 to 80 points, every point is calculated differently. We use real cases to find the fastest PR route.",
+      author: { tc: "鈴木 美咲", en: "Misaki Suzuki" },
+      meta: { tc: "14 分鐘", en: "14 min" },
+      date: { tc: "4月16日", en: "Apr 16" },
+      img: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=800&q=70",
+      url: "#"
+    },
+    {
+      cat: "visa", sub: "jfind",
+      tc_tag: "J-Find", en_tag: "J-Find Visa",
+      tc: "J-Find 簽證申請實錄：從東大畢業到拿到在留卡的 60 天",
+      en: "J-Find visa diary: 60 days from graduation to residence card",
+      tc_excerpt: "一位台灣留學生的親身紀錄，包含所有文件準備、面試問答與等待期間的應對策略。",
+      en_excerpt: "A Taiwanese student's first-hand account — all documents, interview Q&A, and how to handle the waiting period.",
+      author: { tc: "林 怡君", en: "Yi-Chun Lin" },
+      meta: { tc: "8 分鐘", en: "8 min" },
+      date: { tc: "4月14日", en: "Apr 14" },
+      img: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=800&q=70",
+      url: "#"
+    },
+    {
+      cat: "visa", sub: "nomad",
+      tc_tag: "數位遊牧簽證", en_tag: "Digital Nomad Visa",
+      tc: "日本數位遊牧簽證 2025-2026：你問過的所有問題，這裡都有答案",
+      en: "Japan's digital nomad visa 2025-2026: every question answered",
+      tc_excerpt: "年收 1000 萬日圓門檻、不得在日本受僱、可否續簽——我們整理了 FAQ 及最新官方解釋。",
+      en_excerpt: "¥10M income threshold, no local employment, renewal options — we compiled the FAQ and latest official clarifications.",
+      author: { tc: "陳 志偉", en: "Chi-Wai Chan" },
+      meta: { tc: "12 分鐘", en: "12 min" },
+      date: { tc: "4月12日", en: "Apr 12" },
+      img: "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?auto=format&fit=crop&w=800&q=70",
+      url: "#"
+    },
+    {
+      cat: "visa", sub: "pr",
+      tc_tag: "永住權", en_tag: "Permanent Residency",
+      tc: "永住申請 10 年 vs 高度人才 3 年：一表看懂所有條件",
+      en: "10-year vs HSP 3-year PR: one table that covers every condition",
+      tc_excerpt: "兩條路的要求截然不同，稅務合規、年金、在日天數都要達標，這張對照表幫你一次看清。",
+      en_excerpt: "The two routes have completely different requirements. Tax compliance, pension, days in Japan — this comparison table covers everything.",
+      author: { tc: "高橋 健太", en: "Kenta Takahashi" },
+      meta: { tc: "16 分鐘", en: "16 min" },
+      date: { tc: "4月10日", en: "Apr 10" },
+      img: "https://images.unsplash.com/photo-1504198266287-1659872e6590?auto=format&fit=crop&w=800&q=70",
+      url: "#"
+    },
+    {
+      cat: "visa", sub: "wh",
+      tc_tag: "度假打工", en_tag: "Working Holiday",
+      tc: "度假打工實戰手冊：抵達後第一週必辦的 7 件事",
+      en: "Working holiday survival guide: 7 things to do in your first week",
+      tc_excerpt: "從辦理住民登錄到找到第一份兼職，我們用時間線格式整理出最高效的第一週計劃。",
+      en_excerpt: "From resident registration to your first part-time job — a timeline for making the most of your first week.",
+      author: { tc: "森田 直樹", en: "Naoki Morita" },
+      meta: { tc: "7 分鐘", en: "7 min" },
+      date: { tc: "4月8日", en: "Apr 8" },
+      img: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=800&q=70",
+      url: "#"
+    },
+  ],
+
+  /* ── Business category page articles ── */
+  biz_featured: {
+    cat: "biz",
+    tc_tag: "創業・工作", en_tag: "Business & Work",
+    sub_tc: "如何在日本創業", sub_en: "Starting a Business",
+    tc: "在日本開公司完整指南 2026：株式會社 vs 合同會社，哪一種最適合外國創業者？",
+    en: "Starting a company in Japan 2026: KK vs GK — which entity type is right for foreign founders?",
+    tc_excerpt: "兩種法人結構的稅務、責任、銀行開戶難易度都大不相同。我們採訪了十位已在日創業的香港台灣創業者，整理出最實用的選擇框架。",
+    en_excerpt: "The two entity types differ dramatically in tax treatment, liability, and ease of banking. We interviewed ten HK and TW founders to build the most practical decision framework.",
+    author: { tc: "李 俊賢", en: "Chun-Hin Lee" },
+    meta: { tc: "20 分鐘閱讀", en: "20 min read" },
+    date: { tc: "2026年4月17日", en: "Apr 17, 2026" },
+    img: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=70",
+    url: "#"
+  },
+
+  biz_articles: [
+    {
+      cat: "biz", sub: "bank",
+      tc_tag: "法人銀行戶口", en_tag: "Corporate Banking",
+      tc: "法人口座開設完整攻略：五大銀行比較與最常見拒絕原因",
+      en: "Opening a corporate bank account: 5 banks compared and common rejection reasons",
+      tc_excerpt: "三菱、みずほ、ゆうちょ、住信 SBI、PayPay — 對外國法人的友善程度與所需文件逐一比較。",
+      en_excerpt: "Mitsubishi, Mizuho, Japan Post, SBI Sumishin, PayPay Bank — friendliness to foreign entities and required documents, one by one.",
+      author: { tc: "山田 綾", en: "Aya Yamada" },
+      meta: { tc: "8 分鐘", en: "8 min" },
+      date: { tc: "4月17日", en: "Apr 17" },
+      img: "https://images.unsplash.com/photo-1460317442991-0ec209397118?auto=format&fit=crop&w=800&q=70",
+      url: "#"
+    },
+    {
+      cat: "biz", sub: "grants",
+      tc_tag: "補助金", en_tag: "Grants & Subsidies",
+      tc: "2026 年創業補助金完整清單：外國人也能申請的 12 個補助",
+      en: "2026 startup grants: 12 subsidies available to foreign-founded businesses",
+      tc_excerpt: "從 IT 導入補助到小規模事業者持続化補助金，我們整理了外國法人可申請的所有補助及申請時程。",
+      en_excerpt: "From IT subsidies to the small business sustainability grant — all programs open to foreign-founded companies, with application timelines.",
+      author: { tc: "高橋 健太", en: "Kenta Takahashi" },
+      meta: { tc: "11 分鐘", en: "11 min" },
+      date: { tc: "4月15日", en: "Apr 15" },
+      img: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=70",
+      url: "#"
+    },
+    {
+      cat: "biz", sub: "hiring",
+      tc_tag: "僱用外國員工", en_tag: "Hiring Foreign Staff",
+      tc: "如何合法僱用外國員工：在留資格、社保加入、勞動契約一次搞清楚",
+      en: "Hiring foreign employees legally: residence status, social insurance, and labour contracts",
+      tc_excerpt: "僱主有義務確認在留資格有效性、辦理社保加入手續——我們整理了 HR 部門的完整操作流程。",
+      en_excerpt: "Employers must verify residence status validity and handle social insurance enrollment — here's the complete HR workflow.",
+      author: { tc: "鈴木 美咲", en: "Misaki Suzuki" },
+      meta: { tc: "9 分鐘", en: "9 min" },
+      date: { tc: "4月13日", en: "Apr 13" },
+      img: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=70",
+      url: "#"
+    },
+    {
+      cat: "biz", sub: "tax",
+      tc_tag: "稅務・會計", en_tag: "Tax & Accounting",
+      tc: "創業第一年的稅務：消費稅、法人稅、決算月應該怎麼選？",
+      en: "First-year tax basics: consumption tax, corporate tax, and choosing your fiscal year-end",
+      tc_excerpt: "設立法人後的免稅期如何善用？決算月選擇影響稅負的邏輯是什麼？稅理士幫你解答。",
+      en_excerpt: "How to use the initial consumption tax exemption period? How does your fiscal year-end choice affect your tax burden? A tax accountant explains.",
+      author: { tc: "陳 志偉", en: "Chi-Wai Chan" },
+      meta: { tc: "13 分鐘", en: "13 min" },
+      date: { tc: "4月11日", en: "Apr 11" },
+      img: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?auto=format&fit=crop&w=800&q=70",
+      url: "#"
+    },
+    {
+      cat: "biz", sub: "support",
+      tc_tag: "創業支援中心", en_tag: "Support Centers",
+      tc: "東京、大阪、福岡：三座城市的外國人創業支援資源比較",
+      en: "Tokyo, Osaka, Fukuoka: comparing startup support resources for foreign founders in three cities",
+      tc_excerpt: "免費辦公空間、英語顧問、政府補助申請協助——不同城市提供的支援差異很大，選對地方出發很重要。",
+      en_excerpt: "Free office space, English-speaking advisors, grant application help — support varies widely by city. Choosing the right base matters.",
+      author: { tc: "森田 直樹", en: "Naoki Morita" },
+      meta: { tc: "10 分鐘", en: "10 min" },
+      date: { tc: "4月9日", en: "Apr 9" },
+      img: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=800&q=70",
+      url: "#"
+    },
+    {
+      cat: "biz", sub: "stories",
+      tc_tag: "創業者故事", en_tag: "Founder Story",
+      tc: "從香港 VC 到東京創業者：三年後的誠實回顧",
+      en: "From Hong Kong VC to Tokyo founder: an honest three-year retrospective",
+      tc_excerpt: "他說日本市場比想像中保守，但比想像中更願意等待你真正理解它。創業的第三年，他終於找到了節奏。",
+      en_excerpt: "The Japanese market is more conservative than expected, but more willing to wait for you to truly understand it. By year three, he'd found his rhythm.",
+      author: { tc: "林 怡君", en: "Yi-Chun Lin" },
+      meta: { tc: "15 分鐘", en: "15 min" },
+      date: { tc: "4月7日", en: "Apr 7" },
+      img: "https://images.unsplash.com/photo-1553484771-371a605b060b?auto=format&fit=crop&w=800&q=70",
+      url: "#"
+    },
+  ],
+
+};

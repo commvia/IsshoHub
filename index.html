@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>IsshoHub — Everything you need in Japan</title>
+<meta name="description" content="繁體中文與英文雙語資訊平台，專為在日本生活或準備移居日本的外國人而設。" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700&family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body data-lang="tc">
+
+<!-- =============== TOP BAR =============== -->
+<div class="topbar">
+  <div class="container row">
+    <div class="ticker">
+      <span data-i18n="ticker1"></span>
+      <span data-i18n="ticker2"></span>
+    </div>
+    <div class="meta">
+      <span data-i18n="ticker-weather"></span>
+      <span>·</span>
+      <span data-i18n="ticker-rate"></span>
+    </div>
+  </div>
+</div>
+
+<!-- =============== NAV =============== -->
+<nav class="nav">
+  <div class="container row">
+    <a class="brand" href="/">
+      <div class="brand-mark">一</div>
+      <div>
+        <div class="brand-name">IsshoHub</div>
+        <div class="brand-tag" data-i18n="tagline-nav"></div>
+      </div>
+    </a>
+
+    <div class="nav-links" id="navLinks"></div>
+
+    <div class="nav-right">
+      <button class="search-btn" aria-label="Search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      </button>
+      <div class="lang-toggle" id="langToggle">
+        <button data-lang-set="tc">繁中</button>
+        <button data-lang-set="en">EN</button>
+      </div>
+      <button class="btn-login" data-open-login>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <span data-i18n="login_btn"></span>
+      </button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="catstrip" id="catstrip"></div>
+</nav>
+
+<!-- =============== MOBILE MENU =============== -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+  <div class="mobile-menu-drawer">
+    <div class="mobile-menu-head">
+      <a class="brand" href="/" style="color: var(--navy-ink);">
+        <div class="brand-mark">一</div>
+        <div class="brand-name">IsshoHub</div>
+      </a>
+      <button class="mobile-close" id="mobileMenuClose">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <nav class="mobile-nav-list" id="mobileNavList"></nav>
+    <div class="mobile-menu-footer">
+      <button class="mobile-login-btn" id="mobileLoginBtn" data-open-login>
+        <span data-i18n="login_btn"></span>
+      </button>
+      <div class="lang-toggle" id="langToggleMobile" style="justify-content: center;">
+        <button data-lang-set="tc">繁中</button>
+        <button data-lang-set="en">EN</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =============== HERO =============== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <article class="hero-main" id="heroMain"></article>
+      <aside class="hero-side" id="heroSide"></aside>
+    </div>
+  </div>
+</section>
+
+<!-- =============== HOT SEARCH =============== -->
+<section class="hotsearch">
+  <div class="container">
+    <div class="hotsearch-inner">
+      <div class="hotsearch-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color: var(--rose)"><path d="M12 2C8.7 2 6 4.7 6 8c0 3.5 3 6.3 5.5 9.3.5.6 1.1.6 1.5 0C15 14.3 18 11.5 18 8c0-3.3-2.7-6-6-6zm0 8a2 2 0 110-4 2 2 0 010 4z"/></svg>
+        <span data-i18n="hot_search"></span>
+      </div>
+      <div class="hot-pills" id="hotPills"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============== CATEGORIES =============== -->
+<section class="cat-section section tight">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow">— 08 Categories</div>
+        <h2 class="section-title" data-i18n="browse_cat"></h2>
+        <div class="section-sub" data-i18n="browse_cat_sub"></div>
+      </div>
+    </div>
+    <div class="cats" id="catsGrid"></div>
+  </div>
+</section>
+
+<!-- =============== EDITOR PICKS =============== -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow">— Editor's picks</div>
+        <h2 class="section-title" data-i18n="editor_picks"></h2>
+        <div class="section-sub" data-i18n="editor_picks_sub"></div>
+      </div>
+      <div class="section-actions">
+        <a class="link-more" href="#"><span data-i18n="view_all"></span> →</a>
+      </div>
+    </div>
+    <div class="article-grid" id="editorGrid"></div>
+  </div>
+</section>
+
+<!-- =============== CHECKLIST =============== -->
+<section class="section">
+  <div class="container">
+    <div class="checklist">
+      <div class="checklist-grid">
+        <div>
+          <div class="section-eyebrow" style="color: var(--accent-2);">— Quick start</div>
+          <h3 data-i18n="checklist_title"></h3>
+          <p data-i18n="checklist_sub"></p>
+          <a href="#" class="link-more" style="color: var(--accent-2);">
+            <span data-i18n="checklist_cta"></span> →
+          </a>
+        </div>
+        <div class="checklist-items" id="checklistItems"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============== LATEST =============== -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow">— Fresh this week</div>
+        <h2 class="section-title" data-i18n="latest"></h2>
+        <div class="section-sub" data-i18n="latest_sub"></div>
+      </div>
+      <div class="section-actions">
+        <a class="link-more" href="#"><span data-i18n="view_all"></span> →</a>
+      </div>
+    </div>
+    <div class="article-grid" id="latestGrid"></div>
+  </div>
+</section>
+
+<!-- =============== STORIES =============== -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow">— In their words</div>
+        <h2 class="section-title" data-i18n="stories_title"></h2>
+        <div class="section-sub" data-i18n="stories_sub"></div>
+      </div>
+      <div class="section-actions">
+        <a class="link-more" href="/story/"><span data-i18n="view_all"></span> →</a>
+      </div>
+    </div>
+    <div class="stories" id="storiesGrid"></div>
+  </div>
+</section>
+
+<!-- =============== NEWSLETTER =============== -->
+<section class="section">
+  <div class="container">
+    <div class="newsletter">
+      <div class="section-eyebrow" style="display:flex;justify-content:center;">— Weekly digest</div>
+      <h3 data-i18n="newsletter_title"></h3>
+      <p data-i18n="newsletter_sub"></p>
+      <form class="newsletter-form">
+        <input type="email" data-i18n-placeholder="email_placeholder" placeholder="your@email.com" required />
+        <button type="submit" data-i18n="newsletter_cta"></button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- =============== FOOTER =============== -->
+<footer class="footer">
+  <div class="container">
+    <div class="grid">
+      <div class="footer-brand">
+        <div class="brand">
+          <div class="brand-mark">一</div>
+          <div>
+            <div class="brand-name" style="color:#fff;">IsshoHub</div>
+            <div class="brand-tag" style="color:rgba(255,255,255,0.45);">一緒 · Together in Japan</div>
+          </div>
+        </div>
+        <p data-i18n="footer_about"></p>
+        <div class="footer-socials">
+          <a href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.72 3.72 0 01-1.38-.9 3.72 3.72 0 01-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zm0 5.84a4 4 0 100 8 4 4 0 000-8zm5.2-.4a.96.96 0 110 1.92.96.96 0 010-1.92zM12 9.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8z"/></svg></a>
+          <a href="#" aria-label="Twitter / X"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 3h3.4l-7.4 8.4L23.5 21h-6.8l-5.3-6.9L5.3 21H1.9l7.9-9L1 3h7l4.8 6.4L18.9 3zm-1.2 16h1.9L7.4 5H5.4l12.3 14z"/></svg></a>
+          <a href="#" aria-label="YouTube"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.3c-.3-1-1-1.8-2-2.1C19.1 4.7 12 4.7 12 4.7s-7.1 0-9 .5c-1 .3-1.8 1-2.1 2.1C.4 9.2.4 12 .4 12s0 2.8.5 4.7c.3 1 1 1.8 2.1 2.1 1.9.5 9 .5 9 .5s7.1 0 9-.5c1-.3 1.8-1 2.1-2.1.5-1.9.5-4.7.5-4.7s0-2.8-.6-4.7zM9.7 15.5V8.5l6 3.5-6 3.5z"/></svg></a>
+          <a href="#" aria-label="LINE"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C5.37 2 0 6.36 0 11.74c0 4.82 4.24 8.86 9.97 9.63.39.08.92.26 1.05.6.12.3.08.79.04 1.08L11 24c-.05.32-.25 1.23 1.09.67 1.34-.57 7.22-4.26 9.85-7.28C23.73 15.4 24 13.6 24 11.74 24 6.36 18.63 2 12 2z"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5 data-i18n="footer_col1"></h5>
+        <div id="footerExplore"></div>
+      </div>
+      <div class="footer-col">
+        <h5 data-i18n="footer_col2"></h5>
+        <a href="#" data-i18n="footer_r1"></a>
+        <a href="#" data-i18n="footer_r2"></a>
+        <a href="#" data-i18n="footer_r3"></a>
+        <a href="#" data-i18n="footer_r4"></a>
+        <a href="#" data-i18n="footer_r5"></a>
+      </div>
+      <div class="footer-col">
+        <h5 data-i18n="footer_col3"></h5>
+        <a href="#" data-i18n="footer_a1"></a>
+        <a href="#" data-i18n="footer_a2"></a>
+        <a href="#" data-i18n="footer_a3"></a>
+        <a href="#" data-i18n="footer_a4"></a>
+        <a href="#" data-i18n="footer_a5"></a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 IsshoHub · 一緒 · Made with care in Tokyo &amp; Hong Kong</div>
+      <div><span data-i18n="footer_lang"></span> / English</div>
+    </div>
+  </div>
+</footer>
+
+<!-- =============== FX CALCULATOR =============== -->
+<div class="fx" id="fx">
+  <button class="fx-trigger" id="fxTrigger">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 100 7h5a3.5 3.5 0 110 7H6"/></svg>
+    <span data-i18n="fx_trigger"></span>
+    <span class="badge">¥</span>
+  </button>
+  <div class="fx-panel" style="position:relative;">
+    <button class="fx-close" id="fxClose">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="fx-head">
+      <h4 data-i18n="fx_title"></h4>
+      <span class="live"><i></i><span data-i18n="fx_live"></span></span>
+    </div>
+    <div class="fx-asof" data-i18n="fx_asof"></div>
+    <div class="fx-row">
+      <label class="fx-ccy">
+        <span class="flag flag-hk" id="fxFromFlag"></span>
+        <span id="fxFromLabel">HKD</span>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+        <select id="fxFrom">
+          <option value="HKD">HKD 港幣</option>
+          <option value="TWD">TWD 新台幣</option>
+          <option value="USD">USD 美元</option>
+          <option value="EUR">EUR 歐元</option>
+        </select>
+      </label>
+      <input type="number" class="fx-input" id="fxInput" value="1000" min="0" />
+    </div>
+    <div class="fx-equals">=</div>
+    <div class="fx-row to">
+      <div class="fx-ccy">
+        <span class="flag flag-jp"></span>
+        JPY
+      </div>
+      <input type="text" class="fx-input" id="fxOutput" value="¥19,420" readonly />
+    </div>
+    <div class="fx-rates">
+      <div class="fx-rate-item">
+        <div class="k">HKD/JPY</div>
+        <div class="v">19.42</div>
+        <div class="d up">▲ 0.12</div>
+      </div>
+      <div class="fx-rate-item">
+        <div class="k">TWD/JPY</div>
+        <div class="v">4.71</div>
+        <div class="d down">▼ 0.04</div>
+      </div>
+      <div class="fx-rate-item">
+        <div class="k">USD/JPY</div>
+        <div class="v">151.83</div>
+        <div class="d up">▲ 0.31</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =============== LOGIN MODAL =============== -->
+<div class="modal-overlay" id="loginModal" role="dialog" aria-modal="true">
+  <div class="modal">
+    <button class="modal-close" id="modalClose" aria-label="Close">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="modal-brand">
+      <div class="brand-mark">一</div>
+      <div class="brand-name">IsshoHub</div>
+    </div>
+    <h2 class="modal-title" data-i18n="login_title"></h2>
+    <p class="modal-sub" data-i18n="login_sub"></p>
+
+    <div class="social-login">
+      <button class="btn-social">
+        <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        <span data-i18n="login_google"></span>
+      </button>
+    </div>
+
+    <div class="modal-divider"><span data-i18n="login_or"></span></div>
+
+    <form class="login-form" id="loginForm">
+      <div class="form-group">
+        <label data-i18n="login_email"></label>
+        <input type="email" placeholder="your@email.com" autocomplete="email" required />
+      </div>
+      <div class="form-group">
+        <label data-i18n="login_password"></label>
+        <input type="password" placeholder="••••••••" autocomplete="current-password" required />
+      </div>
+      <button type="submit" class="btn-submit" data-i18n="login_submit"></button>
+    </form>
+    <div class="modal-footer">
+      <a href="#" data-i18n="login_forgot"></a>
+      <span>·</span>
+      <a href="#" data-i18n="login_register"></a>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/js/data.js"></script>
+<script src="/assets/js/core.js"></script>
+<script>
+(function () {
+  const D = window.ISSHO_DATA;
+  const C = window.IsshoCore;
+
+  function getLang() { return C.getLang(); }
+  function t(obj) { return C.t(obj); }
+
+  function renderHero() {
+    const h = D.hero;
+    const lang = getLang();
+    const tag = lang === 'tc' ? h.tag.tc : h.tag.en;
+    const kicker = lang === 'tc' ? h.kicker.tc : h.kicker.en;
+    const title = lang === 'tc' ? h.title.tc : h.title.en;
+    const sub = lang === 'tc' ? h.sub.tc : h.sub.en;
+    const author = t(h.author);
+    const meta = t(h.meta);
+    const date = t(h.date);
+    document.getElementById('heroMain').innerHTML = `
+      <div class="hero-img" style="background-image: url('${h.img}')"></div>
+      <div class="hero-body">
+        <div class="hero-top">
+          <div class="hero-chip"><i></i>${tag}</div>
+          <div class="hero-issue">${lang === 'tc' ? '2026 · 04月號' : 'April 2026 Issue'}</div>
+        </div>
+        <div>
+          <div class="hero-kicker">${kicker}</div>
+          <h1 class="hero-title">${title}</h1>
+          <p class="hero-sub">${sub}</p>
+          <div class="hero-meta">
+            <div class="avatar">${h.avatar}</div>
+            <div>${lang === 'tc' ? '文／' : 'By '}<b style="color:#fff;font-weight:500">${author}</b></div>
+            <div class="dot"></div>
+            <div>${meta}</div>
+            <div class="dot"></div>
+            <div>${date}</div>
+          </div>
+        </div>
+      </div>`;
+
+    document.getElementById('heroSide').innerHTML = D.hero_side.map(a => `
+      <a class="side-card" href="${a.url || '#'}">
+        <div class="side-thumb" style="background-image: url('${a.img}')">
+          <div class="side-thumb-num">${a.num}</div>
+        </div>
+        <div class="side-body">
+          <div class="side-tag">${lang === 'tc' ? a.tc_tag : a.en_tag}</div>
+          <div class="side-title">${lang === 'tc' ? a.tc : a.en}</div>
+          <div class="side-meta">${t(a.meta)}</div>
+        </div>
+      </a>`).join('');
+  }
+
+  function renderHot() {
+    const lang = getLang();
+    document.getElementById('hotPills').innerHTML = D.hot.map(p =>
+      `<button class="pill ${p.fire ? 'fire' : ''}"><span class="rank">${String(p.rank).padStart(2,'0')}</span>${lang === 'tc' ? p.tc : p.en}</button>`
+    ).join('');
+  }
+
+  function renderCats() {
+    const lang = getLang();
+    const navByKey = Object.fromEntries(D.nav.map(n => [n.key, n]));
+    document.getElementById('catsGrid').innerHTML = D.cats.map(c => {
+      const nav = navByKey[c.key];
+      const hasSub = nav && nav.sub && nav.sub.length;
+      const subHTML = hasSub ? `
+        <div class="cat-popover">
+          <div class="cat-pop-head">
+            <div class="cat-pop-title">${lang === 'tc' ? c.tc : c.en}</div>
+            <a href="${c.url}" class="cat-pop-all">${lang === 'tc' ? '查看全部' : 'View all'} →</a>
+          </div>
+          <div class="cat-pop-list">
+            ${nav.sub.map(s => `<a href="${s.url || c.url}">${lang === 'tc' ? s.tc : s.en}</a>`).join('')}
+          </div>
+        </div>` : '';
+      return `<div class="cat${hasSub ? ' has-sub' : ''}">
+        <a class="cat-link" href="${c.url}">
+          <span class="cat-count">${c.count}</span>
+          <div class="cat-icon">${C.ICONS[c.icon] || ''}</div>
+          <div class="cat-labels">
+            <div class="cat-label-tc">${lang === 'tc' ? c.tc : c.en}</div>
+            <div class="cat-label-en">${lang === 'tc' ? c.en : c.tc}</div>
+          </div>
+        </a>
+        ${subHTML}
+      </div>`;
+    }).join('');
+  }
+
+  function renderEditor() {
+    document.getElementById('editorGrid').innerHTML =
+      C.cardHTML(D.featured, { featured: true }) + C.cardHTML(D.latest[0]);
+  }
+
+  function renderLatest() {
+    document.getElementById('latestGrid').innerHTML =
+      D.latest.slice(1, 4).map(a => C.cardHTML(a)).join('');
+  }
+
+  function renderChecklist() {
+    const lang = getLang();
+    document.getElementById('checklistItems').innerHTML = D.checklist.map(c => {
+      const title = lang === 'tc' ? c.tc.t : c.en.t;
+      const desc = lang === 'tc' ? c.tc.d : c.en.d;
+      const status = lang === 'tc' ? c.status_tc : c.status_en;
+      return `
+        <div class="checklist-item">
+          <div class="check-num">${c.n}</div>
+          <div class="check-body">
+            <div class="check-title">${title}</div>
+            <div class="check-desc">${desc}</div>
+          </div>
+          <div class="check-status ${c.done ? 'done' : ''}">${c.done ? '✓ ' : ''}${status}</div>
+        </div>`;
+    }).join('');
+  }
+
+  function renderStories() {
+    const lang = getLang();
+    document.getElementById('storiesGrid').innerHTML = D.stories.map(s => {
+      const quote = lang === 'tc' ? s.tc : s.en;
+      const name = lang === 'tc' ? s.name_tc : s.name_en;
+      const role = lang === 'tc' ? s.role_tc : s.role_en;
+      return `
+        <div class="story">
+          <div class="bg" style="background-image: url('${s.img}')"></div>
+          <div class="story-inner">
+            <div class="story-quote">${quote}</div>
+            <div class="story-person">
+              <div class="avatar">${s.avatar}</div>
+              <div>
+                <div class="story-name">${name}</div>
+                <div class="story-role">${role}</div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function renderAll() {
+    renderHero();
+    renderHot();
+    renderCats();
+    renderEditor();
+    renderLatest();
+    renderChecklist();
+    renderStories();
+  }
+
+  /* hook into lang changes */
+  window.onLangChange = function () {
+    renderAll();
+  };
+
+  /* boot */
+  C.init(null);   /* null = no active category */
+  renderAll();
+})();
+</script>
+</body>
+</html>
