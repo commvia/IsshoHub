@@ -437,9 +437,12 @@
     /* Listen to auth state changes */
     if (window.IsshoAuth) {
       window.IsshoAuth.onAuthChange(async (event, session) => {
-        if (session?.user) {
-          const { data: profile } = await window.IsshoAuth.getProfile(session.user.id);
-          updateAuthUI(session.user, profile);
+        // Only treat as logged in if email is confirmed
+        const user = session?.user;
+        const confirmed = user?.email_confirmed_at || user?.confirmed_at;
+        if (user && confirmed) {
+          const { data: profile } = await window.IsshoAuth.getProfile(user.id);
+          updateAuthUI(user, profile);
         } else {
           updateAuthUI(null, null);
         }
