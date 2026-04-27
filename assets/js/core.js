@@ -465,7 +465,11 @@
       // Also check on page load if already logged in
       window.IsshoAuth.getUser().then(async user => {
         if (user && (user.email_confirmed_at || user.confirmed_at)) {
-          const { data: profile } = await window.IsshoAuth.getProfile(user.id);
+          // Check role from user metadata first (faster), then fallback to profiles table
+          const metaRole = user.user_metadata?.role;
+          const profile = metaRole
+            ? { role: metaRole, name: user.user_metadata?.full_name || user.email.split('@')[0] }
+            : (await window.IsshoAuth.getProfile(user.id)).data;
           updateAuthUI(user, profile);
         }
       });
