@@ -56,6 +56,97 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 }
 @media (min-width: 900px) { .container { padding: 0 32px; } }
 
+/* ============ ADMIN BAR ============ */
+.admin-bar {
+  background: #1a1a2e;
+  border-bottom: 1px solid rgba(255,165,0,0.3);
+  padding: 0;
+}
+.admin-bar-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 7px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.admin-bar-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #f59e0b;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.admin-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.admin-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 6px;
+  color: rgba(255,255,255,0.85);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all .15s;
+}
+.admin-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+/* ============ USER MENU ============ */
+.user-menu { position: relative; }
+.user-menu-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.user-menu-btn:hover { background: var(--accent); }
+.user-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  min-width: 160px;
+  overflow: hidden;
+  z-index: 200;
+}
+.user-dropdown.open { display: block; }
+.user-dropdown a {
+  display: block;
+  padding: 10px 16px;
+  font-size: 13px;
+  color: var(--ink);
+  text-decoration: none;
+}
+.user-dropdown a:hover { background: var(--paper-2); }
+.user-dropdown-divider {
+  height: 1px;
+  background: var(--line);
+  margin: 4px 0;
+}
+
 /* ============ TOP BAR ============ */
 .topbar {
   background: var(--navy);

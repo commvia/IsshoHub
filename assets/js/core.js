@@ -424,6 +424,17 @@
       });
     }
 
+    /* User dropdown toggle */
+    const userMenuBtn = document.getElementById('userMenuBtn');
+    const userDropdown = document.getElementById('userDropdown');
+    if (userMenuBtn && userDropdown) {
+      userMenuBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        userDropdown.classList.toggle('open');
+      });
+      document.addEventListener('click', () => userDropdown.classList.remove('open'));
+    }
+
     /* Sign out */
     document.querySelectorAll('[data-sign-out]').forEach(btn => {
       btn.addEventListener('click', async () => {
