@@ -1391,6 +1391,39 @@ body[data-lang="en"] .modal-title { font-family: var(--sans-en); }
   transition: all .18s;
 }
 .btn-submit:hover { background: var(--accent); }
+.modal-tabs {
+  display: flex; gap: 4px;
+  background: var(--paper-2);
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 20px;
+}
+.modal-tab {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-3);
+  cursor: pointer;
+  transition: all .15s;
+}
+.modal-tab.active {
+  background: white;
+  color: var(--navy-ink);
+  box-shadow: 0 1px 4px rgba(0,0,0,.1);
+}
+.modal-error {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-bottom: 14px;
+}
 .modal-footer {
   display: flex; align-items: center; justify-content: center;
   gap: 10px;

@@ -95,6 +95,10 @@
     'login_google':  { tc: '以 Google 帳號登入', en: 'Continue with Google' },
     'all_articles':  { tc: '全部', en: 'All' },
     'home_breadcrumb': { tc: '首頁', en: 'Home' },
+    'register_name': { tc: '姓名', en: 'Name' },
+    'forgot_sub':    { tc: '輸入你的電郵，我們會發送重設密碼連結。', en: 'Enter your email and we\'ll send you a reset link.' },
+    'forgot_submit': { tc: '發送重設連結', en: 'Send reset link' },
+    'back_to_login': { tc: '← 返回登入', en: '← Back to login' },
   };
 
   function updateI18n() {
@@ -244,6 +248,33 @@
     });
   }
 
+  /* ── Auth state UI ── */
+  function updateAuthUI(user, profile) {
+    const loginBtns = document.querySelectorAll('[data-open-login]');
+    const userMenus = document.querySelectorAll('[data-user-menu]');
+    const adminBars = document.querySelectorAll('[data-admin-bar]');
+
+    if (user) {
+      // Hide login buttons, show user menu
+      loginBtns.forEach(b => { b.style.display = 'none'; });
+      userMenus.forEach(m => {
+        m.style.display = 'flex';
+        const nameEl = m.querySelector('[data-user-name]');
+        if (nameEl) nameEl.textContent = profile?.name || user.email.split('@')[0];
+      });
+      // Show admin bar if admin
+      if (profile?.role === 'admin') {
+        adminBars.forEach(b => b.style.display = 'flex');
+        document.body.classList.add('is-admin');
+      }
+    } else {
+      loginBtns.forEach(b => { b.style.display = ''; });
+      userMenus.forEach(m => { m.style.display = 'none'; });
+      adminBars.forEach(b => { b.style.display = 'none'; });
+      document.body.classList.remove('is-admin');
+    }
+  }
+
   /* ── Login modal ── */
   function wireLoginModal() {
     const modal = document.getElementById('loginModal');
@@ -254,6 +285,8 @@
     function openModal() {
       modal.classList.add('open');
       document.body.style.overflow = 'hidden';
+      // Reset to login tab
+      showTab('login');
       setTimeout(() => {
         const firstInput = modal.querySelector('input');
         if (firstInput) firstInput.focus();
@@ -262,7 +295,23 @@
     function closeModal() {
       modal.classList.remove('open');
       document.body.style.overflow = '';
+      clearModalError();
     }
+
+    function showTab(tab) {
+      modal.querySelectorAll('[data-tab]').forEach(el => {
+        el.style.display = el.getAttribute('data-tab') === tab ? '' : 'none';
+      });
+      modal.querySelectorAll('[data-tab-btn]').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-tab-btn') === tab);
+      });
+    }
+
+    function setModalError(msg) {
+      const errEl = document.getElementById('loginError');
+      if (errEl) { errEl.textContent = msg; errEl.style.display = msg ? 'block' : 'none'; }
+    }
+    function clearModalError() { setModalError(''); }
 
     openBtns.forEach(b => b.addEventListener('click', openModal));
     if (closeBtn) closeBtn.addEventListener('click', closeModal);
@@ -275,14 +324,125 @@
       if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
     });
 
-    /* demo submit */
-    const form = document.getElementById('loginForm');
-    if (form) {
-      form.addEventListener('submit', e => {
+    // Tab switching
+    modal.querySelectorAll('[data-tab-btn]').forEach(btn => {
+      btn.addEventListener('click', () => showTab(btn.getAttribute('data-tab-btn')));
+    });
+
+    // Forgot password link
+    const forgotLink = document.getElementById('forgotPasswordLink');
+    if (forgotLink) {
+      forgotLink.addEventListener('click', e => {
         e.preventDefault();
-        const btn = form.querySelector('.btn-submit');
-        btn.textContent = state.lang === 'tc' ? '✓ 登入成功' : '✓ Signed in';
-        setTimeout(closeModal, 1200);
+        showTab('forgot');
+      });
+    }
+
+    /* Login form */
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+      loginForm.addEventListener('submit', async e => {
+        e.preventDefault();
+        const btn = loginForm.querySelector('.btn-submit');
+        const email = loginForm.querySelector('[name="email"]').value;
+        const password = loginForm.querySelector('[name="password"]').value;
+        clearModalError();
+        btn.textContent = state.lang === 'tc' ? '登入中…' : 'Signing in…';
+        btn.disabled = true;
+
+        if (!window.IsshoAuth) {
+          // Fallback if Supabase not loaded
+          btn.textContent = state.lang === 'tc' ? '✓ 登入成功' : '✓ Signed in';
+          setTimeout(closeModal, 1200);
+          return;
+        }
+
+        const { data, error } = await window.IsshoAuth.signInWithEmail(email, password);
+        if (error) {
+          setModalError(state.lang === 'tc' ? '電郵或密碼錯誤，請重試。' : 'Incorrect email or password.');
+          btn.textContent = state.lang === 'tc' ? '登入' : 'Sign in';
+          btn.disabled = false;
+        } else {
+          btn.textContent = state.lang === 'tc' ? '✓ 登入成功' : '✓ Signed in';
+          setTimeout(closeModal, 800);
+        }
+      });
+    }
+
+    /* Register form */
+    const registerForm = document.getElementById('registerForm');
+    if (registerForm) {
+      registerForm.addEventListener('submit', async e => {
+        e.preventDefault();
+        const btn = registerForm.querySelector('.btn-submit');
+        const name = registerForm.querySelector('[name="name"]').value;
+        const email = registerForm.querySelector('[name="email"]').value;
+        const password = registerForm.querySelector('[name="password"]').value;
+        clearModalError();
+        btn.textContent = state.lang === 'tc' ? '建立中…' : 'Creating…';
+        btn.disabled = true;
+
+        const { data, error } = await window.IsshoAuth.signUpWithEmail(email, password, name);
+        if (error) {
+          setModalError(error.message);
+          btn.textContent = state.lang === 'tc' ? '立即注冊' : 'Create account';
+          btn.disabled = false;
+        } else {
+          btn.textContent = state.lang === 'tc' ? '✓ 請查看電郵確認' : '✓ Check your email';
+          btn.disabled = false;
+        }
+      });
+    }
+
+    /* Forgot password form */
+    const forgotForm = document.getElementById('forgotForm');
+    if (forgotForm) {
+      forgotForm.addEventListener('submit', async e => {
+        e.preventDefault();
+        const btn = forgotForm.querySelector('.btn-submit');
+        const email = forgotForm.querySelector('[name="email"]').value;
+        btn.textContent = state.lang === 'tc' ? '發送中…' : 'Sending…';
+        btn.disabled = true;
+
+        const { error } = await window.IsshoAuth.resetPassword(email);
+        if (error) {
+          setModalError(error.message);
+          btn.textContent = state.lang === 'tc' ? '發送重設連結' : 'Send reset link';
+          btn.disabled = false;
+        } else {
+          btn.textContent = state.lang === 'tc' ? '✓ 已發送，請查看電郵' : '✓ Sent — check your email';
+          btn.disabled = false;
+        }
+      });
+    }
+
+    /* Google sign-in */
+    const googleBtn = document.getElementById('googleSignIn');
+    if (googleBtn) {
+      googleBtn.addEventListener('click', async () => {
+        if (window.IsshoAuth) await window.IsshoAuth.signInWithGoogle();
+      });
+    }
+
+    /* Sign out */
+    document.querySelectorAll('[data-sign-out]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if (window.IsshoAuth) {
+          await window.IsshoAuth.signOut();
+          window.location.reload();
+        }
+      });
+    });
+
+    /* Listen to auth state changes */
+    if (window.IsshoAuth) {
+      window.IsshoAuth.onAuthChange(async (event, session) => {
+        if (session?.user) {
+          const { data: profile } = await window.IsshoAuth.getProfile(session.user.id);
+          updateAuthUI(session.user, profile);
+        } else {
+          updateAuthUI(null, null);
+        }
       });
     }
   }

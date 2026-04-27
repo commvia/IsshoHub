@@ -1,0 +1,224 @@
+/* IsshoHub — Supabase client + auth */
+(function (global) {
+  'use strict';
+
+  const SUPABASE_URL = 'https://eupqbbfbucdkhtpsuvry.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_7BtMHUDa3KIfYJFDAtjTWw_slGFRMIh';
+
+  // Wait for Supabase CDN to load
+  function getClient() {
+    if (!global._supabaseClient) {
+      const { createClient } = global.supabase;
+      global._supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+    }
+    return global._supabaseClient;
+  }
+
+  /* ── Auth helpers ── */
+  async function signInWithEmail(email, password) {
+    const { data, error } = await getClient().auth.signInWithPassword({ email, password });
+    return { data, error };
+  }
+
+  async function signUpWithEmail(email, password, name) {
+    const { data, error } = await getClient().auth.signUp({
+      email,
+      password,
+      options: { data: { full_name: name } }
+    });
+    return { data, error };
+  }
+
+  async function signInWithGoogle() {
+    const { data, error } = await getClient().auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: window.location.origin }
+    });
+    return { data, error };
+  }
+
+  async function signOut() {
+    const { error } = await getClient().auth.signOut();
+    return { error };
+  }
+
+  async function getUser() {
+    const { data: { user } } = await getClient().auth.getUser();
+    return user;
+  }
+
+  async function getProfile(userId) {
+    const { data, error } = await getClient()
+      .from('profiles')
+      .select('*')
+      .eq('id', userId)
+      .single();
+    return { data, error };
+  }
+
+  async function isAdmin() {
+    const user = await getUser();
+    if (!user) return false;
+    const { data } = await getProfile(user.id);
+    return data?.role === 'admin';
+  }
+
+  async function resetPassword(email) {
+    const { data, error } = await getClient().auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + '/reset-password'
+    });
+    return { data, error };
+  }
+
+  /* ── Auth state change listener ── */
+  function onAuthChange(callback) {
+    getClient().auth.onAuthStateChange((event, session) => {
+      callback(event, session);
+    });
+  }
+
+  /* ── Content API ── */
+  async function fetchCategories() {
+    const { data, error } = await getClient()
+      .from('categories')
+      .select('*, sub_categories(*)')
+      .eq('active', true)
+      .order('sort_order');
+    return { data, error };
+  }
+
+  async function fetchArticles(options = {}) {
+    let query = getClient()
+      .from('articles')
+      .select('*')
+      .eq('status', 'published')
+      .order('published_at', { ascending: false });
+
+    if (options.category) query = query.eq('category_key', options.category);
+    if (options.featured) query = query.eq('featured', true);
+    if (options.limit)    query = query.limit(options.limit);
+
+    const { data, error } = await query;
+    return { data, error };
+  }
+
+  async function fetchArticle(slug) {
+    const { data, error } = await getClient()
+      .from('articles')
+      .select('*')
+      .eq('slug', slug)
+      .single();
+    return { data, error };
+  }
+
+  async function fetchHotSearches() {
+    const { data, error } = await getClient()
+      .from('hot_searches')
+      .select('*')
+      .eq('active', true)
+      .order('sort_order');
+    return { data, error };
+  }
+
+  async function fetchSiteSettings() {
+    const { data, error } = await getClient()
+      .from('site_settings')
+      .select('*');
+    return { data, error };
+  }
+
+  /* ── Member: saved articles ── */
+  async function saveArticle(articleId) {
+    const user = await getUser();
+    if (!user) return { error: { message: 'Not logged in' } };
+    const { data, error } = await getClient()
+      .from('saved_articles')
+      .insert({ user_id: user.id, article_id: articleId });
+    return { data, error };
+  }
+
+  async function unsaveArticle(articleId) {
+    const user = await getUser();
+    if (!user) return { error: { message: 'Not logged in' } };
+    const { error } = await getClient()
+      .from('saved_articles')
+      .delete()
+      .eq('user_id', user.id)
+      .eq('article_id', articleId);
+    return { error };
+  }
+
+  async function getSavedArticles() {
+    const user = await getUser();
+    if (!user) return { data: [], error: null };
+    const { data, error } = await getClient()
+      .from('saved_articles')
+      .select('article_id, articles(*)')
+      .eq('user_id', user.id);
+    return { data, error };
+  }
+
+  /* ── Admin: write helpers ── */
+  async function upsertArticle(article) {
+    const { data, error } = await getClient()
+      .from('articles')
+      .upsert(article)
+      .select()
+      .single();
+    return { data, error };
+  }
+
+  async function updateSiteSettings(key, valueTc, valueEn) {
+    const { data, error } = await getClient()
+      .from('site_settings')
+      .upsert({ key, value_tc: valueTc, value_en: valueEn, updated_at: new Date().toISOString() });
+    return { data, error };
+  }
+
+  async function upsertHotSearch(item) {
+    const { data, error } = await getClient()
+      .from('hot_searches')
+      .upsert(item)
+      .select()
+      .single();
+    return { data, error };
+  }
+
+  async function deleteHotSearch(id) {
+    const { error } = await getClient()
+      .from('hot_searches')
+      .delete()
+      .eq('id', id);
+    return { error };
+  }
+
+  /* ── Exports ── */
+  global.IsshoAuth = {
+    getClient,
+    signInWithEmail,
+    signUpWithEmail,
+    signInWithGoogle,
+    signOut,
+    getUser,
+    getProfile,
+    isAdmin,
+    resetPassword,
+    onAuthChange,
+  };
+
+  global.IsshoAPI = {
+    fetchCategories,
+    fetchArticles,
+    fetchArticle,
+    fetchHotSearches,
+    fetchSiteSettings,
+    saveArticle,
+    unsaveArticle,
+    getSavedArticles,
+    upsertArticle,
+    updateSiteSettings,
+    upsertHotSearch,
+    deleteHotSearch,
+  };
+
+})(window);
