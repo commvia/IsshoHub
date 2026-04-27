@@ -3,7 +3,7 @@
   'use strict';
 
   const SUPABASE_URL = 'https://eupqbbfbucdkhtpsuvry.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_7BtMHUDa3KIfYJFDAtjTWw_slGFRMIh';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV1cHFiYmZidWNka2h0cHN1dnJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNzYyNTUsImV4cCI6MjA5Mjc1MjI1NX0.Ax6QGerRyM4dUTJQT6dleOQfnwYJIPwqw4zLHdTfOhk';
 
   // Wait for Supabase CDN to load
   function getClient() {
@@ -81,7 +81,9 @@
   async function fetchCategories() {
     const { data, error } = await getClient()
       .from('categories')
-      .select('*');
+      .select('*')
+      .eq('active', true)
+      .order('sort_order');
     return { data, error };
   }
 
