@@ -529,14 +529,72 @@
     }).join('');
   }
 
+  /* ── Supabase article → card HTML ── */
+  function sbCardHTML(a, opts) {
+    opts = opts || {};
+    const lang = getLang();
+    const title = lang === 'tc' ? (a.title_tc || a.title_en) : (a.title_en || a.title_tc);
+    const excerpt = lang === 'tc' ? (a.excerpt_tc || '') : (a.excerpt_en || '');
+    const img = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80';
+    const cat = a.category_key || '';
+    const author = a.author || '';
+    const date = a.published_at ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', { year:'numeric', month:'short', day:'numeric' }) : '';
+    const readTime = lang === 'tc' ? `${a.read_time || 5} 分鐘閱讀` : `${a.read_time || 5} min read`;
+    const url = `/article/${a.slug}`;
+    return `
+      <article class="card ${opts.featured ? 'featured' : ''}">
+        <a class="card-media" href="${url}" style="background-image: url('${img}')">
+          <span class="card-tag cat-${cat}">${cat}</span>
+        </a>
+        <div class="card-body">
+          <h3 class="card-title">${title}</h3>
+          <p class="card-excerpt">${excerpt}</p>
+          <div class="card-meta">
+            <span class="author">${author}</span>
+            <span class="dot"></span>
+            <span>${date}</span>
+            <span class="reading">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+              ${readTime}
+            </span>
+          </div>
+        </div>
+      </article>`;
+  }
+
+  let _sbArticles = null; /* cache */
+
+  async function loadSupabaseArticles() {
+    if (_sbArticles) return _sbArticles;
+    const { data } = await window.IsshoAPI.fetchArticles({ limit: 10 });
+    _sbArticles = data || [];
+    return _sbArticles;
+  }
+
   function renderEditor() {
-    document.getElementById('editorGrid').innerHTML =
-      C.cardHTML(D.featured, { featured: true }) + C.cardHTML(D.latest[0]);
+    const editorGrid = document.getElementById('editorGrid');
+    loadSupabaseArticles().then(articles => {
+      if (articles.length) {
+        const featured = articles.find(a => a.featured) || articles[0];
+        const second = articles.find(a => a.id !== featured.id) || null;
+        editorGrid.innerHTML = sbCardHTML(featured, { featured: true }) + (second ? sbCardHTML(second) : '');
+      } else {
+        editorGrid.innerHTML = C.cardHTML(D.featured, { featured: true }) + C.cardHTML(D.latest[0]);
+      }
+    });
   }
 
   function renderLatest() {
-    document.getElementById('latestGrid').innerHTML =
-      D.latest.slice(1, 4).map(a => C.cardHTML(a)).join('');
+    const latestGrid = document.getElementById('latestGrid');
+    loadSupabaseArticles().then(articles => {
+      if (articles.length > 1) {
+        latestGrid.innerHTML = articles.slice(1, 4).map(a => sbCardHTML(a)).join('');
+      } else if (articles.length === 1) {
+        latestGrid.innerHTML = sbCardHTML(articles[0]);
+      } else {
+        latestGrid.innerHTML = D.latest.slice(1, 4).map(a => C.cardHTML(a)).join('');
+      }
+    });
   }
 
   function renderChecklist() {
@@ -592,6 +650,7 @@
 
   /* hook into lang changes */
   window.onLangChange = function () {
+    _sbArticles = null; /* clear cache so cards re-render in new lang */
     renderAll();
   };
 
