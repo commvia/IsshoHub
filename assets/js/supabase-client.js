@@ -81,8 +81,7 @@
   async function fetchCategories() {
     const { data, error } = await getClient()
       .from('categories')
-      .select('*')
-      .eq('active', true);
+      .select('*');
     return { data, error };
   }
 
