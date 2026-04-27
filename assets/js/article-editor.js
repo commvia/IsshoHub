@@ -4,6 +4,28 @@
 
   let currentArticleId = null;
   let categoriesCache = [];
+  let subCategoriesCache = {};
+
+  /* ── Load sub-categories into select ── */
+  async function loadSubCategories(categoryKey, selectedKey) {
+    const selectEl = document.getElementById('editorSubCategory');
+    if (!selectEl) return;
+    if (!categoryKey) {
+      selectEl.innerHTML = '<option value="">請先選擇分類</option>';
+      return;
+    }
+    if (!subCategoriesCache[categoryKey]) {
+      const client = window.IsshoAuth.getClient();
+      const { data } = await client.from('sub_categories')
+        .select('*').eq('category_key', categoryKey).order('sort_order');
+      subCategoriesCache[categoryKey] = data || [];
+    }
+    const subs = subCategoriesCache[categoryKey];
+    selectEl.innerHTML = '<option value="">（選填）選擇子分類</option>' +
+      subs.map(s =>
+        `<option value="${s.key}" ${s.key === selectedKey ? 'selected' : ''}>${s.name_tc} / ${s.name_en}</option>`
+      ).join('');
+  }
 
   /* ── Slugify ── */
   function slugify(text) {
@@ -127,7 +149,9 @@
             <!-- Sub-category -->
             <div class="editor-field">
               <label>子分類 Sub-category</label>
-              <input type="text" id="editorSubCategory" placeholder="例：在留資格、稅務申報" />
+              <select id="editorSubCategory">
+                <option value="">請先選擇分類</option>
+              </select>
             </div>
 
             <!-- Slug -->
@@ -243,6 +267,11 @@
     // Load categories
     loadCategories(document.getElementById('editorCategory'));
 
+    // When category changes, load sub-categories
+    document.getElementById('editorCategory').addEventListener('change', e => {
+      loadSubCategories(e.target.value);
+    });
+
     // Save draft
     document.getElementById('editorSaveDraft').addEventListener('click', () => saveArticle('draft'));
 
@@ -349,7 +378,7 @@
       document.getElementById('bodyTc').value = articleData.body_tc || '';
       document.getElementById('bodyEn').value = articleData.body_en || '';
       document.getElementById('coverImageUrl').value = articleData.cover_image_url || '';
-      document.getElementById('editorSubCategory').value = articleData.sub_category_key || '';
+      loadSubCategories(articleData.category_key, articleData.sub_category_key);
       document.getElementById('editorAuthor').value = articleData.author || '';
       document.getElementById('editorReadTime').value = articleData.read_time || 5;
       document.getElementById('editorTags').value = (articleData.tags || []).join(', ');
