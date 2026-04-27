@@ -17,7 +17,9 @@
   /* ── Load categories into select ── */
   async function loadCategories(selectEl, selectedKey) {
     if (!categoriesCache.length) {
-      const { data } = await window.IsshoAPI.fetchCategories();
+      const { data, error } = await window.IsshoAPI.fetchCategories();
+      console.log('[Editor] fetchCategories result:', data, error);
+      if (error) console.error('fetchCategories error:', error);
       categoriesCache = data || [];
     }
     selectEl.innerHTML = '<option value="">選擇分類 / Select category</option>' +

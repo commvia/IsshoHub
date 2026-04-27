@@ -81,9 +81,8 @@
   async function fetchCategories() {
     const { data, error } = await getClient()
       .from('categories')
-      .select('*, sub_categories(*)')
-      .eq('active', true)
-      .order('sort_order');
+      .select('*')
+      .eq('active', true);
     return { data, error };
   }
 
