@@ -452,10 +452,21 @@
         const user = session?.user;
         const confirmed = user?.email_confirmed_at || user?.confirmed_at;
         if (user && confirmed) {
-          const { data: profile } = await window.IsshoAuth.getProfile(user.id);
-          updateAuthUI(user, profile);
+          // Small delay to ensure RLS session is ready
+          setTimeout(async () => {
+            const { data: profile } = await window.IsshoAuth.getProfile(user.id);
+            updateAuthUI(user, profile);
+          }, 300);
         } else {
           updateAuthUI(null, null);
+        }
+      });
+
+      // Also check on page load if already logged in
+      window.IsshoAuth.getUser().then(async user => {
+        if (user && (user.email_confirmed_at || user.confirmed_at)) {
+          const { data: profile } = await window.IsshoAuth.getProfile(user.id);
+          updateAuthUI(user, profile);
         }
       });
     }
