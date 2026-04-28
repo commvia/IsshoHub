@@ -203,6 +203,47 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .toggle-switch input:checked + .toggle-slider { background: var(--accent); }
 .toggle-switch input:checked + .toggle-slider::before { transform: translateX(18px); }
 
+/* ============ HOT SEARCH MANAGER ============ */
+.hs-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,.55); z-index: 2000;
+  justify-content: center; align-items: center;
+}
+.hs-overlay.open { display: flex; }
+.hs-panel {
+  background: #fff; border-radius: 16px;
+  width: min(680px, 96vw); max-height: 90vh;
+  display: flex; flex-direction: column; overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,.22);
+}
+.hs-body {
+  padding: 24px 28px; overflow-y: auto; flex: 1;
+}
+.hs-hint { font-size: 12px; color: #888; margin: 0 0 16px; }
+.hs-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+.hs-row {
+  display: flex; align-items: center; gap: 10px;
+  background: #f9f9f7; border-radius: 8px; padding: 10px 12px;
+}
+.hs-drag { cursor: grab; color: #bbb; font-size: 16px; user-select: none; }
+.hs-rank { font-size: 12px; color: #aaa; font-weight: 600; min-width: 22px; }
+.hs-input {
+  flex: 1; border: 1px solid #e0ddd6; border-radius: 6px;
+  padding: 7px 10px; font-size: 13px; outline: none;
+  background: #fff; transition: border .15s;
+}
+.hs-input:focus { border-color: var(--accent); }
+.hs-del {
+  background: none; border: none; cursor: pointer;
+  color: #ccc; padding: 4px; border-radius: 4px;
+  display: flex; transition: color .15s;
+}
+.hs-del:hover { color: #e53935; }
+.hs-add-row {
+  display: flex; gap: 10px; align-items: center;
+  padding-top: 16px; border-top: 1px solid #f0ede6;
+}
+
 /* ============ ADMIN BAR ============ */
 .admin-bar {
   background: #1a1a2e;
