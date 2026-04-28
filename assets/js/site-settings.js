@@ -75,6 +75,46 @@
                   <span class="ss-rate-suf">¥</span>
                 </div>
               </div>
+              <div class="ss-rate-item">
+                <label>GBP</label>
+                <div class="ss-rate-input">
+                  <span class="ss-rate-pre">GBP 1 =</span>
+                  <input type="number" id="ss_rate_gbp" step="0.01" placeholder="191.50" />
+                  <span class="ss-rate-suf">¥</span>
+                </div>
+              </div>
+              <div class="ss-rate-item">
+                <label>KRW 韓元</label>
+                <div class="ss-rate-input">
+                  <span class="ss-rate-pre">KRW 100 =</span>
+                  <input type="number" id="ss_rate_krw" step="0.001" placeholder="0.11" />
+                  <span class="ss-rate-suf">¥</span>
+                </div>
+              </div>
+              <div class="ss-rate-item">
+                <label>CAD</label>
+                <div class="ss-rate-input">
+                  <span class="ss-rate-pre">CAD 1 =</span>
+                  <input type="number" id="ss_rate_cad" step="0.01" placeholder="111.20" />
+                  <span class="ss-rate-suf">¥</span>
+                </div>
+              </div>
+              <div class="ss-rate-item">
+                <label>AUD</label>
+                <div class="ss-rate-input">
+                  <span class="ss-rate-pre">AUD 1 =</span>
+                  <input type="number" id="ss_rate_aud" step="0.01" placeholder="96.80" />
+                  <span class="ss-rate-suf">¥</span>
+                </div>
+              </div>
+              <div class="ss-rate-item">
+                <label>SGD</label>
+                <div class="ss-rate-input">
+                  <span class="ss-rate-pre">SGD 1 =</span>
+                  <input type="number" id="ss_rate_sgd" step="0.01" placeholder="113.40" />
+                  <span class="ss-rate-suf">¥</span>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -93,10 +133,10 @@
       document.getElementById('ss_ticker_tc').value = map.ticker.value_tc || '';
       document.getElementById('ss_ticker_en').value = map.ticker.value_en || '';
     }
-    if (map.rate_hkd) document.getElementById('ss_rate_hkd').value = map.rate_hkd.value_tc || '';
-    if (map.rate_twd) document.getElementById('ss_rate_twd').value = map.rate_twd.value_tc || '';
-    if (map.rate_usd) document.getElementById('ss_rate_usd').value = map.rate_usd.value_tc || '';
-    if (map.rate_eur) document.getElementById('ss_rate_eur').value = map.rate_eur.value_tc || '';
+    ['hkd','twd','usd','eur','gbp','krw','cad','aud','sgd'].forEach(c => {
+      const el = document.getElementById(`ss_rate_${c}`);
+      if (el && map[`rate_${c}`]) el.value = map[`rate_${c}`].value_tc || '';
+    });
   }
 
   /* ── Save all settings ── */
@@ -106,11 +146,11 @@
     btn.disabled = true;
 
     const settings = [
-      { key: 'ticker',   tc: document.getElementById('ss_ticker_tc').value.trim(), en: document.getElementById('ss_ticker_en').value.trim() },
-      { key: 'rate_hkd', tc: document.getElementById('ss_rate_hkd').value.trim(), en: document.getElementById('ss_rate_hkd').value.trim() },
-      { key: 'rate_twd', tc: document.getElementById('ss_rate_twd').value.trim(), en: document.getElementById('ss_rate_twd').value.trim() },
-      { key: 'rate_usd', tc: document.getElementById('ss_rate_usd').value.trim(), en: document.getElementById('ss_rate_usd').value.trim() },
-      { key: 'rate_eur', tc: document.getElementById('ss_rate_eur').value.trim(), en: document.getElementById('ss_rate_eur').value.trim() },
+      { key: 'ticker', tc: document.getElementById('ss_ticker_tc').value.trim(), en: document.getElementById('ss_ticker_en').value.trim() },
+      ...['hkd','twd','usd','eur','gbp','krw','cad','aud','sgd'].map(c => {
+        const v = document.getElementById(`ss_rate_${c}`)?.value.trim() || '';
+        return { key: `rate_${c}`, tc: v, en: v };
+      }),
     ];
 
     let hasError = false;
