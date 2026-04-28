@@ -312,7 +312,7 @@
     <div class="fx-asof" data-i18n="fx_asof"></div>
     <div class="fx-row">
       <label class="fx-ccy">
-        <span class="flag flag-hk" id="fxFromFlag"></span>
+        <span id="fxFromFlag"></span>
         <span id="fxFromLabel">HKD</span>
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
         <select id="fxFrom">
@@ -320,35 +320,23 @@
           <option value="TWD">TWD 新台幣</option>
           <option value="USD">USD 美元</option>
           <option value="EUR">EUR 歐元</option>
+          <option value="GBP">GBP 英鎊</option>
+          <option value="CAD">CAD 加元</option>
+          <option value="AUD">AUD 澳元</option>
+          <option value="SGD">SGD 坡元</option>
         </select>
       </label>
-      <input type="number" class="fx-input" id="fxInput" value="1000" min="0" />
+      <input type="number" class="fx-input" id="fxInput" value="1000" min="0" placeholder="外幣金額" />
     </div>
-    <div class="fx-equals">=</div>
+    <div class="fx-equals">⇅</div>
     <div class="fx-row to">
       <div class="fx-ccy">
-        <span class="flag flag-jp"></span>
-        JPY
+        <span>🇯🇵</span>
+        JPY 日圓
       </div>
-      <input type="text" class="fx-input" id="fxOutput" value="¥19,420" readonly />
+      <input type="number" class="fx-input" id="fxOutput" placeholder="日圓金額" />
     </div>
-    <div class="fx-rates">
-      <div class="fx-rate-item">
-        <div class="k">HKD/JPY</div>
-        <div class="v">19.42</div>
-        <div class="d up">▲ 0.12</div>
-      </div>
-      <div class="fx-rate-item">
-        <div class="k">TWD/JPY</div>
-        <div class="v">4.71</div>
-        <div class="d down">▼ 0.04</div>
-      </div>
-      <div class="fx-rate-item">
-        <div class="k">USD/JPY</div>
-        <div class="v">151.83</div>
-        <div class="d up">▲ 0.31</div>
-      </div>
-    </div>
+    <div class="fx-rates" id="fxRates"></div>
   </div>
 </div>
 
@@ -659,25 +647,70 @@
     }
   });
 
-  /* ── Live exchange rates from open.er-api.com (free, no key) ── */
-  (function fetchLiveRates() {
-    const rateEl = document.getElementById('tickerRate');
-    if (!rateEl) return;
+  /* ── Live exchange rates + FX calculator ── */
+  (function initFX() {
     const CURRENCIES = ['HKD','TWD','USD','EUR','GBP','CAD','AUD','SGD'];
+    const tickerEl  = document.getElementById('tickerRate');
+    const fxInput   = document.getElementById('fxInput');
+    const fxOutput  = document.getElementById('fxOutput');
+    const fxFrom    = document.getElementById('fxFrom');
+    const fxRates   = document.getElementById('fxRates');
+    const fxTrigger = document.getElementById('fxTrigger');
+    const fxClose   = document.getElementById('fxClose');
+    const fxPanel   = document.querySelector('.fx-panel');
+    let rates = {}; /* currency → JPY */
+    let lastEdited = 'input'; /* track which field was last typed */
+
+    /* Open / close FX panel */
+    const fxRoot = document.getElementById('fx');
+    if (fxTrigger) fxTrigger.addEventListener('click', () => fxRoot.classList.toggle('open'));
+    if (fxClose)   fxClose.addEventListener('click',   () => fxRoot.classList.remove('open'));
+
+    const fmt = v => v >= 10 ? v.toFixed(2) : v.toFixed(3);
+    const fmtJPY = v => Math.round(v).toLocaleString();
+
+    function calcFromForeign() {
+      const amt = parseFloat(fxInput.value);
+      const cur = fxFrom.value;
+      if (!isNaN(amt) && rates[cur]) fxOutput.value = fmtJPY(amt * rates[cur]);
+    }
+    function calcFromJPY() {
+      const jpy = parseFloat(fxOutput.value.replace(/,/g,''));
+      const cur = fxFrom.value;
+      if (!isNaN(jpy) && rates[cur]) fxInput.value = fmt(jpy / rates[cur]);
+    }
+
+    if (fxInput)  fxInput.addEventListener('input',  () => { lastEdited = 'input';  calcFromForeign(); });
+    if (fxOutput) fxOutput.addEventListener('input', () => { lastEdited = 'output'; calcFromJPY(); });
+    if (fxFrom)   fxFrom.addEventListener('change',  () => {
+      document.getElementById('fxFromLabel').textContent = fxFrom.value;
+      lastEdited === 'output' ? calcFromJPY() : calcFromForeign();
+    });
+
+    /* Fetch live rates */
     fetch('https://open.er-api.com/v6/latest/JPY')
       .then(r => r.json())
       .then(json => {
         if (json.result !== 'success' || !json.rates) return;
-        const fmt = v => v >= 10 ? v.toFixed(2) : v.toFixed(3);
-        const parts = CURRENCIES.filter(c => json.rates[c])
-          .map(c => `${c} <b>¥${fmt(1 / json.rates[c])}</b>`);
-        let idx = 0;
-        const show = () => {
-          rateEl.innerHTML = parts.slice(idx, idx + 2).join('&nbsp;&nbsp;');
-          idx = (idx + 2) % parts.length;
-        };
-        show();
-        setInterval(show, 3000);
+        CURRENCIES.filter(c => json.rates[c]).forEach(c => { rates[c] = 1 / json.rates[c]; });
+
+        /* Ticker scrolling */
+        if (tickerEl) {
+          const parts = CURRENCIES.filter(c => rates[c]).map(c => `${c} <b>¥${fmt(rates[c])}</b>`);
+          let idx = 0;
+          const show = () => { tickerEl.innerHTML = parts.slice(idx, idx+2).join('&nbsp;&nbsp;'); idx = (idx+2) % parts.length; };
+          show(); setInterval(show, 3000);
+        }
+
+        /* FX rates table */
+        if (fxRates) {
+          fxRates.innerHTML = CURRENCIES.filter(c => rates[c]).map(c =>
+            `<div class="fx-rate-item"><div class="k">${c}/JPY</div><div class="v">${fmt(rates[c])}</div></div>`
+          ).join('');
+        }
+
+        /* Initial calculation */
+        if (fxInput && fxInput.value) calcFromForeign();
       })
       .catch(() => {});
   })();
