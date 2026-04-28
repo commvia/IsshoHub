@@ -83,15 +83,7 @@
                   <span class="ss-rate-suf">¥</span>
                 </div>
               </div>
-              <div class="ss-rate-item">
-                <label>KRW 韓元</label>
-                <div class="ss-rate-input">
-                  <span class="ss-rate-pre">KRW 100 =</span>
-                  <input type="number" id="ss_rate_krw" step="0.001" placeholder="0.11" />
-                  <span class="ss-rate-suf">¥</span>
-                </div>
-              </div>
-              <div class="ss-rate-item">
+<div class="ss-rate-item">
                 <label>CAD</label>
                 <div class="ss-rate-input">
                   <span class="ss-rate-pre">CAD 1 =</span>
@@ -133,7 +125,7 @@
       document.getElementById('ss_ticker_tc').value = map.ticker.value_tc || '';
       document.getElementById('ss_ticker_en').value = map.ticker.value_en || '';
     }
-    ['hkd','twd','usd','eur','gbp','krw','cad','aud','sgd'].forEach(c => {
+    ['hkd','twd','usd','eur','gbp','cad','aud','sgd'].forEach(c => {
       const el = document.getElementById(`ss_rate_${c}`);
       if (el && map[`rate_${c}`]) el.value = map[`rate_${c}`].value_tc || '';
     });
@@ -147,7 +139,7 @@
 
     const settings = [
       { key: 'ticker', tc: document.getElementById('ss_ticker_tc').value.trim(), en: document.getElementById('ss_ticker_en').value.trim() },
-      ...['hkd','twd','usd','eur','gbp','krw','cad','aud','sgd'].map(c => {
+      ...['hkd','twd','usd','eur','gbp','cad','aud','sgd'].map(c => {
         const v = document.getElementById(`ss_rate_${c}`)?.value.trim() || '';
         return { key: `rate_${c}`, tc: v, en: v };
       }),
