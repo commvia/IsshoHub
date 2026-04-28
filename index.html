@@ -648,27 +648,43 @@
     }).join('');
   }
 
-  /* ── Load site settings from Supabase ── */
-  function applySettings(settings) {
-    const map = Object.fromEntries(settings.map(s => [s.key, s]));
+  /* ── Load site settings from Supabase (ticker only) ── */
+  window.IsshoAPI.fetchSiteSettings().then(({ data }) => {
+    if (!data) return;
+    const map = Object.fromEntries(data.map(s => [s.key, s]));
     const lang = getLang();
-    /* Ticker */
     if (map.ticker) {
-      const tickerEl = document.querySelector('[data-i18n="ticker1"]') || document.querySelector('.ticker-text');
+      const tickerEl = document.querySelector('[data-i18n="ticker1"]');
       if (tickerEl) tickerEl.innerHTML = lang === 'tc' ? map.ticker.value_tc : map.ticker.value_en;
     }
-    /* Exchange rates */
-    const rateEl = document.querySelector('[data-i18n="ticker-rate"]');
-    if (rateEl) {
-      const hkd = map.rate_hkd?.value_tc || '19.42';
-      const twd = map.rate_twd?.value_tc || '4.71';
-      rateEl.innerHTML = `HKD <b>¥${hkd}</b>&nbsp; TWD <b>¥${twd}</b>`;
-    }
-  }
-
-  window.IsshoAPI.fetchSiteSettings().then(({ data }) => {
-    if (data && data.length) applySettings(data);
   });
+
+  /* ── Live exchange rates from open.er-api.com (free, no key) ── */
+  (function fetchLiveRates() {
+    const rateEl = document.querySelector('[data-i18n="ticker-rate"]');
+    if (!rateEl) return;
+    const CURRENCIES = ['HKD','TWD','USD','EUR','GBP','CAD','AUD','SGD'];
+    fetch('https://open.er-api.com/v6/latest/JPY')
+      .then(r => r.json())
+      .then(json => {
+        if (json.result !== 'success' || !json.rates) return;
+        /* Invert: rates[X] = 1 JPY in X → 1 X = 1/rates[X] JPY */
+        const fmt = (val) => val >= 10 ? val.toFixed(2) : val.toFixed(3);
+        const parts = CURRENCIES
+          .filter(c => json.rates[c])
+          .map(c => `${c} <b>¥${fmt(1 / json.rates[c])}</b>`);
+        /* Scroll through currencies every 3s */
+        let idx = 0;
+        const show = () => {
+          const chunk = parts.slice(idx, idx + 2).join('&nbsp;&nbsp;');
+          rateEl.innerHTML = chunk;
+          idx = (idx + 2) % parts.length;
+        };
+        show();
+        setInterval(show, 3000);
+      })
+      .catch(() => { /* keep static fallback */ });
+  })();
 
   function renderAll() {
     renderHero();
