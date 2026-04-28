@@ -43,16 +43,10 @@
       <span data-i18n="ticker1"></span>
       <span data-i18n="ticker2"></span>
     </div>
-    <div class="meta" style="position:relative">
+    <div class="meta">
       <span data-i18n="ticker-weather"></span>
       <span>·</span>
-      <span data-i18n="ticker-rate" id="tickerRate" style="cursor:pointer" title="點擊換算"></span>
-      <div id="rateCalc" style="display:none;position:absolute;right:0;top:100%;background:#fff;border:1px solid #e0ddd6;border-radius:10px;padding:12px 14px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:999;display:none;align-items:center;gap:8px;min-width:280px">
-        <input id="calcAmt" type="number" placeholder="金額" style="width:80px;border:1px solid #ddd;border-radius:6px;padding:6px 8px;font-size:13px;outline:none" />
-        <select id="calcCur" style="border:1px solid #ddd;border-radius:6px;padding:6px 8px;font-size:13px;outline:none;background:#fff"></select>
-        <span style="color:#888;font-size:13px">=</span>
-        <span id="calcResult" style="font-size:15px;font-weight:700;color:#0d2444;min-width:80px">—</span>
-      </div>
+      <span data-i18n="ticker-rate" id="tickerRate"></span>
     </div>
   </div>
 </div>
@@ -668,58 +662,22 @@
   /* ── Live exchange rates from open.er-api.com (free, no key) ── */
   (function fetchLiveRates() {
     const rateEl = document.getElementById('tickerRate');
-    const calcBox = document.getElementById('rateCalc');
-    const calcAmt = document.getElementById('calcAmt');
-    const calcCur = document.getElementById('calcCur');
-    const calcResult = document.getElementById('calcResult');
     if (!rateEl) return;
-
     const CURRENCIES = ['HKD','TWD','USD','EUR','GBP','CAD','AUD','SGD'];
-    let liveRates = {}; /* currency → JPY rate */
-
     fetch('https://open.er-api.com/v6/latest/JPY')
       .then(r => r.json())
       .then(json => {
         if (json.result !== 'success' || !json.rates) return;
-        CURRENCIES.filter(c => json.rates[c]).forEach(c => {
-          liveRates[c] = 1 / json.rates[c]; /* 1 C = X JPY */
-        });
-
-        /* Scrolling display */
         const fmt = v => v >= 10 ? v.toFixed(2) : v.toFixed(3);
-        const parts = Object.entries(liveRates).map(([c, r]) => `${c} <b>¥${fmt(r)}</b>`);
+        const parts = CURRENCIES.filter(c => json.rates[c])
+          .map(c => `${c} <b>¥${fmt(1 / json.rates[c])}</b>`);
         let idx = 0;
         const show = () => {
-          rateEl.innerHTML = parts.slice(idx, idx + 2).join('&nbsp;&nbsp;') + ' <span style="font-size:10px;opacity:.6">▼</span>';
+          rateEl.innerHTML = parts.slice(idx, idx + 2).join('&nbsp;&nbsp;');
           idx = (idx + 2) % parts.length;
         };
         show();
         setInterval(show, 3000);
-
-        /* Populate currency selector */
-        calcCur.innerHTML = Object.keys(liveRates).map(c =>
-          `<option value="${c}">${c}</option>`).join('');
-
-        /* Calculator logic */
-        const calc = () => {
-          const amt = parseFloat(calcAmt.value);
-          const cur = calcCur.value;
-          if (!amt || !liveRates[cur]) { calcResult.textContent = '—'; return; }
-          const jpy = amt * liveRates[cur];
-          calcResult.innerHTML = `¥${jpy.toFixed(0)} JPY`;
-        };
-        calcAmt.addEventListener('input', calc);
-        calcCur.addEventListener('change', calc);
-
-        /* Toggle calculator */
-        rateEl.addEventListener('click', e => {
-          e.stopPropagation();
-          const open = calcBox.style.display === 'flex';
-          calcBox.style.display = open ? 'none' : 'flex';
-          if (!open) calcAmt.focus();
-        });
-        document.addEventListener('click', () => { calcBox.style.display = 'none'; });
-        calcBox.addEventListener('click', e => e.stopPropagation());
       })
       .catch(() => {});
   })();
