@@ -646,7 +646,6 @@
   }
 
   /* ── Load site settings from Supabase ── */
-  let _sbHero = null;
   window.IsshoAPI.fetchSiteSettings().then(({ data }) => {
     if (!data) return;
     const map = Object.fromEntries(data.map(s => [s.key, s]));
