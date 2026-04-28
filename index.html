@@ -439,6 +439,7 @@
 <script src="/assets/js/supabase-client.js"></script>
 <script src="/assets/js/article-editor.js"></script>
 <script src="/assets/js/hot-search-manager.js"></script>
+<script src="/assets/js/site-settings.js"></script>
 <script src="/assets/js/core.js"></script>
 <script>
 (function () {
@@ -647,6 +648,28 @@
     }).join('');
   }
 
+  /* ── Load site settings from Supabase ── */
+  function applySettings(settings) {
+    const map = Object.fromEntries(settings.map(s => [s.key, s]));
+    const lang = getLang();
+    /* Ticker */
+    if (map.ticker) {
+      const tickerEl = document.querySelector('[data-i18n="ticker1"]') || document.querySelector('.ticker-text');
+      if (tickerEl) tickerEl.innerHTML = lang === 'tc' ? map.ticker.value_tc : map.ticker.value_en;
+    }
+    /* Exchange rates */
+    const rateEl = document.querySelector('[data-i18n="ticker-rate"]');
+    if (rateEl) {
+      const hkd = map.rate_hkd?.value_tc || '19.42';
+      const twd = map.rate_twd?.value_tc || '4.71';
+      rateEl.innerHTML = `HKD <b>¥${hkd}</b>&nbsp; TWD <b>¥${twd}</b>`;
+    }
+  }
+
+  window.IsshoAPI.fetchSiteSettings().then(({ data }) => {
+    if (data && data.length) applySettings(data);
+  });
+
   function renderAll() {
     renderHero();
     renderHot();
@@ -668,6 +691,7 @@
   renderAll();
   if (window.IsshoEditor) window.IsshoEditor.init();
   if (window.IsshoHotSearch) window.IsshoHotSearch.init();
+  if (window.IsshoSettings) window.IsshoSettings.init();
 })();
 </script>
 </body>
