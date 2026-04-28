@@ -437,18 +437,22 @@
   function getLang() { return C.getLang(); }
   function t(obj) { return C.t(obj); }
 
-  function renderHero() {
+  function renderHero(sbHero) {
     const h = D.hero;
     const lang = getLang();
     const tag = lang === 'tc' ? h.tag.tc : h.tag.en;
-    const kicker = lang === 'tc' ? h.kicker.tc : h.kicker.en;
-    const title = lang === 'tc' ? h.title.tc : h.title.en;
-    const sub = lang === 'tc' ? h.sub.tc : h.sub.en;
+
+    /* Use Supabase data if available, fall back to static */
+    const img     = (sbHero && sbHero.hero_img)    || h.img;
+    const kicker  = (sbHero && (lang === 'tc' ? sbHero.hero_kicker_tc : sbHero.hero_kicker_en)) || (lang === 'tc' ? h.kicker.tc : h.kicker.en);
+    const title   = (sbHero && (lang === 'tc' ? sbHero.hero_title_tc  : sbHero.hero_title_en))  || (lang === 'tc' ? h.title.tc  : h.title.en);
+    const sub     = (sbHero && (lang === 'tc' ? sbHero.hero_sub_tc    : sbHero.hero_sub_en))    || (lang === 'tc' ? h.sub.tc    : h.sub.en);
+
     const author = t(h.author);
     const meta = t(h.meta);
     const date = t(h.date);
     document.getElementById('heroMain').innerHTML = `
-      <div class="hero-img" style="background-image: url('${h.img}')"></div>
+      <div class="hero-img" style="background-image: url('${img}')"></div>
       <div class="hero-body">
         <div class="hero-top">
           <div class="hero-chip"><i></i>${tag}</div>
@@ -565,6 +569,7 @@
   }
 
   let _sbArticles = null; /* cache */
+  let _sbHero = null;    /* hero settings from Supabase */
 
   async function loadSupabaseArticles() {
     if (_sbArticles) return _sbArticles;
@@ -640,15 +645,30 @@
     }).join('');
   }
 
-  /* ── Load site settings from Supabase (ticker only) ── */
+  /* ── Load site settings from Supabase ── */
+  let _sbHero = null;
   window.IsshoAPI.fetchSiteSettings().then(({ data }) => {
     if (!data) return;
     const map = Object.fromEntries(data.map(s => [s.key, s]));
     const lang = getLang();
+
+    /* Ticker */
     if (map.ticker) {
       const tickerEl = document.querySelector('[data-i18n="ticker1"]');
       if (tickerEl) tickerEl.innerHTML = lang === 'tc' ? map.ticker.value_tc : map.ticker.value_en;
     }
+
+    /* Hero */
+    _sbHero = {
+      hero_img:       map.hero_img?.value_tc    || '',
+      hero_kicker_tc: map.hero_kicker?.value_tc || '',
+      hero_kicker_en: map.hero_kicker?.value_en || '',
+      hero_title_tc:  map.hero_title?.value_tc  || '',
+      hero_title_en:  map.hero_title?.value_en  || '',
+      hero_sub_tc:    map.hero_sub?.value_tc    || '',
+      hero_sub_en:    map.hero_sub?.value_en    || '',
+    };
+    renderHero(_sbHero);
   });
 
   /* ── Live exchange rates + FX calculator ── */
@@ -721,7 +741,7 @@
   })();
 
   function renderAll() {
-    renderHero();
+    renderHero(_sbHero);
     renderHot();
     renderCats();
     renderEditor();
@@ -732,7 +752,7 @@
 
   /* hook into lang changes */
   window.onLangChange = function () {
-    _sbArticles = null; /* clear cache so cards re-render in new lang */
+    _sbArticles = null;
     renderAll();
   };
 

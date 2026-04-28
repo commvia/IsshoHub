@@ -29,6 +29,42 @@
         </div>
         <div class="ss-body">
           <div class="ss-section">
+            <div class="ss-section-title">🖼 Hero 主視覺</div>
+            <div class="ss-row">
+              <label>封面照片 URL</label>
+              <input type="text" id="ss_hero_img" placeholder="https://images.unsplash.com/..." style="width:100%" />
+            </div>
+            <div class="ss-row" style="margin-top:6px">
+              <label style="font-size:11px;color:var(--ink-3)">預覽</label>
+              <div id="ss_hero_preview" style="width:100%;height:120px;background-size:cover;background-position:center;border-radius:8px;border:1px solid var(--line);margin-top:6px;"></div>
+            </div>
+            <div class="ss-row">
+              <label>Kicker 繁中</label>
+              <input type="text" id="ss_hero_kicker_tc" placeholder="2026 最新政策解讀" />
+            </div>
+            <div class="ss-row">
+              <label>Kicker English</label>
+              <input type="text" id="ss_hero_kicker_en" placeholder="2026 Policy Update" />
+            </div>
+            <div class="ss-row">
+              <label>標題 繁中</label>
+              <textarea id="ss_hero_title_tc" rows="2" placeholder="主標題（繁中）"></textarea>
+            </div>
+            <div class="ss-row">
+              <label>Title English</label>
+              <textarea id="ss_hero_title_en" rows="2" placeholder="Main title (English)"></textarea>
+            </div>
+            <div class="ss-row">
+              <label>副標題 繁中</label>
+              <textarea id="ss_hero_sub_tc" rows="2" placeholder="副標題（繁中）"></textarea>
+            </div>
+            <div class="ss-row">
+              <label>Subtitle English</label>
+              <textarea id="ss_hero_sub_en" rows="2" placeholder="Subtitle (English)"></textarea>
+            </div>
+          </div>
+
+          <div class="ss-section">
             <div class="ss-section-title">📢 跑馬燈 Ticker</div>
             <div class="ss-row">
               <label>繁中文字</label>
@@ -121,14 +157,50 @@
     const { data } = await window.IsshoAPI.fetchSiteSettings();
     if (!data) return;
     const map = Object.fromEntries(data.map(s => [s.key, s]));
+
+    /* Hero */
+    if (map.hero_img) {
+      const imgEl = document.getElementById('ss_hero_img');
+      if (imgEl) {
+        imgEl.value = map.hero_img.value_tc || '';
+        updateHeroPreview(map.hero_img.value_tc || '');
+      }
+    }
+    if (map.hero_kicker) {
+      const tcEl = document.getElementById('ss_hero_kicker_tc');
+      const enEl = document.getElementById('ss_hero_kicker_en');
+      if (tcEl) tcEl.value = map.hero_kicker.value_tc || '';
+      if (enEl) enEl.value = map.hero_kicker.value_en || '';
+    }
+    if (map.hero_title) {
+      const tcEl = document.getElementById('ss_hero_title_tc');
+      const enEl = document.getElementById('ss_hero_title_en');
+      if (tcEl) tcEl.value = map.hero_title.value_tc || '';
+      if (enEl) enEl.value = map.hero_title.value_en || '';
+    }
+    if (map.hero_sub) {
+      const tcEl = document.getElementById('ss_hero_sub_tc');
+      const enEl = document.getElementById('ss_hero_sub_en');
+      if (tcEl) tcEl.value = map.hero_sub.value_tc || '';
+      if (enEl) enEl.value = map.hero_sub.value_en || '';
+    }
+
+    /* Ticker */
     if (map.ticker) {
       document.getElementById('ss_ticker_tc').value = map.ticker.value_tc || '';
       document.getElementById('ss_ticker_en').value = map.ticker.value_en || '';
     }
+
+    /* Rates */
     ['hkd','twd','usd','eur','gbp','cad','aud','sgd'].forEach(c => {
       const el = document.getElementById(`ss_rate_${c}`);
       if (el && map[`rate_${c}`]) el.value = map[`rate_${c}`].value_tc || '';
     });
+  }
+
+  function updateHeroPreview(url) {
+    const preview = document.getElementById('ss_hero_preview');
+    if (preview) preview.style.backgroundImage = url ? `url('${url}')` : '';
   }
 
   /* ── Save all settings ── */
@@ -137,7 +209,12 @@
     const statusEl = document.getElementById('ssStatus');
     btn.disabled = true;
 
+    const heroImg = document.getElementById('ss_hero_img')?.value.trim() || '';
     const settings = [
+      { key: 'hero_img',    tc: heroImg, en: heroImg },
+      { key: 'hero_kicker', tc: document.getElementById('ss_hero_kicker_tc')?.value.trim() || '', en: document.getElementById('ss_hero_kicker_en')?.value.trim() || '' },
+      { key: 'hero_title',  tc: document.getElementById('ss_hero_title_tc')?.value.trim() || '', en: document.getElementById('ss_hero_title_en')?.value.trim() || '' },
+      { key: 'hero_sub',    tc: document.getElementById('ss_hero_sub_tc')?.value.trim() || '', en: document.getElementById('ss_hero_sub_en')?.value.trim() || '' },
       { key: 'ticker', tc: document.getElementById('ss_ticker_tc').value.trim(), en: document.getElementById('ss_ticker_en').value.trim() },
       ...['hkd','twd','usd','eur','gbp','cad','aud','sgd'].map(c => {
         const v = document.getElementById(`ss_rate_${c}`)?.value.trim() || '';
@@ -190,6 +267,8 @@
     document.getElementById('ssClose').addEventListener('click', close);
     overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
     document.getElementById('ssSaveAll').addEventListener('click', saveAll);
+    const imgInput = document.getElementById('ss_hero_img');
+    if (imgInput) imgInput.addEventListener('input', e => updateHeroPreview(e.target.value));
   }
 
   /* ── Wire admin button ── */
