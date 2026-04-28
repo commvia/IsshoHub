@@ -665,9 +665,10 @@
     const fxRoot = document.getElementById('fx');
     if (fxTrigger) fxTrigger.addEventListener('click', () => fxRoot.classList.toggle('open'));
     if (fxClose)   fxClose.addEventListener('click',   () => fxRoot.classList.remove('open'));
+    document.addEventListener('click', e => { if (fxRoot && !fxRoot.contains(e.target)) fxRoot.classList.remove('open'); });
 
     const fmt = v => v >= 10 ? v.toFixed(2) : v.toFixed(3);
-    const fmtJPY = v => Math.round(v).toLocaleString();
+    const fmtJPY = v => String(Math.round(v)); /* plain number — type="number" input can't display commas */
 
     function calcFromForeign() {
       const amt = parseFloat(fxInput.value);

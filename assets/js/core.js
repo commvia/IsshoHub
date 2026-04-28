@@ -214,39 +214,8 @@
       </article>`;
   }
 
-  /* ── FX Calculator ── */
-  function wireFX() {
-    const fx = document.getElementById('fx');
-    const trigger = document.getElementById('fxTrigger');
-    const close = document.getElementById('fxClose');
-    const input = document.getElementById('fxInput');
-    const from = document.getElementById('fxFrom');
-    const output = document.getElementById('fxOutput');
-    if (!fx || !trigger) return;
-
-    const D = window.ISSHO_DATA;
-    function update() {
-      const ccy = from.value;
-      const amt = parseFloat(input.value) || 0;
-      const rate = D.rates[ccy] || 1;
-      output.value = '¥' + Math.round(amt * rate).toLocaleString('en-US');
-      const fl = document.getElementById('fxFromFlag');
-      if (fl) fl.className = 'flag flag-' + ccy.slice(0, 2).toLowerCase();
-      const lbl = document.getElementById('fxFromLabel');
-      if (lbl) lbl.textContent = ccy;
-    }
-
-    trigger.addEventListener('click', () => fx.classList.toggle('open'));
-    if (close) close.addEventListener('click', () => fx.classList.remove('open'));
-    if (input) input.addEventListener('input', update);
-    if (from) from.addEventListener('change', update);
-    update();
-
-    /* close on outside click */
-    document.addEventListener('click', e => {
-      if (!fx.contains(e.target)) fx.classList.remove('open');
-    });
-  }
+  /* ── FX Calculator ── handled by initFX() in index.html ── */
+  function wireFX() { /* no-op: logic moved to initFX IIFE */ }
 
   /* ── Auth state UI ── */
   function updateAuthUI(user, profile) {
