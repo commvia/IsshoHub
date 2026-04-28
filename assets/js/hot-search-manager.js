@@ -51,9 +51,9 @@
       return;
     }
     list.innerHTML = items.map((item, i) => `
-      <div class="hs-row" data-id="${item.id}" data-idx="${i}">
+      <div class="hs-row" draggable="true" data-id="${item.id}" data-idx="${i}">
         <span class="hs-drag">☰</span>
-        <span class="hs-rank">${String(item.sort_order || i + 1).padStart(2, '0')}</span>
+        <span class="hs-rank">${String(i + 1).padStart(2, '0')}</span>
         <input type="text" class="hs-input hs-tc" value="${item.keyword_tc || ''}" placeholder="繁中" />
         <input type="text" class="hs-input hs-en" value="${item.keyword_en || ''}" placeholder="English" />
         <label class="toggle-switch" title="顯示中">
@@ -73,6 +73,48 @@
         const { error } = await window.IsshoAPI.deleteHotSearch(id);
         if (error) return showError(error.message);
         await reload();
+      });
+    });
+
+    /* Drag-and-drop reorder */
+    wireDrag(list);
+  }
+
+  function wireDrag(list) {
+    let dragEl = null;
+
+    list.querySelectorAll('.hs-row').forEach(row => {
+      row.addEventListener('dragstart', e => {
+        dragEl = row;
+        row.style.opacity = '0.4';
+        e.dataTransfer.effectAllowed = 'move';
+      });
+      row.addEventListener('dragend', () => {
+        dragEl = null;
+        row.style.opacity = '';
+        list.querySelectorAll('.hs-row').forEach(r => r.classList.remove('drag-over'));
+        /* Update rank numbers */
+        list.querySelectorAll('.hs-row').forEach((r, i) => {
+          r.querySelector('.hs-rank').textContent = String(i + 1).padStart(2, '0');
+        });
+      });
+      row.addEventListener('dragover', e => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        if (row !== dragEl) {
+          list.querySelectorAll('.hs-row').forEach(r => r.classList.remove('drag-over'));
+          row.classList.add('drag-over');
+        }
+      });
+      row.addEventListener('drop', e => {
+        e.preventDefault();
+        if (dragEl && row !== dragEl) {
+          const rows = [...list.querySelectorAll('.hs-row')];
+          const fromIdx = rows.indexOf(dragEl);
+          const toIdx = rows.indexOf(row);
+          if (fromIdx < toIdx) row.after(dragEl);
+          else row.before(dragEl);
+        }
       });
     });
   }
