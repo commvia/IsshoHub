@@ -495,9 +495,17 @@
 
   function renderHot() {
     const lang = getLang();
-    document.getElementById('hotPills').innerHTML = D.hot.map(p =>
-      `<button class="pill ${p.fire ? 'fire' : ''}"><span class="rank">${String(p.rank).padStart(2,'0')}</span>${lang === 'tc' ? p.tc : p.en}</button>`
-    ).join('');
+    window.IsshoAPI.fetchHotSearches().then(({ data }) => {
+      if (data && data.length) {
+        document.getElementById('hotPills').innerHTML = data.map((p, i) =>
+          `<button class="pill"><span class="rank">${String(p.sort_order || i + 1).padStart(2,'0')}</span>${lang === 'tc' ? (p.keyword_tc || p.keyword_en) : (p.keyword_en || p.keyword_tc)}</button>`
+        ).join('');
+      } else {
+        document.getElementById('hotPills').innerHTML = D.hot.map(p =>
+          `<button class="pill ${p.fire ? 'fire' : ''}"><span class="rank">${String(p.rank).padStart(2,'0')}</span>${lang === 'tc' ? p.tc : p.en}</button>`
+        ).join('');
+      }
+    });
   }
 
   function renderCats() {
