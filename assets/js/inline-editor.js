@@ -11,7 +11,7 @@
     window.IsshoAuth.isAdmin().then(admin => {
       if (!admin) return;
       injectEditButton();
-      /* Auto-open edit mode if URL has ?edit=1 */
+      /* Auto-open edit mode if URL has &edit=1 */
       if (new URLSearchParams(window.location.search).get('edit') === '1') enterEdit();
     });
   }

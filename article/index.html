@@ -281,8 +281,8 @@
 
   function getLang() { return C.getLang(); }
 
-  /* ── Get slug from URL: /article/my-slug → "my-slug" ── */
-  const slug = window.location.pathname.replace(/^\/article\//, '').replace(/\/$/, '');
+  /* ── Get slug from URL param: /article/?slug=my-slug ── */
+  const slug = new URLSearchParams(window.location.search).get('slug') || '';
 
   if (!slug) {
     document.getElementById('articleContent').innerHTML = `
@@ -351,7 +351,7 @@
     if (window.IsshoInlineEditor) window.IsshoInlineEditor.init(a);
   }
 
-  window.onLangChange = function () { loadArticle(slug); };
+  window.onLangChange = function () { if (slug) loadArticle(slug); };
 
   /* ── Live FX calculator ── */
   (function initFX() {
