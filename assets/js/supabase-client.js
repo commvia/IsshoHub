@@ -104,6 +104,24 @@
     return { data, error };
   }
 
+  /* Admin: fetch all articles regardless of status */
+  async function fetchAllArticles(options = {}) {
+    let query = getClient()
+      .from('articles')
+      .select('id, slug, title_tc, title_en, category_key, status, published_at, updated_at, featured, author')
+      .order('updated_at', { ascending: false });
+    if (options.category) query = query.eq('category_key', options.category);
+    if (options.status)   query = query.eq('status', options.status);
+    if (options.limit)    query = query.limit(options.limit);
+    const { data, error } = await query;
+    return { data: data || [], error };
+  }
+
+  async function deleteArticle(id) {
+    const { error } = await getClient().from('articles').delete().eq('id', id);
+    return { error };
+  }
+
   async function searchArticles(query, options = {}) {
     const q = (query || '').trim();
     if (!q) return { data: [], error: null };
@@ -224,8 +242,10 @@
   global.IsshoAPI = {
     fetchCategories,
     fetchArticles,
+    fetchAllArticles,
     fetchArticle,
     searchArticles,
+    deleteArticle,
     fetchHotSearches,
     fetchSiteSettings,
     saveArticle,
