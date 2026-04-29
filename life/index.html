@@ -3,16 +3,12 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>創業・工作 — IsshoHub</title>
-<meta name="description" content="在日本創業、開公司的完整指南：法人設立、銀行戶口、補助金、稅務會計、僱用外國員工，雙語一站式資源。" />
+<title>日常手續 — IsshoHub</title>
+<meta name="description" content="駕照切換、銀行開戶、電話卡、交通規則——移居日本後所有日常必辦手續的完整指南。" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700&family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/styles.css">
-<style>
-  /* Biz accent override */
-  .cat-hero { background: linear-gradient(135deg, #0d2444 0%, #1a4b7a 100%); }
-</style>
 </head>
 <body data-lang="tc">
 
@@ -42,7 +38,7 @@
     <div class="meta">
       <span data-i18n="ticker-weather"></span>
       <span>·</span>
-      <span data-i18n="ticker-rate"></span>
+      <span data-i18n="ticker-rate" id="tickerRate"></span>
     </div>
   </div>
 </div>
@@ -119,11 +115,11 @@
 
 <!-- =============== CATEGORY HERO =============== -->
 <section class="cat-hero">
-  <div class="cat-hero-watermark" id="catHeroWatermark">起業</div>
+  <div class="cat-hero-watermark" id="catHeroWatermark"></div>
   <div class="container">
     <div class="cat-hero-inner">
       <div class="cat-hero-icon-wrap">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M3 12h18"/></svg>
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4M16 3v4"/><circle cx="12" cy="15" r="2"/></svg>
       </div>
       <div class="cat-hero-body">
         <div class="cat-hero-breadcrumb">
@@ -136,11 +132,11 @@
         <p class="cat-hero-desc" id="catHeroDesc"></p>
         <div class="cat-hero-stats">
           <div class="cat-stat">
-            <div class="cat-stat-num">62</div>
+            <div class="cat-stat-num" id="catStatCount">93</div>
             <div class="cat-stat-label" id="catStatLabel"></div>
           </div>
           <div class="cat-stat">
-            <div class="cat-stat-num">8</div>
+            <div class="cat-stat-num">5</div>
             <div class="cat-stat-label" id="catStatSubs"></div>
           </div>
         </div>
@@ -156,30 +152,13 @@
   </div>
 </nav>
 
-<!-- =============== STARTUP CHECKLIST BANNER =============== -->
-<section style="padding: calc(40px * var(--dens)) 0 0;">
-  <div class="container">
-    <div class="checklist">
-      <div class="checklist-grid">
-        <div>
-          <div class="section-eyebrow" style="color: var(--accent-2);">— Quick start</div>
-          <h3 id="checklistTitle"></h3>
-          <p id="checklistDesc"></p>
-          <a href="/visa/" class="link-more" style="color: var(--accent-2);" id="checklistCta"></a>
-        </div>
-        <div class="checklist-items" id="bizChecklistItems"></div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- =============== FEATURED ARTICLE =============== -->
 <section class="cat-featured-section">
   <div class="container">
-    <div class="section-head" style="margin-bottom: 20px;">
+    <div class="section-head" style="margin-bottom:20px;">
       <div class="section-eyebrow">— Featured</div>
     </div>
-    <div class="article-grid" id="bizFeaturedGrid"></div>
+    <div class="article-grid" id="catFeaturedGrid"></div>
   </div>
 </section>
 
@@ -187,12 +166,9 @@
 <section class="cat-articles-section">
   <div class="container">
     <div class="cat-articles-header">
-      <div class="cat-articles-title" id="articlesTitle"></div>
-      <a class="link-more" href="#">
-        <span data-i18n="view_all"></span> →
-      </a>
+      <div class="cat-articles-title" id="catArticlesTitle"></div>
     </div>
-    <div class="article-grid" id="bizArticlesGrid"></div>
+    <div class="article-grid" id="catArticlesGrid"></div>
   </div>
 </section>
 
@@ -204,7 +180,7 @@
       <h3 data-i18n="newsletter_title"></h3>
       <p data-i18n="newsletter_sub"></p>
       <form class="newsletter-form">
-        <input type="email" data-i18n-placeholder="email_placeholder" placeholder="your@email.com" required />
+        <input type="email" placeholder="your@email.com" required />
         <button type="submit" data-i18n="newsletter_cta"></button>
       </form>
     </div>
@@ -274,7 +250,6 @@
     <div class="fx-asof" data-i18n="fx_asof"></div>
     <div class="fx-row">
       <label class="fx-ccy">
-        <span id="fxFromFlag"></span>
         <span id="fxFromLabel">HKD</span>
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
         <select id="fxFrom">
@@ -288,12 +263,12 @@
           <option value="SGD">SGD 坡元</option>
         </select>
       </label>
-      <input type="number" class="fx-input" id="fxInput" value="1000" min="0" placeholder="外幣金額" />
+      <input type="number" class="fx-input" id="fxInput" value="1000" min="0" />
     </div>
     <div class="fx-equals">⇅</div>
     <div class="fx-row to">
       <div class="fx-ccy"><span>🇯🇵</span>JPY 日圓</div>
-      <input type="number" class="fx-input" id="fxOutput" placeholder="日圓金額" />
+      <input type="number" class="fx-input" id="fxOutput" />
     </div>
     <div class="fx-rates" id="fxRates"></div>
   </div>
@@ -346,27 +321,37 @@
 (function () {
   const D = window.ISSHO_DATA;
   const C = window.IsshoCore;
-
-  const SUBS = D.nav.find(n => n.key === 'biz').sub;
-  let activeSub = 'all';
-  let _articles = null;
-
   function getLang() { return C.getLang(); }
+
+  /* ── Page config ── */
+  const PAGE = {
+    key:     'life',
+    tc:      '日常手續',
+    en:      'Daily Life',
+    desc_tc: '駕照切換、銀行開戶、電話卡、交通規則——移居日本後所有日常必辦手續的完整雙語指南。',
+    desc_en: 'Driver\'s licence conversion, bank accounts, SIM cards, traffic rules — a complete guide to everyday admin after moving to Japan.',
+    water:   '生活',
+    count:   93,
+    subs:    [{"tc":"外免切替","en":"Licence Conversion","count":18},{"tc":"交通規則","en":"Traffic Rules","count":12},{"tc":"銀行戶口","en":"Bank Accounts","count":22},{"tc":"電話卡","en":"SIM & Phone Plans","count":20},{"tc":"其他","en":"Other","count":21}],
+  };
+
+  let _articles = null;
+  let activeSub = 'all';
 
   /* ── Supabase article → card HTML ── */
   function sbCardHTML(a, opts) {
     opts = opts || {};
-    const lang = getLang();
-    const title = lang === 'tc' ? (a.title_tc || a.title_en) : (a.title_en || a.title_tc);
+    const lang    = getLang();
+    const title   = lang === 'tc' ? (a.title_tc || a.title_en) : (a.title_en || a.title_tc);
     const excerpt = lang === 'tc' ? (a.excerpt_tc || '') : (a.excerpt_en || '');
-    const img = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80';
-    const cat = a.category_key || '';
-    const author = a.author || '';
-    const date = a.published_at ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', { year:'numeric', month:'short', day:'numeric' }) : '';
-    const readTime = lang === 'tc' ? `${a.read_time || 5} 分鐘閱讀` : `${a.read_time || 5} min read`;
+    const img     = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80';
+    const cat     = a.category_key || '';
+    const author  = a.author || '';
+    const date    = a.published_at ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', { year:'numeric', month:'short', day:'numeric' }) : '';
+    const readTime = lang === 'tc' ? (a.read_time || 5) + ' 分鐘閱讀' : (a.read_time || 5) + ' min read';
     return `
       <article class="card ${opts.featured ? 'featured' : ''}">
-        <a class="card-media" href="/article/?slug=${a.slug}" style="background-image: url('${img}')">
+        <a class="card-media" href="/article/?slug=${a.slug}" style="background-image:url('${img}')">
           <span class="card-tag cat-${cat}">${cat}</span>
         </a>
         <a class="card-edit-chip" href="/article/?slug=${a.slug}&edit=1" title="編輯文章">
@@ -391,130 +376,73 @@
 
   async function loadArticles() {
     if (_articles) return _articles;
-    const { data } = await window.IsshoAPI.fetchArticles({ category: 'biz', limit: 20 });
+    const { data } = await window.IsshoAPI.fetchArticles({ category: PAGE.key, limit: 20 });
     _articles = data || [];
     return _articles;
   }
 
-  /* Startup checklist data */
-  const BIZ_CHECKLIST = [
-    { n: '01',
-      tc: { t: '確定法人形態', d: '株式會社（KK）或合同會社（GK）各有優缺點，根據規模與稅務考量選擇。' },
-      en: { t: 'Choose your entity type', d: 'KK (Kabushiki Kaisha) vs GK (Godo Kaisha) — different tax implications and prestige. Choose based on your scale.' },
-      status_tc: '第一步', status_en: 'Step 1', done: true },
-    { n: '02',
-      tc: { t: '準備資本金（最低 1 円，建議 500 萬）', d: '技術簽證申請經營管理需要 500 萬日圓資本金，建議在設立前確認簽證要求。' },
-      en: { t: 'Prepare capital (min ¥1, recommended ¥5M)', d: 'The Business Manager Visa requires ¥5M capital. Confirm visa requirements before incorporation.' },
-      status_tc: '設立前', status_en: 'Pre-setup', done: true },
-    { n: '03',
-      tc: { t: '辦理法人登記（法務局）', d: '準備定款、申請書、印鑑等文件，委託司法書士可加快流程。' },
-      en: { t: 'Register at the Legal Affairs Bureau', d: 'Prepare articles of incorporation, application forms, and company seals. A judicial scrivener can speed this up.' },
-      status_tc: '2週', status_en: '~2 weeks' },
-    { n: '04',
-      tc: { t: '開設法人銀行戶口', d: '法人登記完成後立即申請，部分銀行需等待 1-3 個月。盡早開始。' },
-      en: { t: 'Open a corporate bank account', d: 'Apply immediately after registration. Some banks take 1–3 months. Start early.' },
-      status_tc: '盡早', status_en: 'ASAP' },
-    { n: '05',
-      tc: { t: '向稅務署申報設立', d: '法人設立後 2 個月內向稅務署提交開業屆，建議委託稅理士處理。' },
-      en: { t: 'File incorporation notice with tax office', d: 'Within 2 months of establishment — a tax accountant (zeirishi) is strongly recommended.' },
-      status_tc: '2月內', status_en: 'Within 2mo' },
-  ];
-
+  /* ── Render cat hero ── */
   function renderCatHero() {
     const lang = getLang();
-    const title = lang === 'tc' ? '創業・工作' : 'Business & Work';
-    const enSub = lang === 'tc' ? 'Business & Work' : '創業・工作';
-    const desc = lang === 'tc'
-      ? '在日本創業、設立法人的完整指南。從選擇法人形態、開設銀行戶口，到申請補助金、僱用外國員工——每個環節都有雙語深度解說。'
-      : 'Complete guides to starting a business and incorporating in Japan. From choosing your entity type and opening a bank account to grants, hiring, and tax basics.';
-    const breadcrumb = lang === 'tc' ? '創業・工作' : 'Business & Work';
-    const statLabel = lang === 'tc' ? '篇文章' : 'articles';
-    const statSubs = lang === 'tc' ? '個子分類' : 'sub-categories';
-
-    document.getElementById('catHeroTitle').textContent = title;
-    document.getElementById('catHeroEn').textContent = enSub;
-    document.getElementById('catHeroDesc').textContent = desc;
-    document.getElementById('heroBreadcrumbCurrent').textContent = breadcrumb;
-    document.getElementById('catStatLabel').textContent = statLabel;
-    document.getElementById('catStatSubs').textContent = statSubs;
-    document.getElementById('catHeroWatermark').textContent = lang === 'tc' ? '起業' : 'BIZ';
-
-    /* startup checklist banner */
-    const title2 = lang === 'tc' ? '在日本設立法人：五個關鍵步驟' : 'Incorporating in Japan: five critical steps';
-    const desc2 = lang === 'tc' ? '從選擇法人形態到第一份稅務申報，我們把最容易踩坑的環節整理清楚。' : 'From entity type to your first tax filing — we mapped out the steps where most founders get tripped up.';
-    const cta = lang === 'tc' ? '取得創業簽證支援 →' : 'Get startup visa support →';
-    document.getElementById('checklistTitle').textContent = title2;
-    document.getElementById('checklistDesc').textContent = desc2;
-    const ctaEl = document.getElementById('checklistCta');
-    ctaEl.textContent = cta;
-    ctaEl.style.color = 'var(--accent-2)';
-
-    document.getElementById('articlesTitle').textContent = lang === 'tc' ? '最新創業文章' : 'Latest business articles';
+    document.getElementById('catHeroTitle').textContent          = lang === 'tc' ? PAGE.tc : PAGE.en;
+    document.getElementById('catHeroEn').textContent             = lang === 'tc' ? PAGE.en : PAGE.tc;
+    document.getElementById('catHeroDesc').textContent           = lang === 'tc' ? PAGE.desc_tc : PAGE.desc_en;
+    document.getElementById('heroBreadcrumbCurrent').textContent = lang === 'tc' ? PAGE.tc : PAGE.en;
+    document.getElementById('catHeroWatermark').textContent      = PAGE.water;
+    document.getElementById('catStatLabel').textContent          = lang === 'tc' ? '篇文章' : 'articles';
+    const subsEl = document.getElementById('catStatSubs');
+    if (subsEl) subsEl.textContent = lang === 'tc' ? '個子分類' : 'sub-categories';
   }
 
+  /* ── Render subcat nav ── */
   function renderSubcatNav() {
+    const scrollEl = document.getElementById('subcatScroll');
+    if (!scrollEl || !PAGE.subs.length) return;
     const lang = getLang();
-    const tabs = [{ key: 'all', tc: '全部', en: 'All', count: 62 }];
-    const counts = [12, 9, 11, 8, 10, 7, 6, 9];
-    SUBS.forEach((s, i) => tabs.push({ key: i, tc: s.tc, en: s.en, count: counts[i] || 8 }));
-
-    document.getElementById('subcatScroll').innerHTML = tabs.map(tab => {
-      const label = lang === 'tc' ? tab.tc : tab.en;
-      const isActive = tab.key === activeSub;
-      return `<a href="javascript:void(0)" class="subcat-tab${isActive ? ' active' : ''}" data-sub="${tab.key}">
-        ${label}<span class="count">${tab.count}</span>
-      </a>`;
-    }).join('');
-
-    document.getElementById('subcatScroll').addEventListener('click', e => {
+    const all  = [{ key: 'all', tc: '全部', en: 'All', count: PAGE.count }];
+    const tabs = all.concat(PAGE.subs.map((s, i) => ({ key: i, tc: s.tc, en: s.en, count: s.count })));
+    scrollEl.innerHTML = tabs.map(tab => `
+      <a href="javascript:void(0)" class="subcat-tab${tab.key === activeSub ? ' active' : ''}" data-sub="${tab.key}">
+        ${lang === 'tc' ? tab.tc : tab.en}<span class="count">${tab.count}</span>
+      </a>`).join('');
+    scrollEl.addEventListener('click', e => {
       const tab = e.target.closest('.subcat-tab');
       if (!tab) return;
       activeSub = tab.getAttribute('data-sub');
-      document.querySelectorAll('.subcat-tab').forEach(t => t.classList.remove('active'));
+      scrollEl.querySelectorAll('.subcat-tab').forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
     });
   }
 
-  function renderChecklist() {
-    const lang = getLang();
-    document.getElementById('bizChecklistItems').innerHTML = BIZ_CHECKLIST.map(c => {
-      const title = lang === 'tc' ? c.tc.t : c.en.t;
-      const desc = lang === 'tc' ? c.tc.d : c.en.d;
-      const status = lang === 'tc' ? c.status_tc : c.status_en;
-      return `
-        <div class="checklist-item">
-          <div class="check-num">${c.n}</div>
-          <div class="check-body">
-            <div class="check-title">${title}</div>
-            <div class="check-desc">${desc}</div>
-          </div>
-          <div class="check-status ${c.done ? 'done' : ''}">${c.done ? '✓ ' : ''}${status}</div>
-        </div>`;
-    }).join('');
-  }
-
+  /* ── Render featured ── */
   function renderFeatured() {
     loadArticles().then(articles => {
       const featured = articles.find(a => a.featured) || articles[0];
+      const el = document.getElementById('catFeaturedGrid');
+      if (!el) return;
       if (featured) {
-        document.getElementById('bizFeaturedGrid').innerHTML = sbCardHTML(featured, { featured: true });
+        el.innerHTML = sbCardHTML(featured, { featured: true });
       } else {
-        document.getElementById('bizFeaturedGrid').innerHTML = C.cardHTML(D.biz_featured, { featured: true });
+        el.innerHTML = '<p style="color:var(--ink-3);padding:20px 0">暫無文章</p>';
       }
     });
   }
 
+  /* ── Render articles ── */
   function renderArticles() {
     const lang = getLang();
-    document.getElementById('articlesTitle').textContent = lang === 'tc' ? '最新創業文章' : 'Latest business articles';
+    const titleEl = document.getElementById('catArticlesTitle');
+    if (titleEl) titleEl.textContent = lang === 'tc' ? '最新' + PAGE.tc + '文章' : 'Latest ' + PAGE.en + ' articles';
     loadArticles().then(articles => {
+      const el = document.getElementById('catArticlesGrid');
+      if (!el) return;
       const rest = articles.filter(a => !a.featured);
       if (rest.length) {
-        document.getElementById('bizArticlesGrid').innerHTML = rest.map(a => sbCardHTML(a)).join('');
-        const numEl = document.querySelector('.cat-stat-num');
-        if (numEl) numEl.textContent = articles.length;
+        el.innerHTML = rest.map(a => sbCardHTML(a)).join('');
+        const countEl = document.getElementById('catStatCount');
+        if (countEl) countEl.textContent = articles.length;
       } else {
-        document.getElementById('bizArticlesGrid').innerHTML = D.biz_articles.map(a => C.cardHTML(a)).join('');
+        el.innerHTML = '<p style="color:var(--ink-3);padding:20px 0">暫無文章</p>';
       }
     });
   }
@@ -522,50 +450,34 @@
   function renderAll() {
     renderCatHero();
     renderSubcatNav();
-    renderChecklist();
     renderFeatured();
     renderArticles();
   }
 
   window.onLangChange = function () { _articles = null; renderAll(); };
-
-  C.init('biz');
+  C.init(PAGE.key);
   renderAll();
 
-  /* ── Live FX calculator ── */
+  /* ── FX Calculator ── */
   (function initFX() {
     const CURRENCIES = ['HKD','TWD','USD','EUR','GBP','CAD','AUD','SGD'];
-    const tickerEl  = document.getElementById('tickerRate');
-    const fxInput   = document.getElementById('fxInput');
-    const fxOutput  = document.getElementById('fxOutput');
-    const fxFrom    = document.getElementById('fxFrom');
-    const fxRates   = document.getElementById('fxRates');
-    const fxTrigger = document.getElementById('fxTrigger');
-    const fxClose   = document.getElementById('fxClose');
-    let rates = {};
-    let lastEdited = 'input';
-    const fxRoot = document.getElementById('fx');
-    if (fxTrigger) fxTrigger.addEventListener('click', () => fxRoot.classList.toggle('open'));
-    if (fxClose)   fxClose.addEventListener('click',   () => fxRoot.classList.remove('open'));
+    const tickerEl = document.getElementById('tickerRate');
+    const fxInput  = document.getElementById('fxInput');
+    const fxOutput = document.getElementById('fxOutput');
+    const fxFrom   = document.getElementById('fxFrom');
+    const fxRates  = document.getElementById('fxRates');
+    const fxRoot   = document.getElementById('fx');
+    let rates = {}, lastEdited = 'input';
+    document.getElementById('fxTrigger').addEventListener('click', () => fxRoot.classList.toggle('open'));
+    document.getElementById('fxClose').addEventListener('click',   () => fxRoot.classList.remove('open'));
     document.addEventListener('click', e => { if (fxRoot && !fxRoot.contains(e.target)) fxRoot.classList.remove('open'); });
-    const fmt = v => v >= 10 ? v.toFixed(2) : v.toFixed(3);
+    const fmt    = v => v >= 10 ? v.toFixed(2) : v.toFixed(3);
     const fmtJPY = v => String(Math.round(v));
-    function calcFromForeign() {
-      const amt = parseFloat(fxInput.value);
-      const cur = fxFrom.value;
-      if (!isNaN(amt) && rates[cur]) fxOutput.value = fmtJPY(amt * rates[cur]);
-    }
-    function calcFromJPY() {
-      const jpy = parseFloat(fxOutput.value);
-      const cur = fxFrom.value;
-      if (!isNaN(jpy) && rates[cur]) fxInput.value = fmt(jpy / rates[cur]);
-    }
-    if (fxInput)  fxInput.addEventListener('input',  () => { lastEdited = 'input';  calcFromForeign(); });
-    if (fxOutput) fxOutput.addEventListener('input', () => { lastEdited = 'output'; calcFromJPY(); });
-    if (fxFrom)   fxFrom.addEventListener('change',  () => {
-      document.getElementById('fxFromLabel').textContent = fxFrom.value;
-      lastEdited === 'output' ? calcFromJPY() : calcFromForeign();
-    });
+    const calcForeign = () => { const a = parseFloat(fxInput.value), c = fxFrom.value; if (!isNaN(a) && rates[c]) fxOutput.value = fmtJPY(a * rates[c]); };
+    const calcJPY     = () => { const j = parseFloat(fxOutput.value), c = fxFrom.value; if (!isNaN(j) && rates[c]) fxInput.value = fmt(j / rates[c]); };
+    fxInput.addEventListener('input',  () => { lastEdited = 'input';  calcForeign(); });
+    fxOutput.addEventListener('input', () => { lastEdited = 'output'; calcJPY(); });
+    fxFrom.addEventListener('change',  () => { document.getElementById('fxFromLabel').textContent = fxFrom.value; lastEdited === 'output' ? calcJPY() : calcForeign(); });
     fetch('https://open.er-api.com/v6/latest/JPY')
       .then(r => r.json())
       .then(json => {
@@ -577,14 +489,10 @@
           const show = () => { tickerEl.innerHTML = parts.slice(idx, idx+2).join('&nbsp;&nbsp;'); idx = (idx+2) % parts.length; };
           show(); setInterval(show, 3000);
         }
-        if (fxRates) {
-          fxRates.innerHTML = CURRENCIES.filter(c => rates[c]).map(c =>
-            `<div class="fx-rate-item"><div class="k">${c}/JPY</div><div class="v">${fmt(rates[c])}</div></div>`
-          ).join('');
-        }
-        if (fxInput && fxInput.value) calcFromForeign();
-      })
-      .catch(() => {});
+        if (fxRates) fxRates.innerHTML = CURRENCIES.filter(c => rates[c]).map(c =>
+          `<div class="fx-rate-item"><div class="k">${c}/JPY</div><div class="v">${fmt(rates[c])}</div></div>`).join('');
+        if (fxInput.value) calcForeign();
+      }).catch(() => {});
   })();
 
   if (window.IsshoSearch) window.IsshoSearch.init();
