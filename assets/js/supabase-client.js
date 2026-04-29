@@ -102,6 +102,19 @@
     return { data, error };
   }
 
+  async function searchArticles(query, options = {}) {
+    const q = (query || '').trim();
+    if (!q) return { data: [], error: null };
+    const { data, error } = await getClient()
+      .from('articles')
+      .select('id, slug, title_tc, title_en, excerpt_tc, excerpt_en, cover_image_url, category_key, published_at, read_time, author')
+      .eq('status', 'published')
+      .or(`title_tc.ilike.%${q}%,title_en.ilike.%${q}%,excerpt_tc.ilike.%${q}%,excerpt_en.ilike.%${q}%`)
+      .order('published_at', { ascending: false })
+      .limit(options.limit || 20);
+    return { data: data || [], error };
+  }
+
   async function fetchArticle(slug) {
     const { data, error } = await getClient()
       .from('articles')
@@ -210,6 +223,7 @@
     fetchCategories,
     fetchArticles,
     fetchArticle,
+    searchArticles,
     fetchHotSearches,
     fetchSiteSettings,
     saveArticle,

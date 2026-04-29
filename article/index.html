@@ -273,6 +273,7 @@
 <script src="/assets/js/data.js"></script>
 <script src="/assets/js/supabase-client.js"></script>
 <script src="/assets/js/inline-editor.js"></script>
+<script src="/assets/js/search.js"></script>
 <script src="/assets/js/core.js"></script>
 <script>
 (function () {
@@ -408,6 +409,7 @@
       .catch(() => {});
   })();
 
+  if (window.IsshoSearch) window.IsshoSearch.init();
 })();
 </script>
 </body>
