@@ -59,6 +59,8 @@
   async function isAdmin() {
     const user = await getUser();
     if (!user) return false;
+    /* Check user_metadata first (same as core.js) — avoids extra DB round-trip */
+    if (user.user_metadata?.role === 'admin') return true;
     const { data } = await getProfile(user.id);
     return data?.role === 'admin';
   }

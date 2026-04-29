@@ -2,27 +2,55 @@
 (function (global) {
   'use strict';
 
-  let _article = null; /* current article object */
+  let _article = null;
   let _editing  = false;
 
   /* ── Called from article/index.html after article is loaded ── */
   function init(article) {
     _article = article;
+
+    /* core.js sets .is-admin on body after its own async auth check.
+       We watch for that class instead of making a separate isAdmin() call
+       (which only checks the profiles table and misses user_metadata role). */
+    if (document.body.classList.contains('is-admin')) {
+      activate();
+      return;
+    }
+
+    /* Watch for is-admin to be added asynchronously by core.js */
+    const observer = new MutationObserver(() => {
+      if (document.body.classList.contains('is-admin')) {
+        observer.disconnect();
+        activate();
+      }
+    });
+    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+    /* Fallback: also try isAdmin() directly (covers edge cases) */
     window.IsshoAuth.isAdmin().then(admin => {
       if (!admin) return;
-      injectEditButton();
-      /* Auto-open edit mode if URL has &edit=1 */
-      if (new URLSearchParams(window.location.search).get('edit') === '1') enterEdit();
-    });
+      observer.disconnect();
+      activate();
+    }).catch(() => {});
+  }
+
+  function activate() {
+    if (document.getElementById('inlineEditBtn')) return; /* already done */
+    injectEditButton();
+    if (new URLSearchParams(window.location.search).get('edit') === '1') enterEdit();
   }
 
   /* ── Inject floating edit button ── */
   function injectEditButton() {
-    if (document.getElementById('inlineEditBtn')) return;
     const btn = document.createElement('button');
     btn.id = 'inlineEditBtn';
     btn.className = 'inline-edit-fab';
-    btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 編輯文章`;
+    btn.innerHTML = `
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+        <path d="M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+      </svg>
+      編輯文章`;
     btn.addEventListener('click', enterEdit);
     document.body.appendChild(btn);
   }
@@ -34,7 +62,7 @@
 
     const lang = document.body.getAttribute('data-lang') || 'tc';
 
-    /* Make title editable */
+    /* Title → contenteditable */
     const titleEl = document.querySelector('.article-title');
     if (titleEl) {
       titleEl.contentEditable = 'true';
@@ -42,10 +70,12 @@
       titleEl.focus();
     }
 
-    /* Replace body with textarea */
+    /* Body → textarea */
     const bodyEl = document.querySelector('.article-body');
     if (bodyEl) {
-      const bodyContent = lang === 'tc' ? (_article.body_tc || _article.body_en || '') : (_article.body_en || _article.body_tc || '');
+      const bodyContent = lang === 'tc'
+        ? (_article.body_tc || _article.body_en || '')
+        : (_article.body_en || _article.body_tc || '');
       const ta = document.createElement('textarea');
       ta.id = 'inlineBodyTA';
       ta.className = 'inline-body-textarea';
@@ -55,7 +85,7 @@
       ta.addEventListener('input', () => autoResize(ta));
     }
 
-    /* Cover image input */
+    /* Cover image URL input overlay */
     const coverEl = document.querySelector('.article-cover');
     if (coverEl) {
       const wrap = document.createElement('div');
@@ -75,7 +105,7 @@
       });
     }
 
-    /* Hide the edit fab */
+    /* Hide FAB */
     const fab = document.getElementById('inlineEditBtn');
     if (fab) fab.style.display = 'none';
 
@@ -96,25 +126,24 @@
         <button class="editor-btn editor-btn-primary" id="inlineSaveBtn">儲存</button>
       </div>`;
     document.body.appendChild(bar);
-
     document.getElementById('inlineSaveBtn').addEventListener('click', saveEdits);
     document.getElementById('inlineCancelBtn').addEventListener('click', () => location.reload());
   }
 
-  /* ── Save edits to Supabase ── */
+  /* ── Save to Supabase ── */
   async function saveEdits() {
-    const saveBtn = document.getElementById('inlineSaveBtn');
+    const saveBtn  = document.getElementById('inlineSaveBtn');
     const statusEl = document.getElementById('inlineSaveStatus');
     saveBtn.disabled = true;
     statusEl.textContent = '儲存中…';
+    statusEl.style.color = '';
 
-    const lang = document.body.getAttribute('data-lang') || 'tc';
-    const titleEl = document.querySelector('.article-title');
-    const bodyTA  = document.getElementById('inlineBodyTA');
+    const lang       = document.body.getAttribute('data-lang') || 'tc';
+    const titleEl    = document.querySelector('.article-title');
+    const bodyTA     = document.getElementById('inlineBodyTA');
     const coverInput = document.getElementById('inlineCoverUrl');
 
     const updates = { id: _article.id };
-
     if (titleEl) {
       if (lang === 'tc') updates.title_tc = titleEl.textContent.trim();
       else               updates.title_en = titleEl.textContent.trim();
@@ -129,13 +158,12 @@
 
     if (error) {
       statusEl.textContent = '❌ ' + error.message;
-      statusEl.style.color = 'var(--red)';
+      statusEl.style.color = '#e53e3e';
       saveBtn.disabled = false;
     } else {
-      /* Update local cache */
       Object.assign(_article, updates);
       statusEl.textContent = '✓ 已儲存';
-      statusEl.style.color = 'var(--green)';
+      statusEl.style.color = '#38a169';
       saveBtn.disabled = false;
       setTimeout(() => { statusEl.textContent = ''; }, 2500);
     }
