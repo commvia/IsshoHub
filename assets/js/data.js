@@ -2,6 +2,15 @@
 window.ISSHO_DATA = {
 
   nav: [
+    { key: "news",   url: "/news/",   tc: "新聞・資訊",       en: "News & Updates",          short_tc: "新聞",   short_en: "News",
+      sub: [
+        { tc: "政策動態",     en: "Policy Updates",   url: "/news/#policy" },
+        { tc: "簽證動態",     en: "Visa Updates",     url: "/news/#visa" },
+        { tc: "生活資訊",     en: "Life Updates",     url: "/news/#life" },
+        { tc: "社群消息",     en: "Community News",   url: "/news/#community" },
+        { tc: "活動・Meetup", en: "Events & Meetups", url: "/news/#events" },
+      ]
+    },
     { key: "visa",   url: "/visa/",   tc: "簽證・在留資格",   en: "Visa & Residency",        short_tc: "簽證",   short_en: "Visa",
       sub: [
         { tc: "在留政策",                       en: "Residency Policy",                              url: "/visa/#policy" },
@@ -57,15 +66,6 @@ window.ISSHO_DATA = {
     { key: "places", url: "/places/", tc: "好去處",           en: "Leisure",                 short_tc: "好去處", short_en: "Leisure" },
     { key: "pets",   url: "/pets/",   tc: "寵物",             en: "Pets in Japan",           short_tc: "寵物",   short_en: "Pets" },
     { key: "story",  url: "/story/",  tc: "人物故事",         en: "Stories",                 short_tc: "故事",   short_en: "Stories" },
-    { key: "news",   url: "/news/",   tc: "新聞・資訊",       en: "News & Updates",          short_tc: "新聞",   short_en: "News",
-      sub: [
-        { tc: "政策動態",   en: "Policy Updates",        url: "/news/#policy" },
-        { tc: "簽證動態",   en: "Visa Updates",          url: "/news/#visa" },
-        { tc: "生活資訊",   en: "Life Updates",          url: "/news/#life" },
-        { tc: "社群消息",   en: "Community News",        url: "/news/#community" },
-        { tc: "活動・Meetup", en: "Events & Meetups",   url: "/news/#events" },
-      ]
-    },
   ],
 
   ui: {
@@ -173,6 +173,7 @@ window.ISSHO_DATA = {
   ],
 
   cats: [
+    { key: "news",   count: 56, tc: "新聞・資訊",        en: "News & Updates",          icon: "news",     url: "/news/" },
     { key: "visa",   count: 84, tc: "簽證・在留資格",   en: "Visa & Residency",        icon: "passport", url: "/visa/" },
     { key: "biz",    count: 62, tc: "創業・工作",        en: "Business & Work",         icon: "briefcase", url: "/biz/" },
     { key: "house",  count: 51, tc: "住屋",              en: "Housing",                 icon: "home",     url: "/house/" },
@@ -181,7 +182,6 @@ window.ISSHO_DATA = {
     { key: "places", count: 68, tc: "好去處",            en: "Leisure",                 icon: "torii",    url: "/places/" },
     { key: "pets",   count: 29, tc: "寵物",              en: "Pets in Japan",           icon: "paw",      url: "/pets/" },
     { key: "story",  count: 41, tc: "人物故事",          en: "Stories",                 icon: "quote",    url: "/story/" },
-    { key: "news",   count: 56, tc: "新聞・資訊",        en: "News & Updates",          icon: "news",     url: "/news/" },
   ],
 
   featured: {
