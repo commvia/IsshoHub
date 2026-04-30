@@ -270,7 +270,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/marked@9/marked.min.js"></script>
 <script src="/assets/js/data.js"></script>
 <script src="/assets/js/supabase-client.js"></script>
 <script src="/assets/js/inline-editor.js"></script>
@@ -282,6 +281,102 @@
   C.init(null);
 
   function getLang() { return C.getLang(); }
+
+  /* ── Markdown → HTML parser ── */
+  function md(text) {
+    if (!text) return '';
+    const lines = text.split('\n');
+    const out = [];
+    let inUl = false, inOl = false, inBlockquote = false;
+
+    function closeLists() {
+      if (inUl)  { out.push('</ul>');  inUl  = false; }
+      if (inOl)  { out.push('</ol>');  inOl  = false; }
+    }
+    function closeBlockquote() {
+      if (inBlockquote) { out.push('</blockquote>'); inBlockquote = false; }
+    }
+
+    function inline(s) {
+      return s
+        .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
+        .replace(/\*\*(.+?)\*\*/g,     '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g,         '<em>$1</em>')
+        .replace(/`(.+?)`/g,           '<code>$1</code>')
+        .replace(/\[(.+?)\]\((.+?)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
+    }
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      const trimmed = line.trim();
+
+      /* Headings */
+      if (/^#### (.+)/.test(trimmed)) { closeLists(); closeBlockquote(); out.push(`<h4>${inline(trimmed.slice(5))}</h4>`); continue; }
+      if (/^### (.+)/.test(trimmed))  { closeLists(); closeBlockquote(); out.push(`<h3>${inline(trimmed.slice(4))}</h3>`); continue; }
+      if (/^## (.+)/.test(trimmed))   { closeLists(); closeBlockquote(); out.push(`<h2>${inline(trimmed.slice(3))}</h2>`); continue; }
+      if (/^# (.+)/.test(trimmed))    { closeLists(); closeBlockquote(); out.push(`<h2>${inline(trimmed.slice(2))}</h2>`); continue; }
+
+      /* Horizontal rule */
+      if (/^---+$/.test(trimmed)) { closeLists(); closeBlockquote(); out.push('<hr>'); continue; }
+
+      /* Blockquote */
+      if (/^> (.*)/.test(trimmed)) {
+        closeLists();
+        if (!inBlockquote) { out.push('<blockquote>'); inBlockquote = true; }
+        out.push(`<p>${inline(trimmed.slice(2))}</p>`);
+        continue;
+      }
+
+      /* Unordered list */
+      if (/^[-*+] (.+)/.test(trimmed)) {
+        closeBlockquote();
+        if (inOl) { out.push('</ol>'); inOl = false; }
+        if (!inUl) { out.push('<ul>'); inUl = true; }
+        out.push(`<li>${inline(trimmed.slice(2))}</li>`);
+        continue;
+      }
+
+      /* Ordered list */
+      const olMatch = trimmed.match(/^\d+\. (.+)/);
+      if (olMatch) {
+        closeBlockquote();
+        if (inUl) { out.push('</ul>'); inUl = false; }
+        if (!inOl) { out.push('<ol>'); inOl = true; }
+        out.push(`<li>${inline(olMatch[1])}</li>`);
+        continue;
+      }
+
+      /* Empty line — close open blocks */
+      if (trimmed === '') {
+        closeLists();
+        closeBlockquote();
+        out.push('');
+        continue;
+      }
+
+      /* Normal paragraph line */
+      closeLists();
+      closeBlockquote();
+      out.push(inline(trimmed));
+    }
+
+    closeLists();
+    closeBlockquote();
+
+    /* Join lines: consecutive non-empty lines → paragraph, empty lines = paragraph break */
+    const rawHtml = out.join('\n');
+    /* Wrap non-tag text blocks in <p> */
+    return rawHtml
+      .split(/\n{2,}/)
+      .map(block => {
+        block = block.trim();
+        if (!block) return '';
+        if (/^<(h[1-6]|ul|ol|li|hr|blockquote|p)/.test(block)) return block;
+        return `<p>${block.replace(/\n/g, '<br>')}</p>`;
+      })
+      .filter(Boolean)
+      .join('\n');
+  }
 
   /* ── Get slug from URL param: /article/?slug=my-slug ── */
   const slug = new URLSearchParams(window.location.search).get('slug') || '';
@@ -312,8 +407,8 @@
 
     const lang = getLang();
     const title    = lang === 'tc' ? (a.title_tc   || a.title_en)   : (a.title_en   || a.title_tc);
-    const rawBody  = lang === 'tc' ? (a.body_tc     || a.body_en     || '') : (a.body_en     || a.body_tc     || '');
-    const body     = rawBody ? (window.marked ? window.marked.parse(rawBody) : rawBody.replace(/\n/g, '<br>')) : '';
+    const rawBody  = lang === 'tc' ? (a.body_tc || a.body_en || '') : (a.body_en || a.body_tc || '');
+    const body     = md(rawBody);
     const excerpt  = lang === 'tc' ? (a.excerpt_tc  || '')           : (a.excerpt_en  || '');
     const catLabel = a.category_key || '';
     const catUrl   = a.category_key ? `/${a.category_key}/` : '/';
