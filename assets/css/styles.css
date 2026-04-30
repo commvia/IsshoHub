@@ -1990,6 +1990,13 @@ body[data-lang="en"] .cat-articles-title { font-family: var(--sans-en); }
 }
 .inline-editable:focus { outline-color: var(--navy); }
 
+.inline-body-wrap { margin-bottom: 20px; }
+.inline-body-wrap .md-toolbar {
+  border-radius: 8px 8px 0 0;
+  border: 2px dashed var(--accent);
+  border-bottom: 1px solid var(--accent);
+}
+.inline-body-wrap .md-toolbar-hint { font-size: 11px; }
 .inline-body-textarea {
   width: 100%;
   min-height: 320px;
@@ -1997,14 +2004,17 @@ body[data-lang="en"] .cat-articles-title { font-family: var(--sans-en); }
   line-height: 1.7;
   color: var(--ink-1);
   border: 2px dashed var(--accent);
-  border-radius: 8px;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
   padding: 16px;
   resize: vertical;
   font-family: var(--sans-en);
-  margin-bottom: 20px;
   background: #fffef9;
+  margin-bottom: 0;
 }
 .inline-body-textarea:focus { border-color: var(--navy); outline: none; }
+.inline-body-wrap:focus-within .md-toolbar { border-color: var(--navy); border-bottom-color: var(--navy); }
+.inline-body-wrap:focus-within .inline-body-textarea { border-color: var(--navy); }
 
 .inline-cover-wrap { margin-bottom: 36px; }
 .inline-cover-overlay {

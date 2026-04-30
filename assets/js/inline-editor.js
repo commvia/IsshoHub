@@ -5,6 +5,153 @@
   let _article = null;
   let _editing  = false;
 
+  /* ══════════════════════════════════════════
+     Markdown toolbar helpers
+  ══════════════════════════════════════════ */
+
+  function mdToolbarHTML() {
+    return `<div class="md-toolbar" id="inlineMdToolbar">
+      <button type="button" class="md-toolbar-btn" data-md="bold" title="粗體 Cmd+B"><b>B</b></button>
+      <button type="button" class="md-toolbar-btn" data-md="italic" title="斜體 Cmd+I"><i>I</i></button>
+      <div class="md-toolbar-sep"></div>
+      <button type="button" class="md-toolbar-btn" data-md="h2" title="大標題">H2</button>
+      <button type="button" class="md-toolbar-btn" data-md="h3" title="小標題">H3</button>
+      <div class="md-toolbar-sep"></div>
+      <button type="button" class="md-toolbar-btn" data-md="ul" title="項目清單">• 清單</button>
+      <button type="button" class="md-toolbar-btn" data-md="blockquote" title="引言">" 引言</button>
+      <button type="button" class="md-toolbar-btn" data-md="hr" title="分隔線">— —</button>
+      <div class="md-toolbar-hint" id="inlineMdHint">📋 貼上 Word 內容可自動轉換格式</div>
+    </div>`;
+  }
+
+  function applyMdFormat(ta, format) {
+    const start  = ta.selectionStart;
+    const end    = ta.selectionEnd;
+    const sel    = ta.value.substring(start, end);
+    const before = ta.value.substring(0, start);
+    const after  = ta.value.substring(end);
+    let replacement = sel;
+    let cursorOffset = 0;
+
+    if (format === 'bold') {
+      replacement  = sel ? `**${sel}**` : '**粗體文字**';
+      cursorOffset = 2;
+    } else if (format === 'italic') {
+      replacement  = sel ? `*${sel}*` : '*斜體文字*';
+      cursorOffset = 1;
+    } else if (format === 'h2') {
+      const ls   = before.lastIndexOf('\n') + 1;
+      const line = ta.value.substring(ls, end || ta.value.length);
+      const clean = line.replace(/^#{1,6}\s*/, '');
+      ta.value = ta.value.substring(0, ls) + '## ' + clean;
+      ta.selectionStart = ta.selectionEnd = ls + 3 + clean.length;
+      ta.focus(); autoResize(ta); return;
+    } else if (format === 'h3') {
+      const ls   = before.lastIndexOf('\n') + 1;
+      const line = ta.value.substring(ls, end || ta.value.length);
+      const clean = line.replace(/^#{1,6}\s*/, '');
+      ta.value = ta.value.substring(0, ls) + '### ' + clean;
+      ta.selectionStart = ta.selectionEnd = ls + 4 + clean.length;
+      ta.focus(); autoResize(ta); return;
+    } else if (format === 'ul') {
+      replacement  = sel ? sel.split('\n').map(l => l.trim() ? '- ' + l : l).join('\n') : '- 清單項目';
+      cursorOffset = sel ? 0 : 2;
+    } else if (format === 'blockquote') {
+      replacement  = sel ? sel.split('\n').map(l => '> ' + l).join('\n') : '> 引言文字';
+      cursorOffset = sel ? 0 : 2;
+    } else if (format === 'hr') {
+      replacement = '\n\n---\n\n';
+    }
+
+    ta.value = before + replacement + after;
+    ta.selectionStart = start + cursorOffset;
+    ta.selectionEnd   = start + replacement.length - cursorOffset;
+    ta.focus();
+    autoResize(ta);
+  }
+
+  /* HTML → Markdown (Word clipboard conversion) */
+  function htmlToMarkdown(html) {
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    div.querySelectorAll('style,script,meta,link').forEach(el => el.remove());
+    return walkMd(div).replace(/\n{3,}/g, '\n\n').trim();
+  }
+
+  function walkMd(node) {
+    if (node.nodeType === 3) return node.textContent;
+    if (node.nodeType !== 1) return '';
+    const tag  = node.tagName.toLowerCase();
+    if (['style','script','head'].includes(tag)) return '';
+    const sty  = node.getAttribute('style') || '';
+    const bold = /font-weight\s*:\s*(bold|[6-9]\d\d)/i.test(sty);
+    const ital = /font-style\s*:\s*italic/i.test(sty);
+    const inner = () => Array.from(node.childNodes).map(walkMd).join('');
+    switch (tag) {
+      case 'h1': return `\n\n# ${inner().trim()}\n\n`;
+      case 'h2': return `\n\n## ${inner().trim()}\n\n`;
+      case 'h3': return `\n\n### ${inner().trim()}\n\n`;
+      case 'h4': return `\n\n#### ${inner().trim()}\n\n`;
+      case 'p':  { const t = inner().trim(); return t ? `\n\n${t}\n\n` : ''; }
+      case 'br': return '\n';
+      case 'hr': return '\n\n---\n\n';
+      case 'b': case 'strong': { const t = inner().trim(); return t ? `**${t}**` : ''; }
+      case 'i': case 'em':     { const t = inner().trim(); return t ? `*${t}*`  : ''; }
+      case 'u': return inner();
+      case 'li': return `\n- ${inner().trim()}`;
+      case 'ul': case 'ol': return `\n${inner()}\n`;
+      case 'blockquote': return `\n\n> ${inner().trim()}\n\n`;
+      case 'a': {
+        const href = node.getAttribute('href') || '';
+        const t    = inner().trim();
+        if (!href || href.startsWith('mso-') || href === t) return t;
+        return `[${t}](${href})`;
+      }
+      case 'code': return `\`${inner()}\``;
+      case 'pre':  return `\n\`\`\`\n${inner()}\n\`\`\`\n`;
+      case 'span': case 'div': {
+        let t = inner();
+        if (bold && t.trim()) t = `**${t.trim()}**`;
+        if (ital && t.trim()) t = `*${t.trim()}*`;
+        if (tag === 'div')    t = `\n\n${t.trim()}\n\n`;
+        return t;
+      }
+      default: return inner();
+    }
+  }
+
+  function wireMdToolbar(ta) {
+    const toolbar = document.getElementById('inlineMdToolbar');
+    if (!toolbar) return;
+    toolbar.querySelectorAll('[data-md]').forEach(btn => {
+      btn.addEventListener('mousedown', e => {
+        e.preventDefault();
+        applyMdFormat(ta, btn.getAttribute('data-md'));
+      });
+    });
+    ta.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'b') { e.preventDefault(); applyMdFormat(ta, 'bold'); }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'i') { e.preventDefault(); applyMdFormat(ta, 'italic'); }
+    });
+    ta.addEventListener('paste', e => {
+      const html = e.clipboardData && e.clipboardData.getData('text/html');
+      if (!html || !/<(h[1-6]|b|strong|ul|ol|li|blockquote)/i.test(html)) return;
+      e.preventDefault();
+      const md    = htmlToMarkdown(html);
+      const s     = ta.selectionStart;
+      ta.value    = ta.value.substring(0, s) + md + ta.value.substring(ta.selectionEnd);
+      ta.selectionStart = ta.selectionEnd = s + md.length;
+      autoResize(ta);
+      const hint = document.getElementById('inlineMdHint');
+      if (hint) {
+        const orig = hint.textContent;
+        hint.textContent = '✓ 已自動轉換 Word 格式';
+        hint.style.color = '#38a169';
+        setTimeout(() => { hint.textContent = orig; hint.style.color = ''; }, 2500);
+      }
+    });
+  }
+
   /* ── Called from article/index.html after article is loaded ── */
   function init(article) {
     _article = article;
@@ -70,19 +217,28 @@
       titleEl.focus();
     }
 
-    /* Body → textarea */
+    /* Body → toolbar + textarea */
     const bodyEl = document.querySelector('.article-body');
     if (bodyEl) {
       const bodyContent = lang === 'tc'
         ? (_article.body_tc || _article.body_en || '')
         : (_article.body_en || _article.body_tc || '');
+
+      /* Wrap: toolbar above textarea */
+      const wrap = document.createElement('div');
+      wrap.className = 'inline-body-wrap';
+      wrap.innerHTML = mdToolbarHTML();
+
       const ta = document.createElement('textarea');
       ta.id = 'inlineBodyTA';
       ta.className = 'inline-body-textarea';
       ta.value = bodyContent;
-      bodyEl.replaceWith(ta);
+      wrap.appendChild(ta);
+
+      bodyEl.replaceWith(wrap);
       autoResize(ta);
       ta.addEventListener('input', () => autoResize(ta));
+      wireMdToolbar(ta);
     }
 
     /* Cover image URL input overlay */
