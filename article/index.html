@@ -23,10 +23,11 @@
 
   /* ── Article hero ── */
   .article-hero{position:relative;background:var(--navy,#0d2444);overflow:hidden;}
-  .article-hero-img{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.35;}
-  .article-hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(13,36,68,.5) 0%,rgba(13,36,68,.85) 60%,rgba(13,36,68,.98) 100%);}
-  .article-hero-body{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:60px 24px 48px;}
+  .article-hero-body{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:52px 24px 44px;}
   .article-hero-no-img .article-hero-body{padding:40px 24px 36px;}
+
+  /* ── Cover image (shown below hero, full clarity) ── */
+  .article-cover-img{width:100%;aspect-ratio:16/9;object-fit:cover;background-size:cover;background-position:center;display:block;border-radius:0;}
   .article-hero-breadcrumb{display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(246,243,236,.45);margin-bottom:20px;flex-wrap:wrap;}
   .article-hero-breadcrumb a{color:rgba(217,182,131,.75);text-decoration:none;transition:color .15s;}
   .article-hero-breadcrumb a:hover{color:#d9b683;}
@@ -380,52 +381,35 @@
     var metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) metaDesc.content = excerpt || title;
 
-    /* Hero */
-    if (a.cover_image_url) {
-      heroEl.innerHTML =
-        '<div class="article-hero">'
-        + '<div class="article-hero-img" style="background-image:url(\''+a.cover_image_url+'\')"></div>'
-        + '<div class="article-hero-overlay"></div>'
-        + '<div class="article-hero-body">'
-        + '<div class="article-hero-breadcrumb">'
-        + '<a href="/">'+homeLabel+'</a><span class="sep">/</span>'
-        + '<a href="'+catUrl+'">'+catLabel+'</a><span class="sep">/</span>'
-        + '<span>'+title+'</span>'
-        + '</div>'
-        + '<div class="article-hero-tag">'+catLabel+'</div>'
-        + '<h1 class="article-hero-title">'+title+'</h1>'
-        + (excerpt ? '<p class="article-hero-excerpt">'+excerpt+'</p>' : '')
-        + '<div class="article-hero-meta">'
-        + (initials ? '<div class="article-hero-avatar">'+initials+'</div>' : '')
-        + (author ? '<span class="article-hero-author">'+author+'</span>' : '')
-        + (author && date ? '<div class="article-hero-dot"></div>' : '')
-        + (date ? '<span>'+date+'</span>' : '')
-        + '<div class="article-hero-dot"></div>'
-        + '<span class="article-hero-time"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>'+readTime+'</span>'
-        + '</div>'
-        + '</div>'
-        + '</div>';
-      layoutEl.innerHTML = '<div class="article-divider"></div>';
-    } else {
-      heroEl.innerHTML =
-        '<div class="article-hero article-hero-no-img">'
-        + '<div class="article-hero-body">'
-        + '<div class="article-hero-breadcrumb">'
-        + '<a href="/">'+homeLabel+'</a><span class="sep">/</span>'
-        + '<a href="'+catUrl+'">'+catLabel+'</a>'
-        + '</div>'
-        + '<div class="article-hero-tag">'+catLabel+'</div>'
-        + '<h1 class="article-hero-title">'+title+'</h1>'
-        + '<div class="article-hero-meta">'
-        + (initials ? '<div class="article-hero-avatar">'+initials+'</div>' : '')
-        + (author ? '<span class="article-hero-author">'+author+'</span>' : '')
-        + (author && date ? '<div class="article-hero-dot"></div>' : '')
-        + (date ? '<span>'+date+'</span>' : '')
-        + '<div class="article-hero-dot"></div>'
-        + '<span class="article-hero-time"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>'+readTime+'</span>'
-        + '</div>'
-        + '</div>'
-        + '</div>';
+    /* ── Hero (title / meta on navy background, no bg image) ── */
+    var heroMeta =
+      '<div class="article-hero-meta">'
+      + (initials ? '<div class="article-hero-avatar">'+initials+'</div>' : '')
+      + (author ? '<span class="article-hero-author">'+author+'</span>' : '')
+      + (author && date ? '<div class="article-hero-dot"></div>' : '')
+      + (date ? '<span>'+date+'</span>' : '')
+      + '<div class="article-hero-dot"></div>'
+      + '<span class="article-hero-time"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>'+readTime+'</span>'
+      + '</div>';
+
+    heroEl.innerHTML =
+      '<div class="article-hero">'
+      + '<div class="article-hero-body">'
+      + '<div class="article-hero-breadcrumb">'
+      + '<a href="/">'+homeLabel+'</a><span class="sep">/</span>'
+      + '<a href="'+catUrl+'">'+catLabel+'</a>'
+      + '</div>'
+      + '<div class="article-hero-tag">'+catLabel+'</div>'
+      + '<h1 class="article-hero-title">'+title+'</h1>'
+      + (excerpt ? '<p class="article-hero-excerpt">'+excerpt+'</p>' : '')
+      + heroMeta
+      + '</div>'
+      + '</div>';
+
+    /* ── Cover image shown clearly below hero ── */
+    layoutEl.innerHTML = a.cover_image_url
+      ? '<div class="article-cover-img" style="background-image:url(\''+a.cover_image_url+'\')"></div>'
+      : '';
       layoutEl.innerHTML = '';
     }
 
