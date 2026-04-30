@@ -613,8 +613,11 @@
   const D = window.ISSHO_DATA;
   const C = window.IsshoCore;
 
-  /* Sub-categories for visa */
-  const SUBS = D.nav.find(n => n.key === 'visa').sub;
+  /* Sub-categories for visa — extract key from URL fragment (#policy → 'policy') */
+  const SUBS = D.nav.find(n => n.key === 'visa').sub.map(s => ({
+    ...s,
+    key: (s.url || '').split('#')[1] || ''
+  }));
   let activeSub = 'all';
   let _articles = null;
 
@@ -683,63 +686,102 @@
     document.getElementById('catHeroWatermark').textContent = lang === 'tc' ? '簽証' : 'VISA';
   }
 
-  function renderSubcatNav() {
+  /* ── Build sub-category nav with real article counts ── */
+  function renderSubcatNav(articles) {
     const lang = getLang();
-    const tabs = [{ key: 'all', tc: '全部', en: 'All', count: 84 }];
-    SUBS.forEach((s, i) => tabs.push({ key: i, tc: s.tc, en: s.en, count: [11,9,8,7,12,6,8,9,16,7,8][i] || 8 }));
+    const total = articles ? articles.length : 0;
+    const tabs = [{ key: 'all', tc: '全部', en: 'All', count: total }];
+    SUBS.forEach(s => {
+      const count = articles ? articles.filter(a => a.sub_category_key === s.key).length : 0;
+      tabs.push({ key: s.key, tc: s.tc, en: s.en, count });
+    });
 
-    document.getElementById('subcatScroll').innerHTML = tabs.map(tab => {
+    const scrollEl = document.getElementById('subcatScroll');
+    scrollEl.innerHTML = tabs.map(tab => {
       const label = lang === 'tc' ? tab.tc : tab.en;
-      const isActive = tab.key === activeSub;
-      return `<a href="javascript:void(0)" class="subcat-tab${isActive ? ' active' : ''}" data-sub="${tab.key}">
+      return `<a href="javascript:void(0)" class="subcat-tab${tab.key === activeSub ? ' active' : ''}" data-sub="${tab.key}">
         ${label}<span class="count">${tab.count}</span>
       </a>`;
     }).join('');
 
-    document.getElementById('subcatScroll').addEventListener('click', e => {
+    /* Replace node to avoid duplicate listeners */
+    const newScroll = scrollEl.cloneNode(true);
+    scrollEl.parentNode.replaceChild(newScroll, scrollEl);
+    newScroll.addEventListener('click', e => {
       const tab = e.target.closest('.subcat-tab');
       if (!tab) return;
       activeSub = tab.getAttribute('data-sub');
-      document.querySelectorAll('.subcat-tab').forEach(t => t.classList.remove('active'));
+      newScroll.querySelectorAll('.subcat-tab').forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
+      filterAndRender();
     });
   }
 
-  function renderFeatured() {
+  /* ── Filter articles by active sub-category ── */
+  function filterArticles(articles) {
+    if (activeSub === 'all') return articles;
+    return articles.filter(a => a.sub_category_key === activeSub);
+  }
+
+  /* ── Core render: featured + articles grid ── */
+  function filterAndRender() {
     loadArticles().then(articles => {
-      const featured = articles.find(a => a.featured) || articles[0];
-      if (featured) {
-        document.getElementById('visaFeaturedGrid').innerHTML = sbCardHTML(featured, { featured: true });
+      const lang = getLang();
+      const filtered = filterArticles(articles);
+      const featuredSection = document.querySelector('.cat-featured-section');
+
+      /* Featured section: show only on 'all', or first article of sub-cat */
+      if (activeSub === 'all') {
+        if (featuredSection) featuredSection.style.display = '';
+        const featured = articles.find(a => a.featured) || articles[0];
+        if (featured) {
+          document.getElementById('visaFeaturedGrid').innerHTML = sbCardHTML(featured, { featured: true });
+        } else {
+          document.getElementById('visaFeaturedGrid').innerHTML = C.cardHTML(D.visa_featured, { featured: true });
+        }
       } else {
-        document.getElementById('visaFeaturedGrid').innerHTML = C.cardHTML(D.visa_featured, { featured: true });
+        /* Hide featured panel when a specific sub-cat is selected */
+        if (featuredSection) featuredSection.style.display = 'none';
       }
-    });
-  }
 
-  function renderArticles() {
-    const lang = getLang();
-    document.getElementById('articlesTitle').textContent = lang === 'tc' ? '最新簽證文章' : 'Latest visa articles';
-    loadArticles().then(articles => {
-      const rest = articles.filter(a => !a.featured);
-      if (rest.length) {
-        document.getElementById('visaArticlesGrid').innerHTML = rest.map(a => sbCardHTML(a)).join('');
-        /* update article count in hero */
-        const numEl = document.getElementById('catStatNum');
-        if (numEl) numEl.textContent = articles.length;
+      /* Articles title */
+      const subTitle = activeSub === 'all'
+        ? (lang === 'tc' ? '全部文章' : 'All articles')
+        : (() => { const s = SUBS.find(x => x.key === activeSub); return s ? (lang === 'tc' ? s.tc : s.en) : ''; })();
+      document.getElementById('articlesTitle').textContent = subTitle;
+
+      /* Articles grid */
+      const gridArticles = activeSub === 'all' ? articles.filter(a => !a.featured) : filtered;
+      if (gridArticles.length) {
+        document.getElementById('visaArticlesGrid').innerHTML = gridArticles.map(a => sbCardHTML(a)).join('');
+      } else if (articles.length) {
+        /* Sub-cat exists but no articles yet */
+        document.getElementById('visaArticlesGrid').innerHTML = `
+          <div style="grid-column:1/-1;text-align:center;padding:60px 0;color:var(--ink-3);">
+            <div style="font-size:36px;margin-bottom:12px;">📭</div>
+            <div style="font-size:15px;font-weight:500;">${lang === 'tc' ? '這個分類暫時沒有文章' : 'No articles in this sub-category yet'}</div>
+          </div>`;
       } else {
+        /* No Supabase articles at all — fallback to static data */
         document.getElementById('visaArticlesGrid').innerHTML = D.visa_articles.map(a => C.cardHTML(a)).join('');
       }
+
+      /* Update hero article count */
+      const numEl = document.getElementById('catStatNum');
+      if (numEl && articles.length) numEl.textContent = articles.length;
     });
   }
 
   function renderAll() {
     renderCatHero();
-    renderSubcatNav();
-    renderFeatured();
-    renderArticles();
+    /* Load articles first, then build nav with real counts + render grid */
+    loadArticles().then(articles => {
+      renderSubcatNav(articles);
+      filterAndRender();
+    });
   }
 
-  window.onLangChange = function () { _articles = null; renderAll(); };
+  window.onLangChange = function () { _articles = null; activeSub = 'all'; renderAll(); };
 
   C.init('visa');
   renderAll();
