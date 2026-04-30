@@ -144,6 +144,19 @@
     return { data, error };
   }
 
+  /* Fetch multiple articles by slug array, preserving order */
+  async function fetchArticlesBySlug(slugs) {
+    if (!slugs || !slugs.length) return { data: [], error: null };
+    const { data, error } = await getClient()
+      .from('articles')
+      .select('*')
+      .in('slug', slugs)
+      .eq('status', 'published');
+    /* Preserve the order specified by slugs array */
+    const ordered = slugs.map(s => (data || []).find(a => a.slug === s)).filter(Boolean);
+    return { data: ordered, error };
+  }
+
   async function fetchHotSearches() {
     const { data, error } = await getClient()
       .from('hot_searches')
@@ -244,6 +257,7 @@
     fetchArticles,
     fetchAllArticles,
     fetchArticle,
+    fetchArticlesBySlug,
     searchArticles,
     deleteArticle,
     fetchHotSearches,

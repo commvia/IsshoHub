@@ -65,6 +65,15 @@
           </div>
 
           <div class="ss-section">
+            <div class="ss-section-title">📰 首頁文章設定</div>
+            <div class="ss-row">
+              <label>Editor Picks 文章（Slug，逗號分隔，最多 3 篇）</label>
+              <textarea id="ss_homepage_picks_slugs" rows="2" placeholder="my-article-slug, another-slug, third-slug"></textarea>
+              <div style="font-size:11px;color:var(--ink-3);margin-top:4px">留空則自動顯示最新精選文章。Slug 可在文章編輯器找到。</div>
+            </div>
+          </div>
+
+          <div class="ss-section">
             <div class="ss-section-title">📢 跑馬燈 Ticker</div>
             <div class="ss-row">
               <label>繁中文字</label>
@@ -185,6 +194,10 @@
       if (enEl) enEl.value = map.hero_sub.value_en || '';
     }
 
+    /* Homepage picks */
+    const picksEl = document.getElementById('ss_homepage_picks_slugs');
+    if (picksEl && map.homepage_picks_slugs) picksEl.value = map.homepage_picks_slugs.value_tc || '';
+
     /* Ticker */
     if (map.ticker) {
       document.getElementById('ss_ticker_tc').value = map.ticker.value_tc || '';
@@ -210,7 +223,9 @@
     btn.disabled = true;
 
     const heroImg = document.getElementById('ss_hero_img')?.value.trim() || '';
+    const picksSlugs = document.getElementById('ss_homepage_picks_slugs')?.value.trim() || '';
     const settings = [
+      { key: 'homepage_picks_slugs', tc: picksSlugs, en: picksSlugs },
       { key: 'hero_img',    tc: heroImg, en: heroImg },
       { key: 'hero_kicker', tc: document.getElementById('ss_hero_kicker_tc')?.value.trim() || '', en: document.getElementById('ss_hero_kicker_en')?.value.trim() || '' },
       { key: 'hero_title',  tc: document.getElementById('ss_hero_title_tc')?.value.trim() || '', en: document.getElementById('ss_hero_title_en')?.value.trim() || '' },
