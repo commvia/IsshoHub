@@ -270,6 +270,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@9/marked.min.js"></script>
 <script src="/assets/js/data.js"></script>
 <script src="/assets/js/supabase-client.js"></script>
 <script src="/assets/js/inline-editor.js"></script>
@@ -311,7 +312,8 @@
 
     const lang = getLang();
     const title    = lang === 'tc' ? (a.title_tc   || a.title_en)   : (a.title_en   || a.title_tc);
-    const body     = lang === 'tc' ? (a.body_tc     || a.body_en     || '') : (a.body_en     || a.body_tc     || '');
+    const rawBody  = lang === 'tc' ? (a.body_tc     || a.body_en     || '') : (a.body_en     || a.body_tc     || '');
+    const body     = rawBody ? (window.marked ? window.marked.parse(rawBody) : rawBody.replace(/\n/g, '<br>')) : '';
     const excerpt  = lang === 'tc' ? (a.excerpt_tc  || '')           : (a.excerpt_en  || '');
     const catLabel = a.category_key || '';
     const catUrl   = a.category_key ? `/${a.category_key}/` : '/';
