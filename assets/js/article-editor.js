@@ -27,6 +27,204 @@
       ).join('');
   }
 
+  /* ── Markdown toolbar HTML ── */
+  function mdToolbarHTML(taId) {
+    return `
+      <div class="md-toolbar" data-for="${taId}">
+        <button type="button" class="md-toolbar-btn" data-md="bold" title="粗體 Ctrl+B"><b>B</b></button>
+        <button type="button" class="md-toolbar-btn" data-md="italic" title="斜體 Ctrl+I"><i>I</i></button>
+        <div class="md-toolbar-sep"></div>
+        <button type="button" class="md-toolbar-btn" data-md="h2" title="大標題">H2</button>
+        <button type="button" class="md-toolbar-btn" data-md="h3" title="小標題">H3</button>
+        <div class="md-toolbar-sep"></div>
+        <button type="button" class="md-toolbar-btn" data-md="ul" title="項目清單">• 清單</button>
+        <button type="button" class="md-toolbar-btn" data-md="blockquote" title="引言">" 引言</button>
+        <button type="button" class="md-toolbar-btn" data-md="hr" title="分隔線">— —</button>
+        <div class="md-toolbar-hint">📋 貼上 Word 內容可自動轉換格式</div>
+      </div>`;
+  }
+
+  /* ── Apply Markdown format to textarea ── */
+  function applyMdFormat(ta, format) {
+    const start = ta.selectionStart;
+    const end   = ta.selectionEnd;
+    const sel   = ta.value.substring(start, end);
+    const before = ta.value.substring(0, start);
+    const after  = ta.value.substring(end);
+
+    let replacement = sel;
+    let cursorOffset = 0;
+
+    if (format === 'bold') {
+      if (sel) {
+        replacement = `**${sel}**`;
+        cursorOffset = 2;
+      } else {
+        replacement = '**粗體文字**';
+        cursorOffset = 2;
+      }
+    } else if (format === 'italic') {
+      if (sel) {
+        replacement = `*${sel}*`;
+        cursorOffset = 1;
+      } else {
+        replacement = '*斜體文字*';
+        cursorOffset = 1;
+      }
+    } else if (format === 'h2') {
+      const lineStart = before.lastIndexOf('\n') + 1;
+      const lineContent = ta.value.substring(lineStart, end || ta.value.length);
+      const clean = lineContent.replace(/^#{1,6}\s*/, '');
+      ta.value = ta.value.substring(0, lineStart) + '## ' + clean;
+      ta.selectionStart = ta.selectionEnd = lineStart + 3 + clean.length;
+      ta.focus(); return;
+    } else if (format === 'h3') {
+      const lineStart = before.lastIndexOf('\n') + 1;
+      const lineContent = ta.value.substring(lineStart, end || ta.value.length);
+      const clean = lineContent.replace(/^#{1,6}\s*/, '');
+      ta.value = ta.value.substring(0, lineStart) + '### ' + clean;
+      ta.selectionStart = ta.selectionEnd = lineStart + 4 + clean.length;
+      ta.focus(); return;
+    } else if (format === 'ul') {
+      if (sel) {
+        replacement = sel.split('\n').map(l => l.trim() ? '- ' + l : l).join('\n');
+      } else {
+        replacement = '- 清單項目';
+        cursorOffset = 2;
+      }
+    } else if (format === 'blockquote') {
+      if (sel) {
+        replacement = sel.split('\n').map(l => '> ' + l).join('\n');
+      } else {
+        replacement = '> 引言文字';
+        cursorOffset = 2;
+      }
+    } else if (format === 'hr') {
+      replacement = '\n\n---\n\n';
+    }
+
+    ta.value = before + replacement + after;
+    ta.selectionStart = start + cursorOffset;
+    ta.selectionEnd   = start + replacement.length - cursorOffset;
+    ta.focus();
+    autoResizeTA(ta);
+  }
+
+  /* ── HTML → Markdown (for paste-from-Word) ── */
+  function htmlToMarkdown(html) {
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    // Remove non-content elements
+    div.querySelectorAll('style,script,meta,link,o\\:p').forEach(el => el.remove());
+    const md = walkNode(div);
+    return md.replace(/\n{3,}/g, '\n\n').trim();
+  }
+
+  function walkNode(node) {
+    if (node.nodeType === 3) { /* TEXT_NODE */
+      return node.textContent;
+    }
+    if (node.nodeType !== 1) return ''; /* not ELEMENT_NODE */
+
+    const tag  = node.tagName.toLowerCase();
+    if (['style','script','head'].includes(tag)) return '';
+
+    const styleAttr = node.getAttribute('style') || '';
+    const isBoldEl  = /font-weight\s*:\s*(bold|[6-9]\d\d)/i.test(styleAttr);
+    const isItalEl  = /font-style\s*:\s*italic/i.test(styleAttr);
+
+    const innerFn = () => Array.from(node.childNodes).map(walkNode).join('');
+
+    switch (tag) {
+      case 'h1': return `\n\n# ${innerFn().trim()}\n\n`;
+      case 'h2': return `\n\n## ${innerFn().trim()}\n\n`;
+      case 'h3': return `\n\n### ${innerFn().trim()}\n\n`;
+      case 'h4': return `\n\n#### ${innerFn().trim()}\n\n`;
+      case 'p': {
+        const t = innerFn().trim();
+        return t ? `\n\n${t}\n\n` : '';
+      }
+      case 'br': return '\n';
+      case 'hr': return '\n\n---\n\n';
+      case 'b': case 'strong': {
+        const t = innerFn().trim();
+        return t ? `**${t}**` : '';
+      }
+      case 'i': case 'em': {
+        const t = innerFn().trim();
+        return t ? `*${t}*` : '';
+      }
+      case 'u': return innerFn(); /* ignore underline */
+      case 'li': return `\n- ${innerFn().trim()}`;
+      case 'ul': case 'ol': return `\n${innerFn()}\n`;
+      case 'blockquote': return `\n\n> ${innerFn().trim()}\n\n`;
+      case 'a': {
+        const href = node.getAttribute('href') || '';
+        const t    = innerFn().trim();
+        if (!href || href.startsWith('mso-') || href === t) return t;
+        return `[${t}](${href})`;
+      }
+      case 'code': return `\`${innerFn()}\``;
+      case 'pre':  return `\n\`\`\`\n${innerFn()}\n\`\`\`\n`;
+      case 'table': return innerFn(); /* keep text content of tables */
+      case 'tr': return innerFn() + '\n';
+      case 'td': case 'th': return innerFn() + '\t';
+      case 'span': case 'div': {
+        let t = innerFn();
+        if (isBoldEl && t.trim()) t = `**${t.trim()}**`;
+        if (isItalEl && t.trim()) t = `*${t.trim()}*`;
+        if (tag === 'div') t = `\n\n${t.trim()}\n\n`;
+        return t;
+      }
+      default: return innerFn();
+    }
+  }
+
+  function autoResizeTA(ta) {
+    ta.style.height = 'auto';
+    ta.style.height = ta.scrollHeight + 'px';
+  }
+
+  /* ── Wire Markdown toolbar & paste for a textarea ── */
+  function wireMdToolbar(toolbarEl, ta) {
+    /* Toolbar buttons */
+    toolbarEl.querySelectorAll('[data-md]').forEach(btn => {
+      btn.addEventListener('mousedown', e => {
+        e.preventDefault(); /* don't lose textarea focus */
+        applyMdFormat(ta, btn.getAttribute('data-md'));
+      });
+    });
+
+    /* Keyboard shortcuts */
+    ta.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'b') { e.preventDefault(); applyMdFormat(ta, 'bold'); }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'i') { e.preventDefault(); applyMdFormat(ta, 'italic'); }
+    });
+
+    /* Smart paste: convert Word/HTML clipboard to Markdown */
+    ta.addEventListener('paste', e => {
+      const html = e.clipboardData && e.clipboardData.getData('text/html');
+      if (!html || !html.trim()) return; /* no HTML → let browser paste plain text */
+      /* Only convert if it looks like rich text (has tags beyond basic spans) */
+      if (!/<(h[1-6]|b|strong|ul|ol|li|blockquote|table)/i.test(html)) return;
+      e.preventDefault();
+      const md = htmlToMarkdown(html);
+      const start = ta.selectionStart;
+      const end   = ta.selectionEnd;
+      ta.value = ta.value.substring(0, start) + md + ta.value.substring(end);
+      ta.selectionStart = ta.selectionEnd = start + md.length;
+      autoResizeTA(ta);
+      /* Brief visual confirmation */
+      const hint = toolbarEl.querySelector('.md-toolbar-hint');
+      if (hint) {
+        const orig = hint.textContent;
+        hint.textContent = '✓ 已自動轉換 Word 格式為 Markdown';
+        hint.style.color = '#38a169';
+        setTimeout(() => { hint.textContent = orig; hint.style.color = ''; }, 2500);
+      }
+    });
+  }
+
   /* ── Slugify ── */
   function slugify(text) {
     return text.toLowerCase()
@@ -106,7 +304,8 @@
               </div>
               <div class="editor-field">
                 <label>內文（繁中）</label>
-                <textarea id="bodyTc" rows="16" placeholder="文章內文（支援 Markdown 格式）"></textarea>
+                ${mdToolbarHTML('bodyTc')}
+                <textarea id="bodyTc" rows="16" placeholder="文章內文（支援 Markdown 格式）\n\n## 大標題\n**粗體** 一般文字\n- 清單項目\n\n可直接從 Word 貼上，格式會自動轉換。"></textarea>
               </div>
             </div>
 
@@ -122,7 +321,8 @@
               </div>
               <div class="editor-field">
                 <label>Body (English)</label>
-                <textarea id="bodyEn" rows="16" placeholder="Article body (Markdown supported)"></textarea>
+                ${mdToolbarHTML('bodyEn')}
+                <textarea id="bodyEn" rows="16" placeholder="Article body (Markdown supported)&#10;&#10;## Heading&#10;**Bold** normal text&#10;- List item&#10;&#10;Paste from Word — formatting auto-converts."></textarea>
               </div>
             </div>
           </div>
@@ -266,6 +466,13 @@
         imagePreview.style.display = 'block';
         imagePlaceholder.style.display = 'none';
       }
+    });
+
+    // Wire Markdown toolbars
+    ['bodyTc', 'bodyEn'].forEach(id => {
+      const ta      = document.getElementById(id);
+      const toolbar = document.querySelector(`.md-toolbar[data-for="${id}"]`);
+      if (ta && toolbar) wireMdToolbar(toolbar, ta);
     });
 
     // Load categories
