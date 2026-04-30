@@ -151,7 +151,7 @@
       }).join('');
     }
 
-    /* footer explore */
+    /* footer explore — category links */
     const fe = document.getElementById('footerExplore');
     if (fe) {
       fe.innerHTML = D.nav.map(c => {
@@ -159,6 +159,32 @@
         return `<a href="${c.url}">${label}</a>`;
       }).join('');
     }
+
+    /* footer resource + about links */
+    const FOOTER_HREFS = {
+      footer_r1: '/life/',
+      footer_r2: '/visa/',
+      footer_r3: '/news/#events',
+      footer_r4: 'javascript:void(0)',
+      footer_r5: '/#newsletter',
+      footer_a1: '/#about',
+      footer_a2: '/#about',
+      footer_a3: 'mailto:hello@isshohub.com',
+      footer_a4: 'mailto:hello@isshohub.com',
+      footer_a5: '/#privacy',
+    };
+    Object.keys(FOOTER_HREFS).forEach(key => {
+      document.querySelectorAll(`a[data-i18n="${key}"]`).forEach(el => {
+        el.href = FOOTER_HREFS[key];
+        if (key === 'footer_r4') {
+          el.addEventListener('click', e => {
+            e.preventDefault();
+            const fx = document.getElementById('fx');
+            if (fx) fx.classList.toggle('open');
+          });
+        }
+      });
+    });
   }
 
   /* ── Mobile menu ── */
