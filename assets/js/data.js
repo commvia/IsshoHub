@@ -518,4 +518,71 @@ window.ISSHO_DATA = {
     },
   ],
 
+  /* ── Category metadata: desc, background, watermark, icon ── */
+  cat_meta: {
+    news: {
+      desc_tc: '最新在日政策動態、簽證更新、生活資訊及社群消息，掌握第一手在日生活情報。',
+      desc_en: 'Latest policy updates, visa news, life tips and community announcements — stay informed.',
+      bg: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1400&q=80',
+      watermark: '新聞',
+      icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h10M7 11h10M7 15h6"/>',
+    },
+    visa: {
+      desc_tc: '從經營管理簽證到永住權、J-Find 到數位遊牧，覆蓋所有在日本的在留資格類型。雙語深度指南，讓每個步驟都清晰明確。',
+      desc_en: 'From Business Manager Visa to Permanent Residency, J-Find to Digital Nomad — every status type covered. Bilingual, in-depth, step-by-step.',
+      bg: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1400&q=80',
+      watermark: '簽証',
+      icon: '<rect x="5" y="3" width="14" height="18" rx="2"/><circle cx="12" cy="11" r="3.2"/><path d="M8 17h8"/>',
+    },
+    biz: {
+      desc_tc: '在日本創業、開公司、銀行開戶、補助申請到稅務安排，從零開始的完整創業指南。',
+      desc_en: 'Starting a business in Japan — company setup, banking, grants, hiring and tax basics. Your complete guide from zero.',
+      bg: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1400&q=80',
+      watermark: '創業',
+      icon: '<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>',
+    },
+    house: {
+      desc_tc: '外國人在日本租屋、買樓、注文住宅到寵物友善物業，從看房到安家的完整住屋指南。',
+      desc_en: 'Renting, buying, custom homes and pet-friendly housing in Japan — everything from viewings to settling in.',
+      bg: 'https://images.unsplash.com/photo-1580584126903-c17d41830450?w=1400&q=80',
+      watermark: '住屋',
+      icon: '<path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/>',
+    },
+    tax: {
+      desc_tc: '確定申告、法人稅、消費稅、健康保險與國民年金——在日生活所有稅務與保險知識一次整理。',
+      desc_en: 'Tax filing, corporate tax, consumption tax, health insurance and pension — everything you need to know about money in Japan.',
+      bg: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1400&q=80',
+      watermark: '稅務',
+      icon: '<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/>',
+    },
+    life: {
+      desc_tc: '駕照換發、銀行開戶、電話卡申辦、市役所手續——在日日常生活所有行政步驟的雙語完整指南。',
+      desc_en: "Driver's licence, bank accounts, SIM cards, city hall paperwork — a bilingual guide to every admin task in daily Japan life.",
+      bg: 'https://images.unsplash.com/photo-1542640244-7e672d6cef4e?w=1400&q=80',
+      watermark: '生活',
+      icon: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+    },
+    places: {
+      desc_tc: '東京近郊半日遊、季節限定景點、在地人才知道的隱秘好去處，編輯精選的日本休閒指南。',
+      desc_en: 'Half-day trips near Tokyo, seasonal spots, and hidden gems only locals know — editor-curated leisure guides.',
+      bg: 'https://images.unsplash.com/photo-1480796927426-f609979314bd?w=1400&q=80',
+      watermark: '旅遊',
+      icon: '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>',
+    },
+    pets: {
+      desc_tc: '帶寵物入境日本的全流程、在日本找寵物友善住宅、獸醫資訊與寵物入籍手續完整指南。',
+      desc_en: 'Bringing pets to Japan, finding pet-friendly housing, vet info and registration — the complete guide for pet owners.',
+      bg: 'https://images.unsplash.com/photo-1583511655826-05700d52f4d9?w=1400&q=80',
+      watermark: '寵物',
+      icon: '<path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>',
+    },
+    story: {
+      desc_tc: '他們為什麼選擇日本？從香港到東京、台北到大阪，真實在日生活者的第一手故事。',
+      desc_en: 'Why did they choose Japan? From Hong Kong to Tokyo, Taipei to Osaka — first-hand stories from real residents.',
+      bg: 'https://images.unsplash.com/photo-1528164344705-47542687000d?w=1400&q=80',
+      watermark: '故事',
+      icon: '<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>',
+    },
+  },
+
 };

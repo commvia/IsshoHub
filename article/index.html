@@ -7,265 +7,238 @@
 <meta name="description" content="" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700&family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700&family=Noto+Serif+TC:wght@400;500;600;700&family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Zen+Old+Mincho:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/styles.css">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'><circle cx='40' cy='40' r='36' fill='%230d2444'/><path d='M 40 8 A 32 32 0 0 1 40 72' stroke='%23d9b683' stroke-width='4' fill='none' stroke-linecap='round'/><text x='40' y='48' text-anchor='middle' font-family='Zen Old Mincho, Shippori Mincho, serif' font-size='26' fill='%23f6f3ec' letter-spacing='-1'>%E4%B8%80</text></svg>">
+
 <style>
-  .article-page { max-width: 740px; margin: 0 auto; padding: 48px 24px 80px; }
-  .article-kicker { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
-  .article-title { font-size: clamp(28px, 5vw, 44px); font-weight: 800; line-height: 1.2; color: var(--navy-ink); margin-bottom: 16px; font-family: var(--sans-tc); }
-  .article-meta-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; font-size: 13px; color: var(--ink-3); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 32px; }
-  .article-meta-row .author { font-weight: 600; color: var(--navy-ink); }
-  .article-cover { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: var(--r-lg); margin-bottom: 36px; background: var(--bg-2); }
-  .article-body { font-size: 17px; line-height: 1.85; color: var(--ink-1); }
-  .article-body h2 { font-size: 22px; font-weight: 700; color: var(--navy-ink); margin: 40px 0 14px; font-family: var(--sans-tc); }
-  .article-body h3 { font-size: 18px; font-weight: 700; color: var(--navy-ink); margin: 32px 0 10px; }
-  .article-body p { margin-bottom: 20px; }
-  .article-body ul, .article-body ol { padding-left: 24px; margin-bottom: 20px; }
-  .article-body li { margin-bottom: 8px; }
-  .article-body blockquote { border-left: 3px solid var(--accent); padding-left: 20px; color: var(--ink-2); font-style: italic; margin: 28px 0; }
-  .article-body a { color: var(--accent); text-decoration: underline; }
-  .article-body img { max-width: 100%; border-radius: var(--r); margin: 24px 0; }
-  .article-breadcrumb { font-size: 13px; color: var(--ink-3); margin-bottom: 24px; display: flex; align-items: center; gap: 6px; }
-  .article-breadcrumb a { color: var(--ink-3); }
-  .article-breadcrumb a:hover { color: var(--accent); }
-  .article-loading { text-align: center; padding: 80px 0; color: var(--ink-3); font-size: 15px; }
-  .article-notfound { text-align: center; padding: 80px 0; }
-  .article-notfound h2 { font-size: 24px; font-weight: 700; color: var(--navy-ink); margin-bottom: 12px; }
-  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: var(--bg-2); color: var(--ink-2); margin-right: 6px; }
+  /* ── Brand mark override ── */
+  .brand .brand-mark,.footer-brand .brand-mark,.modal-brand .brand-mark,.mobile-menu-head .brand-mark{background:transparent!important;border:0!important;padding:0!important;color:inherit!important;font-size:0!important;line-height:0!important;width:auto!important;height:auto!important;box-shadow:none!important;border-radius:0!important;overflow:visible!important;display:inline-flex;align-items:center;justify-content:center;}
+  .brand .brand-mark svg,.footer-brand .brand-mark svg,.modal-brand .brand-mark svg,.mobile-menu-head .brand-mark svg{display:block;width:38px;height:38px;}
+  .modal-brand .brand-mark svg{width:44px;height:44px;}.footer-brand .brand-mark svg{width:42px;height:42px;}
+  .brand-name .hub{color:#a8762f;}.footer-brand .brand-name .hub{color:#d9b683;}
+
+  /* ── Reading progress bar ── */
+  .reading-progress{position:fixed;top:0;left:0;width:0%;height:3px;background:linear-gradient(90deg,#0d2444,#d9b683);z-index:9999;transition:width .1s linear;pointer-events:none;}
+
+  /* ── Article hero ── */
+  .article-hero{position:relative;background:var(--navy,#0d2444);overflow:hidden;}
+  .article-hero-img{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.35;}
+  .article-hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(13,36,68,.5) 0%,rgba(13,36,68,.85) 60%,rgba(13,36,68,.98) 100%);}
+  .article-hero-body{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:60px 24px 48px;}
+  .article-hero-no-img .article-hero-body{padding:40px 24px 36px;}
+  .article-hero-breadcrumb{display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(246,243,236,.45);margin-bottom:20px;flex-wrap:wrap;}
+  .article-hero-breadcrumb a{color:rgba(217,182,131,.75);text-decoration:none;transition:color .15s;}
+  .article-hero-breadcrumb a:hover{color:#d9b683;}
+  .article-hero-breadcrumb .sep{opacity:.4;}
+  .article-hero-tag{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#d9b683;background:rgba(217,182,131,.12);border:1px solid rgba(217,182,131,.25);padding:4px 12px;border-radius:999px;margin-bottom:18px;}
+  .article-hero-title{font-size:clamp(24px,4.5vw,42px);font-weight:800;color:#f6f3ec;line-height:1.2;margin:0 0 16px;font-family:'Noto Sans TC','Zen Kaku Gothic New',sans-serif;letter-spacing:-.5px;}
+  .article-hero-excerpt{font-size:16px;color:rgba(246,243,236,.7);line-height:1.75;max-width:640px;margin:0 0 24px;}
+  .article-hero-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px;color:rgba(246,243,236,.5);}
+  .article-hero-avatar{width:34px;height:34px;border-radius:50%;background:rgba(217,182,131,.2);border:1.5px solid rgba(217,182,131,.4);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#d9b683;flex-shrink:0;}
+  .article-hero-author{font-weight:600;color:rgba(246,243,236,.85);}
+  .article-hero-dot{width:3px;height:3px;border-radius:50%;background:rgba(246,243,236,.3);}
+  .article-hero-time{display:flex;align-items:center;gap:4px;}
+  .article-hero-time svg{opacity:.6;}
+
+  /* ── No-image hero variant ── */
+  .article-hero-no-img{background:var(--navy,#0d2444);}
+  .article-hero-no-img .article-hero-title{font-size:clamp(22px,3.5vw,36px);}
+
+  /* ── Article body layout ── */
+  .article-layout{max-width:800px;margin:0 auto;padding:0 24px 80px;}
+  .article-body-wrap{padding-top:40px;}
+
+  /* ── Prose styles ── */
+  .article-prose{font-size:17px;line-height:1.9;color:var(--ink-1,#2a2a2a);font-family:'Noto Serif TC','Noto Sans TC',sans-serif;}
+  .article-prose h2{font-size:22px;font-weight:700;color:var(--navy-ink,#0a1a31);margin:44px 0 16px;font-family:'Noto Sans TC','Zen Kaku Gothic New',sans-serif;line-height:1.35;padding-bottom:10px;border-bottom:2px solid var(--line,#e4dfd3);}
+  .article-prose h3{font-size:18px;font-weight:700;color:var(--navy-ink,#0a1a31);margin:36px 0 12px;font-family:'Noto Sans TC',sans-serif;line-height:1.4;}
+  .article-prose h4{font-size:16px;font-weight:700;color:var(--navy-ink,#0a1a31);margin:28px 0 10px;}
+  .article-prose p{margin-bottom:22px;}
+  .article-prose ul,.article-prose ol{padding-left:26px;margin-bottom:22px;}
+  .article-prose li{margin-bottom:10px;line-height:1.75;}
+  .article-prose blockquote{border-left:4px solid var(--accent,#378ADD);padding:16px 20px;margin:32px 0;background:rgba(55,138,221,.05);border-radius:0 8px 8px 0;color:var(--ink-2,#4a5366);font-style:italic;font-size:16px;}
+  .article-prose blockquote p{margin:0;}
+  .article-prose a{color:var(--accent,#378ADD);text-decoration:underline;text-underline-offset:2px;}
+  .article-prose a:hover{color:var(--accent-ink,#1f6bb8);}
+  .article-prose img{max-width:100%;border-radius:8px;margin:28px 0;display:block;}
+  .article-prose code{font-size:14px;background:var(--surface-2,#f2ede6);padding:2px 6px;border-radius:4px;font-family:monospace;}
+  .article-prose hr{border:none;border-top:1px solid var(--line,#e4dfd3);margin:36px 0;}
+  .article-prose strong{color:var(--navy-ink,#0a1a31);font-weight:700;}
+
+  /* ── Article divider above body ── */
+  .article-divider{height:1px;background:var(--line,#e4dfd3);margin:0 0 0;}
+
+  /* ── Share bar ── */
+  .article-share{display:flex;align-items:center;gap:10px;padding:20px 0;border-top:1px solid var(--line,#e4dfd3);border-bottom:1px solid var(--line,#e4dfd3);margin-bottom:40px;}
+  .article-share-label{font-size:13px;font-weight:600;color:var(--ink-3,#7d8598);margin-right:4px;}
+  .share-btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;padding:7px 14px;border-radius:999px;border:1px solid var(--line,#e4dfd3);background:#fff;color:var(--ink-2,#4a5366);cursor:pointer;text-decoration:none;transition:all .15s;}
+  .share-btn:hover{border-color:var(--navy,#0d2444);color:var(--navy,#0d2444);background:rgba(13,36,68,.04);}
+  .share-btn.copied{background:var(--navy,#0d2444);color:#fff;border-color:var(--navy,#0d2444);}
+
+  /* ── Back to category ── */
+  .article-back{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--ink-3,#7d8598);text-decoration:none;padding:8px 0;margin-bottom:20px;transition:color .15s;}
+  .article-back:hover{color:var(--navy,#0d2444);}
+
+  /* ── Related articles ── */
+  .article-related{background:var(--bg-2,#f5f1ea);padding:56px 0 64px;margin-top:40px;}
+  .article-related-head{max-width:800px;margin:0 auto 28px;padding:0 24px;}
+  .article-related-title{font-size:18px;font-weight:700;color:var(--navy-ink,#0a1a31);letter-spacing:-.3px;}
+  .article-related-grid{max-width:800px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;}
+
+  /* ── Compact card for related ── */
+  .card-compact{background:#fff;border-radius:10px;overflow:hidden;transition:transform .2s,box-shadow .2s;}
+  .card-compact:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(13,36,68,.1);}
+  .card-compact-media{aspect-ratio:16/9;background-size:cover;background-position:center;display:block;}
+  .card-compact-body{padding:14px 16px 16px;}
+  .card-compact-tag{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent,#378ADD);margin-bottom:6px;}
+  .card-compact-title{font-size:14px;font-weight:600;color:var(--navy-ink,#0a1a31);line-height:1.45;margin:0 0 8px;}
+  .card-compact-meta{font-size:12px;color:var(--ink-3,#7d8598);}
+
+  /* ── Not found / loading ── */
+  .article-state{text-align:center;padding:80px 24px;max-width:480px;margin:0 auto;}
+  .article-state h2{font-size:22px;font-weight:700;color:var(--navy-ink);margin-bottom:12px;}
+  .article-state p{color:var(--ink-3);margin-bottom:24px;}
+
+  @media (max-width:640px){
+    .article-hero-body{padding:40px 20px 36px;}
+    .article-layout{padding:0 20px 60px;}
+    .article-prose{font-size:16px;}
+    .article-related-grid{grid-template-columns:1fr;}
+  }
 </style>
 </head>
 <body data-lang="tc">
 
-<!-- =============== TOP BAR =============== -->
-<div class="topbar">
-  <div class="container row">
-    <div class="ticker">
-      <span data-i18n="ticker1"></span>
-      <span id="tickerRate"></span>
-    </div>
-    <div class="meta">
-      <span data-i18n="ticker-weather"></span>
-      <span>·</span>
-      <span data-i18n="ticker-rate"></span>
-    </div>
+<!-- Reading progress -->
+<div class="reading-progress" id="readingProgress"></div>
+
+<!-- ADMIN BAR -->
+<div class="admin-bar" data-admin-bar style="display:none">
+  <div class="admin-bar-inner">
+    <span class="admin-bar-label"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> 管理員模式</span>
+    <div class="admin-bar-actions"></div>
   </div>
 </div>
 
-<!-- =============== NAV =============== -->
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="container row">
+    <div class="ticker"><span data-i18n="ticker1"></span><span data-i18n="ticker2"></span></div>
+    <div class="meta"><span data-i18n="ticker-weather"></span><span>·</span><span data-i18n="ticker-rate" id="tickerRate"></span></div>
+  </div>
+</div>
+
+<!-- NAV -->
 <nav class="nav">
   <div class="container row">
     <a class="brand" href="/">
-      <div class="brand-mark">一</div>
-      <div>
-        <div class="brand-name">IsshoHub</div>
-        <div class="brand-tag" data-i18n="tagline-nav"></div>
-      </div>
+      <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="36" fill="#0d2444"/><path d="M 40 8 A 32 32 0 0 1 40 72" stroke="#d9b683" stroke-width="2.5" fill="none" stroke-linecap="round"/><text x="40" y="46" text-anchor="middle" font-family="Zen Old Mincho, Shippori Mincho, serif" font-size="22" font-weight="500" fill="#f6f3ec" letter-spacing="-1">一緒</text></svg></div>
+      <div><div class="brand-name">Issho<span class="hub">Hub</span></div><div class="brand-tag">In Japan, together.</div></div>
     </a>
     <div class="nav-links" id="navLinks"></div>
     <div class="nav-right">
-      <button class="search-btn" aria-label="Search">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-      </button>
-      <div class="lang-toggle" id="langToggle">
-        <button data-lang-set="tc">繁中</button>
-        <button data-lang-set="en">EN</button>
+      <button class="search-btn" aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
+      <div class="lang-toggle" id="langToggle"><button data-lang-set="tc">繁中</button><button data-lang-set="en">EN</button></div>
+      <button class="btn-login" data-open-login><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg><span data-i18n="login_btn"></span></button>
+      <div class="user-menu" data-user-menu style="display:none">
+        <button class="user-menu-btn" id="userMenuBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg><span data-user-name></span><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="user-dropdown" id="userDropdown"><a href="#">我的收藏</a><a href="#">帳號設定</a><div class="user-dropdown-divider"></div><a href="#" data-sign-out>登出</a></div>
       </div>
-      <button class="btn-login" data-open-login>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-        <span data-i18n="login_btn"></span>
-      </button>
-      <button class="menu-btn" id="menuBtn" aria-label="Menu">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-      </button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
     </div>
   </div>
   <div class="catstrip" id="catstrip"></div>
 </nav>
 
-<!-- =============== MOBILE MENU =============== -->
+<!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
   <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
   <div class="mobile-menu-drawer">
     <div class="mobile-menu-head">
-      <a class="brand" href="/" style="color: var(--navy-ink);">
-        <div class="brand-mark">一</div>
-        <div class="brand-name">IsshoHub</div>
+      <a class="brand" href="/" style="color:var(--navy-ink);">
+        <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="36" fill="#0d2444"/><path d="M 40 8 A 32 32 0 0 1 40 72" stroke="#d9b683" stroke-width="2.5" fill="none" stroke-linecap="round"/><text x="40" y="46" text-anchor="middle" font-family="Zen Old Mincho, Shippori Mincho, serif" font-size="22" font-weight="500" fill="#f6f3ec" letter-spacing="-1">一緒</text></svg></div>
+        <div class="brand-name">Issho<span class="hub">Hub</span></div>
       </a>
-      <button class="mobile-close" id="mobileMenuClose">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-      </button>
+      <button class="mobile-close" id="mobileMenuClose"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     </div>
     <nav class="mobile-nav-list" id="mobileNavList"></nav>
     <div class="mobile-menu-footer">
-      <button class="mobile-login-btn" id="mobileLoginBtn" data-open-login>
-        <span data-i18n="login_btn"></span>
-      </button>
-      <div class="lang-toggle" style="justify-content: center;">
-        <button data-lang-set="tc">繁中</button>
-        <button data-lang-set="en">EN</button>
-      </div>
+      <button class="mobile-login-btn" id="mobileLoginBtn" data-open-login><span data-i18n="login_btn"></span></button>
+      <div class="lang-toggle" id="langToggleMobile" style="justify-content:center;"><button data-lang-set="tc">繁中</button><button data-lang-set="en">EN</button></div>
     </div>
   </div>
 </div>
 
-<!-- =============== ARTICLE CONTENT =============== -->
+<!-- ARTICLE HERO -->
+<div id="articleHero"></div>
+
+<!-- ARTICLE LAYOUT -->
 <main>
-  <div class="article-page" id="articleContent">
-    <div class="article-loading">載入中…</div>
+  <div class="article-layout" id="articleLayout">
+    <div class="article-state"><div style="font-size:28px;margin-bottom:12px;">⏳</div><p>載入中…</p></div>
   </div>
 </main>
 
-<!-- =============== FOOTER =============== -->
+<!-- RELATED ARTICLES -->
+<section class="article-related" id="articleRelated" style="display:none">
+  <div class="article-related-head"><div class="article-related-title" id="relatedTitle"></div></div>
+  <div class="article-related-grid" id="relatedGrid"></div>
+</section>
+
+<!-- FOOTER -->
 <footer class="footer">
   <div class="container">
     <div class="grid">
       <div class="footer-brand">
         <div class="brand">
-          <div class="brand-mark">一</div>
-          <div>
-            <div class="brand-name" style="color:#fff;">IsshoHub</div>
-            <div class="brand-tag" style="color:rgba(255,255,255,0.45);">一緒 · Together in Japan</div>
-          </div>
+          <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="36" fill="#f6f3ec"/><path d="M 40 8 A 32 32 0 0 1 40 72" stroke="#a8762f" stroke-width="2.5" fill="none" stroke-linecap="round"/><text x="40" y="46" text-anchor="middle" font-family="Zen Old Mincho, Shippori Mincho, serif" font-size="22" font-weight="500" fill="#0d2444" letter-spacing="-1">一緒</text></svg></div>
+          <div><div class="brand-name" style="color:#fff;">Issho<span class="hub">Hub</span></div><div class="brand-tag" style="color:rgba(255,255,255,.45);">In Japan, together.</div></div>
         </div>
         <p data-i18n="footer_about"></p>
+        <div class="footer-socials">
+          <a href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.72 3.72 0 01-1.38-.9 3.72 3.72 0 01-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zm0 5.84a4 4 0 100 8 4 4 0 000-8zm5.2-.4a.96.96 0 110 1.92.96.96 0 010-1.92zM12 9.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8z"/></svg></a>
+          <a href="#" aria-label="Twitter/X"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 3h3.4l-7.4 8.4L23.5 21h-6.8l-5.3-6.9L5.3 21H1.9l7.9-9L1 3h7l4.8 6.4L18.9 3zm-1.2 16h1.9L7.4 5H5.4l12.3 14z"/></svg></a>
+          <a href="#" aria-label="LINE"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C5.37 2 0 6.36 0 11.74c0 4.82 4.24 8.86 9.97 9.63.39.08.92.26 1.05.6.12.3.08.79.04 1.08L11 24c-.05.32-.25 1.23 1.09.67 1.34-.57 7.22-4.26 9.85-7.28C23.73 15.4 24 13.6 24 11.74 24 6.36 18.63 2 12 2z"/></svg></a>
+        </div>
       </div>
-      <div class="footer-col">
-        <h5 data-i18n="footer_col1"></h5>
-        <div id="footerExplore"></div>
-      </div>
-      <div class="footer-col">
-        <h5 data-i18n="footer_col2"></h5>
-        <a href="#" data-i18n="footer_r1"></a>
-        <a href="#" data-i18n="footer_r2"></a>
-        <a href="#" data-i18n="footer_r3"></a>
-        <a href="#" data-i18n="footer_r4"></a>
-      </div>
-      <div class="footer-col">
-        <h5 data-i18n="footer_col3"></h5>
-        <a href="#" data-i18n="footer_a1"></a>
-        <a href="#" data-i18n="footer_a2"></a>
-        <a href="#" data-i18n="footer_a3"></a>
-        <a href="#" data-i18n="footer_a4"></a>
-      </div>
+      <div class="footer-col"><h5 data-i18n="footer_col1"></h5><div id="footerExplore"></div></div>
+      <div class="footer-col"><h5 data-i18n="footer_col2"></h5><a href="#" data-i18n="footer_r1"></a><a href="#" data-i18n="footer_r2"></a><a href="#" data-i18n="footer_r3"></a><a href="#" data-i18n="footer_r4"></a></div>
+      <div class="footer-col"><h5 data-i18n="footer_col3"></h5><a href="#" data-i18n="footer_a1"></a><a href="#" data-i18n="footer_a2"></a><a href="#" data-i18n="footer_a3"></a><a href="#" data-i18n="footer_a4"></a></div>
     </div>
-    <div class="footer-bottom">
-      <div>© 2026 IsshoHub · 一緒 · Made with care in Japan</div>
-      <div><span data-i18n="footer_lang"></span> / English</div>
-    </div>
+    <div class="footer-bottom"><div>© 2026 IsshoHub · 一緒 · Made with care in Japan</div><div><span data-i18n="footer_lang"></span> / English</div></div>
   </div>
 </footer>
 
-<!-- =============== FX CALCULATOR =============== -->
+<!-- FX CALCULATOR -->
 <div class="fx" id="fx">
-  <button class="fx-trigger" id="fxTrigger">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 100 7h5a3.5 3.5 0 110 7H6"/></svg>
-    <span data-i18n="fx_trigger"></span>
-    <span class="badge">¥</span>
-  </button>
-  <div class="fx-panel">
-    <button class="fx-close" id="fxClose">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-    </button>
-    <div class="fx-head">
-      <h4 data-i18n="fx_title"></h4>
-      <span class="live"><i></i><span data-i18n="fx_live"></span></span>
-    </div>
+  <button class="fx-trigger" id="fxTrigger"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 100 7h5a3.5 3.5 0 110 7H6"/></svg><span data-i18n="fx_trigger"></span><span class="badge">¥</span></button>
+  <div class="fx-panel" style="position:relative;">
+    <button class="fx-close" id="fxClose"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="fx-head"><h4 data-i18n="fx_title"></h4><span class="live"><i></i><span data-i18n="fx_live"></span></span></div>
     <div class="fx-asof" data-i18n="fx_asof"></div>
-    <div class="fx-row">
-      <label class="fx-ccy">
-        <span id="fxFromFlag"></span>
-        <span id="fxFromLabel">HKD</span>
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
-        <select id="fxFrom">
-          <option value="HKD">HKD 港幣</option>
-          <option value="TWD">TWD 新台幣</option>
-          <option value="USD">USD 美元</option>
-          <option value="EUR">EUR 歐元</option>
-          <option value="GBP">GBP 英鎊</option>
-          <option value="CAD">CAD 加元</option>
-          <option value="AUD">AUD 澳元</option>
-          <option value="SGD">SGD 坡元</option>
-        </select>
-      </label>
-      <input type="number" class="fx-input" id="fxInput" value="1000" min="0" placeholder="外幣金額" />
-    </div>
+    <div class="fx-row"><label class="fx-ccy"><span id="fxFromFlag"></span><span id="fxFromLabel">HKD</span><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg><select id="fxFrom"><option value="HKD">HKD 港幣</option><option value="TWD">TWD 新台幣</option><option value="USD">USD 美元</option><option value="EUR">EUR 歐元</option><option value="GBP">GBP 英鎊</option><option value="CAD">CAD 加元</option><option value="AUD">AUD 澳元</option><option value="SGD">SGD 坡元</option></select></label><input type="number" class="fx-input" id="fxInput" value="1000" min="0" /></div>
     <div class="fx-equals">⇅</div>
-    <div class="fx-row to">
-      <div class="fx-ccy"><span>🇯🇵</span>JPY 日圓</div>
-      <input type="number" class="fx-input" id="fxOutput" placeholder="日圓金額" />
-    </div>
+    <div class="fx-row to"><div class="fx-ccy"><span>🇯🇵</span>JPY 日圓</div><input type="number" class="fx-input" id="fxOutput" /></div>
     <div class="fx-rates" id="fxRates"></div>
   </div>
 </div>
 
-<!-- =============== LOGIN MODAL =============== -->
+<!-- LOGIN MODAL -->
 <div class="modal-overlay" id="loginModal" role="dialog" aria-modal="true">
   <div class="modal">
-    <button class="modal-close" id="modalClose" aria-label="Close">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-    </button>
-    <div class="modal-brand">
-      <div class="brand-mark">一</div>
-      <div class="brand-name">IsshoHub</div>
-    </div>
-    <div class="modal-tabs">
-      <button class="modal-tab active" data-tab-btn="login" data-i18n="login_btn"></button>
-      <button class="modal-tab" data-tab-btn="register" data-i18n="login_register"></button>
-    </div>
+    <button class="modal-close" id="modalClose"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="modal-brand"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="36" fill="#0d2444"/><path d="M 40 8 A 32 32 0 0 1 40 72" stroke="#d9b683" stroke-width="2.5" fill="none" stroke-linecap="round"/><text x="40" y="46" text-anchor="middle" font-family="Zen Old Mincho, Shippori Mincho, serif" font-size="22" font-weight="500" fill="#f6f3ec" letter-spacing="-1">一緒</text></svg></div><div class="brand-name">Issho<span class="hub">Hub</span></div></div>
+    <div class="modal-tabs"><button class="modal-tab active" data-tab-btn="login" data-i18n="login_btn"></button><button class="modal-tab" data-tab-btn="register" data-i18n="login_register"></button></div>
     <div class="modal-error" id="loginError" style="display:none"></div>
     <div data-tab="login">
-      <div class="social-login">
-        <button class="btn-social" id="googleSignIn">
-          <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-          <span data-i18n="login_google"></span>
-        </button>
-      </div>
+      <div class="social-login"><button class="btn-social" id="googleSignIn"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg><span data-i18n="login_google"></span></button></div>
       <div class="modal-divider"><span data-i18n="login_or"></span></div>
-      <form class="login-form" id="loginForm">
-        <div class="form-group">
-          <label data-i18n="login_email"></label>
-          <input type="email" name="email" placeholder="your@email.com" autocomplete="email" required />
-        </div>
-        <div class="form-group">
-          <label data-i18n="login_password"></label>
-          <input type="password" name="password" placeholder="••••••••" autocomplete="current-password" required />
-        </div>
-        <button type="submit" class="btn-submit" data-i18n="login_submit"></button>
-      </form>
-      <div class="modal-footer">
-        <a href="#" id="forgotPasswordLink" data-i18n="login_forgot"></a>
-      </div>
+      <form class="login-form" id="loginForm"><div class="form-group"><label data-i18n="login_email"></label><input type="email" name="email" placeholder="your@email.com" autocomplete="email" required /></div><div class="form-group"><label data-i18n="login_password"></label><input type="password" name="password" placeholder="••••••••" autocomplete="current-password" required /></div><button type="submit" class="btn-submit" data-i18n="login_submit"></button></form>
+      <div class="modal-footer"><a href="#" id="forgotPasswordLink" data-i18n="login_forgot"></a></div>
     </div>
-    <div data-tab="register" style="display:none">
-      <form class="login-form" id="registerForm">
-        <div class="form-group">
-          <label data-i18n="register_name"></label>
-          <input type="text" name="name" placeholder="Your name" autocomplete="name" required />
-        </div>
-        <div class="form-group">
-          <label data-i18n="login_email"></label>
-          <input type="email" name="email" placeholder="your@email.com" autocomplete="email" required />
-        </div>
-        <div class="form-group">
-          <label data-i18n="login_password"></label>
-          <input type="password" name="password" placeholder="At least 8 characters" autocomplete="new-password" required minlength="8" />
-        </div>
-        <button type="submit" class="btn-submit" data-i18n="login_register"></button>
-      </form>
-    </div>
-    <div data-tab="forgot" style="display:none">
-      <p class="modal-sub" data-i18n="forgot_sub"></p>
-      <form class="login-form" id="forgotForm">
-        <div class="form-group">
-          <label data-i18n="login_email"></label>
-          <input type="email" name="email" placeholder="your@email.com" autocomplete="email" required />
-        </div>
-        <button type="submit" class="btn-submit" data-i18n="forgot_submit"></button>
-      </form>
-      <div class="modal-footer">
-        <a href="#" data-tab-btn="login" data-i18n="back_to_login"></a>
-      </div>
-    </div>
+    <div data-tab="register" style="display:none"><form class="login-form" id="registerForm"><div class="form-group"><label data-i18n="register_name"></label><input type="text" name="name" placeholder="Your name" autocomplete="name" required /></div><div class="form-group"><label data-i18n="login_email"></label><input type="email" name="email" placeholder="your@email.com" autocomplete="email" required /></div><div class="form-group"><label data-i18n="login_password"></label><input type="password" name="password" placeholder="At least 8 characters" autocomplete="new-password" required minlength="8" /></div><button type="submit" class="btn-submit" data-i18n="login_register"></button></form></div>
+    <div data-tab="forgot" style="display:none"><p class="modal-sub" data-i18n="forgot_sub"></p><form class="login-form" id="forgotForm"><div class="form-group"><label data-i18n="login_email"></label><input type="email" name="email" placeholder="your@email.com" autocomplete="email" required /></div><button type="submit" class="btn-submit" data-i18n="forgot_submit"></button></form><div class="modal-footer"><a href="#" data-tab-btn="login" data-i18n="back_to_login"></a></div></div>
   </div>
 </div>
 
@@ -277,26 +250,30 @@
 <script src="/assets/js/core.js"></script>
 <script>
 (function () {
-  const C = window.IsshoCore;
+  'use strict';
+  var C    = window.IsshoCore;
+  var slug = new URLSearchParams(window.location.search).get('slug') || '';
   C.init(null);
 
-  function getLang() { return C.getLang(); }
+  /* ── Reading progress ── */
+  var progBar = document.getElementById('readingProgress');
+  document.addEventListener('scroll', function () {
+    var el   = document.getElementById('articleLayout');
+    if (!el || !progBar) return;
+    var rect = el.getBoundingClientRect();
+    var h    = el.offsetHeight - window.innerHeight;
+    var pct  = h > 0 ? Math.min(100, Math.max(0, (-rect.top / h) * 100)) : 0;
+    progBar.style.width = pct + '%';
+  }, { passive: true });
 
-  /* ── Markdown → HTML parser ── */
+  /* ── Markdown parser ── */
   function md(text) {
     if (!text) return '';
-    const lines = text.split('\n');
-    const out = [];
-    let inUl = false, inOl = false, inBlockquote = false;
-
-    function closeLists() {
-      if (inUl)  { out.push('</ul>');  inUl  = false; }
-      if (inOl)  { out.push('</ol>');  inOl  = false; }
-    }
-    function closeBlockquote() {
-      if (inBlockquote) { out.push('</blockquote>'); inBlockquote = false; }
-    }
-
+    var lines = text.split('\n');
+    var out   = [];
+    var inUl = false, inOl = false, inBq = false;
+    function closeLists() { if (inUl) { out.push('</ul>'); inUl=false; } if (inOl) { out.push('</ol>'); inOl=false; } }
+    function closeBq()    { if (inBq) { out.push('</blockquote>'); inBq=false; } }
     function inline(s) {
       return s
         .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
@@ -305,208 +282,222 @@
         .replace(/`(.+?)`/g,           '<code>$1</code>')
         .replace(/\[(.+?)\]\((.+?)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
     }
-
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
-      const trimmed = line.trim();
-
-      /* Headings */
-      if (/^#### (.+)/.test(trimmed)) { closeLists(); closeBlockquote(); out.push(`<h4>${inline(trimmed.slice(5))}</h4>`); continue; }
-      if (/^### (.+)/.test(trimmed))  { closeLists(); closeBlockquote(); out.push(`<h3>${inline(trimmed.slice(4))}</h3>`); continue; }
-      if (/^## (.+)/.test(trimmed))   { closeLists(); closeBlockquote(); out.push(`<h2>${inline(trimmed.slice(3))}</h2>`); continue; }
-      if (/^# (.+)/.test(trimmed))    { closeLists(); closeBlockquote(); out.push(`<h2>${inline(trimmed.slice(2))}</h2>`); continue; }
-
-      /* Horizontal rule */
-      if (/^---+$/.test(trimmed)) { closeLists(); closeBlockquote(); out.push('<hr>'); continue; }
-
-      /* Blockquote */
-      if (/^> (.*)/.test(trimmed)) {
-        closeLists();
-        if (!inBlockquote) { out.push('<blockquote>'); inBlockquote = true; }
-        out.push(`<p>${inline(trimmed.slice(2))}</p>`);
-        continue;
-      }
-
-      /* Unordered list */
-      if (/^[-*+] (.+)/.test(trimmed)) {
-        closeBlockquote();
-        if (inOl) { out.push('</ol>'); inOl = false; }
-        if (!inUl) { out.push('<ul>'); inUl = true; }
-        out.push(`<li>${inline(trimmed.slice(2))}</li>`);
-        continue;
-      }
-
-      /* Ordered list */
-      const olMatch = trimmed.match(/^\d+\. (.+)/);
-      if (olMatch) {
-        closeBlockquote();
-        if (inUl) { out.push('</ul>'); inUl = false; }
-        if (!inOl) { out.push('<ol>'); inOl = true; }
-        out.push(`<li>${inline(olMatch[1])}</li>`);
-        continue;
-      }
-
-      /* Empty line — close open blocks */
-      if (trimmed === '') {
-        closeLists();
-        closeBlockquote();
-        out.push('');
-        continue;
-      }
-
-      /* Normal paragraph line */
-      closeLists();
-      closeBlockquote();
-      out.push(inline(trimmed));
+    for (var i = 0; i < lines.length; i++) {
+      var t = lines[i].trim();
+      if (/^#### (.+)/.test(t)) { closeLists(); closeBq(); out.push('<h4>'+inline(t.slice(5))+'</h4>'); continue; }
+      if (/^### (.+)/.test(t))  { closeLists(); closeBq(); out.push('<h3>'+inline(t.slice(4))+'</h3>'); continue; }
+      if (/^## (.+)/.test(t))   { closeLists(); closeBq(); out.push('<h2>'+inline(t.slice(3))+'</h2>'); continue; }
+      if (/^# (.+)/.test(t))    { closeLists(); closeBq(); out.push('<h2>'+inline(t.slice(2))+'</h2>'); continue; }
+      if (/^---+$/.test(t))     { closeLists(); closeBq(); out.push('<hr>'); continue; }
+      if (/^> (.*)/.test(t))    { closeLists(); if (!inBq) { out.push('<blockquote>'); inBq=true; } out.push('<p>'+inline(t.slice(2))+'</p>'); continue; }
+      if (/^[-*+] (.+)/.test(t)){ closeBq(); if (inOl){out.push('</ol>');inOl=false;} if(!inUl){out.push('<ul>');inUl=true;} out.push('<li>'+inline(t.slice(2))+'</li>'); continue; }
+      var om = t.match(/^\d+\. (.+)/);
+      if (om) { closeBq(); if(inUl){out.push('</ul>');inUl=false;} if(!inOl){out.push('<ol>');inOl=true;} out.push('<li>'+inline(om[1])+'</li>'); continue; }
+      if (t === '') { closeLists(); closeBq(); out.push(''); continue; }
+      closeLists(); closeBq(); out.push(inline(t));
     }
-
-    closeLists();
-    closeBlockquote();
-
-    /* Join lines: consecutive non-empty lines → paragraph, empty lines = paragraph break */
-    const rawHtml = out.join('\n');
-    /* Wrap non-tag text blocks in <p> */
-    return rawHtml
-      .split(/\n{2,}/)
-      .map(block => {
-        block = block.trim();
-        if (!block) return '';
-        if (/^<(h[1-6]|ul|ol|li|hr|blockquote|p)/.test(block)) return block;
-        return `<p>${block.replace(/\n/g, '<br>')}</p>`;
-      })
-      .filter(Boolean)
-      .join('\n');
+    closeLists(); closeBq();
+    return out.join('\n').split(/\n{2,}/).map(function(b){
+      b = b.trim();
+      if (!b) return '';
+      if (/^<(h[1-6]|ul|ol|li|hr|blockquote|p)/.test(b)) return b;
+      return '<p>'+b.replace(/\n/g,'<br>')+'</p>';
+    }).filter(Boolean).join('\n');
   }
 
-  /* ── Get slug from URL param: /article/?slug=my-slug ── */
-  const slug = new URLSearchParams(window.location.search).get('slug') || '';
+  /* ── Compact card for related ── */
+  function relatedCardHTML(a, lang) {
+    var title  = lang === 'tc' ? (a.title_tc || a.title_en) : (a.title_en || a.title_tc);
+    var img    = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=70';
+    var cat    = a.category_key || '';
+    var date   = a.published_at ? new Date(a.published_at).toLocaleDateString(lang==='tc'?'zh-Hant':'en',{month:'short',day:'numeric'}) : '';
+    var rt     = lang === 'tc' ? (a.read_time||5)+' 分鐘' : (a.read_time||5)+' min';
+    return '<a class="card-compact" href="/article/?slug='+a.slug+'" style="text-decoration:none;">'
+      + '<div class="card-compact-media" style="background-image:url(\''+img+'\')"></div>'
+      + '<div class="card-compact-body">'
+      + '<div class="card-compact-tag">'+cat+'</div>'
+      + '<div class="card-compact-title">'+title+'</div>'
+      + '<div class="card-compact-meta">'+date+' · '+rt+'</div>'
+      + '</div></a>';
+  }
+
+  /* ── Nav labels ── */
+  var D    = window.ISSHO_DATA;
+  var NAV_LABELS = {};
+  (D.nav||[]).forEach(function(n){ NAV_LABELS[n.key] = { tc: n.tc, en: n.en }; });
+
+  function getCatLabel(catKey, lang) {
+    var entry = NAV_LABELS[catKey];
+    if (entry) return lang === 'tc' ? entry.tc : entry.en;
+    return catKey;
+  }
+
+  /* ── Main article loader ── */
+  function getLang() { return C.getLang(); }
 
   if (!slug) {
-    document.getElementById('articleContent').innerHTML = `
-      <div class="article-notfound">
-        <h2>找不到文章</h2>
-        <p><a href="/">返回首頁</a></p>
-      </div>`;
+    document.getElementById('articleLayout').innerHTML =
+      '<div class="article-state"><h2>找不到文章</h2><p><a href="/">返回首頁</a></p></div>';
   } else {
     loadArticle(slug);
   }
 
-  async function loadArticle(slug) {
-    const { data: a, error } = await window.IsshoAPI.fetchArticle(slug);
-    const el = document.getElementById('articleContent');
+  async function loadArticle(s) {
+    var heroEl   = document.getElementById('articleHero');
+    var layoutEl = document.getElementById('articleLayout');
+    var relSect  = document.getElementById('articleRelated');
 
-    if (error || !a) {
-      el.innerHTML = `
-        <div class="article-notfound">
-          <h2>找不到文章</h2>
-          <p style="color:var(--ink-3);margin-bottom:24px">這篇文章可能已移除或網址有誤。</p>
-          <a href="/" class="btn-primary">返回首頁</a>
-        </div>`;
+    var res = await window.IsshoAPI.fetchArticle(s);
+    var a   = res.data;
+
+    if (res.error || !a) {
+      layoutEl.innerHTML = '<div class="article-state"><h2>找不到文章</h2><p style="color:var(--ink-3);margin-bottom:20px">這篇文章可能已移除或網址有誤。</p><a href="/" class="btn-primary">返回首頁</a></div>';
       return;
     }
 
-    const lang = getLang();
-    const title    = lang === 'tc' ? (a.title_tc   || a.title_en)   : (a.title_en   || a.title_tc);
-    const rawBody  = lang === 'tc' ? (a.body_tc || a.body_en || '') : (a.body_en || a.body_tc || '');
-    const body     = md(rawBody);
-    const excerpt  = lang === 'tc' ? (a.excerpt_tc  || '')           : (a.excerpt_en  || '');
-    const catLabel = a.category_key || '';
-    const catUrl   = a.category_key ? `/${a.category_key}/` : '/';
-    const author   = a.author || '';
-    const date     = a.published_at
-      ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', { year:'numeric', month:'long', day:'numeric' })
+    var lang     = getLang();
+    var title    = lang === 'tc' ? (a.title_tc || a.title_en)   : (a.title_en || a.title_tc);
+    var rawBody  = lang === 'tc' ? (a.body_tc  || a.body_en ||'') : (a.body_en || a.body_tc || '');
+    var body     = md(rawBody);
+    var excerpt  = lang === 'tc' ? (a.excerpt_tc || '') : (a.excerpt_en || '');
+    var catKey   = a.category_key || '';
+    var catUrl   = catKey ? '/'+catKey+'/' : '/';
+    var catLabel = getCatLabel(catKey, lang);
+    var author   = a.author || '';
+    var initials = author ? author.split(' ').map(function(w){return w[0]||'';}).slice(0,2).join('').toUpperCase() : '';
+    var date     = a.published_at
+      ? new Date(a.published_at).toLocaleDateString(lang==='tc'?'zh-Hant':'en',{year:'numeric',month:'long',day:'numeric'})
       : '';
-    const readTime = lang === 'tc' ? `${a.read_time || 5} 分鐘閱讀` : `${a.read_time || 5} min read`;
-    const homeLabel = lang === 'tc' ? '首頁' : 'Home';
+    var readTime = lang === 'tc' ? (a.read_time||5)+' 分鐘閱讀' : (a.read_time||5)+' min read';
+    var homeLabel = lang === 'tc' ? '首頁' : 'Home';
+    var shareLabel  = lang === 'tc' ? '分享：' : 'Share:';
+    var copyLabel   = lang === 'tc' ? '複製連結' : 'Copy link';
+    var relatedLabel = lang === 'tc' ? '同類更多文章' : 'More from this category';
+    var backLabel   = lang === 'tc' ? '返回'+catLabel : 'Back to '+catLabel;
 
-    /* Update page title & meta */
-    document.title = `${title} — IsshoHub`;
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) metaDesc.content = excerpt;
+    /* Update meta */
+    document.title = title + ' — IsshoHub';
+    var metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.content = excerpt || title;
 
-    el.innerHTML = `
-      <div class="article-breadcrumb">
-        <a href="/">${homeLabel}</a>
-        <span>/</span>
-        <a href="${catUrl}">${catLabel}</a>
-        <span>/</span>
-        <span>${title}</span>
-      </div>
-      <div class="article-kicker">${catLabel.toUpperCase()}</div>
-      <h1 class="article-title">${title}</h1>
-      <div class="article-meta-row">
-        <span class="author">${author}</span>
-        ${author ? '<span>·</span>' : ''}
-        <span>${date}</span>
-        <span>·</span>
-        <span>${readTime}</span>
-      </div>
-      ${a.cover_image_url ? `<div class="article-cover" style="background-image:url('${a.cover_image_url}');background-size:cover;background-position:center;"></div>` : ''}
-      <div class="article-body">${body || `<p>${excerpt}</p>`}</div>
-    `;
+    /* Hero */
+    if (a.cover_image_url) {
+      heroEl.innerHTML =
+        '<div class="article-hero">'
+        + '<div class="article-hero-img" style="background-image:url(\''+a.cover_image_url+'\')"></div>'
+        + '<div class="article-hero-overlay"></div>'
+        + '<div class="article-hero-body">'
+        + '<div class="article-hero-breadcrumb">'
+        + '<a href="/">'+homeLabel+'</a><span class="sep">/</span>'
+        + '<a href="'+catUrl+'">'+catLabel+'</a><span class="sep">/</span>'
+        + '<span>'+title+'</span>'
+        + '</div>'
+        + '<div class="article-hero-tag">'+catLabel+'</div>'
+        + '<h1 class="article-hero-title">'+title+'</h1>'
+        + (excerpt ? '<p class="article-hero-excerpt">'+excerpt+'</p>' : '')
+        + '<div class="article-hero-meta">'
+        + (initials ? '<div class="article-hero-avatar">'+initials+'</div>' : '')
+        + (author ? '<span class="article-hero-author">'+author+'</span>' : '')
+        + (author && date ? '<div class="article-hero-dot"></div>' : '')
+        + (date ? '<span>'+date+'</span>' : '')
+        + '<div class="article-hero-dot"></div>'
+        + '<span class="article-hero-time"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>'+readTime+'</span>'
+        + '</div>'
+        + '</div>'
+        + '</div>';
+      layoutEl.innerHTML = '<div class="article-divider"></div>';
+    } else {
+      heroEl.innerHTML =
+        '<div class="article-hero article-hero-no-img">'
+        + '<div class="article-hero-body">'
+        + '<div class="article-hero-breadcrumb">'
+        + '<a href="/">'+homeLabel+'</a><span class="sep">/</span>'
+        + '<a href="'+catUrl+'">'+catLabel+'</a>'
+        + '</div>'
+        + '<div class="article-hero-tag">'+catLabel+'</div>'
+        + '<h1 class="article-hero-title">'+title+'</h1>'
+        + '<div class="article-hero-meta">'
+        + (initials ? '<div class="article-hero-avatar">'+initials+'</div>' : '')
+        + (author ? '<span class="article-hero-author">'+author+'</span>' : '')
+        + (author && date ? '<div class="article-hero-dot"></div>' : '')
+        + (date ? '<span>'+date+'</span>' : '')
+        + '<div class="article-hero-dot"></div>'
+        + '<span class="article-hero-time"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>'+readTime+'</span>'
+        + '</div>'
+        + '</div>'
+        + '</div>';
+      layoutEl.innerHTML = '';
+    }
 
-    /* Init inline editor for admins */
+    /* Body */
+    layoutEl.innerHTML +=
+      '<div class="article-body-wrap">'
+      + '<a class="article-back" href="'+catUrl+'">'
+      + '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>'
+      + backLabel
+      + '</a>'
+      + '<div class="article-prose" id="articleProse">'
+      + (body || '<p>'+excerpt+'</p>')
+      + '</div>'
+      + '<div class="article-share">'
+      + '<span class="article-share-label">'+shareLabel+'</span>'
+      + '<button class="share-btn" id="shareCopy"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>'+copyLabel+'</button>'
+      + '<a class="share-btn" href="https://twitter.com/intent/tweet?url='+encodeURIComponent(window.location.href)+'&text='+encodeURIComponent(title)+'" target="_blank" rel="noopener"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 3h3.4l-7.4 8.4L23.5 21h-6.8l-5.3-6.9L5.3 21H1.9l7.9-9L1 3h7l4.8 6.4L18.9 3z"/></svg>X</a>'
+      + '<a class="share-btn" href="https://social-plugins.line.me/lineit/share?url='+encodeURIComponent(window.location.href)+'" target="_blank" rel="noopener"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C5.37 2 0 6.36 0 11.74c0 4.82 4.24 8.86 9.97 9.63.39.08.92.26 1.05.6.12.3.08.79.04 1.08L11 24c-.05.32-.25 1.23 1.09.67 1.34-.57 7.22-4.26 9.85-7.28C23.73 15.4 24 13.6 24 11.74 24 6.36 18.63 2 12 2z"/></svg>LINE</a>'
+      + '</div>'
+      + '</div>';
+
+    /* Copy link */
+    var copyBtn = document.getElementById('shareCopy');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function() {
+        navigator.clipboard.writeText(window.location.href).then(function(){
+          copyBtn.classList.add('copied');
+          copyBtn.textContent = lang === 'tc' ? '✓ 已複製' : '✓ Copied';
+          setTimeout(function(){ copyBtn.classList.remove('copied'); copyBtn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>'+copyLabel; }, 2000);
+        }).catch(function(){});
+      });
+    }
+
+    /* Related articles */
+    if (catKey) {
+      var relRes = await window.IsshoAPI.fetchArticles({ category: catKey, limit: 6 });
+      var others = (relRes.data||[]).filter(function(x){ return x.slug !== s; }).slice(0,3);
+      if (others.length) {
+        relSect.style.display = '';
+        document.getElementById('relatedTitle').textContent = relatedLabel;
+        document.getElementById('relatedGrid').innerHTML = others.map(function(x){ return relatedCardHTML(x, lang); }).join('');
+      }
+    }
+
+    /* Inline editor for admins */
     if (window.IsshoInlineEditor) window.IsshoInlineEditor.init(a);
   }
 
-  window.onLangChange = function () { if (slug) loadArticle(slug); };
+  window.onLangChange = function() { if (slug) loadArticle(slug); };
 
-  /* ── Live FX calculator ── */
-  (function initFX() {
-    const CURRENCIES = ['HKD','TWD','USD','EUR','GBP','CAD','AUD','SGD'];
-    const tickerEl  = document.getElementById('tickerRate');
-    const fxInput   = document.getElementById('fxInput');
-    const fxOutput  = document.getElementById('fxOutput');
-    const fxFrom    = document.getElementById('fxFrom');
-    const fxRates   = document.getElementById('fxRates');
-    const fxTrigger = document.getElementById('fxTrigger');
-    const fxClose   = document.getElementById('fxClose');
-    let rates = {};
-    let lastEdited = 'input';
-    const fxRoot = document.getElementById('fx');
-    if (fxTrigger) fxTrigger.addEventListener('click', () => fxRoot.classList.toggle('open'));
-    if (fxClose)   fxClose.addEventListener('click',   () => fxRoot.classList.remove('open'));
-    document.addEventListener('click', e => { if (fxRoot && !fxRoot.contains(e.target)) fxRoot.classList.remove('open'); });
-    const fmt = v => v >= 10 ? v.toFixed(2) : v.toFixed(3);
-    const fmtJPY = v => String(Math.round(v));
-    function calcFromForeign() {
-      const amt = parseFloat(fxInput.value);
-      const cur = fxFrom.value;
-      if (!isNaN(amt) && rates[cur]) fxOutput.value = fmtJPY(amt * rates[cur]);
-    }
-    function calcFromJPY() {
-      const jpy = parseFloat(fxOutput.value);
-      const cur = fxFrom.value;
-      if (!isNaN(jpy) && rates[cur]) fxInput.value = fmt(jpy / rates[cur]);
-    }
-    if (fxInput)  fxInput.addEventListener('input',  () => { lastEdited = 'input';  calcFromForeign(); });
-    if (fxOutput) fxOutput.addEventListener('input', () => { lastEdited = 'output'; calcFromJPY(); });
-    if (fxFrom)   fxFrom.addEventListener('change',  () => {
-      document.getElementById('fxFromLabel').textContent = fxFrom.value;
-      lastEdited === 'output' ? calcFromJPY() : calcFromForeign();
-    });
-    fetch('https://open.er-api.com/v6/latest/JPY')
-      .then(r => r.json())
-      .then(json => {
-        if (json.result !== 'success' || !json.rates) return;
-        CURRENCIES.filter(c => json.rates[c]).forEach(c => { rates[c] = 1 / json.rates[c]; });
-        if (tickerEl) {
-          const parts = CURRENCIES.filter(c => rates[c]).map(c => `${c} <b>¥${fmt(rates[c])}</b>`);
-          let idx = 0;
-          const show = () => { tickerEl.innerHTML = parts.slice(idx, idx+2).join('&nbsp;&nbsp;'); idx = (idx+2) % parts.length; };
-          show(); setInterval(show, 3000);
-        }
-        if (fxRates) {
-          fxRates.innerHTML = CURRENCIES.filter(c => rates[c]).map(c =>
-            `<div class="fx-rate-item"><div class="k">${c}/JPY</div><div class="v">${fmt(rates[c])}</div></div>`
-          ).join('');
-        }
-        if (fxInput && fxInput.value) calcFromForeign();
-      })
-      .catch(() => {});
+  /* ── FX calculator ── */
+  (function(){
+    var C2=['HKD','TWD','USD','EUR','GBP','CAD','AUD','SGD'];
+    var tEl=document.getElementById('tickerRate'),fi=document.getElementById('fxInput'),fo=document.getElementById('fxOutput'),ff=document.getElementById('fxFrom'),fr=document.getElementById('fxRates'),fRoot=document.getElementById('fx'),rates2={},last2='input';
+    var fxT=document.getElementById('fxTrigger'),fxCl=document.getElementById('fxClose');
+    if(fxT) fxT.addEventListener('click',function(){fRoot.classList.toggle('open');});
+    if(fxCl) fxCl.addEventListener('click',function(){fRoot.classList.remove('open');});
+    document.addEventListener('click',function(e){if(fRoot&&!fRoot.contains(e.target))fRoot.classList.remove('open');});
+    var fmt2=function(v){return v>=10?v.toFixed(2):v.toFixed(3);},fmtJ2=function(v){return String(Math.round(v));};
+    function cFF2(){var a=parseFloat(fi.value),c=ff.value;if(!isNaN(a)&&rates2[c])fo.value=fmtJ2(a*rates2[c]);}
+    function cFJ2(){var j=parseFloat(fo.value),c=ff.value;if(!isNaN(j)&&rates2[c])fi.value=fmt2(j/rates2[c]);}
+    if(fi) fi.addEventListener('input',function(){last2='input';cFF2();});
+    if(fo) fo.addEventListener('input',function(){last2='output';cFJ2();});
+    if(ff) ff.addEventListener('change',function(){var l=document.getElementById('fxFromLabel');if(l)l.textContent=ff.value;last2==='output'?cFJ2():cFF2();});
+    fetch('https://open.er-api.com/v6/latest/JPY').then(function(r){return r.json();}).then(function(j){
+      if(j.result!=='success'||!j.rates)return;
+      C2.filter(function(c){return j.rates[c];}).forEach(function(c){rates2[c]=1/j.rates[c];});
+      if(tEl){var p=C2.filter(function(c){return rates2[c];}).map(function(c){return c+' <b>¥'+fmt2(rates2[c])+'</b>';});var i=0;var s=function(){tEl.innerHTML=p.slice(i,i+2).join('&nbsp;&nbsp;');i=(i+2)%p.length;};s();setInterval(s,3000);}
+      if(fr)fr.innerHTML=C2.filter(function(c){return rates2[c];}).map(function(c){return '<div class="fx-rate-item"><div class="k">'+c+'/JPY</div><div class="v">'+fmt2(rates2[c])+'</div></div>';}).join('');
+      if(fi&&fi.value)cFF2();
+    }).catch(function(){});
   })();
-
-  if (window.IsshoSearch) window.IsshoSearch.init();
 })();
 </script>
 </body>
