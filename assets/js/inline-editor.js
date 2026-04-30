@@ -122,12 +122,28 @@
     bar.innerHTML = `
       <span class="inline-save-status" id="inlineSaveStatus"></span>
       <div class="inline-save-actions">
+        <button class="editor-btn editor-btn-danger" id="inlineDeleteBtn">🗑 刪除</button>
         <button class="editor-btn" id="inlineCancelBtn">取消</button>
         <button class="editor-btn editor-btn-primary" id="inlineSaveBtn">儲存</button>
       </div>`;
     document.body.appendChild(bar);
     document.getElementById('inlineSaveBtn').addEventListener('click', saveEdits);
     document.getElementById('inlineCancelBtn').addEventListener('click', () => location.reload());
+    document.getElementById('inlineDeleteBtn').addEventListener('click', async () => {
+      const confirmed = window.confirm('確定要刪除這篇文章嗎？此操作無法還原。');
+      if (!confirmed) return;
+      const btn = document.getElementById('inlineDeleteBtn');
+      btn.disabled = true;
+      btn.textContent = '刪除中…';
+      const { error } = await window.IsshoAPI.deleteArticle(_article.id);
+      if (error) {
+        btn.disabled = false;
+        btn.textContent = '🗑 刪除';
+        document.getElementById('inlineSaveStatus').textContent = '❌ ' + error.message;
+      } else {
+        window.location.href = _article.category_key ? `/${_article.category_key}/` : '/';
+      }
+    });
   }
 
   /* ── Save to Supabase ── */
