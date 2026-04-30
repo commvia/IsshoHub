@@ -74,6 +74,10 @@
             <span class="editor-status" id="editorStatus"></span>
           </div>
           <div class="editor-header-actions">
+            <button class="editor-btn editor-btn-danger" id="editorDelete" style="display:none">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+              刪除文章
+            </button>
             <button class="editor-btn editor-btn-secondary" id="editorSaveDraft">儲存草稿</button>
             <button class="editor-btn editor-btn-primary" id="editorPublish">發佈文章</button>
             <button class="editor-close" id="editorClose">
@@ -277,6 +281,25 @@
 
     // Publish
     document.getElementById('editorPublish').addEventListener('click', () => saveArticle('published'));
+
+    // Delete
+    document.getElementById('editorDelete').addEventListener('click', async () => {
+      if (!currentArticleId) return;
+      const confirmed = window.confirm('確定要刪除這篇文章嗎？此操作無法還原。\n\nAre you sure you want to delete this article? This cannot be undone.');
+      if (!confirmed) return;
+      const btn = document.getElementById('editorDelete');
+      btn.disabled = true;
+      btn.textContent = '刪除中…';
+      const { error } = await window.IsshoAPI.deleteArticle(currentArticleId);
+      if (error) {
+        btn.disabled = false;
+        btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg> 刪除文章';
+        showEditorError('刪除失敗：' + error.message);
+      } else {
+        closeEditor();
+        window.location.reload();
+      }
+    });
   }
 
   /* ── Save article ── */
@@ -366,6 +389,10 @@
   function openEditor(articleData) {
     injectEditor();
     currentArticleId = articleData?.id || null;
+
+    /* Show delete button only when editing existing article */
+    const deleteBtn = document.getElementById('editorDelete');
+    if (deleteBtn) deleteBtn.style.display = articleData ? '' : 'none';
 
     if (articleData) {
       document.getElementById('editorTitle').textContent = '編輯文章';
