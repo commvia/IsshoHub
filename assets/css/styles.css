@@ -193,6 +193,20 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   display: flex; align-items: center;
   justify-content: space-between;
 }
+.editor-cat-checks {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px;
+}
+.editor-cat-check {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 12px; color: var(--ink-2);
+  background: var(--bg-2); border: 1px solid var(--line);
+  border-radius: 6px; padding: 4px 9px;
+  cursor: pointer; user-select: none; transition: border-color .12s, background .12s;
+}
+.editor-cat-check:hover { border-color: var(--navy); }
+.editor-cat-check input { margin: 0; accent-color: var(--navy); cursor: pointer; }
+.editor-cat-check.primary { background: rgba(13,36,68,.06); border-color: var(--navy); color: var(--navy); font-weight: 600; }
+.editor-cat-check.primary input { cursor: not-allowed; }
 .editor-image-upload {
   border: 2px dashed var(--line);
   border-radius: 10px; padding: 20px;

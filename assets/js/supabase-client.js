@@ -96,7 +96,7 @@
       .eq('status', 'published')
       .order('published_at', { ascending: false });
 
-    if (options.category) query = query.eq('category_key', options.category);
+    if (options.category) query = query.or(`category_key.eq.${options.category},category_keys.cs.{${options.category}}`);
     if (options.featured) query = query.eq('featured', true);
     if (options.limit)    query = query.limit(options.limit);
 

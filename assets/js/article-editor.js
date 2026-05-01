@@ -234,8 +234,28 @@
       .trim();
   }
 
+  /* ── Render extra-category checkboxes ── */
+  function renderExtraCatCheckboxes(primaryKey, checkedKeys) {
+    const container = document.getElementById('editorExtraCats');
+    const field     = document.getElementById('editorExtraCatsField');
+    if (!container || !categoriesCache.length) return;
+
+    checkedKeys = checkedKeys || [];
+    container.innerHTML = categoriesCache.map(c => {
+      const isPrimary = c.key === primaryKey;
+      const isChecked = isPrimary || checkedKeys.includes(c.key);
+      return `<label class="editor-cat-check${isPrimary ? ' primary' : ''}">
+        <input type="checkbox" name="extraCat" value="${c.key}"
+          ${isChecked ? 'checked' : ''} ${isPrimary ? 'disabled' : ''}>
+        ${c.name_tc}
+      </label>`;
+    }).join('');
+
+    if (field) field.style.display = '';
+  }
+
   /* ── Load categories into select ── */
-  async function loadCategories(selectEl, selectedKey) {
+  async function loadCategories(selectEl, selectedKey, checkedKeys) {
     if (!categoriesCache.length) {
       const { data, error } = await window.IsshoAPI.fetchCategories();
       console.log('[Editor] fetchCategories result:', data, error);
@@ -246,6 +266,7 @@
       categoriesCache.map(c =>
         `<option value="${c.key}" ${c.key === selectedKey ? 'selected' : ''}>${c.name_tc} / ${c.name_en}</option>`
       ).join('');
+    renderExtraCatCheckboxes(selectedKey, checkedKeys);
   }
 
   /* ── Upload image to Supabase Storage ── */
@@ -346,7 +367,7 @@
 
             <!-- Category -->
             <div class="editor-field">
-              <label>分類 Category *</label>
+              <label>主分類 Primary Category *</label>
               <select id="editorCategory"></select>
             </div>
 
@@ -356,6 +377,12 @@
               <select id="editorSubCategory">
                 <option value="">請先選擇分類</option>
               </select>
+            </div>
+
+            <!-- Extra categories (multi-category) -->
+            <div class="editor-field" id="editorExtraCatsField" style="display:none">
+              <label>同時收錄到 Also appears in</label>
+              <div class="editor-cat-checks" id="editorExtraCats"></div>
             </div>
 
             <!-- Slug -->
@@ -478,9 +505,10 @@
     // Load categories
     loadCategories(document.getElementById('editorCategory'));
 
-    // When category changes, load sub-categories
+    // When category changes, load sub-categories and re-render checkboxes
     document.getElementById('editorCategory').addEventListener('change', e => {
       loadSubCategories(e.target.value);
+      renderExtraCatCheckboxes(e.target.value);
     });
 
     // Save draft
@@ -534,11 +562,18 @@
     const tagsRaw = document.getElementById('editorTags').value;
     const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
 
+    /* Collect all checked categories (primary + extras) */
+    const extraChecked = Array.from(
+      document.querySelectorAll('#editorExtraCats input[name="extraCat"]:checked:not(:disabled)')
+    ).map(el => el.value);
+    const categoryKeys = [...new Set([category, ...extraChecked])];
+
     const article = {
       title_tc: titleTc,
       title_en: titleEn,
       slug,
       category_key: category,
+      category_keys: categoryKeys,
       sub_category_key: document.getElementById('editorSubCategory').value.trim() || null,
       cover_image_url: document.getElementById('coverImageUrl').value.trim() || null,
       excerpt_tc: document.getElementById('excerptTc').value.trim() || null,
@@ -617,7 +652,7 @@
       document.getElementById('editorReadTime').value = articleData.read_time || 5;
       document.getElementById('editorTags').value = (articleData.tags || []).join(', ');
       document.getElementById('editorFeatured').checked = articleData.featured || false;
-      loadCategories(document.getElementById('editorCategory'), articleData.category_key);
+      loadCategories(document.getElementById('editorCategory'), articleData.category_key, articleData.category_keys || []);
       if (articleData.cover_image_url) {
         document.getElementById('coverImagePreview').src = articleData.cover_image_url;
         document.getElementById('coverImagePreview').style.display = 'block';
