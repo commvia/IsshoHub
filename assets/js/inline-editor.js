@@ -348,26 +348,22 @@
     </div>`;
   }
 
-  /* ── Fetch & populate subcategory select ── */
-  async function loadInlineSubCategories(categoryKey, selectedKey) {
+  /* ── Populate subcategory select from data.js nav ── */
+  function loadInlineSubCategories(categoryKey, selectedKey) {
     const sel = document.getElementById('inlineSubCat');
     if (!sel) return;
-    sel.innerHTML = '<option value="">載入中…</option>';
-    try {
-      const client = window.IsshoAuth.getClient();
-      const { data } = await client
-        .from('sub_categories')
-        .select('*')
-        .eq('category_key', categoryKey)
-        .order('sort_order');
-      const subs = data || [];
-      sel.innerHTML = '<option value="">（選填）選擇副分類</option>'
-        + subs.map(s =>
-            `<option value="${s.key}" ${s.key === selectedKey ? 'selected' : ''}>${s.name_tc} / ${s.name_en}</option>`
-          ).join('');
-    } catch (e) {
-      sel.innerHTML = '<option value="">（無副分類）</option>';
+    const D = window.ISSHO_DATA;
+    const navItem = (D && D.nav || []).find(n => n.key === categoryKey);
+    const subs = (navItem && navItem.sub) || [];
+    if (!subs.length) {
+      sel.innerHTML = '<option value="">（此分類無副分類）</option>';
+      return;
     }
+    sel.innerHTML = '<option value="">（選填）選擇副分類</option>'
+      + subs.map(s => {
+          const key = (s.url || '').split('#')[1] || '';
+          return `<option value="${key}" ${key === selectedKey ? 'selected' : ''}>${s.tc} / ${s.en}</option>`;
+        }).join('');
   }
 
   /* ── Save bar ── */
@@ -388,7 +384,7 @@
       </div>`;
     document.body.appendChild(bar);
 
-    /* Load subcategories for current primary category */
+    /* Populate subcategories from data.js */
     loadInlineSubCategories(_article.category_key || '', _article.sub_category_key || '');
 
     /* Update checkboxes + subcategories when primary category changes */
