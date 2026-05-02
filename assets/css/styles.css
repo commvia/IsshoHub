@@ -457,7 +457,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   flex-shrink: 0;
   text-decoration: none;
 }
-a.brand, a.brand:hover, a.brand:visited { text-decoration: none; }
+a.brand, a.brand:hover, a.brand:visited, a.brand:focus { text-decoration: none; outline: none; }
+a.brand *, a.brand svg, a.brand text { text-decoration: none !important; }
 .brand-mark {
   width: 36px; height: 36px; border-radius: 10px;
   background: var(--navy);
