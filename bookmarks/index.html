@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>創業・工作 — IsshoHub</title>
-<meta name="description" content="在日本創業、開公司、銀行開戶、補助申請到稅務安排，從零開始的完整創業指南。" />
+<title>我的收藏 — IsshoHub</title>
+<meta name="description" content="你收藏的在日生活指南" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700&family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Zen+Old+Mincho:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700&family=Noto+Serif+TC:wght@400;500;600;700&family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Zen+Old+Mincho:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/styles.css">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'><circle cx='40' cy='40' r='36' fill='%230d2444'/><path d='M 40 8 A 32 32 0 0 1 40 72' stroke='%23d9b683' stroke-width='4' fill='none' stroke-linecap='round'/><text x='40' y='48' text-anchor='middle' font-family='Zen Old Mincho, Shippori Mincho, serif' font-size='26' fill='%23f6f3ec' letter-spacing='-1'>%E4%B8%80</text></svg>">
 <style>
@@ -15,70 +15,60 @@
   .brand .brand-mark svg,.footer-brand .brand-mark svg,.modal-brand .brand-mark svg,.mobile-menu-head .brand-mark svg{display:block;width:38px;height:38px;}
   .modal-brand .brand-mark svg{width:44px;height:44px;}.footer-brand .brand-mark svg{width:42px;height:42px;}
   .brand-name .hub{color:#a8762f;}.footer-brand .brand-name .hub{color:#d9b683;}
-  .cat-hero{position:relative;overflow:hidden;background:var(--navy,#0d2444);min-height:320px;}
-  .cat-hero-bg{position:absolute;inset:0;background-size:cover;background-position:center 40%;opacity:.22;}
-  .cat-hero-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,36,68,.96) 0%,rgba(13,36,68,.80) 60%,rgba(13,36,68,.60) 100%);}
-  .cat-hero-accent{position:absolute;top:0;right:0;width:340px;height:340px;background:radial-gradient(circle at 80% 20%,rgba(217,182,131,.12) 0%,transparent 65%);pointer-events:none;}
-  .cat-hero .container{position:relative;z-index:1;}
-  .cat-hero-watermark{position:absolute;right:-10px;bottom:-30px;font-family:'Zen Old Mincho','Shippori Mincho',serif;font-size:clamp(120px,18vw,200px);font-weight:700;color:rgba(217,182,131,.07);line-height:1;pointer-events:none;user-select:none;z-index:0;letter-spacing:-4px;}
-  .cat-hero-inner{display:flex;align-items:flex-start;gap:28px;padding:52px 0 48px;}
-  .cat-hero-icon-wrap{flex-shrink:0;width:64px;height:64px;background:rgba(217,182,131,.15);border:1px solid rgba(217,182,131,.3);border-radius:16px;display:flex;align-items:center;justify-content:center;color:#d9b683;margin-top:4px;backdrop-filter:blur(8px);}
-  .cat-hero-body{flex:1;}
-  .cat-hero-breadcrumb{display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(246,243,236,.45);margin-bottom:14px;letter-spacing:.02em;}
-  .cat-hero-breadcrumb a{color:rgba(217,182,131,.7);text-decoration:none;}.cat-hero-breadcrumb a:hover{color:#d9b683;}
-  .breadcrumb-sep{opacity:.4;}.cat-hero-breadcrumb .current{color:rgba(246,243,236,.65);}
-  .cat-hero-title{font-size:clamp(26px,4vw,38px);font-weight:700;color:#f6f3ec;line-height:1.2;margin:0 0 6px;letter-spacing:-.5px;}
-  .cat-hero-en{font-size:13px;color:#d9b683;letter-spacing:.1em;text-transform:uppercase;font-weight:500;margin-bottom:14px;font-family:'Inter',sans-serif;}
-  .cat-hero-desc{font-size:15px;color:rgba(246,243,236,.70);line-height:1.7;max-width:560px;margin:0 0 24px;}
-  .cat-hero-stats{display:flex;gap:28px;}
-  .cat-stat{display:flex;align-items:baseline;gap:6px;}
-  .cat-stat-num{font-size:28px;font-weight:700;color:#d9b683;font-family:'Inter',sans-serif;letter-spacing:-1px;line-height:1;}
-  .cat-stat-label{font-size:12px;color:rgba(246,243,236,.5);letter-spacing:.03em;}
-  .subcat-nav{background:var(--surface,#fff);border-bottom:1px solid var(--line,#e8e4dc);position:sticky;top:0;z-index:90;box-shadow:0 2px 8px rgba(13,36,68,.06);}
-  .subcat-scroll{display:flex;gap:0;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
-  .subcat-scroll::-webkit-scrollbar{display:none;}
-  .subcat-tab{flex-shrink:0;padding:14px 18px 12px;font-size:13px;font-weight:500;color:var(--ink-2,#6b6860);text-decoration:none;border-bottom:2px solid transparent;transition:color .15s,border-color .15s;white-space:nowrap;display:flex;align-items:center;gap:5px;cursor:pointer;}
-  .subcat-tab:hover{color:var(--ink,#1a1714);}.subcat-tab.active{color:var(--navy,#0d2444);border-bottom-color:var(--navy,#0d2444);font-weight:600;}
-  .subcat-tab .count{font-size:11px;background:var(--surface-2,#f2ede6);color:var(--ink-3,#9c9790);padding:1px 6px;border-radius:20px;font-weight:400;}
-  .subcat-tab.active .count{background:rgba(13,36,68,.08);color:var(--navy,#0d2444);}
-  .cat-featured-section{padding:48px 0 0;}.cat-articles-section{padding:36px 0 56px;}
-  .cat-articles-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
-  .cat-articles-title{font-size:18px;font-weight:700;color:var(--ink,#1a1714);letter-spacing:-.3px;}
+
+  .bm-hero{background:var(--navy,#0d2444);padding:52px 24px 44px;}
+  .bm-hero-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:16px;}
+  .bm-hero-icon{width:48px;height:48px;background:rgba(217,182,131,.15);border:1px solid rgba(217,182,131,.3);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .bm-hero-icon svg{color:#d9b683;}
+  .bm-hero-title{font-size:clamp(22px,3.5vw,34px);font-weight:800;color:#f6f3ec;margin:0 0 4px;font-family:'Noto Sans TC',sans-serif;}
+  .bm-hero-sub{font-size:14px;color:rgba(246,243,236,.5);margin:0;}
+
+  .bm-main{max-width:1200px;margin:0 auto;padding:48px 24px 80px;}
+  .bm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px;}
+
+  .bm-card{background:#fff;border-radius:12px;overflow:hidden;border:1px solid var(--line,#e4dfd3);transition:transform .2s,box-shadow .2s;position:relative;}
+  .bm-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(13,36,68,.1);}
+  .bm-card-media{aspect-ratio:16/9;background-size:cover;background-position:center;background-color:var(--paper-2,#f3efe6);display:block;text-decoration:none;}
+  .bm-card-body{padding:16px 18px 18px;}
+  .bm-card-tag{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent,#378ADD);margin-bottom:8px;}
+  .bm-card-title{font-size:15px;font-weight:600;color:var(--navy-ink,#0a1a31);line-height:1.5;margin:0 0 10px;text-decoration:none;display:block;}
+  .bm-card-title:hover{color:var(--accent,#378ADD);}
+  .bm-card-meta{font-size:12px;color:var(--ink-3,#7d8598);display:flex;align-items:center;gap:8px;}
+  .bm-card-remove{position:absolute;top:10px;right:10px;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.45);border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .15s;}
+  .bm-card:hover .bm-card-remove{opacity:1;}
+  .bm-card-remove:hover{background:rgba(192,57,43,.85);}
+  .bm-card-remove svg{color:#fff;}
+
+  .bm-empty{text-align:center;padding:80px 24px;}
+  .bm-empty-icon{font-size:48px;margin-bottom:16px;}
+  .bm-empty-title{font-size:20px;font-weight:700;color:var(--navy-ink,#0a1a31);margin:0 0 10px;}
+  .bm-empty-sub{font-size:14px;color:var(--ink-3,#7d8598);margin:0 0 24px;}
+  .bm-empty-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;background:var(--navy,#0d2444);color:#fff;border-radius:999px;font-size:14px;font-weight:600;text-decoration:none;transition:opacity .15s;}
+  .bm-empty-btn:hover{opacity:.85;}
+
+  .bm-login{text-align:center;padding:80px 24px;}
+  .bm-login-icon{font-size:48px;margin-bottom:16px;}
+  .bm-login-title{font-size:20px;font-weight:700;color:var(--navy-ink,#0a1a31);margin:0 0 10px;}
+  .bm-login-sub{font-size:14px;color:var(--ink-3,#7d8598);margin:0 0 24px;}
+
+  @media(max-width:640px){
+    .bm-hero{padding:40px 20px 32px;}
+    .bm-main{padding:32px 20px 60px;}
+    .bm-grid{grid-template-columns:1fr;}
+  }
 </style>
-
-  <!-- SEO: canonical + hreflang -->
-  <link rel="canonical" href="https://isshohub.pages.dev/biz/" />
-  <link rel="alternate" hreflang="zh-Hant" href="https://isshohub.pages.dev/biz/" />
-  <link rel="alternate" hreflang="en" href="https://isshohub.pages.dev/biz/" />
-  <link rel="alternate" hreflang="x-default" href="https://isshohub.pages.dev/biz/" />
-
-  <!-- Open Graph -->
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="IsshoHub" />
-  <meta property="og:url" content="https://isshohub.pages.dev/biz/" />
-  <meta property="og:title" content="創業・工作 — IsshoHub" />
-  <meta property="og:description" content="在日本創業、開公司、銀行開戶、補助申請到稅務安排，從零開始的完整創業指南。" />
-  <meta property="og:image" content="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:locale" content="zh_TW" />
-  <meta property="og:locale:alternate" content="en_US" />
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="創業・工作 — IsshoHub" />
-  <meta name="twitter:description" content="在日本創業、開公司、銀行開戶、補助申請到稅務安排，從零開始的完整創業指南。" />
-  <meta name="twitter:image" content="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80" />
 </head>
 <body data-lang="tc">
 
+<!-- ADMIN BAR -->
 <div class="admin-bar" data-admin-bar style="display:none">
   <div class="admin-bar-inner">
     <span class="admin-bar-label"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> 管理員模式</span>
-    <div class="admin-bar-actions"><button class="admin-btn" id="adminNewArticle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg> 新增文章</button></div>
+    <div class="admin-bar-actions"></div>
   </div>
 </div>
 
+<!-- TOP BAR -->
 <div class="topbar">
   <div class="container row">
     <div class="ticker"><span data-i18n="ticker1"></span><span data-i18n="ticker2"></span></div>
@@ -86,6 +76,7 @@
   </div>
 </div>
 
+<!-- NAV -->
 <nav class="nav">
   <div class="container row">
     <a class="brand" href="/" style="text-decoration:none;outline:none;">
@@ -107,11 +98,12 @@
   <div class="catstrip" id="catstrip"></div>
 </nav>
 
+<!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
   <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
   <div class="mobile-menu-drawer">
     <div class="mobile-menu-head">
-      <a class="brand" href="/" style="color:var(--navy-ink);">
+      <a class="brand" href="/" style="color:var(--navy-ink);text-decoration:none;outline:none;">
         <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="36" fill="#0d2444"/><path d="M 40 8 A 32 32 0 0 1 40 72" stroke="#d9b683" stroke-width="2.5" fill="none" stroke-linecap="round"/><text x="40" y="46" text-anchor="middle" font-family="Zen Old Mincho, Shippori Mincho, serif" font-size="22" font-weight="500" fill="#f6f3ec" letter-spacing="-1">一緒</text></svg></div>
         <div class="brand-name">Issho<span class="hub">Hub</span></div>
       </a>
@@ -125,58 +117,28 @@
   </div>
 </div>
 
-<section class="cat-hero">
-  <div class="cat-hero-bg" id="catHeroBg"></div>
-  <div class="cat-hero-overlay"></div>
-  <div class="cat-hero-accent"></div>
-  <div class="cat-hero-watermark" id="catHeroWatermark"></div>
-  <div class="container">
-    <div class="cat-hero-inner">
-      <div class="cat-hero-icon-wrap">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" id="catIconSvg"></svg>
-      </div>
-      <div class="cat-hero-body">
-        <div class="cat-hero-breadcrumb"><a href="/">首頁</a><span class="breadcrumb-sep">/</span><span class="current" id="heroBreadcrumbCurrent"></span></div>
-        <h1 class="cat-hero-title" id="catHeroTitle"></h1>
-        <div class="cat-hero-en" id="catHeroEn"></div>
-        <p class="cat-hero-desc" id="catHeroDesc"></p>
-        <div class="cat-hero-stats">
-          <div class="cat-stat"><div class="cat-stat-num" id="catStatNum">—</div><div class="cat-stat-label" id="catStatLabel"></div></div>
-          <div class="cat-stat"><div class="cat-stat-num" id="catStatSubsNum">—</div><div class="cat-stat-label" id="catStatSubs"></div></div>
-        </div>
-      </div>
+<!-- HERO -->
+<div class="bm-hero">
+  <div class="bm-hero-inner">
+    <div class="bm-hero-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+    </div>
+    <div>
+      <h1 class="bm-hero-title" id="bmTitle">我的收藏</h1>
+      <p class="bm-hero-sub" id="bmSub">你儲存的在日生活指南</p>
     </div>
   </div>
-</section>
+</div>
 
-<nav class="subcat-nav">
-  <div class="container"><div class="subcat-scroll" id="subcatScroll"></div></div>
-</nav>
-
-<section class="cat-featured-section">
-  <div class="container">
-    <div class="section-head" style="margin-bottom:20px;"><div class="section-eyebrow">— Featured</div></div>
-    <div class="article-grid" id="catFeaturedGrid"></div>
+<!-- MAIN -->
+<main class="bm-main" id="bmMain">
+  <div style="text-align:center;padding:60px 0;color:var(--ink-3);">
+    <div style="font-size:28px;margin-bottom:12px;">⏳</div>
+    <p>載入中…</p>
   </div>
-</section>
+</main>
 
-<section class="cat-articles-section">
-  <div class="container">
-    <div class="cat-articles-header"><div class="cat-articles-title" id="articlesTitle"></div></div>
-    <div class="article-grid" id="catArticlesGrid"></div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container">
-    <div class="newsletter">
-      <div class="section-eyebrow" style="display:flex;justify-content:center;">— Weekly digest</div>
-      <h3 data-i18n="newsletter_title"></h3><p data-i18n="newsletter_sub"></p>
-      <form class="newsletter-form"><input type="email" data-i18n-placeholder="email_placeholder" placeholder="your@email.com" required /><button type="submit" data-i18n="newsletter_cta"></button></form>
-    </div>
-  </div>
-</section>
-
+<!-- FOOTER -->
 <footer class="footer">
   <div class="container">
     <div class="grid">
@@ -193,26 +155,28 @@
         </div>
       </div>
       <div class="footer-col"><h5 data-i18n="footer_col1"></h5><div id="footerExplore"></div></div>
-      <div class="footer-col"><h5 data-i18n="footer_col2"></h5><a href="#" data-i18n="footer_r1"></a><a href="#" data-i18n="footer_r2"></a><a href="#" data-i18n="footer_r3"></a><a href="javascript:void(0)" onclick="var f=document.getElementById('fx');if(f)f.classList.toggle('open')" data-i18n="footer_r4"></a><a href="#" data-i18n="footer_r5"></a></div>
-      <div class="footer-col"><h5 data-i18n="footer_col3"></h5><a href="#" data-i18n="footer_a1"></a><a href="#" data-i18n="footer_a2"></a><a href="#" data-i18n="footer_a3"></a><a href="#" data-i18n="footer_a4"></a><a href="#" data-i18n="footer_a5"></a></div>
+      <div class="footer-col"><h5 data-i18n="footer_col2"></h5><a href="#" data-i18n="footer_r1"></a><a href="#" data-i18n="footer_r2"></a><a href="#" data-i18n="footer_r3"></a><a href="javascript:void(0)" onclick="var f=document.getElementById('fx');if(f)f.classList.toggle('open')" data-i18n="footer_r4"></a></div>
+      <div class="footer-col"><h5 data-i18n="footer_col3"></h5><a href="#" data-i18n="footer_a1"></a><a href="#" data-i18n="footer_a2"></a><a href="#" data-i18n="footer_a3"></a><a href="#" data-i18n="footer_a4"></a></div>
     </div>
-    <div class="footer-bottom"><div>&#169; 2026 IsshoHub &#xB7; 一緒 &#xB7; Made with care in Japan</div><div><span data-i18n="footer_lang"></span> / English</div></div>
+    <div class="footer-bottom"><div>© 2026 IsshoHub · 一緒 · Made with care in Japan</div><div><span data-i18n="footer_lang"></span> / English</div></div>
   </div>
 </footer>
 
+<!-- FX CALCULATOR -->
 <div class="fx" id="fx">
-  <button class="fx-trigger" id="fxTrigger"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 100 7h5a3.5 3.5 0 110 7H6"/></svg><span data-i18n="fx_trigger"></span><span class="badge">&#165;</span></button>
+  <button class="fx-trigger" id="fxTrigger"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 100 7h5a3.5 3.5 0 110 7H6"/></svg><span data-i18n="fx_trigger"></span><span class="badge">¥</span></button>
   <div class="fx-panel" style="position:relative;">
     <button class="fx-close" id="fxClose"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <div class="fx-head"><h4 data-i18n="fx_title"></h4><span class="live"><i></i><span data-i18n="fx_live"></span></span></div>
     <div class="fx-asof" data-i18n="fx_asof"></div>
     <div class="fx-row"><label class="fx-ccy"><span id="fxFromFlag"></span><span id="fxFromLabel">HKD</span><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg><select id="fxFrom"><option value="HKD">HKD 港幣</option><option value="TWD">TWD 新台幣</option><option value="USD">USD 美元</option><option value="EUR">EUR 歐元</option><option value="GBP">GBP 英鎊</option><option value="CAD">CAD 加元</option><option value="AUD">AUD 澳元</option><option value="SGD">SGD 坡元</option></select></label><input type="number" class="fx-input" id="fxInput" value="1000" min="0" /></div>
-    <div class="fx-equals">&#8645;</div>
-    <div class="fx-row to"><div class="fx-ccy"><span>&#127471;&#127477;</span>JPY</div><input type="number" class="fx-input" id="fxOutput" /></div>
+    <div class="fx-equals">⇅</div>
+    <div class="fx-row to"><div class="fx-ccy"><span>🇯🇵</span>JPY 日圓</div><input type="number" class="fx-input" id="fxOutput" /></div>
     <div class="fx-rates" id="fxRates"></div>
   </div>
 </div>
 
+<!-- LOGIN MODAL -->
 <div class="modal-overlay" id="loginModal" role="dialog" aria-modal="true">
   <div class="modal">
     <button class="modal-close" id="modalClose"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
@@ -222,7 +186,7 @@
     <div data-tab="login">
       <div class="social-login"><button class="btn-social" id="googleSignIn"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg><span data-i18n="login_google"></span></button></div>
       <div class="modal-divider"><span data-i18n="login_or"></span></div>
-      <form class="login-form" id="loginForm"><div class="form-group"><label data-i18n="login_email"></label><input type="email" name="email" placeholder="your@email.com" autocomplete="email" required /></div><div class="form-group"><label data-i18n="login_password"></label><input type="password" name="password" placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;" autocomplete="current-password" required /></div><button type="submit" class="btn-submit" data-i18n="login_submit"></button></form>
+      <form class="login-form" id="loginForm"><div class="form-group"><label data-i18n="login_email"></label><input type="email" name="email" placeholder="your@email.com" autocomplete="email" required /></div><div class="form-group"><label data-i18n="login_password"></label><input type="password" name="password" placeholder="••••••••" autocomplete="current-password" required /></div><button type="submit" class="btn-submit" data-i18n="login_submit"></button></form>
       <div class="modal-footer"><a href="#" id="forgotPasswordLink" data-i18n="login_forgot"></a></div>
     </div>
     <div data-tab="register" style="display:none"><form class="login-form" id="registerForm"><div class="form-group"><label data-i18n="register_name"></label><input type="text" name="name" placeholder="Your name" autocomplete="name" required /></div><div class="form-group"><label data-i18n="login_email"></label><input type="email" name="email" placeholder="your@email.com" autocomplete="email" required /></div><div class="form-group"><label data-i18n="login_password"></label><input type="password" name="password" placeholder="At least 8 characters" autocomplete="new-password" required minlength="8" /></div><button type="submit" class="btn-submit" data-i18n="login_register"></button></form></div>
@@ -233,36 +197,106 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/data.js"></script>
 <script src="/assets/js/supabase-client.js"></script>
-<script src="/assets/js/article-editor.js?v=2"></script>
 <script src="/assets/js/search.js"></script>
 <script src="/assets/js/core.js"></script>
-<script src="/assets/js/category-page.js"></script>
 <script>
-(function(){
-  var D=window.ISSHO_DATA,meta=(D.cat_meta||{})['biz']||{};
-  var iconEl=document.getElementById('catIconSvg');
-  if(iconEl&&meta.icon) iconEl.innerHTML=meta.icon;
-  window.IsshoCategory.init('biz');
-  (function(){
-    var C=['HKD','TWD','USD','EUR','GBP','CAD','AUD','SGD'];
-    var tEl=document.getElementById('tickerRate'),fi=document.getElementById('fxInput'),fo=document.getElementById('fxOutput'),ff=document.getElementById('fxFrom'),fr=document.getElementById('fxRates'),fRoot=document.getElementById('fx'),rates={},last='input';
-    document.getElementById('fxTrigger').addEventListener('click',function(){fRoot.classList.toggle('open');});
-    document.getElementById('fxClose').addEventListener('click',function(){fRoot.classList.remove('open');});
-    document.addEventListener('click',function(e){if(fRoot&&!fRoot.contains(e.target))fRoot.classList.remove('open');});
-    var fmt=function(v){return v>=10?v.toFixed(2):v.toFixed(3);},fmtJ=function(v){return String(Math.round(v));};
-    function cFF(){var a=parseFloat(fi.value),c=ff.value;if(!isNaN(a)&&rates[c])fo.value=fmtJ(a*rates[c]);}
-    function cFJ(){var j=parseFloat(fo.value),c=ff.value;if(!isNaN(j)&&rates[c])fi.value=fmt(j/rates[c]);}
-    fi.addEventListener('input',function(){last='input';cFF();});
-    fo.addEventListener('input',function(){last='output';cFJ();});
-    ff.addEventListener('change',function(){document.getElementById('fxFromLabel').textContent=ff.value;last==='output'?cFJ():cFF();});
-    fetch('https://open.er-api.com/v6/latest/JPY').then(function(r){return r.json();}).then(function(j){
-      if(j.result!=='success'||!j.rates)return;
-      C.filter(function(c){return j.rates[c];}).forEach(function(c){rates[c]=1/j.rates[c];});
-      if(tEl){var p=C.filter(function(c){return rates[c];}).map(function(c){return c+' <b>&#165;'+fmt(rates[c])+'</b>';});var i=0;var s=function(){tEl.innerHTML=p.slice(i,i+2).join('&nbsp;&nbsp;');i=(i+2)%p.length;};s();setInterval(s,3000);}
-      if(fr)fr.innerHTML=C.filter(function(c){return rates[c];}).map(function(c){return '<div class="fx-rate-item"><div class="k">'+c+'/JPY</div><div class="v">'+fmt(rates[c])+'</div></div>';}).join('');
-      if(fi&&fi.value)cFF();
-    }).catch(function(){});
-  })();
+(function () {
+  'use strict';
+  var C = window.IsshoCore;
+  C.init(null);
+
+  var main = document.getElementById('bmMain');
+
+  function getLang() { return C.getLang(); }
+
+  function cardHTML(item, lang) {
+    var a     = item.articles || item;
+    var title = lang === 'tc' ? (a.title_tc || a.title_en) : (a.title_en || a.title_tc);
+    var cat   = a.category_key || '';
+    var img   = a.cover_image_url || '';
+    var date  = a.published_at
+      ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', {year:'numeric',month:'short',day:'numeric'})
+      : '';
+    var rt    = lang === 'tc' ? (a.read_time || 5) + ' 分鐘' : (a.read_time || 5) + ' min';
+    return '<div class="bm-card" data-article-id="' + item.article_id + '">'
+      + '<a class="bm-card-media" href="/article/?slug=' + a.slug + '"'
+      + (img ? ' style="background-image:url(\'' + img + '\')"' : '') + '></a>'
+      + '<div class="bm-card-body">'
+      + '<div class="bm-card-tag">' + cat + '</div>'
+      + '<a class="bm-card-title" href="/article/?slug=' + a.slug + '">' + title + '</a>'
+      + '<div class="bm-card-meta">' + date + (date && rt ? ' · ' : '') + rt + '</div>'
+      + '</div>'
+      + '<button class="bm-card-remove" data-remove-id="' + item.article_id + '" title="移除收藏">'
+      + '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>'
+      + '</button>'
+      + '</div>';
+  }
+
+  function renderBookmarks(items, lang) {
+    var titleEl = document.getElementById('bmTitle');
+    var subEl   = document.getElementById('bmSub');
+    if (!items.length) {
+      if (titleEl) titleEl.textContent = lang === 'tc' ? '我的收藏' : 'My Bookmarks';
+      if (subEl)   subEl.textContent   = '';
+      main.innerHTML = '<div class="bm-empty">'
+        + '<div class="bm-empty-icon">🔖</div>'
+        + '<div class="bm-empty-title">' + (lang === 'tc' ? '還沒有收藏' : 'No bookmarks yet') + '</div>'
+        + '<p class="bm-empty-sub">' + (lang === 'tc' ? '在文章頁面點擊「收藏」即可儲存。' : 'Click "Save" on any article to bookmark it.') + '</p>'
+        + '<a class="bm-empty-btn" href="/">' + (lang === 'tc' ? '瀏覽文章' : 'Browse articles') + '</a>'
+        + '</div>';
+      return;
+    }
+    if (titleEl) titleEl.textContent = lang === 'tc' ? '我的收藏' : 'My Bookmarks';
+    if (subEl)   subEl.textContent   = lang === 'tc' ? items.length + ' 篇已儲存' : items.length + ' saved';
+    main.innerHTML = '<div class="bm-grid">' + items.map(function(x){ return cardHTML(x, lang); }).join('') + '</div>';
+
+    /* Remove buttons */
+    main.querySelectorAll('[data-remove-id]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var id   = btn.getAttribute('data-remove-id');
+        var card = btn.closest('.bm-card');
+        btn.disabled = true;
+        window.IsshoAPI.unsaveArticle(id).then(function(res) {
+          if (!res.error && card) {
+            card.style.transition = 'opacity .25s, transform .25s';
+            card.style.opacity = '0';
+            card.style.transform = 'scale(.95)';
+            setTimeout(function(){ card.remove(); }, 260);
+            /* Update subtitle count */
+            var remaining = main.querySelectorAll('.bm-card').length - 1;
+            if (subEl) subEl.textContent = lang === 'tc' ? remaining + ' 篇已儲存' : remaining + ' saved';
+          }
+        });
+      });
+    });
+  }
+
+  async function loadBookmarks() {
+    var lang = getLang();
+    var user = await window.IsshoAuth.getUser();
+    if (!user) {
+      main.innerHTML = '<div class="bm-login">'
+        + '<div class="bm-login-icon">🔒</div>'
+        + '<div class="bm-login-title">' + (lang === 'tc' ? '請先登入' : 'Sign in to view bookmarks') + '</div>'
+        + '<p class="bm-login-sub">' + (lang === 'tc' ? '登入後即可查看你的收藏文章。' : 'Sign in to access your saved articles.') + '</p>'
+        + '<button class="bm-empty-btn" data-open-login>'
+        + (lang === 'tc' ? '登入 / 註冊' : 'Sign in / Register') + '</button>'
+        + '</div>';
+      /* Wire login button */
+      var loginBtn = main.querySelector('[data-open-login]');
+      if (loginBtn) loginBtn.addEventListener('click', function() {
+        var globalLogin = document.querySelector('.btn-login[data-open-login]');
+        if (globalLogin) globalLogin.click();
+      });
+      return;
+    }
+    var res = await window.IsshoAPI.getSavedArticles();
+    renderBookmarks(res.data || [], lang);
+  }
+
+  loadBookmarks();
+
+  window.onLangChange = function() { loadBookmarks(); };
 })();
 </script>
 </body>
