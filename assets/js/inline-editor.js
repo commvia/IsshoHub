@@ -361,9 +361,9 @@
         .eq('category_key', categoryKey)
         .order('sort_order');
       const subs = data || [];
-      sel.innerHTML = '<option value="">（無副分類）</option>'
+      sel.innerHTML = '<option value="">（選填）選擇副分類</option>'
         + subs.map(s =>
-            `<option value="${s.key}" ${s.key === selectedKey ? 'selected' : ''}>${s.tc || s.en || s.key}</option>`
+            `<option value="${s.key}" ${s.key === selectedKey ? 'selected' : ''}>${s.name_tc} / ${s.name_en}</option>`
           ).join('');
     } catch (e) {
       sel.innerHTML = '<option value="">（無副分類）</option>';
