@@ -254,7 +254,7 @@
     const lang = document.body.getAttribute('data-lang') || 'tc';
 
     /* Title → contenteditable */
-    const titleEl = document.querySelector('.article-title');
+    const titleEl = document.querySelector('.article-hero-title');
     if (titleEl) {
       titleEl.contentEditable = 'true';
       titleEl.classList.add('inline-editable');
@@ -262,7 +262,7 @@
     }
 
     /* Body → toolbar + textarea */
-    const bodyEl = document.querySelector('.article-body');
+    const bodyEl = document.querySelector('.article-prose');
     if (bodyEl) {
       const bodyContent = lang === 'tc'
         ? (_article.body_tc || _article.body_en || '')
@@ -286,7 +286,7 @@
     }
 
     /* Cover image URL input overlay */
-    const coverEl = document.querySelector('.article-cover');
+    const coverEl = document.querySelector('.article-cover-img');
     if (coverEl) {
       const wrap = document.createElement('div');
       wrap.className = 'inline-cover-wrap';
@@ -300,7 +300,7 @@
         </div>`;
       coverEl.replaceWith(wrap);
       document.getElementById('inlineCoverUrl').addEventListener('input', e => {
-        const img = wrap.querySelector('.article-cover');
+        const img = wrap.querySelector('.article-cover-img');
         if (img) img.style.backgroundImage = `url('${e.target.value}')`;
       });
     }
@@ -404,7 +404,7 @@
     statusEl.style.color = '';
 
     const lang       = document.body.getAttribute('data-lang') || 'tc';
-    const titleEl    = document.querySelector('.article-title');
+    const titleEl    = document.querySelector('.article-hero-title');
     const bodyTA     = document.getElementById('inlineBodyTA');
     const coverInput = document.getElementById('inlineCoverUrl');
 

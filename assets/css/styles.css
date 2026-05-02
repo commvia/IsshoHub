@@ -2076,6 +2076,8 @@ body[data-lang="en"] .cat-articles-title { font-family: var(--sans-en); }
 .inline-save-actions .editor-btn { color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.2); }
 .inline-save-actions .editor-btn:hover { color: #fff; border-color: rgba(255,255,255,0.6); }
 .inline-save-actions .editor-btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.inline-save-actions .editor-btn-danger { background: rgba(220,50,40,.2); border-color: rgba(220,100,90,.5); color: #ffb3ae; }
+.inline-save-actions .editor-btn-danger:hover { background: #c0392b; border-color: #c0392b; color: #fff; }
 
 /* ── Inline editor — category row ── */
 .inline-cat-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.12); margin-bottom: 10px; }
