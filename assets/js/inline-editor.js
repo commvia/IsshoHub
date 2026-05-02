@@ -338,10 +338,36 @@
         <select id="inlinePrimaryCat" class="inline-cat-select">${opts}</select>
       </div>
       <div class="inline-cat-field">
+        <span class="inline-cat-label">副分類</span>
+        <select id="inlineSubCat" class="inline-cat-select"><option value="">載入中…</option></select>
+      </div>
+      <div class="inline-cat-field">
         <span class="inline-cat-label">同時收錄</span>
         <div class="inline-extra-cats" id="inlineExtraCats">${checks}</div>
       </div>
     </div>`;
+  }
+
+  /* ── Fetch & populate subcategory select ── */
+  async function loadInlineSubCategories(categoryKey, selectedKey) {
+    const sel = document.getElementById('inlineSubCat');
+    if (!sel) return;
+    sel.innerHTML = '<option value="">載入中…</option>';
+    try {
+      const client = window.IsshoAuth.getClient();
+      const { data } = await client
+        .from('sub_categories')
+        .select('*')
+        .eq('category_key', categoryKey)
+        .order('sort_order');
+      const subs = data || [];
+      sel.innerHTML = '<option value="">（無副分類）</option>'
+        + subs.map(s =>
+            `<option value="${s.key}" ${s.key === selectedKey ? 'selected' : ''}>${s.tc || s.en || s.key}</option>`
+          ).join('');
+    } catch (e) {
+      sel.innerHTML = '<option value="">（無副分類）</option>';
+    }
   }
 
   /* ── Save bar ── */
@@ -362,7 +388,10 @@
       </div>`;
     document.body.appendChild(bar);
 
-    /* Update checkboxes when primary category changes */
+    /* Load subcategories for current primary category */
+    loadInlineSubCategories(_article.category_key || '', _article.sub_category_key || '');
+
+    /* Update checkboxes + subcategories when primary category changes */
     const primarySel = document.getElementById('inlinePrimaryCat');
     if (primarySel) {
       primarySel.addEventListener('change', function () {
@@ -374,6 +403,7 @@
           cb.disabled = isP;
           if (isP) cb.checked = true;
         });
+        loadInlineSubCategories(newPrimary, '');
       });
     }
     document.getElementById('inlineSaveBtn').addEventListener('click', saveEdits);
@@ -428,6 +458,8 @@
       ).map(el => el.value);
       updates.category_keys = [...new Set([primaryCatEl.value, ...extra])];
     }
+    const subCatEl = document.getElementById('inlineSubCat');
+    if (subCatEl) updates.sub_category_key = subCatEl.value || null;
 
     const { error } = await window.IsshoAPI.upsertArticle({ ..._article, ...updates });
 
