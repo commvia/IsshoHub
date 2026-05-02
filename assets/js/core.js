@@ -176,13 +176,6 @@
     Object.keys(FOOTER_HREFS).forEach(key => {
       document.querySelectorAll(`a[data-i18n="${key}"]`).forEach(el => {
         el.href = FOOTER_HREFS[key];
-        if (key === 'footer_r4') {
-          el.addEventListener('click', e => {
-            e.preventDefault();
-            const fx = document.getElementById('fx');
-            if (fx) fx.classList.toggle('open');
-          });
-        }
       });
     });
   }
