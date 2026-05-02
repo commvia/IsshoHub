@@ -2066,15 +2066,36 @@ body[data-lang="en"] .cat-articles-title { font-family: var(--sans-en); }
   z-index: 200;
   background: var(--navy);
   color: #fff;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 24px;
+  display: flex; flex-direction: column;
+  padding: 10px 24px 14px;
   box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
 }
+.inline-save-bottom { display: flex; align-items: center; justify-content: space-between; }
 .inline-save-status { font-size: 13px; font-weight: 500; }
 .inline-save-actions { display: flex; gap: 10px; }
 .inline-save-actions .editor-btn { color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.2); }
 .inline-save-actions .editor-btn:hover { color: #fff; border-color: rgba(255,255,255,0.6); }
 .inline-save-actions .editor-btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* ── Inline editor — category row ── */
+.inline-cat-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.12); margin-bottom: 10px; }
+.inline-cat-field { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.inline-cat-label { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: rgba(255,255,255,.5); white-space: nowrap; }
+.inline-cat-select { font-size: 13px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.25); color: #fff; border-radius: 6px; padding: 4px 8px; cursor: pointer; }
+.inline-cat-select option { background: var(--navy); color: #fff; }
+.inline-extra-cats { display: flex; flex-wrap: wrap; gap: 6px; }
+.inline-cat-check { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.2); border-radius: 6px; padding: 3px 9px; cursor: pointer; color: rgba(255,255,255,.75); transition: all .15s; }
+.inline-cat-check:hover { background: rgba(255,255,255,.15); }
+.inline-cat-check input { margin: 0; accent-color: #d9b683; cursor: pointer; }
+.inline-cat-check.primary { background: rgba(217,182,131,.18); border-color: rgba(217,182,131,.5); color: #d9b683; font-weight: 600; }
+.inline-cat-check.primary input { cursor: not-allowed; }
+
+/* ── Inline editor — image insert form ── */
+.md-img-form { display: none; align-items: center; gap: 8px; flex-wrap: wrap; padding: 8px 10px; background: #f5f1ea; border: 1px solid var(--navy); border-top: none; border-radius: 0 0 6px 6px; }
+.md-img-form input { flex: 1; min-width: 160px; font-size: 13px; padding: 5px 10px; border: 1px solid var(--line); border-radius: 5px; background: #fff; }
+.md-img-form input:focus { outline: none; border-color: var(--navy); }
+.md-img-form-insert { font-size: 13px; font-weight: 600; padding: 5px 14px; background: var(--navy); color: #fff; border-radius: 5px; }
+.md-img-form-cancel { font-size: 13px; padding: 5px 10px; color: var(--ink-3); border-radius: 5px; }
 
 /* ── Card edit button (admin hover) ── */
 .card { position: relative; }

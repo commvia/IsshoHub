@@ -20,7 +20,15 @@
       <button type="button" class="md-toolbar-btn" data-md="ul" title="項目清單">• 清單</button>
       <button type="button" class="md-toolbar-btn" data-md="blockquote" title="引言">" 引言</button>
       <button type="button" class="md-toolbar-btn" data-md="hr" title="分隔線">— —</button>
+      <div class="md-toolbar-sep"></div>
+      <button type="button" class="md-toolbar-btn" data-md="image" title="插入圖片">🖼 圖片</button>
       <div class="md-toolbar-hint" id="inlineMdHint">📋 貼上 Word 內容可自動轉換格式</div>
+    </div>
+    <div class="md-img-form" id="inlineMdImgForm" style="display:none">
+      <input type="url" id="inlineMdImgUrl" placeholder="圖片 URL（https://...）" />
+      <input type="text" id="inlineMdImgAlt" placeholder="說明文字（可留空）" />
+      <button type="button" class="md-img-form-insert" id="inlineMdImgInsert">插入</button>
+      <button type="button" class="md-img-form-cancel" id="inlineMdImgCancel">✕</button>
     </div>`;
   }
 
@@ -61,6 +69,15 @@
       cursorOffset = sel ? 0 : 2;
     } else if (format === 'hr') {
       replacement = '\n\n---\n\n';
+    } else if (format === 'image') {
+      const form = document.getElementById('inlineMdImgForm');
+      if (form) {
+        form.style.display = 'flex';
+        form._ta     = ta;
+        form._cursor = start;
+        document.getElementById('inlineMdImgUrl').focus();
+      }
+      return;
     }
 
     ta.value = before + replacement + after;
@@ -133,6 +150,33 @@
       if ((e.ctrlKey || e.metaKey) && e.key === 'b') { e.preventDefault(); applyMdFormat(ta, 'bold'); }
       if ((e.ctrlKey || e.metaKey) && e.key === 'i') { e.preventDefault(); applyMdFormat(ta, 'italic'); }
     });
+    /* Image form wiring */
+    const imgForm = document.getElementById('inlineMdImgForm');
+    if (imgForm) {
+      const doInsert = () => {
+        const url = document.getElementById('inlineMdImgUrl').value.trim();
+        if (!url) { document.getElementById('inlineMdImgUrl').focus(); return; }
+        const alt = document.getElementById('inlineMdImgAlt').value.trim();
+        const ins = `\n\n![${alt}](${url})\n\n`;
+        const pos = imgForm._cursor != null ? imgForm._cursor : (imgForm._ta ? imgForm._ta.value.length : 0);
+        if (imgForm._ta) {
+          imgForm._ta.value = imgForm._ta.value.substring(0, pos) + ins + imgForm._ta.value.substring(pos);
+          imgForm._ta.selectionStart = imgForm._ta.selectionEnd = pos + ins.length;
+          autoResize(imgForm._ta);
+          imgForm._ta.focus();
+        }
+        imgForm.style.display = 'none';
+        document.getElementById('inlineMdImgUrl').value = '';
+        document.getElementById('inlineMdImgAlt').value = '';
+      };
+      document.getElementById('inlineMdImgInsert').addEventListener('click', doInsert);
+      document.getElementById('inlineMdImgUrl').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); doInsert(); } });
+      document.getElementById('inlineMdImgCancel').addEventListener('click', () => {
+        imgForm.style.display = 'none';
+        ta.focus();
+      });
+    }
+
     ta.addEventListener('paste', e => {
       const html = e.clipboardData && e.clipboardData.getData('text/html');
       if (!html || !/<(h[1-6]|b|strong|ul|ol|li|blockquote)/i.test(html)) return;
@@ -265,8 +309,39 @@
     const fab = document.getElementById('inlineEditBtn');
     if (fab) fab.style.display = 'none';
 
-    /* Inject save bar */
+    /* Inject save bar (includes category panel) */
     injectSaveBar();
+  }
+
+  /* ── Build category row HTML ── */
+  function buildCatRowHTML() {
+    const D = window.ISSHO_DATA;
+    const navItems = (D && D.nav) || [];
+    if (!navItems.length) return '';
+    const curPrimary  = _article.category_key || '';
+    const curKeys     = _article.category_keys || [];
+    const opts = navItems.map(n =>
+      `<option value="${n.key}" ${n.key === curPrimary ? 'selected' : ''}>${n.tc}／${n.en}</option>`
+    ).join('');
+    const checks = navItems.map(n => {
+      const isPrimary = n.key === curPrimary;
+      const checked   = isPrimary || curKeys.includes(n.key);
+      return `<label class="inline-cat-check ${isPrimary ? 'primary' : ''}">
+        <input type="checkbox" name="inlineExtraCat" value="${n.key}"
+          ${checked ? 'checked' : ''} ${isPrimary ? 'disabled' : ''}>
+        ${n.tc}
+      </label>`;
+    }).join('');
+    return `<div class="inline-cat-row">
+      <div class="inline-cat-field">
+        <span class="inline-cat-label">主分類</span>
+        <select id="inlinePrimaryCat" class="inline-cat-select">${opts}</select>
+      </div>
+      <div class="inline-cat-field">
+        <span class="inline-cat-label">同時收錄</span>
+        <div class="inline-extra-cats" id="inlineExtraCats">${checks}</div>
+      </div>
+    </div>`;
   }
 
   /* ── Save bar ── */
@@ -276,13 +351,31 @@
     bar.id = 'inlineSaveBar';
     bar.className = 'inline-save-bar';
     bar.innerHTML = `
-      <span class="inline-save-status" id="inlineSaveStatus"></span>
-      <div class="inline-save-actions">
-        <button class="editor-btn editor-btn-danger" id="inlineDeleteBtn">🗑 刪除</button>
-        <button class="editor-btn" id="inlineCancelBtn">取消</button>
-        <button class="editor-btn editor-btn-primary" id="inlineSaveBtn">儲存</button>
+      ${buildCatRowHTML()}
+      <div class="inline-save-bottom">
+        <span class="inline-save-status" id="inlineSaveStatus"></span>
+        <div class="inline-save-actions">
+          <button class="editor-btn editor-btn-danger" id="inlineDeleteBtn">🗑 刪除</button>
+          <button class="editor-btn" id="inlineCancelBtn">取消</button>
+          <button class="editor-btn editor-btn-primary" id="inlineSaveBtn">儲存</button>
+        </div>
       </div>`;
     document.body.appendChild(bar);
+
+    /* Update checkboxes when primary category changes */
+    const primarySel = document.getElementById('inlinePrimaryCat');
+    if (primarySel) {
+      primarySel.addEventListener('change', function () {
+        const newPrimary = this.value;
+        bar.querySelectorAll('.inline-cat-check').forEach(label => {
+          const cb = label.querySelector('input');
+          const isP = cb.value === newPrimary;
+          label.classList.toggle('primary', isP);
+          cb.disabled = isP;
+          if (isP) cb.checked = true;
+        });
+      });
+    }
     document.getElementById('inlineSaveBtn').addEventListener('click', saveEdits);
     document.getElementById('inlineCancelBtn').addEventListener('click', () => location.reload());
     document.getElementById('inlineDeleteBtn').addEventListener('click', async () => {
@@ -325,6 +418,16 @@
       else               updates.body_en = bodyTA.value;
     }
     if (coverInput) updates.cover_image_url = coverInput.value.trim();
+
+    /* Category */
+    const primaryCatEl = document.getElementById('inlinePrimaryCat');
+    if (primaryCatEl) {
+      updates.category_key  = primaryCatEl.value;
+      const extra = Array.from(
+        document.querySelectorAll('input[name="inlineExtraCat"]:checked:not(:disabled)')
+      ).map(el => el.value);
+      updates.category_keys = [...new Set([primaryCatEl.value, ...extra])];
+    }
 
     const { error } = await window.IsshoAPI.upsertArticle({ ..._article, ...updates });
 
