@@ -676,23 +676,6 @@
     });
   }
 
-  function renderChecklist() {
-    const lang = getLang();
-    document.getElementById('checklistItems').innerHTML = D.checklist.map(c => {
-      const title = lang === 'tc' ? c.tc.t : c.en.t;
-      const desc = lang === 'tc' ? c.tc.d : c.en.d;
-      const status = lang === 'tc' ? c.status_tc : c.status_en;
-      return `
-        <div class="checklist-item">
-          <div class="check-num">${c.n}</div>
-          <div class="check-body">
-            <div class="check-title">${title}</div>
-            <div class="check-desc">${desc}</div>
-          </div>
-          <div class="check-status ${c.done ? 'done' : ''}">${c.done ? '✓ ' : ''}${status}</div>
-        </div>`;
-    }).join('');
-  }
 
   function renderStories() {
     const lang = getLang();
@@ -820,7 +803,6 @@
     renderCats();
     renderEditor();
     renderLatest();
-    renderChecklist();
     renderStories();
   }
 
