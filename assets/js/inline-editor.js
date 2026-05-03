@@ -412,6 +412,20 @@
     bar.className = 'inline-save-bar';
     bar.innerHTML = `
       ${buildCatRowHTML()}
+      <div class="inline-meta-row">
+        <div class="inline-cat-field">
+          <span class="inline-cat-label">狀態</span>
+          <select id="inlineStatus" class="inline-cat-select">
+            <option value="published" ${(_article.status||'draft')==='published'?'selected':''}>● 已發佈</option>
+            <option value="draft"     ${(_article.status||'draft')==='draft'    ?'selected':''}>◐ 草稿</option>
+            <option value="archived"  ${(_article.status||'draft')==='archived' ?'selected':''}>○ 封存</option>
+          </select>
+        </div>
+        <label class="inline-featured-toggle">
+          <input type="checkbox" id="inlineFeatured" ${_article.featured ? 'checked' : ''}>
+          <span>⭐ 設為精選</span>
+        </label>
+      </div>
       <div class="inline-save-bottom">
         <span class="inline-save-status" id="inlineSaveStatus"></span>
         <div class="inline-save-actions">
@@ -494,6 +508,11 @@
     }
     const subCatEl = document.getElementById('inlineSubCat');
     if (subCatEl) updates.sub_category_key = subCatEl.value || null;
+
+    const statusEl2 = document.getElementById('inlineStatus');
+    if (statusEl2) updates.status = statusEl2.value;
+    const featuredEl = document.getElementById('inlineFeatured');
+    if (featuredEl) updates.featured = featuredEl.checked;
 
     const { error } = await window.IsshoAPI.upsertArticle({ ..._article, ...updates });
 
