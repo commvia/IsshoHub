@@ -30,7 +30,7 @@
       : '';
     const readTime = lang === 'tc' ? `${a.read_time || 5} 分鐘閱讀` : `${a.read_time || 5} min read`;
     return `
-      <article class="card${opts.featured ? ' featured' : ''}">
+      <article class="card${opts.featured ? ' featured' : ''}${opts.overlay ? ' overlay' : ''}">
         <a class="card-media" href="/article/?slug=${a.slug}" style="background-image:url('${img}')">
           <span class="card-tag cat-${cat}">${cat}</span>
         </a>
@@ -183,7 +183,7 @@
             var featured = articles.find(function (a) { return a.featured; }) || articles[0];
             if (featuredGrid) {
               if (featured) {
-                featuredGrid.innerHTML = sbCardHTML(featured, lang, { featured: true });
+                featuredGrid.innerHTML = sbCardHTML(featured, lang, { featured: true, overlay: true });
               } else {
                 /* Fallback to static data if available */
                 var staticFeatured = D[categoryKey + '_featured'];

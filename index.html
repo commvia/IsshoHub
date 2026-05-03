@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700&family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Zen+Old+Mincho:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/styles.css?v=3">
+<link rel="stylesheet" href="/assets/css/styles.css?v=4">
 
 <!-- Favicon (inline SVG seal) -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'><circle cx='40' cy='40' r='36' fill='%230d2444'/><path d='M 40 8 A 32 32 0 0 1 40 72' stroke='%23d9b683' stroke-width='4' fill='none' stroke-linecap='round'/><text x='40' y='48' text-anchor='middle' font-family='Zen Old Mincho, Shippori Mincho, serif' font-size='26' fill='%23f6f3ec' letter-spacing='-1'>%E4%B8%80</text></svg>">
@@ -604,7 +604,7 @@
     const readTime = lang === 'tc' ? `${a.read_time || 5} 分鐘閱讀` : `${a.read_time || 5} min read`;
     const url = `/article/?slug=${a.slug}`;
     return `
-      <article class="card ${opts.featured ? 'featured' : ''}">
+      <article class="card ${opts.featured ? 'featured' : ''}${opts.overlay ? ' overlay' : ''}">
         <a class="card-media" href="${url}" style="background-image: url('${img}')">
           <span class="card-tag cat-${cat}">${cat}</span>
         </a>
@@ -654,7 +654,7 @@
       if (articles.length) {
         const featured = articles.find(a => a.featured) || articles[0];
         const rest = articles.filter(a => a.id !== featured.id).slice(0, 5);
-        editorGrid.innerHTML = sbCardHTML(featured, { featured: true }) + rest.map(a => sbCardHTML(a)).join('');
+        editorGrid.innerHTML = sbCardHTML(featured, { featured: true, overlay: true }) + rest.map(a => sbCardHTML(a, { overlay: true })).join('');
       } else {
         editorGrid.innerHTML = C.cardHTML(D.featured, { featured: true }) + C.cardHTML(D.latest[0]);
       }
@@ -666,8 +666,8 @@
     if (_sbPicksSlugs && _sbPicksSlugs.length) {
       loadPicksArticles().then(articles => {
         if (articles && articles.length) {
-          editorGrid.innerHTML = sbCardHTML(articles[0], { featured: true }) +
-            articles.slice(1, 6).map(a => sbCardHTML(a)).join('');
+          editorGrid.innerHTML = sbCardHTML(articles[0], { featured: true, overlay: true }) +
+            articles.slice(1, 6).map(a => sbCardHTML(a, { overlay: true })).join('');
         } else {
           _renderEditorAuto(editorGrid);
         }
