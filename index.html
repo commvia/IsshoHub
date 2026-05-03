@@ -83,6 +83,10 @@
       管理員模式
     </span>
     <div class="admin-bar-actions">
+      <a class="admin-btn" href="/admin/">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+        文章管理
+      </a>
       <button class="admin-btn" id="adminNewArticle">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
         新增文章
@@ -477,12 +481,12 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/data.js"></script>
-<script src="/assets/js/supabase-client.js"></script>
+<script src="/assets/js/supabase-client.js?v=4"></script>
 <script src="/assets/js/article-editor.js?v=2"></script>
 <script src="/assets/js/hot-search-manager.js"></script>
 <script src="/assets/js/site-settings.js"></script>
-<script src="/assets/js/search.js"></script>
-<script src="/assets/js/core.js"></script>
+<script src="/assets/js/search.js?v=4"></script>
+<script src="/assets/js/core.js?v=4"></script>
 <script>
 (function () {
   const D = window.ISSHO_DATA;
@@ -589,8 +593,10 @@
   function sbCardHTML(a, opts) {
     opts = opts || {};
     const lang = getLang();
+    const hasTC = !!(a.title_tc);
     const title = lang === 'tc' ? (a.title_tc || a.title_en) : (a.title_en || a.title_tc);
-    const excerpt = lang === 'tc' ? (a.excerpt_tc || '') : (a.excerpt_en || '');
+    const excerpt = lang === 'tc' ? (a.excerpt_tc || a.excerpt_en || '') : (a.excerpt_en || a.excerpt_tc || '');
+    const langBadge = (lang === 'tc' && !hasTC) ? '<span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:.05em;padding:2px 6px;border-radius:4px;background:#e8f0fb;color:#1a56a8;margin-bottom:6px;">EN ONLY</span><br>' : '';
     const img = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80';
     const cat = a.category_key || '';
     const author = a.author || '';
@@ -607,7 +613,7 @@
           Edit
         </a>
         <div class="card-body">
-          <h3 class="card-title">${title}</h3>
+          ${langBadge}<h3 class="card-title">${title}</h3>
           <p class="card-excerpt">${excerpt}</p>
           <div class="card-meta">
             <span class="author">${author}</span>
@@ -622,15 +628,24 @@
       </article>`;
   }
 
-  let _sbArticles = null;    /* cache */
-  let _sbHero = null;        /* hero settings from Supabase */
-  let _sbPicksSlugs = null;  /* homepage editor picks slugs from site_settings (null = not yet loaded) */
+  let _sbArticles = null;      /* cache: latest articles */
+  let _sbPicksArticles = null; /* cache: editor picks articles */
+  let _sbHero = null;          /* hero settings from Supabase */
+  let _sbPicksSlugs = null;    /* homepage editor picks slugs from site_settings (null = not yet loaded) */
 
   async function loadSupabaseArticles() {
     if (_sbArticles) return _sbArticles;
     const { data } = await window.IsshoAPI.fetchArticles({ limit: 10 });
     _sbArticles = data || [];
     return _sbArticles;
+  }
+
+  async function loadPicksArticles() {
+    if (_sbPicksArticles) return _sbPicksArticles;
+    if (!_sbPicksSlugs || !_sbPicksSlugs.length) return null;
+    const { data } = await window.IsshoAPI.fetchArticlesBySlug(_sbPicksSlugs);
+    _sbPicksArticles = (data && data.length) ? data : null;
+    return _sbPicksArticles;
   }
 
   /* Auto picks: falls back to featured / latest articles */
@@ -648,14 +663,13 @@
 
   function renderEditor() {
     const editorGrid = document.getElementById('editorGrid');
-    /* If admin has configured specific slugs via Site Settings, use those */
     if (_sbPicksSlugs && _sbPicksSlugs.length) {
-      window.IsshoAPI.fetchArticlesBySlug(_sbPicksSlugs).then(({ data: articles }) => {
+      loadPicksArticles().then(articles => {
         if (articles && articles.length) {
           editorGrid.innerHTML = sbCardHTML(articles[0], { featured: true }) +
             articles.slice(1, 3).map(a => sbCardHTML(a)).join('');
         } else {
-          _renderEditorAuto(editorGrid); /* slugs not found — fallback */
+          _renderEditorAuto(editorGrid);
         }
       });
     } else {
@@ -806,14 +820,9 @@
     renderStories();
   }
 
-  /* hook into lang changes */
-  window.onLangChange = function () {
-    _sbArticles = null;
-    renderAll();
-  };
-
   /* boot */
   C.init(null);
+  C.onLangChange(renderAll);
   renderAll();
   if (window.IsshoEditor) window.IsshoEditor.init();
   if (window.IsshoHotSearch) window.IsshoHotSearch.init();

@@ -18,8 +18,10 @@
   /* ── Article card HTML (from Supabase row) ── */
   function sbCardHTML(a, lang, opts) {
     opts = opts || {};
+    const hasTC   = !!(a.title_tc);
     const title   = lang === 'tc' ? (a.title_tc || a.title_en) : (a.title_en || a.title_tc);
-    const excerpt = lang === 'tc' ? (a.excerpt_tc || '') : (a.excerpt_en || '');
+    const excerpt = lang === 'tc' ? (a.excerpt_tc || a.excerpt_en || '') : (a.excerpt_en || a.excerpt_tc || '');
+    const langBadge = (lang === 'tc' && !hasTC) ? '<span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:.05em;padding:2px 6px;border-radius:4px;background:#e8f0fb;color:#1a56a8;margin-bottom:6px;">EN ONLY</span><br>' : '';
     const img     = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80';
     const cat     = a.category_key || '';
     const author  = a.author || '';
@@ -33,7 +35,7 @@
           <span class="card-tag cat-${cat}">${cat}</span>
         </a>
         <div class="card-body">
-          <h3 class="card-title"><a href="/article/?slug=${a.slug}" style="color:inherit;text-decoration:none;">${title}</a></h3>
+          ${langBadge}<h3 class="card-title"><a href="/article/?slug=${a.slug}" style="color:inherit;text-decoration:none;">${title}</a></h3>
           <p class="card-excerpt">${excerpt}</p>
           <div class="card-meta">
             <span class="author">${author}</span>
@@ -239,9 +241,8 @@
         });
       }
 
-      global.onLangChange = function () { _articles = null; activeSub = ''; renderAll(); };
-
       C.init(categoryKey);
+      C.onLangChange(function () { activeSub = ''; renderAll(); });
       renderAll();
       if (global.IsshoEditor) global.IsshoEditor.init();
       if (global.IsshoSearch) global.IsshoSearch.init();

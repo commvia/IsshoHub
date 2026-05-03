@@ -196,9 +196,9 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/data.js"></script>
-<script src="/assets/js/supabase-client.js"></script>
-<script src="/assets/js/search.js"></script>
-<script src="/assets/js/core.js"></script>
+<script src="/assets/js/supabase-client.js?v=4"></script>
+<script src="/assets/js/search.js?v=4"></script>
+<script src="/assets/js/core.js?v=4"></script>
 <script>
 (function () {
   'use strict';
@@ -296,7 +296,7 @@
 
   loadBookmarks();
 
-  window.onLangChange = function() { loadBookmarks(); };
+  C.onLangChange(function() { loadBookmarks(); });
 })();
 </script>
 </body>

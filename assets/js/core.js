@@ -20,13 +20,23 @@
     lang: localStorage.getItem('issho.lang') || 'tc',
   };
 
+  /* Registered lang-change handlers (replaces fragile window.onLangChange) */
+  const _langListeners = [];
+
   function getLang() { return state.lang; }
 
   function setLang(lang) {
     state.lang = lang;
     localStorage.setItem('issho.lang', lang);
     applyLang();
+    /* fire all registered listeners */
+    _langListeners.forEach(fn => fn(lang));
+    /* also call legacy window.onLangChange if set */
     if (typeof window.onLangChange === 'function') window.onLangChange(lang);
+  }
+
+  function onLangChange(fn) {
+    _langListeners.push(fn);
   }
 
   function applyLang() {
@@ -467,16 +477,18 @@
 
   /* ── Lang toggle ── */
   function wireLang(activeKey) {
-    const toggle = document.getElementById('langToggle');
-    if (!toggle) return;
-    toggle.addEventListener('click', e => {
+    function handleLangClick(e) {
       const b = e.target.closest('[data-lang-set]');
       if (!b) return;
       setLang(b.getAttribute('data-lang-set'));
       renderNav(activeKey);
       renderMobileMenu(activeKey);
       updateI18n();
-    });
+    }
+    const toggle = document.getElementById('langToggle');
+    if (toggle) toggle.addEventListener('click', handleLangClick);
+    const toggleMobile = document.getElementById('langToggleMobile');
+    if (toggleMobile) toggleMobile.addEventListener('click', handleLangClick);
   }
 
   /* ── Mobile menu toggle ── */
@@ -546,12 +558,12 @@
     wireLoginModal();
     wireNewsletter();
 
-    /* re-render nav on lang change from page-specific code */
-    window.onLangChange = function (lang) {
+    /* register core nav/i18n re-render on lang change */
+    onLangChange(function () {
       renderNav(activeKey);
       renderMobileMenu(activeKey);
       updateI18n();
-    };
+    });
   }
 
   /* ── Exports ── */
@@ -559,6 +571,7 @@
     init,
     getLang,
     setLang,
+    onLangChange,
     t,
     cardHTML,
     ICONS,
