@@ -653,11 +653,9 @@
     loadSupabaseArticles().then(articles => {
       const featuredArticles = articles.filter(a => a.featured);
       if (featuredArticles.length) {
-        editorGrid.innerHTML = featuredArticles.map((a, i) =>
-          sbCardHTML(a, { featured: i === 0, overlay: true })
-        ).join('');
+        editorGrid.innerHTML = featuredArticles.map(a => sbCardHTML(a, { overlay: true })).join('');
       } else if (articles.length) {
-        editorGrid.innerHTML = sbCardHTML(articles[0], { featured: true, overlay: true });
+        editorGrid.innerHTML = sbCardHTML(articles[0], { overlay: true });
       } else {
         editorGrid.innerHTML = C.cardHTML(D.featured, { featured: true });
       }
@@ -669,8 +667,7 @@
     if (_sbPicksSlugs && _sbPicksSlugs.length) {
       loadPicksArticles().then(articles => {
         if (articles && articles.length) {
-          editorGrid.innerHTML = sbCardHTML(articles[0], { featured: true, overlay: true }) +
-            articles.slice(1, 6).map(a => sbCardHTML(a, { overlay: true })).join('');
+          editorGrid.innerHTML = articles.slice(0, 6).map(a => sbCardHTML(a, { overlay: true })).join('');
         } else {
           _renderEditorAuto(editorGrid);
         }
