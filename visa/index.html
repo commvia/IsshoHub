@@ -758,17 +758,12 @@
       const filtered = filterArticles(articles);
       const featuredSection = document.querySelector('.cat-featured-section');
 
-      /* Featured section: show only on 'all', or first article of sub-cat */
-      const featured = articles.find(a => a.featured) || articles[0];
-      if (activeSub === 'all') {
+      /* Featured: only show if an article is explicitly marked featured */
+      const featured = articles.find(a => a.featured) || null;
+      if (activeSub === 'all' && featured) {
         if (featuredSection) featuredSection.style.display = '';
-        if (featured) {
-          document.getElementById('visaFeaturedGrid').innerHTML = sbCardHTML(featured, { featured: true, overlay: true });
-        } else {
-          document.getElementById('visaFeaturedGrid').innerHTML = C.cardHTML(D.visa_featured, { featured: true });
-        }
+        document.getElementById('visaFeaturedGrid').innerHTML = sbCardHTML(featured, { featured: true, overlay: true });
       } else {
-        /* Hide featured panel when a specific sub-cat is selected */
         if (featuredSection) featuredSection.style.display = 'none';
       }
 

@@ -177,23 +177,11 @@
           var articlesGrid   = document.getElementById('catArticlesGrid');
           var articlesTitleEl = document.getElementById('articlesTitle');
 
-          /* Featured: show only on "all" tab */
-          if (!activeSub) {
+          /* Featured: show only on "all" tab, and only if an article is explicitly marked featured */
+          var featured = articles.find(function (a) { return a.featured; }) || null;
+          if (!activeSub && featured) {
             if (featuredSect) featuredSect.style.display = '';
-            var featured = articles.find(function (a) { return a.featured; }) || articles[0];
-            if (featuredGrid) {
-              if (featured) {
-                featuredGrid.innerHTML = sbCardHTML(featured, lang, { featured: true, overlay: true });
-              } else {
-                /* Fallback to static data if available */
-                var staticFeatured = D[categoryKey + '_featured'];
-                if (staticFeatured && C.cardHTML) {
-                  featuredGrid.innerHTML = C.cardHTML(staticFeatured, { featured: true });
-                } else {
-                  featuredGrid.innerHTML = '';
-                }
-              }
-            }
+            if (featuredGrid) featuredGrid.innerHTML = sbCardHTML(featured, lang, { featured: true, overlay: true });
           } else {
             if (featuredSect) featuredSect.style.display = 'none';
           }
