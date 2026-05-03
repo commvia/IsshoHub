@@ -285,23 +285,61 @@
       wireMdToolbar(ta);
     }
 
-    /* Cover image URL input overlay */
+    /* Cover image — click-to-upload overlay */
     const coverEl = document.querySelector('.article-cover-img');
     if (coverEl) {
       const wrap = document.createElement('div');
       wrap.className = 'inline-cover-wrap';
       wrap.innerHTML = `
-        <div style="position:relative;">
+        <div class="inline-cover-img-wrap">
           ${coverEl.outerHTML}
-          <div class="inline-cover-overlay">
-            <label>封面圖片 URL</label>
-            <input type="text" id="inlineCoverUrl" value="${_article.cover_image_url || ''}" placeholder="https://..." />
+          <div class="inline-cover-click-zone" id="inlineCoverZone">
+            <input type="file" id="inlineCoverFile" accept="image/*" style="display:none">
+            <div class="inline-cover-click-inner" id="inlineCoverClickInner">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <span id="inlineCoverZoneLabel">點擊更換封面圖片</span>
+            </div>
           </div>
+        </div>
+        <div class="inline-cover-url-row">
+          <input type="text" id="inlineCoverUrl" value="${_article.cover_image_url || ''}" placeholder="或貼上圖片 URL…" />
         </div>`;
       coverEl.replaceWith(wrap);
-      document.getElementById('inlineCoverUrl').addEventListener('input', e => {
-        const img = wrap.querySelector('.article-cover-img');
-        if (img) img.style.backgroundImage = `url('${e.target.value}')`;
+
+      const coverImg  = wrap.querySelector('.article-cover-img');
+      const fileInput = document.getElementById('inlineCoverFile');
+      const urlInput  = document.getElementById('inlineCoverUrl');
+      const zone      = document.getElementById('inlineCoverZone');
+      const label     = document.getElementById('inlineCoverZoneLabel');
+
+      zone.addEventListener('click', () => fileInput.click());
+
+      fileInput.addEventListener('change', async e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        label.textContent = '上傳中…';
+        zone.style.pointerEvents = 'none';
+        const ext = file.name.split('.').pop();
+        const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+        const client = window.IsshoAuth.getClient();
+        const { error: upErr } = await client.storage
+          .from('article-images')
+          .upload(filename, file, { contentType: file.type, upsert: false });
+        if (upErr) {
+          label.textContent = '❌ 上傳失敗，請貼上 URL';
+          zone.style.pointerEvents = '';
+          return;
+        }
+        const { data: urlData } = client.storage.from('article-images').getPublicUrl(filename);
+        const url = urlData.publicUrl;
+        urlInput.value = url;
+        if (coverImg) coverImg.style.backgroundImage = `url('${url}')`;
+        label.textContent = '✓ 已更換，點擊再換';
+        zone.style.pointerEvents = '';
+      });
+
+      urlInput.addEventListener('input', e => {
+        if (coverImg) coverImg.style.backgroundImage = `url('${e.target.value}')`;
       });
     }
 
