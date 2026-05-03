@@ -1234,7 +1234,7 @@ body[data-lang="en"] .section-title { font-family: var(--sans-en); letter-spacin
 
 /* Overlay card: text overlaid on image with gradient */
 .card.overlay { flex-direction: column; overflow: hidden; position: relative; }
-.card.overlay .card-media { aspect-ratio: 4/3; flex: none; width: 100%; }
+.card.overlay .card-media { aspect-ratio: 3/4; flex: none; width: 100%; }
 .card.overlay .card-body {
   position: absolute; inset: 0;
   background: linear-gradient(to top, rgba(10,24,48,0.93) 0%, rgba(10,24,48,0.45) 55%, transparent 100%);
@@ -1246,9 +1246,9 @@ body[data-lang="en"] .section-title { font-family: var(--sans-en); letter-spacin
 .card.overlay .card-excerpt { color: rgba(255,255,255,.78); font-size: 13px; -webkit-line-clamp: 2; }
 .card.overlay .card-meta { color: rgba(255,255,255,.55); border-top-color: rgba(255,255,255,.15); padding-top: 8px; margin-top: 0; }
 .card.overlay .card-meta .author { color: rgba(255,255,255,.8); }
-/* Featured overlay: wider, bigger title */
+/* Featured overlay: same portrait ratio but bigger text */
 @media (min-width: 720px) { .card.featured.overlay { grid-column: span 2; flex-direction: column; } }
-.card.featured.overlay .card-media { aspect-ratio: 21/9; }
+.card.featured.overlay .card-media { aspect-ratio: 16/9; }
 .card.featured.overlay .card-body { padding: 28px; }
 .card.featured.overlay .card-title { font-size: 26px; }
 .card.featured.overlay .card-excerpt { -webkit-line-clamp: 3; font-size: 14px; }
