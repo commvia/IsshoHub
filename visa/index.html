@@ -630,7 +630,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/data.js"></script>
-<script src="/assets/js/supabase-client.js?v=4"></script>
+<script src="/assets/js/supabase-client.js?v=5"></script>
 <script src="/assets/js/article-editor.js?v=2"></script>
 <script src="/assets/js/search.js?v=4"></script>
 <script src="/assets/js/core.js?v=4"></script>
@@ -779,7 +779,8 @@
       document.getElementById('articlesTitle').textContent = subTitle;
 
       /* Articles grid */
-      const gridArticles = activeSub === 'all' ? articles.filter(a => !a.featured) : filtered;
+      const _featuredId = featured && featured.id;
+      const gridArticles = activeSub === 'all' ? articles.filter(a => a.id !== _featuredId) : filtered;
       if (gridArticles.length) {
         document.getElementById('visaArticlesGrid').innerHTML = gridArticles.map(a => sbCardHTML(a)).join('');
       } else if (articles.length) {
