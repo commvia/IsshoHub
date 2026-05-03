@@ -180,7 +180,7 @@
           /* Featured: show only on "all" tab */
           if (!activeSub) {
             if (featuredSect) featuredSect.style.display = '';
-            var featured = articles.find(function (a) { return a.is_featured; }) || articles[0];
+            var featured = articles.find(function (a) { return a.featured; }) || articles[0];
             if (featuredGrid) {
               if (featured) {
                 featuredGrid.innerHTML = sbCardHTML(featured, lang, { featured: true });
@@ -208,9 +208,10 @@
             }
           }
 
-          /* Articles grid */
+          /* Articles grid: exclude the featured article to avoid duplication */
+          var _featuredId = featured && featured.id;
           if (articlesGrid) {
-            var gridArticles = !activeSub ? articles.filter(function (a) { return !a.is_featured; }) : filtered;
+            var gridArticles = !activeSub ? articles.filter(function (a) { return a.id !== _featuredId; }) : filtered;
             if (gridArticles.length) {
               articlesGrid.innerHTML = gridArticles.map(function (a) { return sbCardHTML(a, lang); }).join('');
             } else if (articles.length) {
