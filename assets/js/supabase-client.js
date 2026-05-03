@@ -109,7 +109,8 @@
     let query = getClient()
       .from('articles')
       .select('id, slug, title_tc, title_en, category_key, status, published_at, updated_at, featured, author')
-      .order('updated_at', { ascending: false });
+      .order('updated_at', { ascending: false })
+      .range(0, 999);
     if (options.category) query = query.eq('category_key', options.category);
     if (options.status)   query = query.eq('status', options.status);
     if (options.limit)    query = query.limit(options.limit);
