@@ -759,9 +759,9 @@
       const featuredSection = document.querySelector('.cat-featured-section');
 
       /* Featured section: show only on 'all', or first article of sub-cat */
+      const featured = articles.find(a => a.featured) || articles[0];
       if (activeSub === 'all') {
         if (featuredSection) featuredSection.style.display = '';
-        const featured = articles.find(a => a.featured) || articles[0];
         if (featured) {
           document.getElementById('visaFeaturedGrid').innerHTML = sbCardHTML(featured, { featured: true });
         } else {
@@ -778,9 +778,8 @@
         : (() => { const s = SUBS.find(x => x.key === activeSub); return s ? (lang === 'tc' ? s.tc : s.en) : ''; })();
       document.getElementById('articlesTitle').textContent = subTitle;
 
-      /* Articles grid */
-      const _featuredId = featured && featured.id;
-      const gridArticles = activeSub === 'all' ? articles.filter(a => a.id !== _featuredId) : filtered;
+      /* Articles grid: exclude the featured article shown in hero spot */
+      const gridArticles = activeSub === 'all' ? articles.filter(a => a.id !== (featured && featured.id)) : filtered;
       if (gridArticles.length) {
         document.getElementById('visaArticlesGrid').innerHTML = gridArticles.map(a => sbCardHTML(a)).join('');
       } else if (articles.length) {
