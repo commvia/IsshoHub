@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700&family=Noto+Serif+TC:wght@400;500;600;700&family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Zen+Old+Mincho:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/styles.css?v=3">
+<link rel="stylesheet" href="/assets/css/styles.css?v=6">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'><circle cx='40' cy='40' r='36' fill='%230d2444'/><path d='M 40 8 A 32 32 0 0 1 40 72' stroke='%23d9b683' stroke-width='4' fill='none' stroke-linecap='round'/><text x='40' y='48' text-anchor='middle' font-family='Zen Old Mincho, Shippori Mincho, serif' font-size='26' fill='%23f6f3ec' letter-spacing='-1'>%E4%B8%80</text></svg>">
 <style>
   .brand .brand-mark,.footer-brand .brand-mark,.modal-brand .brand-mark,.mobile-menu-head .brand-mark{background:transparent!important;border:0!important;padding:0!important;color:inherit!important;font-size:0!important;line-height:0!important;width:auto!important;height:auto!important;box-shadow:none!important;border-radius:0!important;overflow:visible!important;display:inline-flex;align-items:center;justify-content:center;}
@@ -51,6 +51,8 @@
   .adm-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border:1px solid var(--line);border-radius:6px;font-size:12px;font-weight:500;color:var(--ink-2);cursor:pointer;background:#fff;transition:all .12s;white-space:nowrap;text-decoration:none;}
   .adm-btn:hover{border-color:var(--navy);color:var(--navy);background:rgba(13,36,68,.04);}
   .adm-empty,.adm-loading{text-align:center;padding:60px 24px;color:var(--ink-3);}
+  .adm-featured-btn{background:none;border:none;cursor:pointer;font-size:18px;padding:2px 6px;border-radius:5px;transition:background .12s;}
+  .adm-featured-btn:hover{background:rgba(217,182,131,.2);}
   @media(max-width:768px){.adm-col-author,.adm-col-updated{display:none;}.adm-col-title{max-width:200px;}}
 </style>
 </head>
@@ -115,7 +117,7 @@
     <div class="adm-loading" id="admLoading"><div style="font-size:24px;margin-bottom:8px;">⏳</div>載入中…</div>
     <table class="adm-table" id="admTable" style="display:none">
       <thead><tr>
-        <th>標題</th><th>分類</th><th>狀態</th>
+        <th>標題</th><th>分類</th><th>狀態</th><th>精選</th>
         <th class="adm-col-author">作者</th>
         <th>發佈日期</th>
         <th class="adm-col-updated">最後更新</th>
@@ -141,7 +143,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/data.js"></script>
-<script src="/assets/js/supabase-client.js?v=4"></script>
+<script src="/assets/js/supabase-client.js?v=5"></script>
 <script src="/assets/js/article-editor.js?v=2"></script>
 <script src="/assets/js/search.js?v=4"></script>
 <script src="/assets/js/core.js?v=4"></script>
@@ -223,6 +225,7 @@
         + '<td class="adm-col-title"><div class="adm-title-tc">'+(a.title_tc||'（無標題）')+'</div>'+(a.title_en?'<div class="adm-title-en">'+a.title_en+'</div>':'')+'</td>'
         + '<td><span class="adm-cat-tag">'+(navMap[a.category_key]||a.category_key||'—')+'</span></td>'
         + '<td>'+(badges[a.status]||badges.draft)+'</td>'
+        + '<td><button class="adm-featured-btn" data-id="'+a.id+'" data-featured="'+(a.featured?'1':'0')+'" title="點擊切換精選">'+(a.featured?'⭐':'☆')+'</button></td>'
         + '<td class="adm-date adm-col-author">'+(a.author||'—')+'</td>'
         + '<td class="adm-date">'+pub+'</td>'
         + '<td class="adm-date adm-col-updated">'+upd+'</td>'
@@ -237,7 +240,26 @@
       btn.addEventListener('click', function(e) { e.stopPropagation(); openEditor(btn.dataset.id); });
     });
     tbody.querySelectorAll('.adm-row').forEach(function(row) {
-      row.addEventListener('click', function(e) { if (!e.target.closest('a')) openEditor(row.dataset.id); });
+      row.addEventListener('click', function(e) { if (!e.target.closest('a') && !e.target.closest('.adm-featured-btn')) openEditor(row.dataset.id); });
+    });
+    tbody.querySelectorAll('.adm-featured-btn').forEach(function(btn) {
+      btn.addEventListener('click', async function(e) {
+        e.stopPropagation();
+        var id = btn.dataset.id;
+        var newVal = btn.dataset.featured !== '1';
+        btn.textContent = '…';
+        var client = window.IsshoAuth.getClient();
+        var res = await client.from('articles').update({ featured: newVal }).eq('id', id).select().single();
+        if (res.error) {
+          btn.textContent = '❌';
+          setTimeout(function(){ btn.textContent = btn.dataset.featured==='1'?'⭐':'☆'; }, 1500);
+        } else {
+          btn.dataset.featured = newVal ? '1' : '0';
+          btn.textContent = newVal ? '⭐' : '☆';
+          var idx = _all.findIndex(function(a){ return a.id === id; });
+          if (idx !== -1) _all[idx].featured = newVal;
+        }
+      });
     });
   }
 
