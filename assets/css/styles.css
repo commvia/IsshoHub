@@ -1945,7 +1945,7 @@ body[data-lang="en"] .modal-title { font-family: var(--sans-en); }
   border-bottom: 1px solid var(--line, #e8e4dc);
   position: sticky;
   top: 0;
-  z-index: 90;
+  z-index: 40;
   box-shadow: 0 2px 8px rgba(13,36,68,.06);
 }
 .subcat-scroll {
