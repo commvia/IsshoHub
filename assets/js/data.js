@@ -27,6 +27,7 @@ window.ISSHO_DATA = {
         { tc: "寵物友善住宅",   en: "Pet-Friendly Housing",   url: "/house/#pets" },
       ]
     },
+    { key: "culture",url: "/culture/",tc: "文化",             en: "Culture",                 short_tc: "文化",   short_en: "Culture" },
     { key: "tax",    url: "/tax/",    tc: "稅務・保險・年金", en: "Tax, Insurance & Pension", short_tc: "稅務",   short_en: "Tax",
       sub: [
         { tc: "稅務",       en: "Tax",                  url: "/tax/#tax" },
@@ -45,7 +46,6 @@ window.ISSHO_DATA = {
     { key: "places", url: "/places/", tc: "好去處",           en: "Leisure",                 short_tc: "好去處", short_en: "Leisure" },
     { key: "pets",   url: "/pets/",   tc: "寵物",             en: "Pets in Japan",           short_tc: "寵物",   short_en: "Pets" },
     { key: "story",  url: "/story/",  tc: "人物故事",         en: "Stories",                 short_tc: "故事",   short_en: "Stories" },
-    { key: "culture",url: "/culture/",tc: "文化",             en: "Culture",                 short_tc: "文化",   short_en: "Culture" },
   ],
 
   ui: {
@@ -157,12 +157,12 @@ window.ISSHO_DATA = {
     { key: "visa",   count: 84, tc: "簽證・在留資格",   en: "Visa & Residency",        icon: "passport", url: "/visa/" },
     { key: "biz",    count: 62, tc: "創業・工作",        en: "Business & Work",         icon: "briefcase", url: "/biz/" },
     { key: "house",  count: 51, tc: "住屋",              en: "Housing",                 icon: "home",     url: "/house/" },
+    { key: "culture",count: 0,  tc: "文化",              en: "Culture",                 icon: "culture",  url: "/culture/" },
     { key: "tax",    count: 47, tc: "稅務・保險・年金",  en: "Tax, Insurance & Pension",icon: "yen",      url: "/tax/" },
     { key: "life",   count: 93, tc: "日常手續",          en: "Daily Life",              icon: "life",     url: "/life/" },
     { key: "places", count: 68, tc: "好去處",            en: "Leisure",                 icon: "torii",    url: "/places/" },
     { key: "pets",   count: 29, tc: "寵物",              en: "Pets in Japan",           icon: "paw",      url: "/pets/" },
     { key: "story",  count: 41, tc: "人物故事",          en: "Stories",                 icon: "quote",    url: "/story/" },
-    { key: "culture",count: 0,  tc: "文化",              en: "Culture",                 icon: "culture",  url: "/culture/" },
   ],
 
   featured: {
