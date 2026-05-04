@@ -531,11 +531,10 @@
         </div>
       </div>`;
 
-    /* Hero side: Supabase articles if loaded, else static data.js */
+    /* Hero side: use admin-configured articles, else static data.js */
     const sideEl = document.getElementById('heroSide');
-    if (_sbArticles && _sbArticles.length) {
-      const heroId = _sbHeroArticle && _sbHeroArticle.id;
-      const sideArticles = _sbArticles.filter(a => a.id !== heroId).slice(0, 3);
+    if (_sbSideArticles && _sbSideArticles.length) {
+      const sideArticles = _sbSideArticles;
       if (sideArticles.length) {
         sideEl.innerHTML = sideArticles.map((a, i) => {
           const catNav = (D.nav || []).find(n => n.key === a.category_key);
@@ -661,7 +660,8 @@
   let _sbPicksArticles = null; /* cache: editor picks articles */
   let _sbHero = null;          /* hero settings from Supabase */
   let _sbPicksSlugs = null;    /* homepage editor picks slugs from site_settings (null = not yet loaded) */
-  let _sbHeroArticle = null;   /* featured article for hero link */
+  let _sbHeroArticle = null;   /* hero article (from site_settings hero_article_slug) */
+  let _sbSideArticles = null;  /* side articles (from site_settings homepage_side_slugs) */
 
   async function loadSupabaseArticles() {
     if (_sbArticles) return _sbArticles;
@@ -773,8 +773,27 @@
       const slugs = map.homepage_picks_slugs.value_tc.split(',').map(s => s.trim()).filter(Boolean);
       if (slugs.length) {
         _sbPicksSlugs = slugs;
-        renderEditor(); /* re-render with configured picks */
+        renderEditor();
       }
+    }
+
+    /* Hero article + side articles from site_settings slugs */
+    const heroSlug = map.hero_article_slug && map.hero_article_slug.value_tc && map.hero_article_slug.value_tc.trim();
+    const sideRaw  = map.homepage_side_slugs && map.homepage_side_slugs.value_tc;
+    const sideSlugs = sideRaw ? sideRaw.split(',').map(s => s.trim()).filter(Boolean).slice(0, 3) : [];
+    const allSlugs  = [...new Set([heroSlug, ...sideSlugs].filter(Boolean))];
+
+    if (allSlugs.length) {
+      window.IsshoAPI.fetchArticlesBySlug(allSlugs).then(({ data }) => {
+        const bySlug = Object.fromEntries((data || []).map(a => [a.slug, a]));
+        if (heroSlug && bySlug[heroSlug]) {
+          _sbHeroArticle  = bySlug[heroSlug];
+        }
+        if (sideSlugs.length) {
+          _sbSideArticles = sideSlugs.map(s => bySlug[s]).filter(Boolean);
+        }
+        renderHero(_sbHero);
+      });
     }
   });
 
@@ -848,11 +867,6 @@
     renderEditor();
     renderLatest();
     renderStories();
-    /* Load articles then re-render hero with real links */
-    loadSupabaseArticles().then(articles => {
-      _sbHeroArticle = articles.find(a => a.featured) || articles[0] || null;
-      renderHero(_sbHero);
-    });
   }
 
   /* boot */
