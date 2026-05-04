@@ -494,14 +494,32 @@
     const lang = getLang();
     const tag = lang === 'tc' ? h.tag.tc : h.tag.en;
 
-    /* Use Supabase data if available, fall back to static */
-    const img    = (sbHero && sbHero.hero_img) || h.img;
-    const kicker = (sbHero && (lang === 'tc' ? sbHero.hero_kicker_tc : sbHero.hero_kicker_en)) || (lang === 'tc' ? h.kicker.tc : h.kicker.en);
-    const title  = (sbHero && (lang === 'tc' ? sbHero.hero_title_tc  : sbHero.hero_title_en))  || (lang === 'tc' ? h.title.tc  : h.title.en);
-    const sub    = (sbHero && (lang === 'tc' ? sbHero.hero_sub_tc    : sbHero.hero_sub_en))    || (lang === 'tc' ? h.sub.tc    : h.sub.en);
-    const author = t(h.author);
-    const meta   = t(h.meta);
-    const date   = t(h.date);
+    const a = _sbHeroArticle; /* shorthand */
+
+    /* Image: site_settings override first, then article cover, then static */
+    const img = (sbHero && sbHero.hero_img) || (a && a.cover_image_url) || h.img;
+
+    /* Kicker: site_settings override first, then article category name, then static */
+    const catNav  = a && (D.nav || []).find(n => n.key === a.category_key);
+    const kicker  = (sbHero && (lang === 'tc' ? sbHero.hero_kicker_tc : sbHero.hero_kicker_en))
+      || (catNav ? (lang === 'tc' ? catNav.tc : catNav.en) : '')
+      || (lang === 'tc' ? h.kicker.tc : h.kicker.en);
+
+    /* Title / subtitle: article data first, then site_settings, then static */
+    const title = (a && (lang === 'tc' ? a.title_tc : a.title_en))
+      || (sbHero && (lang === 'tc' ? sbHero.hero_title_tc : sbHero.hero_title_en))
+      || (lang === 'tc' ? h.title.tc : h.title.en);
+    const sub   = (a && (lang === 'tc' ? a.excerpt_tc : a.excerpt_en))
+      || (sbHero && (lang === 'tc' ? sbHero.hero_sub_tc : sbHero.hero_sub_en))
+      || (lang === 'tc' ? h.sub.tc : h.sub.en);
+
+    /* Author / date / read-time: from article if available */
+    const author = (a && a.author) || t(h.author);
+    const meta   = a ? (lang === 'tc' ? `${a.read_time || 5} 分鐘閱讀` : `${a.read_time || 5} min read`) : t(h.meta);
+    const date   = a && a.published_at
+      ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', { year: 'numeric', month: 'long', day: 'numeric' })
+      : t(h.date);
+    const avatar = author ? author.trim().split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase() : h.avatar;
 
     const heroUrl = _sbHeroArticle ? `/article/?slug=${_sbHeroArticle.slug}` : null;
 
@@ -521,7 +539,7 @@
           <h1 class="hero-title">${heroUrl ? `<a href="${heroUrl}" style="color:inherit;text-decoration:none;">${title}</a>` : title}</h1>
           <p class="hero-sub">${sub}</p>
           <div class="hero-meta">
-            <div class="avatar">${h.avatar}</div>
+            <div class="avatar">${avatar}</div>
             <div>${lang === 'tc' ? '文／' : 'By '}<b style="color:#fff;font-weight:500">${author}</b></div>
             <div class="dot"></div>
             <div>${meta}</div>
