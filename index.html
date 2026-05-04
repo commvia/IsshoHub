@@ -478,7 +478,7 @@
 <script src="/assets/js/supabase-client.js?v=7"></script>
 <script src="/assets/js/article-editor.js?v=4"></script>
 <script src="/assets/js/hot-search-manager.js"></script>
-<script src="/assets/js/site-settings.js?v=3"></script>
+<script src="/assets/js/site-settings.js?v=4"></script>
 <script src="/assets/js/search.js?v=5"></script>
 <script src="/assets/js/core.js?v=5"></script>
 <script>
@@ -672,6 +672,7 @@
   let _sbPicksArticles = null; /* cache: editor picks articles */
   let _sbHero = null;          /* hero settings from Supabase */
   let _sbPicksSlugs = null;    /* homepage editor picks slugs from site_settings (null = not yet loaded) */
+  let _sbFeaturedOrder = [];   /* featured_order slugs from site_settings */
   let _sbHeroArticle = null;   /* hero article (from site_settings hero_article_slug) */
   let _sbSideArticles = null;  /* side articles (from site_settings homepage_side_slugs) */
 
@@ -690,10 +691,17 @@
     return _sbPicksArticles;
   }
 
-  /* Auto picks: only show articles explicitly marked featured=true */
+  /* Auto picks: only show articles explicitly marked featured=true, sorted by _sbFeaturedOrder */
   function _renderEditorAuto(editorGrid) {
     loadSupabaseArticles().then(articles => {
-      const featuredArticles = articles.filter(a => a.featured);
+      let featuredArticles = articles.filter(a => a.featured);
+      if (_sbFeaturedOrder.length) {
+        featuredArticles = featuredArticles.slice().sort(function (a, b) {
+          const ia = _sbFeaturedOrder.indexOf(a.slug);
+          const ib = _sbFeaturedOrder.indexOf(b.slug);
+          return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
+        });
+      }
       if (featuredArticles.length) {
         editorGrid.innerHTML = featuredArticles.map(a => sbCardHTML(a, { overlay: true })).join('');
       } else if (articles.length) {
@@ -780,6 +788,11 @@
     };
     renderHero(_sbHero);
 
+    /* Featured order */
+    if (map.featured_order && map.featured_order.value_tc) {
+      _sbFeaturedOrder = map.featured_order.value_tc.split(',').map(s => s.trim()).filter(Boolean);
+    }
+
     /* Homepage Editor Picks — re-render if admin has configured specific slugs */
     if (map.homepage_picks_slugs && map.homepage_picks_slugs.value_tc) {
       const slugs = map.homepage_picks_slugs.value_tc.split(',').map(s => s.trim()).filter(Boolean);
@@ -787,6 +800,8 @@
         _sbPicksSlugs = slugs;
         renderEditor();
       }
+    } else {
+      renderEditor();
     }
 
     /* Hero article + side articles from site_settings slugs */

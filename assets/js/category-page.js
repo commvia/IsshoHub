@@ -68,6 +68,7 @@
 
       let activeSub = '';
       let _articles = null;
+      let _featuredOrder = [];
 
       /* Restore sub from URL hash on load */
       const hashKey = (global.location.hash || '').replace('#', '');
@@ -147,6 +148,18 @@
         });
       }
 
+      /* ── Load featured order from site_settings ── */
+      function loadFeaturedOrder() {
+        if (!global.IsshoAPI || !global.IsshoAPI.fetchSiteSettings) return Promise.resolve();
+        return global.IsshoAPI.fetchSiteSettings().then(function (res) {
+          var map = {};
+          (res.data || []).forEach(function (s) { map[s.key] = s; });
+          if (map.featured_order && map.featured_order.value_tc) {
+            _featuredOrder = map.featured_order.value_tc.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+          }
+        });
+      }
+
       /* ── Load from Supabase ── */
       function loadArticles() {
         if (_articles) return Promise.resolve(_articles);
@@ -173,8 +186,16 @@
           var articlesGrid   = document.getElementById('catArticlesGrid');
           var articlesTitleEl = document.getElementById('articlesTitle');
 
-          /* Featured: show only on "all" tab, and only if an article is explicitly marked featured */
-          var featured = articles.find(function (a) { return a.featured; }) || null;
+          /* Featured: pick by _featuredOrder first, else first featured article */
+          var featuredArticles = articles.filter(function (a) { return a.featured; });
+          var featured = null;
+          if (_featuredOrder.length) {
+            for (var _i = 0; _i < _featuredOrder.length; _i++) {
+              var _match = featuredArticles.find(function (a) { return a.slug === _featuredOrder[_i]; });
+              if (_match) { featured = _match; break; }
+            }
+          }
+          if (!featured) featured = featuredArticles[0] || null;
           if (!activeSub && featured) {
             if (featuredSect) featuredSect.style.display = '';
             if (featuredGrid) featuredGrid.innerHTML = sbCardHTML(featured, lang, { featured: true, overlay: true });
@@ -228,23 +249,11 @@
 
       C.init(categoryKey);
       C.onLangChange(function () { activeSub = ''; renderAll(); });
-      renderAll();
       if (global.IsshoEditor) global.IsshoEditor.init();
       if (global.IsshoSearch) global.IsshoSearch.init();
 
-      /* ── Sync ticker1 text from Supabase site_settings ── */
-      if (global.IsshoAPI && global.IsshoAPI.fetchSiteSettings) {
-        global.IsshoAPI.fetchSiteSettings().then(function (res) {
-          if (!res.data) return;
-          var map = {};
-          res.data.forEach(function (s) { map[s.key] = s; });
-          if (map.ticker) {
-            var lang = C.getLang();
-            var tickerEl = document.querySelector('[data-i18n="ticker1"]');
-            if (tickerEl) tickerEl.innerHTML = lang === 'tc' ? map.ticker.value_tc : map.ticker.value_en;
-          }
-        });
-      }
+      /* Load featured order + ticker from site_settings, then render */
+      loadFeaturedOrder().then(function () { renderAll(); });
     },
   };
 }(window));

@@ -57,6 +57,11 @@
               <textarea id="ss_homepage_picks_slugs" rows="2" placeholder="my-article-slug, another-slug, third-slug"></textarea>
               <div style="font-size:11px;color:var(--ink-3);margin-top:4px">留空則自動顯示最新精選文章。Slug 可在文章編輯器找到。</div>
             </div>
+            <div class="ss-row">
+              <label>精選文章排序（Slug，逗號分隔）</label>
+              <textarea id="ss_featured_order" rows="3" placeholder="slug-1, slug-2, slug-3"></textarea>
+              <div style="font-size:11px;color:var(--ink-3);margin-top:4px">控制各分類頁「精選大圖」的優先順序。排最前的 slug 優先顯示。Editor Picks 留空時也依此排序。</div>
+            </div>
           </div>
 
           <div class="ss-section">
@@ -168,6 +173,8 @@
     if (sideSlugEl && map.homepage_side_slugs) sideSlugEl.value = map.homepage_side_slugs.value_tc || '';
     const picksEl = document.getElementById('ss_homepage_picks_slugs');
     if (picksEl && map.homepage_picks_slugs) picksEl.value = map.homepage_picks_slugs.value_tc || '';
+    const featOrderEl = document.getElementById('ss_featured_order');
+    if (featOrderEl && map.featured_order) featOrderEl.value = map.featured_order.value_tc || '';
 
     /* Ticker */
     if (map.ticker) {
@@ -201,6 +208,7 @@
       { key: 'hero_article_slug',    tc: heroArticleSlug, en: heroArticleSlug },
       { key: 'homepage_side_slugs',  tc: sideSlugs,       en: sideSlugs },
       { key: 'homepage_picks_slugs', tc: picksSlugs,      en: picksSlugs },
+      { key: 'featured_order', tc: document.getElementById('ss_featured_order')?.value.trim() || '', en: '' },
       { key: 'hero_img',    tc: heroImg, en: heroImg },
       { key: 'ticker', tc: document.getElementById('ss_ticker_tc').value.trim(), en: document.getElementById('ss_ticker_en').value.trim() },
       ...['hkd','twd','usd','eur','gbp','cad','aud','sgd'].map(c => {
