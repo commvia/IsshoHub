@@ -28,13 +28,14 @@
     const date    = a.published_at
       ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', { year: 'numeric', month: 'short', day: 'numeric' })
       : '';
+    const articleUrl = `/article/?slug=${a.slug}`;
     return `
-      <article class="card${opts.featured ? ' featured' : ''}${opts.overlay ? ' overlay' : ''}">
-        <a class="card-media" href="/article/?slug=${a.slug}" style="background-image:url('${img}')">
+      <article class="card${opts.featured ? ' featured' : ''}${opts.overlay ? ' overlay' : ''}"${opts.overlay ? ` onclick="if(!event.target.closest('a'))window.location.href='${articleUrl}'" style="cursor:pointer"` : ''}>
+        <a class="card-media" href="${articleUrl}" style="background-image:url('${img}')">
           <span class="card-tag cat-${cat}">${cat}</span>
         </a>
         <div class="card-body">
-          ${langBadge}<h3 class="card-title"><a href="/article/?slug=${a.slug}" style="color:inherit;text-decoration:none;">${title}</a></h3>
+          ${langBadge}<h3 class="card-title"><a href="${articleUrl}" style="color:inherit;text-decoration:none;">${title}</a></h3>
           <p class="card-excerpt">${excerpt}</p>
           <div class="card-meta">
             <span class="author">${author}</span>
