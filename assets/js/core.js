@@ -17,8 +17,17 @@
   };
 
   /* ── State ── */
+  function _detectLang() {
+    var saved = localStorage.getItem('issho.lang');
+    if (saved) return saved;
+    var bl = (navigator.languages && navigator.languages[0]) || navigator.language || '';
+    bl = bl.toLowerCase();
+    if (bl.startsWith('zh')) return 'tc';
+    if (bl.startsWith('en')) return 'en';
+    return 'tc'; // site default
+  }
   const state = {
-    lang: localStorage.getItem('issho.lang') || 'tc',
+    lang: _detectLang(),
   };
 
   /* Registered lang-change handlers (replaces fragile window.onLangChange) */
