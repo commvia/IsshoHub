@@ -31,7 +31,7 @@
       : '';
     const articleUrl = `/article/?slug=${a.slug}`;
     return `
-      <article class="card${opts.featured ? ' featured' : ''}${opts.overlay ? ' overlay' : ''}"${opts.overlay ? ` onclick="if(!event.target.closest('a'))window.location.href='${articleUrl}'" style="cursor:pointer"` : ''}>
+      <article class="card${opts.featured ? ' featured' : ''}${opts.overlay ? ' overlay' : ''}" onclick="if(!event.target.closest('a'))window.location.href='${articleUrl}'" style="cursor:pointer">
         <a class="card-media" href="${articleUrl}" style="background-image:url('${img}')">
           <span class="card-tag cat-${cat}">${cat}</span>
         </a>

@@ -648,7 +648,7 @@
     const date = a.published_at ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', { year:'numeric', month:'short', day:'numeric' }) : '';
     const url = `/article/?slug=${a.slug}`;
     return `
-      <article class="card ${opts.featured ? 'featured' : ''}${opts.overlay ? ' overlay' : ''}"${opts.overlay ? ` onclick="if(!event.target.closest('a'))window.location.href='${url}'" style="cursor:pointer"` : ''}>
+      <article class="card ${opts.featured ? 'featured' : ''}${opts.overlay ? ' overlay' : ''}" onclick="if(!event.target.closest('a'))window.location.href='${url}'" style="cursor:pointer">
         <a class="card-media" href="${url}" style="background-image: url('${img}')">
           <span class="card-tag cat-${cat}">${cat}</span>
         </a>
