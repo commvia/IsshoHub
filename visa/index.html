@@ -633,7 +633,7 @@
 <script src="/assets/js/supabase-client.js?v=5"></script>
 <script src="/assets/js/article-editor.js?v=2"></script>
 <script src="/assets/js/search.js?v=4"></script>
-<script src="/assets/js/core.js?v=4"></script>
+<script src="/assets/js/core.js?v=5"></script>
 <script>
 (function () {
   const D = window.ISSHO_DATA;
@@ -809,6 +809,20 @@
   renderAll();
   if (window.IsshoEditor) window.IsshoEditor.init();
   if (window.IsshoSearch) window.IsshoSearch.init();
+
+  /* ── Sync ticker1 from Supabase site_settings ── */
+  if (window.IsshoAPI && window.IsshoAPI.fetchSiteSettings) {
+    window.IsshoAPI.fetchSiteSettings().then(function (res) {
+      if (!res.data) return;
+      var map = {};
+      res.data.forEach(function (s) { map[s.key] = s; });
+      if (map.ticker) {
+        var lang = C.getLang();
+        var tickerEl = document.querySelector('[data-i18n="ticker1"]');
+        if (tickerEl) tickerEl.innerHTML = lang === 'tc' ? map.ticker.value_tc : map.ticker.value_en;
+      }
+    });
+  }
 
   /* ── Live FX calculator ── */
   (function initFX() {

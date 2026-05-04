@@ -235,6 +235,20 @@
       renderAll();
       if (global.IsshoEditor) global.IsshoEditor.init();
       if (global.IsshoSearch) global.IsshoSearch.init();
+
+      /* ── Sync ticker1 text from Supabase site_settings ── */
+      if (global.IsshoAPI && global.IsshoAPI.fetchSiteSettings) {
+        global.IsshoAPI.fetchSiteSettings().then(function (res) {
+          if (!res.data) return;
+          var map = {};
+          res.data.forEach(function (s) { map[s.key] = s; });
+          if (map.ticker) {
+            var lang = C.getLang();
+            var tickerEl = document.querySelector('[data-i18n="ticker1"]');
+            if (tickerEl) tickerEl.innerHTML = lang === 'tc' ? map.ticker.value_tc : map.ticker.value_en;
+          }
+        });
+      }
     },
   };
 }(window));

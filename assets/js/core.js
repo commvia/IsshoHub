@@ -546,6 +546,26 @@
     });
   }
 
+  /* ── Ticker from Supabase site_settings ── */
+  var _tickerMap = null;
+
+  function applyTickerFromMap(map) {
+    var tickerEl = document.querySelector('[data-i18n="ticker1"]');
+    if (tickerEl && map && map.ticker) {
+      tickerEl.innerHTML = state.lang === 'tc' ? (map.ticker.value_tc || '') : (map.ticker.value_en || '');
+    }
+  }
+
+  function loadTicker() {
+    if (!global.IsshoAPI || !global.IsshoAPI.fetchSiteSettings) return;
+    global.IsshoAPI.fetchSiteSettings().then(function (res) {
+      if (!res.data || !res.data.length) return;
+      _tickerMap = {};
+      res.data.forEach(function (s) { _tickerMap[s.key] = s; });
+      applyTickerFromMap(_tickerMap);
+    });
+  }
+
   /* ── Init ── */
   function init(activeKey) {
     applyLang();
@@ -557,12 +577,14 @@
     wireFX();
     wireLoginModal();
     wireNewsletter();
+    loadTicker();
 
     /* register core nav/i18n re-render on lang change */
     onLangChange(function () {
       renderNav(activeKey);
       renderMobileMenu(activeKey);
       updateI18n();
+      applyTickerFromMap(_tickerMap);
     });
   }
 
