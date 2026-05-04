@@ -147,7 +147,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/data.js"></script>
-<script src="/assets/js/supabase-client.js?v=6"></script>
+<script src="/assets/js/supabase-client.js?v=7"></script>
 <script src="/assets/js/article-editor.js?v=4"></script>
 <script src="/assets/js/search.js?v=5"></script>
 <script src="/assets/js/core.js?v=5"></script>
@@ -233,15 +233,12 @@
       var pub = a.published_at ? new Date(a.published_at).toLocaleDateString('zh-Hant',{year:'numeric',month:'2-digit',day:'2-digit'}) : '—';
       var upd = a.updated_at  ? new Date(a.updated_at).toLocaleDateString('zh-Hant',{year:'numeric',month:'2-digit',day:'2-digit'}) : '—';
       var subLabel = a.sub_category_key ? (subMap[a.sub_category_key] || a.sub_category_key) : '—';
-      var orderVal = (a.featured && a.featured_order != null) ? a.featured_order : '';
       return '<tr class="adm-row" data-id="'+a.id+'">'
         + '<td class="adm-col-title"><div class="adm-title-tc">'+(a.title_tc||'（無標題）')+'</div>'+(a.title_en?'<div class="adm-title-en">'+a.title_en+'</div>':'')+'</td>'
         + '<td><span class="adm-cat-tag">'+(navMap[a.category_key]||a.category_key||'—')+'</span></td>'
         + '<td class="adm-subcat adm-col-subcat">'+subLabel+'</td>'
         + '<td>'+(badges[a.status]||badges.draft)+'</td>'
-        + '<td><div class="adm-featured-wrap"><button class="adm-featured-btn" data-id="'+a.id+'" data-featured="'+(a.featured?'1':'0')+'" title="點擊切換精選">'+(a.featured?'⭐':'☆')+'</button>'
-        + (a.featured?'<input class="adm-order-input" type="number" min="1" max="99" placeholder="#" data-id="'+a.id+'" value="'+orderVal+'" title="精選排序">':'')
-        + '</div></td>'
+        + '<td><button class="adm-featured-btn" data-id="'+a.id+'" data-featured="'+(a.featured?'1':'0')+'" title="點擊切換精選">'+(a.featured?'⭐':'☆')+'</button></td>'
         + '<td class="adm-date adm-col-author">'+(a.author||'—')+'</td>'
         + '<td class="adm-date">'+pub+'</td>'
         + '<td class="adm-date adm-col-updated">'+upd+'</td>'
@@ -275,20 +272,6 @@
           var idx = _all.findIndex(function(a){ return a.id === id; });
           if (idx !== -1) _all[idx].featured = newVal;
           render();
-        }
-      });
-    });
-    tbody.querySelectorAll('.adm-order-input').forEach(function(inp) {
-      inp.addEventListener('click', function(e) { e.stopPropagation(); });
-      inp.addEventListener('change', async function(e) {
-        e.stopPropagation();
-        var id = inp.dataset.id;
-        var val = inp.value.trim() === '' ? null : parseInt(inp.value);
-        var client = window.IsshoAuth.getClient();
-        var res = await client.from('articles').update({ featured_order: val }).eq('id', id);
-        if (!res.error) {
-          var idx = _all.findIndex(function(a){ return a.id === id; });
-          if (idx !== -1) _all[idx].featured_order = val;
         }
       });
     });
