@@ -495,24 +495,30 @@
     const tag = lang === 'tc' ? h.tag.tc : h.tag.en;
 
     /* Use Supabase data if available, fall back to static */
-    const img     = (sbHero && sbHero.hero_img)    || h.img;
-    const kicker  = (sbHero && (lang === 'tc' ? sbHero.hero_kicker_tc : sbHero.hero_kicker_en)) || (lang === 'tc' ? h.kicker.tc : h.kicker.en);
-    const title   = (sbHero && (lang === 'tc' ? sbHero.hero_title_tc  : sbHero.hero_title_en))  || (lang === 'tc' ? h.title.tc  : h.title.en);
-    const sub     = (sbHero && (lang === 'tc' ? sbHero.hero_sub_tc    : sbHero.hero_sub_en))    || (lang === 'tc' ? h.sub.tc    : h.sub.en);
-
+    const img    = (sbHero && sbHero.hero_img) || h.img;
+    const kicker = (sbHero && (lang === 'tc' ? sbHero.hero_kicker_tc : sbHero.hero_kicker_en)) || (lang === 'tc' ? h.kicker.tc : h.kicker.en);
+    const title  = (sbHero && (lang === 'tc' ? sbHero.hero_title_tc  : sbHero.hero_title_en))  || (lang === 'tc' ? h.title.tc  : h.title.en);
+    const sub    = (sbHero && (lang === 'tc' ? sbHero.hero_sub_tc    : sbHero.hero_sub_en))    || (lang === 'tc' ? h.sub.tc    : h.sub.en);
     const author = t(h.author);
-    const meta = t(h.meta);
-    const date = t(h.date);
+    const meta   = t(h.meta);
+    const date   = t(h.date);
+
+    const heroUrl = _sbHeroArticle ? `/article/?slug=${_sbHeroArticle.slug}` : null;
+    const titleHTML = heroUrl
+      ? `<a href="${heroUrl}" style="color:inherit;text-decoration:none;">${title}</a>`
+      : title;
+
     document.getElementById('heroMain').innerHTML = `
+      ${heroUrl ? `<a href="${heroUrl}" style="position:absolute;inset:0;z-index:1;" aria-hidden="true"></a>` : ''}
       <div class="hero-img" style="background-image: url('${img}')"></div>
-      <div class="hero-body">
+      <div class="hero-body" style="position:relative;z-index:2;">
         <div class="hero-top">
           <div class="hero-chip"><i></i>${tag}</div>
           <div class="hero-issue">${lang === 'tc' ? '2026 · 04月號' : 'April 2026 Issue'}</div>
         </div>
         <div>
           <div class="hero-kicker">${kicker}</div>
-          <h1 class="hero-title">${title}</h1>
+          <h1 class="hero-title">${titleHTML}</h1>
           <p class="hero-sub">${sub}</p>
           <div class="hero-meta">
             <div class="avatar">${h.avatar}</div>
@@ -525,7 +531,36 @@
         </div>
       </div>`;
 
-    document.getElementById('heroSide').innerHTML = D.hero_side.map(a => `
+    /* Hero side: Supabase articles if loaded, else static data.js */
+    const sideEl = document.getElementById('heroSide');
+    if (_sbArticles && _sbArticles.length) {
+      const heroId = _sbHeroArticle && _sbHeroArticle.id;
+      const sideArticles = _sbArticles.filter(a => a.id !== heroId).slice(0, 3);
+      if (sideArticles.length) {
+        sideEl.innerHTML = sideArticles.map((a, i) => {
+          const catNav = (D.nav || []).find(n => n.key === a.category_key);
+          const catLabel = catNav ? (lang === 'tc' ? (catNav.short_tc || catNav.tc) : (catNav.short_en || catNav.en)) : (a.category_key || '');
+          const sideTitle = lang === 'tc' ? (a.title_tc || a.title_en) : (a.title_en || a.title_tc);
+          const sideImg = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=70';
+          const readTime = lang === 'tc' ? `${a.read_time || 5} 分鐘閱讀` : `${a.read_time || 5} min read`;
+          const pubDate = a.published_at ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', { month: 'short', day: 'numeric' }) : '';
+          const sideMeta = pubDate ? `${readTime} · ${pubDate}` : readTime;
+          return `<a class="side-card" href="/article/?slug=${a.slug}">
+            <div class="side-thumb" style="background-image: url('${sideImg}')">
+              <div class="side-thumb-num">${String(i + 1).padStart(2, '0')}</div>
+            </div>
+            <div class="side-body">
+              <div class="side-tag">${catLabel}</div>
+              <div class="side-title">${sideTitle}</div>
+              <div class="side-meta">${sideMeta}</div>
+            </div>
+          </a>`;
+        }).join('');
+        return;
+      }
+    }
+    /* Fall back to static */
+    sideEl.innerHTML = D.hero_side.map(a => `
       <a class="side-card" href="${a.url || '#'}">
         <div class="side-thumb" style="background-image: url('${a.img}')">
           <div class="side-thumb-num">${a.num}</div>
@@ -626,6 +661,7 @@
   let _sbPicksArticles = null; /* cache: editor picks articles */
   let _sbHero = null;          /* hero settings from Supabase */
   let _sbPicksSlugs = null;    /* homepage editor picks slugs from site_settings (null = not yet loaded) */
+  let _sbHeroArticle = null;   /* featured article for hero link */
 
   async function loadSupabaseArticles() {
     if (_sbArticles) return _sbArticles;
@@ -812,6 +848,11 @@
     renderEditor();
     renderLatest();
     renderStories();
+    /* Load articles then re-render hero with real links */
+    loadSupabaseArticles().then(articles => {
+      _sbHeroArticle = articles.find(a => a.featured) || articles[0] || null;
+      renderHero(_sbHero);
+    });
   }
 
   /* boot */
