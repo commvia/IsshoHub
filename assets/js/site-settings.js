@@ -67,6 +67,16 @@
           <div class="ss-section">
             <div class="ss-section-title">📰 首頁文章設定</div>
             <div class="ss-row">
+              <label>Hero 大圖文章 Slug</label>
+              <textarea id="ss_hero_article_slug" rows="1" placeholder="article-slug"></textarea>
+              <div style="font-size:11px;color:var(--ink-3);margin-top:4px">Hero 大圖連結的文章。Slug 可在文章編輯器找到。</div>
+            </div>
+            <div class="ss-row">
+              <label>右側三篇文章 Slug（逗號分隔，最多 3 篇）</label>
+              <textarea id="ss_homepage_side_slugs" rows="2" placeholder="slug-1, slug-2, slug-3"></textarea>
+              <div style="font-size:11px;color:var(--ink-3);margin-top:4px">Hero 右側三張卡片的文章。</div>
+            </div>
+            <div class="ss-row">
               <label>Editor Picks 文章（Slug，逗號分隔，最多 3 篇）</label>
               <textarea id="ss_homepage_picks_slugs" rows="2" placeholder="my-article-slug, another-slug, third-slug"></textarea>
               <div style="font-size:11px;color:var(--ink-3);margin-top:4px">留空則自動顯示最新精選文章。Slug 可在文章編輯器找到。</div>
@@ -194,7 +204,11 @@
       if (enEl) enEl.value = map.hero_sub.value_en || '';
     }
 
-    /* Homepage picks */
+    /* Homepage article slugs */
+    const heroSlugEl = document.getElementById('ss_hero_article_slug');
+    if (heroSlugEl && map.hero_article_slug) heroSlugEl.value = map.hero_article_slug.value_tc || '';
+    const sideSlugEl = document.getElementById('ss_homepage_side_slugs');
+    if (sideSlugEl && map.homepage_side_slugs) sideSlugEl.value = map.homepage_side_slugs.value_tc || '';
     const picksEl = document.getElementById('ss_homepage_picks_slugs');
     if (picksEl && map.homepage_picks_slugs) picksEl.value = map.homepage_picks_slugs.value_tc || '';
 
@@ -223,9 +237,13 @@
     btn.disabled = true;
 
     const heroImg = document.getElementById('ss_hero_img')?.value.trim() || '';
+    const heroArticleSlug = document.getElementById('ss_hero_article_slug')?.value.trim() || '';
+    const sideSlugs = document.getElementById('ss_homepage_side_slugs')?.value.trim() || '';
     const picksSlugs = document.getElementById('ss_homepage_picks_slugs')?.value.trim() || '';
     const settings = [
-      { key: 'homepage_picks_slugs', tc: picksSlugs, en: picksSlugs },
+      { key: 'hero_article_slug',    tc: heroArticleSlug, en: heroArticleSlug },
+      { key: 'homepage_side_slugs',  tc: sideSlugs,       en: sideSlugs },
+      { key: 'homepage_picks_slugs', tc: picksSlugs,      en: picksSlugs },
       { key: 'hero_img',    tc: heroImg, en: heroImg },
       { key: 'hero_kicker', tc: document.getElementById('ss_hero_kicker_tc')?.value.trim() || '', en: document.getElementById('ss_hero_kicker_en')?.value.trim() || '' },
       { key: 'hero_title',  tc: document.getElementById('ss_hero_title_tc')?.value.trim() || '', en: document.getElementById('ss_hero_title_en')?.value.trim() || '' },
