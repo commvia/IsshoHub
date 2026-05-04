@@ -38,30 +38,6 @@
               <label style="font-size:11px;color:var(--ink-3)">預覽</label>
               <div id="ss_hero_preview" style="width:100%;height:120px;background-size:cover;background-position:center;border-radius:8px;border:1px solid var(--line);margin-top:6px;"></div>
             </div>
-            <div class="ss-row">
-              <label>Kicker 繁中</label>
-              <input type="text" id="ss_hero_kicker_tc" placeholder="2026 最新政策解讀" />
-            </div>
-            <div class="ss-row">
-              <label>Kicker English</label>
-              <input type="text" id="ss_hero_kicker_en" placeholder="2026 Policy Update" />
-            </div>
-            <div class="ss-row">
-              <label>標題 繁中</label>
-              <textarea id="ss_hero_title_tc" rows="2" placeholder="主標題（繁中）"></textarea>
-            </div>
-            <div class="ss-row">
-              <label>Title English</label>
-              <textarea id="ss_hero_title_en" rows="2" placeholder="Main title (English)"></textarea>
-            </div>
-            <div class="ss-row">
-              <label>副標題 繁中</label>
-              <textarea id="ss_hero_sub_tc" rows="2" placeholder="副標題（繁中）"></textarea>
-            </div>
-            <div class="ss-row">
-              <label>Subtitle English</label>
-              <textarea id="ss_hero_sub_en" rows="2" placeholder="Subtitle (English)"></textarea>
-            </div>
           </div>
 
           <div class="ss-section">
@@ -185,25 +161,6 @@
         updateHeroPreview(map.hero_img.value_tc || '');
       }
     }
-    if (map.hero_kicker) {
-      const tcEl = document.getElementById('ss_hero_kicker_tc');
-      const enEl = document.getElementById('ss_hero_kicker_en');
-      if (tcEl) tcEl.value = map.hero_kicker.value_tc || '';
-      if (enEl) enEl.value = map.hero_kicker.value_en || '';
-    }
-    if (map.hero_title) {
-      const tcEl = document.getElementById('ss_hero_title_tc');
-      const enEl = document.getElementById('ss_hero_title_en');
-      if (tcEl) tcEl.value = map.hero_title.value_tc || '';
-      if (enEl) enEl.value = map.hero_title.value_en || '';
-    }
-    if (map.hero_sub) {
-      const tcEl = document.getElementById('ss_hero_sub_tc');
-      const enEl = document.getElementById('ss_hero_sub_en');
-      if (tcEl) tcEl.value = map.hero_sub.value_tc || '';
-      if (enEl) enEl.value = map.hero_sub.value_en || '';
-    }
-
     /* Homepage article slugs */
     const heroSlugEl = document.getElementById('ss_hero_article_slug');
     if (heroSlugEl && map.hero_article_slug) heroSlugEl.value = map.hero_article_slug.value_tc || '';
@@ -245,9 +202,6 @@
       { key: 'homepage_side_slugs',  tc: sideSlugs,       en: sideSlugs },
       { key: 'homepage_picks_slugs', tc: picksSlugs,      en: picksSlugs },
       { key: 'hero_img',    tc: heroImg, en: heroImg },
-      { key: 'hero_kicker', tc: document.getElementById('ss_hero_kicker_tc')?.value.trim() || '', en: document.getElementById('ss_hero_kicker_en')?.value.trim() || '' },
-      { key: 'hero_title',  tc: document.getElementById('ss_hero_title_tc')?.value.trim() || '', en: document.getElementById('ss_hero_title_en')?.value.trim() || '' },
-      { key: 'hero_sub',    tc: document.getElementById('ss_hero_sub_tc')?.value.trim() || '', en: document.getElementById('ss_hero_sub_en')?.value.trim() || '' },
       { key: 'ticker', tc: document.getElementById('ss_ticker_tc').value.trim(), en: document.getElementById('ss_ticker_en').value.trim() },
       ...['hkd','twd','usd','eur','gbp','cad','aud','sgd'].map(c => {
         const v = document.getElementById(`ss_rate_${c}`)?.value.trim() || '';
