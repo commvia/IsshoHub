@@ -6,25 +6,25 @@
   let categoriesCache = [];
   let subCategoriesCache = {};
 
-  /* ── Load sub-categories into select ── */
-  async function loadSubCategories(categoryKey, selectedKey) {
+  /* ── Load sub-categories from data.js nav (single source of truth) ── */
+  function loadSubCategories(categoryKey, selectedKey) {
     const selectEl = document.getElementById('editorSubCategory');
-    if (!selectEl) return;
+    if (!selectEl) return Promise.resolve();
     if (!categoryKey) {
       selectEl.innerHTML = '<option value="">請先選擇分類</option>';
-      return;
+      return Promise.resolve();
     }
-    if (!subCategoriesCache[categoryKey]) {
-      const client = window.IsshoAuth.getClient();
-      const { data } = await client.from('sub_categories')
-        .select('*').eq('category_key', categoryKey).order('sort_order');
-      subCategoriesCache[categoryKey] = data || [];
-    }
-    const subs = subCategoriesCache[categoryKey];
+    const navEntry = (window.ISSHO_DATA && window.ISSHO_DATA.nav || []).find(n => n.key === categoryKey);
+    const subs = (navEntry && navEntry.sub || []).map(s => ({
+      key: (s.url || '').split('#')[1] || '',
+      name_tc: s.tc,
+      name_en: s.en,
+    })).filter(s => s.key);
     selectEl.innerHTML = '<option value="">（選填）選擇子分類</option>' +
       subs.map(s =>
         `<option value="${s.key}" ${s.key === selectedKey ? 'selected' : ''}>${s.name_tc} / ${s.name_en}</option>`
       ).join('');
+    return Promise.resolve();
   }
 
   /* ── Markdown toolbar HTML ── */
