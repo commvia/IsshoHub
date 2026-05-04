@@ -108,6 +108,14 @@
         if (subNum)  subNum.textContent  = SUBS.length;
         if (wm)      wm.textContent      = (lang === 'tc' ? meta.watermark : (meta.watermark_en || categoryKey.toUpperCase())) || '';
         if (bgEl && meta.bg) bgEl.style.backgroundImage = "url('" + meta.bg + "')";
+
+        var eyeEl = document.getElementById('catHeroEyebrow');
+        if (eyeEl) {
+          var catIdx = (D.nav || []).findIndex(function (n) { return n.key === categoryKey; }) + 1;
+          var pad = String(catIdx).padStart(2, '0');
+          var enLabel = nav.en || categoryKey.toUpperCase();
+          eyeEl.textContent = pad + ' · ' + enLabel;
+        }
       }
 
       /* ── Sub-category nav ── */
@@ -186,6 +194,12 @@
           var featuredGrid   = document.getElementById('catFeaturedGrid');
           var articlesGrid   = document.getElementById('catArticlesGrid');
           var articlesTitleEl = document.getElementById('articlesTitle');
+
+          /* Featured section labels */
+          var fhEl = document.getElementById('featuredHeadline');
+          var fsEl = document.getElementById('featuredSub');
+          if (fhEl) fhEl.textContent = lang === 'tc' ? '本期精選' : 'Featured';
+          if (fsEl) fsEl.textContent = lang === 'tc' ? '編輯部本月深度推薦。' : "Editor's pick this month.";
 
           /* Featured: pick by _featuredOrder first, else first featured article */
           var featuredArticles = articles.filter(function (a) { return a.featured; });
