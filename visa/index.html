@@ -48,190 +48,139 @@
   a.brand, a.brand:hover { text-decoration: none !important; }
   .footer-brand .brand-name .hub { color: #d9b683; }
 
-  /* ── Enhanced Cat Hero ── */
-  .cat-hero {
-    position: relative;
-    overflow: hidden;
-    background: var(--navy, #0d2444);
-    min-height: 320px;
-  }
-  .cat-hero-bg {
-    position: absolute;
-    inset: 0;
-    background-image: url('https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1400&q=80');
-    background-size: cover;
-    background-position: center 40%;
-    opacity: 0.22;
-  }
-  .cat-hero-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(13,36,68,0.96) 0%, rgba(13,36,68,0.80) 60%, rgba(13,36,68,0.60) 100%);
-  }
-  .cat-hero-accent {
-    position: absolute;
-    top: 0; right: 0;
-    width: 340px; height: 340px;
-    background: radial-gradient(circle at 80% 20%, rgba(217,182,131,0.12) 0%, transparent 65%);
-    pointer-events: none;
-  }
-  .cat-hero .container { position: relative; z-index: 1; }
-  .cat-hero-watermark {
-    position: absolute;
-    right: -10px; bottom: -30px;
-    font-family: 'Zen Old Mincho', 'Shippori Mincho', serif;
-    font-size: clamp(120px, 18vw, 200px);
-    font-weight: 700;
-    color: rgba(217,182,131,0.07);
-    line-height: 1;
-    pointer-events: none;
-    user-select: none;
-    z-index: 0;
-    letter-spacing: -4px;
-  }
-  .cat-hero-inner {
-    display: flex;
-    align-items: flex-start;
-    gap: 28px;
-    padding: 52px 0 48px;
-  }
-  .cat-hero-icon-wrap {
-    flex-shrink: 0;
-    width: 64px; height: 64px;
-    background: rgba(217,182,131,0.15);
-    border: 1px solid rgba(217,182,131,0.3);
-    border-radius: 16px;
-    display: flex; align-items: center; justify-content: center;
-    color: #d9b683;
-    margin-top: 4px;
-    backdrop-filter: blur(8px);
-  }
-  .cat-hero-body { flex: 1; }
-  .cat-hero-breadcrumb {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 12px;
-    color: rgba(246,243,236,0.45);
-    margin-bottom: 14px;
-    letter-spacing: 0.02em;
-  }
-  .cat-hero-breadcrumb a { color: rgba(217,182,131,0.7); text-decoration: none; }
-  .cat-hero-breadcrumb a:hover { color: #d9b683; }
-  .breadcrumb-sep { opacity: 0.4; }
-  .cat-hero-breadcrumb .current { color: rgba(246,243,236,0.65); }
-  .cat-hero-title {
-    font-size: clamp(26px, 4vw, 38px);
-    font-weight: 700;
-    color: #f6f3ec;
-    line-height: 1.2;
-    margin: 0 0 6px;
-    letter-spacing: -0.5px;
-  }
-  .cat-hero-en {
-    font-size: 13px;
-    color: #d9b683;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    font-weight: 500;
-    margin-bottom: 14px;
-    font-family: 'Inter', sans-serif;
-  }
-  .cat-hero-desc {
-    font-size: 15px;
-    color: rgba(246,243,236,0.70);
-    line-height: 1.7;
-    max-width: 560px;
-    margin: 0 0 24px;
-  }
-  .cat-hero-stats {
-    display: flex;
-    gap: 28px;
-  }
-  .cat-stat {
-    display: flex;
-    align-items: baseline;
-    gap: 6px;
-  }
-  .cat-stat-num {
-    font-size: 28px;
-    font-weight: 700;
-    color: #d9b683;
-    font-family: 'Inter', sans-serif;
-    letter-spacing: -1px;
-    line-height: 1;
-  }
-  .cat-stat-label {
-    font-size: 12px;
-    color: rgba(246,243,236,0.5);
-    letter-spacing: 0.03em;
-  }
+  /* ── Cat Hero ── */
+  .cat-hero { position:relative; overflow:hidden; background:var(--navy,#0d2444); min-height:380px; }
+  .cat-hero-bg { position:absolute; inset:0;
+    background-image:url('https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1400&q=80');
+    background-size:cover; background-position:center 40%; opacity:.22; }
+  .cat-hero-overlay { position:absolute; inset:0;
+    background:linear-gradient(135deg,rgba(13,36,68,.96) 0%,rgba(13,36,68,.80) 60%,rgba(13,36,68,.60) 100%); }
+  .cat-hero-accent { position:absolute; top:0; right:0; width:340px; height:340px;
+    background:radial-gradient(circle at 80% 20%,rgba(217,182,131,.12) 0%,transparent 65%); pointer-events:none; }
+  .cat-hero .container { position:relative; z-index:2; }
+  .cat-hero-watermark { position:absolute; right:-10px; bottom:-30px;
+    font-family:'Zen Old Mincho','Shippori Mincho',serif; font-size:clamp(120px,18vw,200px);
+    font-weight:700; color:rgba(217,182,131,.07); line-height:1; pointer-events:none; user-select:none; z-index:0; letter-spacing:-4px; }
+
+  /* Passport stamp decorations */
+  .stamp { position:absolute; pointer-events:none; user-select:none; z-index:1; }
+  .stamp svg { width:100%; height:100%; display:block; }
+  .stamp-1 { right:8%; top:36px; width:170px; height:170px; transform:rotate(-12deg); color:#d9b683; opacity:.16; mix-blend-mode:screen; }
+  .stamp-2 { right:20%; bottom:40px; width:120px; height:120px; transform:rotate(8deg); color:#d9b683; opacity:.12; mix-blend-mode:screen; }
+  @media (max-width:900px) { .stamp-1,.stamp-2 { display:none; } }
+
+  .cat-hero-inner { display:flex; align-items:flex-start; gap:28px; padding:64px 0 56px; }
+  .cat-hero-icon-wrap { flex-shrink:0; width:64px; height:64px;
+    background:rgba(217,182,131,.15); border:1px solid rgba(217,182,131,.3); border-radius:16px;
+    display:flex; align-items:center; justify-content:center; color:#d9b683; margin-top:4px; backdrop-filter:blur(8px); }
+  .cat-hero-body { flex:1; }
+  .cat-hero-breadcrumb { display:flex; align-items:center; gap:6px; font-size:12px;
+    color:rgba(246,243,236,.45); margin-bottom:14px; letter-spacing:.02em; }
+  .cat-hero-breadcrumb a { color:rgba(217,182,131,.7); text-decoration:none; }
+  .cat-hero-breadcrumb a:hover { color:#d9b683; }
+  .breadcrumb-sep { opacity:.4; }
+  .cat-hero-breadcrumb .current { color:rgba(246,243,236,.65); }
+  .cat-hero-eyebrow { font-size:11px; color:#d9b683; letter-spacing:.2em; text-transform:uppercase;
+    font-weight:600; margin-bottom:14px; display:flex; align-items:center; gap:10px; }
+  .cat-hero-eyebrow::before { content:""; width:24px; height:1px; background:#d9b683; }
+  .cat-hero-title { font-family:'Zen Old Mincho','Shippori Mincho',serif;
+    font-size:clamp(32px,5vw,52px); font-weight:600; color:#f6f3ec;
+    line-height:1.15; margin:0 0 8px; letter-spacing:-1px; }
+  .cat-hero-en { font-size:14px; color:#d9b683; letter-spacing:.14em; text-transform:uppercase;
+    font-weight:500; margin-bottom:18px; font-family:'Inter',sans-serif; }
+  .cat-hero-desc { font-size:15.5px; color:rgba(246,243,236,.78); line-height:1.75; max-width:600px; margin:0 0 26px; }
+  .cat-hero-rule { width:48px; height:1px; background:#d9b683; margin:0 0 20px; opacity:.6; }
+  .cat-hero-stats { display:flex; gap:36px; }
+  .cat-stat { display:flex; align-items:baseline; gap:8px; }
+  .cat-stat-num { font-family:'Zen Old Mincho',serif; font-size:32px; font-weight:600;
+    color:#d9b683; letter-spacing:-1px; line-height:1; }
+  .cat-stat-label { font-size:12px; color:rgba(246,243,236,.55); letter-spacing:.06em; }
 
   /* ── Sub-category nav ── */
-  .subcat-nav {
-    background: var(--surface, #fff);
-    border-bottom: 1px solid var(--line, #e8e4dc);
-    position: sticky;
-    top: 0;
-    z-index: 90;
-    box-shadow: 0 2px 8px rgba(13,36,68,0.06);
+  .subcat-nav { background:var(--surface,#fff); border-bottom:1px solid var(--line,#e8e4dc);
+    position:sticky; top:0; z-index:90; box-shadow:0 2px 8px rgba(13,36,68,.06); }
+  .subcat-scroll { display:flex; gap:0; overflow-x:auto; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  .subcat-scroll::-webkit-scrollbar { display:none; }
+  .subcat-tab { flex-shrink:0; padding:14px 18px 12px; font-size:13px; font-weight:500;
+    color:var(--ink-2,#6b6860); text-decoration:none; border-bottom:2px solid transparent;
+    transition:color .15s,border-color .15s; white-space:nowrap; display:flex; align-items:center; gap:5px; }
+  .subcat-tab:hover { color:var(--ink,#1a1714); }
+  .subcat-tab.active { color:var(--navy,#0d2444); border-bottom-color:var(--navy,#0d2444); font-weight:600; }
+  .subcat-tab .count { font-size:11px; background:var(--surface-2,#f2ede6); color:var(--ink-3,#9c9790);
+    padding:1px 6px; border-radius:20px; font-weight:400; }
+  .subcat-tab.active .count { background:rgba(13,36,68,.08); color:var(--navy,#0d2444); }
+
+  /* ── Magazine-style featured ── */
+  .cat-featured-section { padding:56px 0 16px; background:var(--paper,#fbf9f3); }
+  .cat-featured-section .section-head { margin-bottom:24px; }
+  .cat-featured-section .section-eyebrow { font-size:11px; color:#a8762f; letter-spacing:.22em;
+    text-transform:uppercase; font-weight:600; display:flex; align-items:center; gap:10px; }
+  .cat-featured-section .section-eyebrow::before { content:""; width:24px; height:1px; background:#a8762f; }
+  .featured-headline { font-family:'Zen Old Mincho',serif; font-size:28px; color:#0d2444;
+    margin:10px 0 4px; font-weight:600; letter-spacing:-.5px; }
+  .featured-sub { font-size:13.5px; color:#6b6860; margin-bottom:0; }
+
+  #visaFeaturedGrid { display:block; }
+  #visaFeaturedGrid .card.featured {
+    display:grid!important; grid-template-columns:1.05fr .95fr; gap:0;
+    background:#fff; border:1px solid #e8e4dc; border-radius:6px; overflow:hidden;
+    position:relative; box-shadow:0 8px 28px -16px rgba(13,36,68,.18);
+    cursor:pointer; transition:transform .25s ease,box-shadow .25s ease; align-items:stretch;
   }
-  .subcat-scroll {
-    display: flex;
-    gap: 0;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-  .subcat-scroll::-webkit-scrollbar { display: none; }
-  .subcat-tab {
-    flex-shrink: 0;
-    padding: 14px 18px 12px;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--ink-2, #6b6860);
-    text-decoration: none;
-    border-bottom: 2px solid transparent;
-    transition: color 0.15s, border-color 0.15s;
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  .subcat-tab:hover { color: var(--ink, #1a1714); }
-  .subcat-tab.active {
-    color: var(--navy, #0d2444);
-    border-bottom-color: var(--navy, #0d2444);
-    font-weight: 600;
-  }
-  .subcat-tab .count {
-    font-size: 11px;
-    background: var(--surface-2, #f2ede6);
-    color: var(--ink-3, #9c9790);
-    padding: 1px 6px;
-    border-radius: 20px;
-    font-weight: 400;
-  }
-  .subcat-tab.active .count {
-    background: rgba(13,36,68,0.08);
-    color: var(--navy, #0d2444);
+  #visaFeaturedGrid .card.featured:hover { transform:translateY(-2px); box-shadow:0 16px 40px -18px rgba(13,36,68,.25); }
+  #visaFeaturedGrid .card.featured::before { content:""; position:absolute; top:0; left:0; right:0; height:3px;
+    background:linear-gradient(90deg,#a8762f 0%,#d9b683 100%); z-index:3; }
+  #visaFeaturedGrid .card.featured .card-media {
+    aspect-ratio:auto!important; min-height:420px; height:100%; background-size:cover;
+    background-position:center; position:relative; border-radius:0!important; display:block; }
+  #visaFeaturedGrid .card.featured .card-media::after { content:""; position:absolute; inset:0;
+    background:linear-gradient(135deg,rgba(13,36,68,.18) 0%,transparent 55%); }
+  #visaFeaturedGrid .card.featured .card-media::before {
+    content:"FEATURED · " attr(data-issue);
+    position:absolute; top:18px; left:18px; background:rgba(255,255,255,.95);
+    backdrop-filter:blur(8px); padding:8px 14px; border-radius:2px; font-size:10.5px;
+    letter-spacing:.18em; text-transform:uppercase; color:#0d2444; font-weight:700; z-index:2;
+    font-family:'Inter',sans-serif; }
+  #visaFeaturedGrid .card.featured .card-tag {
+    position:absolute!important; top:auto!important; bottom:18px!important; left:18px!important; right:auto!important;
+    background:#0d2444!important; color:#fff!important; padding:6px 12px!important;
+    border-radius:2px!important; font-size:10.5px!important; letter-spacing:.12em;
+    text-transform:uppercase; font-weight:600; z-index:2; }
+  #visaFeaturedGrid .card.featured .card-body {
+    padding:48px 44px; display:flex!important; flex-direction:column; justify-content:center;
+    background:#fff; position:relative; }
+  #visaFeaturedGrid .card.featured .card-body::before {
+    content:"— Cover Story · 封面故事"; display:block; font-size:11px; color:#a8762f;
+    letter-spacing:.18em; text-transform:uppercase; font-weight:600; margin-bottom:18px; }
+  #visaFeaturedGrid .card.featured .card-title {
+    font-family:'Zen Old Mincho','Shippori Mincho',serif!important; font-size:28px!important;
+    line-height:1.3!important; color:#0d2444!important; font-weight:600!important;
+    margin:0 0 18px!important; letter-spacing:-.4px; }
+  #visaFeaturedGrid .card.featured .card-title a { color:inherit!important; text-decoration:none!important; }
+  #visaFeaturedGrid .card.featured .card-excerpt {
+    font-size:15px!important; line-height:1.75!important; color:#3a3530!important;
+    margin:0 0 24px!important; display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden; }
+  #visaFeaturedGrid .card.featured .card-meta {
+    padding:14px 0!important; border-top:1px solid #e8e4dc; border-bottom:1px solid #e8e4dc;
+    margin-bottom:22px!important; font-size:12.5px!important; color:#6b6860!important;
+    display:flex; align-items:center; gap:10px; }
+  #visaFeaturedGrid .card.featured .card-meta .author { color:#0d2444!important; font-weight:600; }
+  #visaFeaturedGrid .card.featured .card-meta .dot { width:3px; height:3px; background:#d9d2c0; border-radius:50%; }
+  #visaFeaturedGrid .card.featured .card-body::after {
+    content:"閱讀完整指南  →"; display:inline-block; align-self:flex-start;
+    font-size:12.5px; color:#a8762f; letter-spacing:.16em; text-transform:uppercase;
+    font-weight:700; padding-bottom:6px; border-bottom:1.5px solid #a8762f; transition:letter-spacing .2s; }
+  #visaFeaturedGrid .card.featured:hover .card-body::after { letter-spacing:.22em; }
+  @media (max-width:900px) {
+    #visaFeaturedGrid .card.featured { grid-template-columns:1fr; }
+    #visaFeaturedGrid .card.featured .card-media { min-height:240px; }
+    #visaFeaturedGrid .card.featured .card-body { padding:32px 24px; }
+    #visaFeaturedGrid .card.featured .card-title { font-size:24px!important; }
   }
 
-  /* ── Section spacing tweaks ── */
-  .cat-featured-section { padding: 48px 0 0; }
-  .cat-articles-section { padding: 36px 0 56px; }
-  .cat-articles-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 24px;
-  }
-  .cat-articles-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--ink, #1a1714);
-    letter-spacing: -0.3px;
-  }
+  .cat-articles-section { padding:36px 0 56px; }
+  .cat-articles-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; }
+  .cat-articles-title { font-size:18px; font-weight:700; color:var(--ink,#1a1714); letter-spacing:-.3px; }
 </style>
 
   <!-- SEO: canonical + hreflang -->
@@ -370,10 +319,33 @@
 
 <!-- =============== CATEGORY HERO =============== -->
 <section class="cat-hero">
-  <div class="cat-hero-bg"></div>
+  <div class="cat-hero-bg" id="catHeroBg"></div>
   <div class="cat-hero-overlay"></div>
   <div class="cat-hero-accent"></div>
   <div class="cat-hero-watermark" id="catHeroWatermark">簽証</div>
+
+  <!-- Decorative passport stamps -->
+  <div class="stamp stamp-1" aria-hidden="true">
+    <svg viewBox="0 0 200 200">
+      <circle cx="100" cy="100" r="92" fill="none" stroke="currentColor" stroke-width="3"/>
+      <circle cx="100" cy="100" r="78" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 4"/>
+      <text x="100" y="78" text-anchor="middle" font-family="Zen Old Mincho, serif" font-size="14" fill="currentColor" letter-spacing="2">JAPAN</text>
+      <text x="100" y="116" text-anchor="middle" font-family="Zen Old Mincho, serif" font-size="34" fill="currentColor" font-weight="700">在留</text>
+      <text x="100" y="142" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="currentColor" letter-spacing="1">2026 · VISA</text>
+      <line x1="40" y1="100" x2="60" y2="100" stroke="currentColor" stroke-width="2"/>
+      <line x1="140" y1="100" x2="160" y2="100" stroke="currentColor" stroke-width="2"/>
+    </svg>
+  </div>
+  <div class="stamp stamp-2" aria-hidden="true">
+    <svg viewBox="0 0 200 200">
+      <rect x="20" y="40" width="160" height="120" fill="none" stroke="currentColor" stroke-width="2.5"/>
+      <rect x="32" y="52" width="136" height="96" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2 3"/>
+      <text x="100" y="92" text-anchor="middle" font-family="Zen Old Mincho, serif" font-size="22" fill="currentColor" font-weight="700">許可</text>
+      <text x="100" y="120" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="currentColor" letter-spacing="2">APPROVED</text>
+      <text x="100" y="138" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="currentColor" letter-spacing="1">入国管理局</text>
+    </svg>
+  </div>
+
   <div class="container">
     <div class="cat-hero-inner">
       <div class="cat-hero-icon-wrap">
@@ -385,16 +357,18 @@
           <span class="breadcrumb-sep">/</span>
           <span class="current" id="heroBreadcrumbCurrent"></span>
         </div>
+        <div class="cat-hero-eyebrow" id="catHeroEyebrow">02 · Visa &amp; Residency</div>
         <h1 class="cat-hero-title" id="catHeroTitle"></h1>
         <div class="cat-hero-en" id="catHeroEn"></div>
         <p class="cat-hero-desc" id="catHeroDesc"></p>
+        <div class="cat-hero-rule"></div>
         <div class="cat-hero-stats">
           <div class="cat-stat">
-            <div class="cat-stat-num" id="catStatNum">84</div>
+            <div class="cat-stat-num" id="catStatNum">—</div>
             <div class="cat-stat-label" id="catStatLabel"></div>
           </div>
           <div class="cat-stat">
-            <div class="cat-stat-num">11</div>
+            <div class="cat-stat-num" id="catStatSubsNum">10</div>
             <div class="cat-stat-label" id="catStatSubs"></div>
           </div>
         </div>
@@ -413,8 +387,10 @@
 <!-- =============== FEATURED ARTICLE =============== -->
 <section class="cat-featured-section">
   <div class="container">
-    <div class="section-head" style="margin-bottom: 20px;">
-      <div class="section-eyebrow">— Featured</div>
+    <div class="section-head">
+      <div class="section-eyebrow">Featured</div>
+      <h2 class="featured-headline" id="featuredHeadline">本期精選</h2>
+      <p class="featured-sub" id="featuredSub">編輯部本月深度推薦。</p>
     </div>
     <div class="article-grid" id="visaFeaturedGrid"></div>
   </div>
@@ -708,6 +684,14 @@
     document.getElementById('catStatLabel').textContent = statLabel;
     document.getElementById('catStatSubs').textContent = statSubs;
     document.getElementById('catHeroWatermark').textContent = lang === 'tc' ? '簽証' : 'VISA';
+
+    const eyebrow = document.getElementById('catHeroEyebrow');
+    if (eyebrow) eyebrow.textContent = lang === 'tc' ? '02 · 簽證・在留資格' : '02 · Visa & Residency';
+
+    const fhEl = document.getElementById('featuredHeadline');
+    const fsEl = document.getElementById('featuredSub');
+    if (fhEl) fhEl.textContent = lang === 'tc' ? '本期精選' : 'Featured';
+    if (fsEl) fsEl.textContent = lang === 'tc' ? '編輯部本月深度推薦。' : 'Editor\'s pick this month.';
   }
 
   /* ── Build sub-category nav with real article counts ── */
