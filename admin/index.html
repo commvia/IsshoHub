@@ -53,7 +53,11 @@
   .adm-empty,.adm-loading{text-align:center;padding:60px 24px;color:var(--ink-3);}
   .adm-featured-btn{background:none;border:none;cursor:pointer;font-size:18px;padding:2px 6px;border-radius:5px;transition:background .12s;}
   .adm-featured-btn:hover{background:rgba(217,182,131,.2);}
-  @media(max-width:768px){.adm-col-author,.adm-col-updated{display:none;}.adm-col-title{max-width:200px;}}
+  .adm-subcat{font-size:11px;color:var(--ink-3);white-space:nowrap;}
+  .adm-featured-wrap{display:flex;align-items:center;gap:4px;}
+  .adm-order-input{width:38px;padding:2px 4px;border:1px solid var(--line);border-radius:5px;font-size:12px;text-align:center;color:var(--ink-2);background:#fff;font-family:inherit;}
+  .adm-order-input:focus{outline:none;border-color:var(--navy);}
+  @media(max-width:768px){.adm-col-author,.adm-col-updated,.adm-col-subcat{display:none;}.adm-col-title{max-width:200px;}}
 </style>
 </head>
 <body data-lang="tc">
@@ -117,7 +121,7 @@
     <div class="adm-loading" id="admLoading"><div style="font-size:24px;margin-bottom:8px;">⏳</div>載入中…</div>
     <table class="adm-table" id="admTable" style="display:none">
       <thead><tr>
-        <th>標題</th><th>分類</th><th>狀態</th><th>精選</th>
+        <th>標題</th><th>分類</th><th class="adm-col-subcat">副分類</th><th>狀態</th><th>精選</th>
         <th class="adm-col-author">作者</th>
         <th>發佈日期</th>
         <th class="adm-col-updated">最後更新</th>
@@ -143,7 +147,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/data.js"></script>
-<script src="/assets/js/supabase-client.js?v=5"></script>
+<script src="/assets/js/supabase-client.js?v=6"></script>
 <script src="/assets/js/article-editor.js?v=4"></script>
 <script src="/assets/js/search.js?v=5"></script>
 <script src="/assets/js/core.js?v=5"></script>
@@ -210,7 +214,14 @@
     empty.style.display = 'none';
 
     var navMap = {};
-    (window.ISSHO_DATA.nav || []).forEach(function(n) { navMap[n.key] = n.tc; });
+    var subMap = {};
+    (window.ISSHO_DATA.nav || []).forEach(function(n) {
+      navMap[n.key] = n.tc;
+      (n.sub || []).forEach(function(s) {
+        var key = (s.url || '').split('#')[1] || '';
+        if (key) subMap[key] = s.tc;
+      });
+    });
 
     var badges = {
       published: '<span class="adm-badge adm-badge-published">● 已發佈</span>',
@@ -221,11 +232,16 @@
     tbody.innerHTML = list.map(function(a) {
       var pub = a.published_at ? new Date(a.published_at).toLocaleDateString('zh-Hant',{year:'numeric',month:'2-digit',day:'2-digit'}) : '—';
       var upd = a.updated_at  ? new Date(a.updated_at).toLocaleDateString('zh-Hant',{year:'numeric',month:'2-digit',day:'2-digit'}) : '—';
+      var subLabel = a.sub_category_key ? (subMap[a.sub_category_key] || a.sub_category_key) : '—';
+      var orderVal = (a.featured && a.featured_order != null) ? a.featured_order : '';
       return '<tr class="adm-row" data-id="'+a.id+'">'
         + '<td class="adm-col-title"><div class="adm-title-tc">'+(a.title_tc||'（無標題）')+'</div>'+(a.title_en?'<div class="adm-title-en">'+a.title_en+'</div>':'')+'</td>'
         + '<td><span class="adm-cat-tag">'+(navMap[a.category_key]||a.category_key||'—')+'</span></td>'
+        + '<td class="adm-subcat adm-col-subcat">'+subLabel+'</td>'
         + '<td>'+(badges[a.status]||badges.draft)+'</td>'
-        + '<td><button class="adm-featured-btn" data-id="'+a.id+'" data-featured="'+(a.featured?'1':'0')+'" title="點擊切換精選">'+(a.featured?'⭐':'☆')+'</button></td>'
+        + '<td><div class="adm-featured-wrap"><button class="adm-featured-btn" data-id="'+a.id+'" data-featured="'+(a.featured?'1':'0')+'" title="點擊切換精選">'+(a.featured?'⭐':'☆')+'</button>'
+        + (a.featured?'<input class="adm-order-input" type="number" min="1" max="99" placeholder="#" data-id="'+a.id+'" value="'+orderVal+'" title="精選排序">':'')
+        + '</div></td>'
         + '<td class="adm-date adm-col-author">'+(a.author||'—')+'</td>'
         + '<td class="adm-date">'+pub+'</td>'
         + '<td class="adm-date adm-col-updated">'+upd+'</td>'
@@ -258,6 +274,21 @@
           btn.textContent = newVal ? '⭐' : '☆';
           var idx = _all.findIndex(function(a){ return a.id === id; });
           if (idx !== -1) _all[idx].featured = newVal;
+          render();
+        }
+      });
+    });
+    tbody.querySelectorAll('.adm-order-input').forEach(function(inp) {
+      inp.addEventListener('click', function(e) { e.stopPropagation(); });
+      inp.addEventListener('change', async function(e) {
+        e.stopPropagation();
+        var id = inp.dataset.id;
+        var val = inp.value.trim() === '' ? null : parseInt(inp.value);
+        var client = window.IsshoAuth.getClient();
+        var res = await client.from('articles').update({ featured_order: val }).eq('id', id);
+        if (!res.error) {
+          var idx = _all.findIndex(function(a){ return a.id === id; });
+          if (idx !== -1) _all[idx].featured_order = val;
         }
       });
     });
