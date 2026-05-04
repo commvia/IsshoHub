@@ -476,10 +476,10 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/data.js"></script>
 <script src="/assets/js/supabase-client.js?v=5"></script>
-<script src="/assets/js/article-editor.js?v=3"></script>
+<script src="/assets/js/article-editor.js?v=4"></script>
 <script src="/assets/js/hot-search-manager.js"></script>
 <script src="/assets/js/site-settings.js?v=3"></script>
-<script src="/assets/js/search.js?v=4"></script>
+<script src="/assets/js/search.js?v=5"></script>
 <script src="/assets/js/core.js?v=5"></script>
 <script>
 (function () {
@@ -513,9 +513,9 @@
       || (sbHero && (lang === 'tc' ? sbHero.hero_sub_tc : sbHero.hero_sub_en))
       || (lang === 'tc' ? h.sub.tc : h.sub.en);
 
-    /* Author / date / read-time: from article if available */
+    /* Author / date: from article if available */
     const author = (a && a.author) || t(h.author);
-    const meta   = a ? (lang === 'tc' ? `${a.read_time || 5} 分鐘閱讀` : `${a.read_time || 5} min read`) : t(h.meta);
+    const meta   = a ? '' : t(h.meta);
     const date   = a && a.published_at
       ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', { year: 'numeric', month: 'long', day: 'numeric' })
       : t(h.date);
@@ -559,9 +559,8 @@
           const catLabel = catNav ? (lang === 'tc' ? (catNav.short_tc || catNav.tc) : (catNav.short_en || catNav.en)) : (a.category_key || '');
           const sideTitle = lang === 'tc' ? (a.title_tc || a.title_en) : (a.title_en || a.title_tc);
           const sideImg = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=70';
-          const readTime = lang === 'tc' ? `${a.read_time || 5} 分鐘閱讀` : `${a.read_time || 5} min read`;
           const pubDate = a.published_at ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', { month: 'short', day: 'numeric' }) : '';
-          const sideMeta = pubDate ? `${readTime} · ${pubDate}` : readTime;
+          const sideMeta = pubDate;
           return `<a class="side-card" href="/article/?slug=${a.slug}">
             <div class="side-thumb" style="background-image: url('${sideImg}')">
               <div class="side-thumb-num">${String(i + 1).padStart(2, '0')}</div>
@@ -647,7 +646,6 @@
     const cat = a.category_key || '';
     const author = a.author || '';
     const date = a.published_at ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', { year:'numeric', month:'short', day:'numeric' }) : '';
-    const readTime = lang === 'tc' ? `${a.read_time || 5} 分鐘閱讀` : `${a.read_time || 5} min read`;
     const url = `/article/?slug=${a.slug}`;
     return `
       <article class="card ${opts.featured ? 'featured' : ''}${opts.overlay ? ' overlay' : ''}">
@@ -665,10 +663,6 @@
             <span class="author">${author}</span>
             <span class="dot"></span>
             <span>${date}</span>
-            <span class="reading">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-              ${readTime}
-            </span>
           </div>
         </div>
       </article>`;

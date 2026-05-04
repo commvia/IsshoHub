@@ -250,7 +250,7 @@
 <script src="/assets/js/data.js"></script>
 <script src="/assets/js/supabase-client.js?v=5"></script>
 <script src="/assets/js/inline-editor.js?v=4"></script>
-<script src="/assets/js/search.js?v=4"></script>
+<script src="/assets/js/search.js?v=5"></script>
 <script src="/assets/js/core.js?v=5"></script>
 <script>
 (function () {
@@ -315,13 +315,12 @@
     var img    = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=70';
     var cat    = a.category_key || '';
     var date   = a.published_at ? new Date(a.published_at).toLocaleDateString(lang==='tc'?'zh-Hant':'en',{month:'short',day:'numeric'}) : '';
-    var rt     = lang === 'tc' ? (a.read_time||5)+' 分鐘' : (a.read_time||5)+' min';
     return '<a class="card-compact" href="/article/?slug='+a.slug+'" style="text-decoration:none;">'
       + '<div class="card-compact-media" style="background-image:url(\''+img+'\')"></div>'
       + '<div class="card-compact-body">'
       + '<div class="card-compact-tag">'+cat+'</div>'
       + '<div class="card-compact-title">'+title+'</div>'
-      + '<div class="card-compact-meta">'+date+' · '+rt+'</div>'
+      + '<div class="card-compact-meta">'+date+'</div>'
       + '</div></a>';
   }
 
@@ -372,7 +371,6 @@
     var date     = a.published_at
       ? new Date(a.published_at).toLocaleDateString(lang==='tc'?'zh-Hant':'en',{year:'numeric',month:'long',day:'numeric'})
       : '';
-    var readTime = lang === 'tc' ? (a.read_time||5)+' 分鐘閱讀' : (a.read_time||5)+' min read';
     var homeLabel = lang === 'tc' ? '首頁' : 'Home';
     var shareLabel  = lang === 'tc' ? '分享：' : 'Share:';
     var copyLabel   = lang === 'tc' ? '複製連結' : 'Copy link';
@@ -417,8 +415,6 @@
       + (author ? '<span class="article-hero-author">'+author+'</span>' : '')
       + (author && date ? '<div class="article-hero-dot"></div>' : '')
       + (date ? '<span>'+date+'</span>' : '')
-      + '<div class="article-hero-dot"></div>'
-      + '<span class="article-hero-time"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>'+readTime+'</span>'
       + '</div>';
 
     heroEl.innerHTML =

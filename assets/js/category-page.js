@@ -28,7 +28,6 @@
     const date    = a.published_at
       ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', { year: 'numeric', month: 'short', day: 'numeric' })
       : '';
-    const readTime = lang === 'tc' ? `${a.read_time || 5} 分鐘閱讀` : `${a.read_time || 5} min read`;
     return `
       <article class="card${opts.featured ? ' featured' : ''}${opts.overlay ? ' overlay' : ''}">
         <a class="card-media" href="/article/?slug=${a.slug}" style="background-image:url('${img}')">
@@ -41,10 +40,6 @@
             <span class="author">${author}</span>
             ${author ? '<span class="dot"></span>' : ''}
             <span>${date}</span>
-            <span class="reading">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-              ${readTime}
-            </span>
           </div>
         </div>
       </article>`;

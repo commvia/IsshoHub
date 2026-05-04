@@ -197,7 +197,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/data.js"></script>
 <script src="/assets/js/supabase-client.js?v=5"></script>
-<script src="/assets/js/search.js?v=4"></script>
+<script src="/assets/js/search.js?v=5"></script>
 <script src="/assets/js/core.js?v=5"></script>
 <script>
 (function () {
@@ -217,14 +217,13 @@
     var date  = a.published_at
       ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', {year:'numeric',month:'short',day:'numeric'})
       : '';
-    var rt    = lang === 'tc' ? (a.read_time || 5) + ' 分鐘' : (a.read_time || 5) + ' min';
     return '<div class="bm-card" data-article-id="' + item.article_id + '">'
       + '<a class="bm-card-media" href="/article/?slug=' + a.slug + '"'
       + (img ? ' style="background-image:url(\'' + img + '\')"' : '') + '></a>'
       + '<div class="bm-card-body">'
       + '<div class="bm-card-tag">' + cat + '</div>'
       + '<a class="bm-card-title" href="/article/?slug=' + a.slug + '">' + title + '</a>'
-      + '<div class="bm-card-meta">' + date + (date && rt ? ' · ' : '') + rt + '</div>'
+      + '<div class="bm-card-meta">' + date + '</div>'
       + '</div>'
       + '<button class="bm-card-remove" data-remove-id="' + item.article_id + '" title="移除收藏">'
       + '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>'

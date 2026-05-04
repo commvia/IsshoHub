@@ -52,7 +52,6 @@
     const img     = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400&q=70';
     const cat     = a.category_key || '';
     const date    = a.published_at ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', { year: 'numeric', month: 'short', day: 'numeric' }) : '';
-    const readTime = lang === 'tc' ? `${a.read_time || 5} 分鐘` : `${a.read_time || 5} min`;
     return `
       <a class="sr-card" href="/article/?slug=${a.slug}">
         <div class="sr-thumb" style="background-image:url('${img}')">
@@ -61,7 +60,7 @@
         <div class="sr-body">
           <div class="sr-title">${title}</div>
           <div class="sr-excerpt">${excerpt}</div>
-          <div class="sr-meta">${date}${date && readTime ? ' · ' : ''}${readTime}</div>
+          <div class="sr-meta">${date}</div>
         </div>
       </a>`;
   }

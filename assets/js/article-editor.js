@@ -397,12 +397,6 @@
               <input type="text" id="editorAuthor" placeholder="作者姓名" />
             </div>
 
-            <!-- Read time -->
-            <div class="editor-field">
-              <label>閱讀時間（分鐘）</label>
-              <input type="number" id="editorReadTime" value="5" min="1" max="60" />
-            </div>
-
             <!-- Tags -->
             <div class="editor-field">
               <label>標籤 Tags</label>
@@ -581,7 +575,6 @@
       body_tc: document.getElementById('bodyTc').value.trim() || null,
       body_en: document.getElementById('bodyEn').value.trim() || null,
       author: document.getElementById('editorAuthor').value.trim() || null,
-      read_time: parseInt(document.getElementById('editorReadTime').value) || 5,
       tags,
       featured: document.getElementById('editorFeatured').checked,
       status,
@@ -649,7 +642,6 @@
       document.getElementById('coverImageUrl').value = articleData.cover_image_url || '';
       loadSubCategories(articleData.category_key, articleData.sub_category_key);
       document.getElementById('editorAuthor').value = articleData.author || '';
-      document.getElementById('editorReadTime').value = articleData.read_time || 5;
       document.getElementById('editorTags').value = (articleData.tags || []).join(', ');
       document.getElementById('editorFeatured').checked = articleData.featured || false;
       loadCategories(document.getElementById('editorCategory'), articleData.category_key, articleData.category_keys || []);
