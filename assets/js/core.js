@@ -56,7 +56,7 @@
   const I18N = {
     'tagline-nav':   { tc: '在日生活，一緒開始', en: 'Everything you need in Japan' },
     'ticker1':       { tc: '新政策：2026 年 4 月起，香港、台灣駕照可免筆試直接切換。', en: 'New policy: From Apr 2026, HK & TW licences convert without a written test.' },
-    'ticker2':       { tc: '本週 IsshoHub Meetup：4月25日・東京澀谷，名額將滿。', en: "This week's Meetup: Apr 25, Shibuya — nearly full." },
+    'ticker2':       { tc: '', en: '' },
     'ticker-weather':{ tc: '東京 · 17° · 晴れ', en: 'Tokyo · 17° · Clear' },
     'ticker-rate':   { tc: 'HKD <b>¥19.42</b>&nbsp; TWD <b>¥4.71</b>', en: 'HKD <b>¥19.42</b>&nbsp; TWD <b>¥4.71</b>' },
     'hot_search':    { tc: '熱門搜尋', en: 'Hot searches' },
