@@ -254,19 +254,21 @@
     if (field) field.style.display = '';
   }
 
-  /* ── Load categories into select ── */
-  async function loadCategories(selectEl, selectedKey, checkedKeys) {
+  /* ── Load categories from data.js nav (single source of truth) ── */
+  function loadCategories(selectEl, selectedKey, checkedKeys) {
     if (!categoriesCache.length) {
-      const { data, error } = await window.IsshoAPI.fetchCategories();
-      console.log('[Editor] fetchCategories result:', data, error);
-      if (error) console.error('fetchCategories error:', error);
-      categoriesCache = data || [];
+      categoriesCache = (window.ISSHO_DATA && window.ISSHO_DATA.nav || []).map(n => ({
+        key: n.key,
+        name_tc: n.tc,
+        name_en: n.en,
+      }));
     }
     selectEl.innerHTML = '<option value="">選擇分類 / Select category</option>' +
       categoriesCache.map(c =>
         `<option value="${c.key}" ${c.key === selectedKey ? 'selected' : ''}>${c.name_tc} / ${c.name_en}</option>`
       ).join('');
     renderExtraCatCheckboxes(selectedKey, checkedKeys);
+    return Promise.resolve();
   }
 
   /* ── Upload image to Supabase Storage ── */

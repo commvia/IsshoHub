@@ -2,15 +2,7 @@
 window.ISSHO_DATA = {
 
   nav: [
-    { key: "news",   url: "/news/",   tc: "新聞・資訊",       en: "News & Updates",          short_tc: "新聞",   short_en: "News",
-      sub: [
-        { tc: "政策動態",     en: "Policy Updates",   url: "/news/#policy" },
-        { tc: "簽證動態",     en: "Visa Updates",     url: "/news/#visa" },
-        { tc: "生活資訊",     en: "Life Updates",     url: "/news/#life" },
-        { tc: "社群消息",     en: "Community News",   url: "/news/#community" },
-        { tc: "活動・Meetup", en: "Events & Meetups", url: "/news/#events" },
-      ]
-    },
+    { key: "news",   url: "/news/",   tc: "新聞・資訊",       en: "News & Updates",          short_tc: "新聞",   short_en: "News" },
     { key: "visa",   url: "/visa/",   tc: "簽證・在留資格",   en: "Visa & Residency",        short_tc: "簽證",   short_en: "Visa",
       sub: [
         { tc: "在留政策",                       en: "Residency Policy",                              url: "/visa/#policy" },
@@ -21,23 +13,11 @@ window.ISSHO_DATA = {
         { tc: "數位遊牧簽證",                   en: "Digital Nomad Visa",                            url: "/visa/#nomad" },
         { tc: "留學簽證",                       en: "Student Visa",                                  url: "/visa/#student" },
         { tc: "家族滯在",                       en: "Dependent Visa",                                url: "/visa/#dependent" },
-        { tc: "永住權",                         en: "Permanent Residency",                           url: "/visa/#pr" },
         { tc: "度假打工",                       en: "Working Holiday",                               url: "/visa/#wh" },
         { tc: "其他在留資格",                   en: "Other Statuses",                                url: "/visa/#other" },
       ]
     },
-    { key: "biz",    url: "/biz/",    tc: "創業・工作",       en: "Business & Work",         short_tc: "創業",   short_en: "Business",
-      sub: [
-        { tc: "如何在日本創業",         en: "How to Start a Business in Japan",  url: "/biz/#how-to" },
-        { tc: "公司法人銀行戶口",       en: "Corporate Bank Accounts",           url: "/biz/#bank" },
-        { tc: "創業資助及補助金",       en: "Startup Grants & Subsidies",        url: "/biz/#grants" },
-        { tc: "Startup 簽證支援",       en: "Startup Visa Support",              url: "/biz/#visa" },
-        { tc: "稅務・會計基礎",         en: "Tax & Accounting Basics",           url: "/biz/#tax" },
-        { tc: "僱用外國員工",           en: "Hiring Foreign Employees",          url: "/biz/#hiring" },
-        { tc: "各地創業支援中心",       en: "Regional Startup Support Centers",  url: "/biz/#support" },
-        { tc: "創業者故事",             en: "Founder Stories",                   url: "/biz/#stories" },
-      ]
-    },
+    { key: "biz",    url: "/biz/",    tc: "創業・工作",       en: "Business & Work",         short_tc: "創業",   short_en: "Business" },
     { key: "house",  url: "/house/",  tc: "住屋",             en: "Housing",                 short_tc: "住屋",   short_en: "Housing",
       sub: [
         { tc: "租務資訊",       en: "Renting",               url: "/house/#renting" },
@@ -49,9 +29,8 @@ window.ISSHO_DATA = {
     },
     { key: "tax",    url: "/tax/",    tc: "稅務・保險・年金", en: "Tax, Insurance & Pension", short_tc: "稅務",   short_en: "Tax",
       sub: [
-        { tc: "稅務",   en: "Tax",       url: "/tax/#tax" },
-        { tc: "保險",   en: "Insurance", url: "/tax/#insurance" },
-        { tc: "年金",   en: "Pension",   url: "/tax/#pension" },
+        { tc: "稅務",       en: "Tax",                  url: "/tax/#tax" },
+        { tc: "保險・年金", en: "Insurance & Pension",  url: "/tax/#insurance-pension" },
       ]
     },
     { key: "life",   url: "/life/",   tc: "日常手續",         en: "Daily Life",              short_tc: "生活",   short_en: "Daily Life",
@@ -66,6 +45,7 @@ window.ISSHO_DATA = {
     { key: "places", url: "/places/", tc: "好去處",           en: "Leisure",                 short_tc: "好去處", short_en: "Leisure" },
     { key: "pets",   url: "/pets/",   tc: "寵物",             en: "Pets in Japan",           short_tc: "寵物",   short_en: "Pets" },
     { key: "story",  url: "/story/",  tc: "人物故事",         en: "Stories",                 short_tc: "故事",   short_en: "Stories" },
+    { key: "culture",url: "/culture/",tc: "文化",             en: "Culture",                 short_tc: "文化",   short_en: "Culture" },
   ],
 
   ui: {
@@ -182,6 +162,7 @@ window.ISSHO_DATA = {
     { key: "places", count: 68, tc: "好去處",            en: "Leisure",                 icon: "torii",    url: "/places/" },
     { key: "pets",   count: 29, tc: "寵物",              en: "Pets in Japan",           icon: "paw",      url: "/pets/" },
     { key: "story",  count: 41, tc: "人物故事",          en: "Stories",                 icon: "quote",    url: "/story/" },
+    { key: "culture",count: 0,  tc: "文化",              en: "Culture",                 icon: "culture",  url: "/culture/" },
   ],
 
   featured: {
@@ -582,6 +563,14 @@ window.ISSHO_DATA = {
       bg: 'https://images.unsplash.com/photo-1528164344705-47542687000d?w=1400&q=80',
       watermark: '故事',
       icon: '<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>',
+    },
+    culture: {
+      desc_tc: '日本的音樂、藝術、電影、傳統文化與當代創作——深入了解日本獨特的文化面貌。',
+      desc_en: 'Music, art, film, traditional and contemporary culture — a deep dive into Japan\'s unique cultural landscape.',
+      bg: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1400&q=80',
+      watermark: '文化',
+      watermark_en: 'CULTURE',
+      icon: '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
     },
   },
 
