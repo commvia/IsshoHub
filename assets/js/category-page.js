@@ -33,7 +33,6 @@
     return `
       <article class="card${opts.featured ? ' featured' : ''}${opts.overlay ? ' overlay' : ''}" onclick="if(!event.target.closest('a'))window.location.href='${articleUrl}'" style="cursor:pointer">
         <a class="card-media" href="${articleUrl}" style="background-image:url('${img}')">
-          <span class="card-tag cat-${cat}">${cat}</span>
         </a>
         <div class="card-body">
           ${langBadge}<h3 class="card-title"><a href="${articleUrl}" style="color:inherit;text-decoration:none;">${title}</a></h3>
