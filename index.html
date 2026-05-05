@@ -278,6 +278,9 @@
   </div>
 </section>
 
+<!-- =============== CATEGORY ARTICLE SECTIONS =============== -->
+<div id="catArticleSections"></div>
+
 <!-- =============== NEWSLETTER =============== -->
 <section class="section">
   <div class="container">
@@ -675,6 +678,7 @@
   let _sbFeaturedOrder = [];   /* featured_order slugs from site_settings */
   let _sbHeroArticle = null;   /* hero article (from site_settings hero_article_slug) */
   let _sbSideArticles = null;  /* side articles (from site_settings homepage_side_slugs) */
+  let _catArticles = null;     /* cache: articles for category sections */
 
   async function loadSupabaseArticles() {
     if (_sbArticles) return _sbArticles;
@@ -762,6 +766,56 @@
           </div>
         </div>`;
     }).join('');
+  }
+
+  async function loadCatArticles() {
+    if (_catArticles) return _catArticles;
+    const { data } = await window.IsshoAPI.fetchArticles({ limit: 100 });
+    _catArticles = data || [];
+    return _catArticles;
+  }
+
+  function renderCatSections() {
+    const lang = getLang();
+    const nav = (D.nav || []);
+    const container = document.getElementById('catArticleSections');
+    if (!container) return;
+
+    loadCatArticles().then(function(articles) {
+      /* Group by category_key */
+      const bycat = {};
+      articles.forEach(function(a) {
+        const k = a.category_key;
+        if (!bycat[k]) bycat[k] = [];
+        bycat[k].push(a);
+      });
+
+      const viewAll = lang === 'tc' ? '查看全部' : 'View all';
+
+      const html = nav.map(function(cat) {
+        const arts = (bycat[cat.key] || []).slice(0, 3);
+        if (!arts.length) return '';
+        const title = lang === 'tc' ? cat.tc : cat.en;
+        const cards = arts.map(function(a) { return sbCardHTML(a); }).join('');
+        return `
+          <section class="section">
+            <div class="container">
+              <div class="section-head">
+                <div>
+                  <div class="section-eyebrow">— ${title}</div>
+                  <h2 class="section-title">${title}</h2>
+                </div>
+                <div class="section-actions">
+                  <a class="link-more" href="${cat.url}">${viewAll} →</a>
+                </div>
+              </div>
+              <div class="article-grid">${cards}</div>
+            </div>
+          </section>`;
+      }).join('');
+
+      container.innerHTML = html;
+    });
   }
 
   /* ── Load site settings from Supabase ── */
@@ -894,6 +948,7 @@
     renderEditor();
     renderLatest();
     renderStories();
+    renderCatSections();
   }
 
   /* boot */
