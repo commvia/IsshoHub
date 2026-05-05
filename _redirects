@@ -1,6 +1,4 @@
 # Cloudflare Pages redirects
-# Article detail pages
-/article/*  /article/index.html  200
 
 # Trailing-slash normalisation
 /visa   /visa/  301
