@@ -492,7 +492,6 @@
   function renderHero(sbHero) {
     const h = D.hero;
     const lang = getLang();
-    const tag = lang === 'tc' ? h.tag.tc : h.tag.en;
 
     const a = _sbHeroArticle; /* shorthand */
 
@@ -501,6 +500,11 @@
 
     /* Kicker: site_settings override first, then article category name, then static */
     const catNav  = a && (D.nav || []).find(n => n.key === a.category_key);
+
+    /* Tag: use article's actual category, else static fallback */
+    const tag = catNav
+      ? (lang === 'tc' ? (catNav.short_tc || catNav.tc) : (catNav.short_en || catNav.en))
+      : (lang === 'tc' ? h.tag.tc : h.tag.en);
     const kicker  = (sbHero && (lang === 'tc' ? sbHero.hero_kicker_tc : sbHero.hero_kicker_en))
       || (catNav ? (lang === 'tc' ? catNav.tc : catNav.en) : '')
       || (lang === 'tc' ? h.kicker.tc : h.kicker.en);
@@ -532,7 +536,6 @@
       <div class="hero-body">
         <div class="hero-top">
           <div class="hero-chip"><i></i>${tag}</div>
-          <div class="hero-issue">${lang === 'tc' ? '2026 · 04月號' : 'April 2026 Issue'}</div>
         </div>
         <div>
           <div class="hero-kicker">${kicker}</div>
@@ -566,7 +569,6 @@
             <div class="side-body">
               <div class="side-tag">${catLabel}</div>
               <div class="side-title">${sideTitle}</div>
-              <div class="side-meta">${sideMeta}</div>
             </div>
           </a>`;
         }).join('');
@@ -582,7 +584,6 @@
         <div class="side-body">
           <div class="side-tag">${lang === 'tc' ? a.tc_tag : a.en_tag}</div>
           <div class="side-title">${lang === 'tc' ? a.tc : a.en}</div>
-          <div class="side-meta">${t(a.meta)}</div>
         </div>
       </a>`).join('');
   }
