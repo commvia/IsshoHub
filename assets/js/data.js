@@ -28,12 +28,7 @@ window.ISSHO_DATA = {
       ]
     },
     { key: "culture",url: "/culture/",tc: "文化",             en: "Culture",                 short_tc: "文化",   short_en: "Culture" },
-    { key: "tax",    url: "/tax/",    tc: "稅務・保險・年金", en: "Tax, Insurance & Pension", short_tc: "稅務",   short_en: "Tax",
-      sub: [
-        { tc: "稅務",       en: "Tax",                  url: "/tax/#tax" },
-        { tc: "保險・年金", en: "Insurance & Pension",  url: "/tax/#insurance-pension" },
-      ]
-    },
+    { key: "tax",    url: "/tax/",    tc: "稅務・保險・年金", en: "Tax, Insurance & Pension", short_tc: "稅務",   short_en: "Tax" },
     { key: "life",   url: "/life/",   tc: "日常手續",         en: "Daily Life",              short_tc: "生活",   short_en: "Daily Life",
       sub: [
         { tc: "外免切替",   en: "Driver's Licence Conversion", url: "/life/#licence" },
