@@ -548,10 +548,20 @@
       });
     }
 
-    /* Related articles */
+    /* Related articles: same sub-category first, then same category */
     if (catKey) {
-      var relRes = await window.IsshoAPI.fetchArticles({ category: catKey, limit: 6 });
-      var others = (relRes.data||[]).filter(function(x){ return x.slug !== s; }).slice(0,3);
+      var subKey = a.sub_category_key || '';
+      var relRes = await window.IsshoAPI.fetchArticles({ category: catKey, limit: 20 });
+      var pool = (relRes.data||[]).filter(function(x){ return x.slug !== s; });
+      /* Sort: matching sub_category_key first */
+      if (subKey) {
+        pool.sort(function(x, y) {
+          var xMatch = x.sub_category_key === subKey ? 0 : 1;
+          var yMatch = y.sub_category_key === subKey ? 0 : 1;
+          return xMatch - yMatch;
+        });
+      }
+      var others = pool.slice(0, 3);
       if (others.length) {
         relSect.style.display = '';
         document.getElementById('relatedTitle').textContent = relatedLabel;
