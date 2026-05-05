@@ -609,6 +609,8 @@
     clearEditorError();
 
     if (status === 'published') {
+      // 自動觸發 Cloudflare Pages rebuild，生成靜態文章頁
+      fetch('https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/21a8d5a7-e3ee-4b66-acc6-84135738d99f', { method: 'POST' }).catch(() => {});
       setTimeout(closeEditor, 1200);
     }
   }
