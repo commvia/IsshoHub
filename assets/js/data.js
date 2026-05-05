@@ -548,7 +548,7 @@ window.ISSHO_DATA = {
       desc_en: 'Half-day trips near Tokyo, seasonal spots, and hidden gems only locals know — editor-curated leisure guides.',
       bg: 'https://images.unsplash.com/photo-1480796927426-f609979314bd?w=1400&q=80',
       watermark: '旅遊',
-      icon: '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>',
+      icon: '<path d="M2 21L9.5 8 12 3 14.5 8 22 21M9 10L12 3 15 10M1 21H23"/>',
     },
     pets: {
       desc_tc: '帶寵物入境日本的全流程、在日本找寵物友善住宅、獸醫資訊與寵物入籍手續完整指南。',
@@ -570,7 +570,7 @@ window.ISSHO_DATA = {
       bg: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1400&q=80',
       watermark: '文化',
       watermark_en: 'CULTURE',
-      icon: '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+      icon: '<path d="M2 9Q12 6 22 9M5 13h14M7 9v13M17 9v13"/>',
     },
   },
 
