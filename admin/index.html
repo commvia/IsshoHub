@@ -245,7 +245,7 @@
         + '<td class="adm-date adm-col-updated">'+upd+'</td>'
         + '<td><div class="adm-actions">'
         + '<button class="adm-btn adm-edit-btn" data-id="'+a.id+'">✏️ 編輯</button>'
-        + (a.slug?'<a class="adm-btn" href="/article/?slug='+a.slug+'" target="_blank">👁 預覽</a>':'')
+        + (a.slug?'<a class="adm-btn" href="/article/'+a.slug+'/" target="_blank">👁 預覽</a>':'')
         + '</div></td>'
         + '</tr>';
     }).join('');

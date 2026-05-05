@@ -218,11 +218,11 @@
       ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', {year:'numeric',month:'short',day:'numeric'})
       : '';
     return '<div class="bm-card" data-article-id="' + item.article_id + '">'
-      + '<a class="bm-card-media" href="/article/?slug=' + a.slug + '"'
+      + '<a class="bm-card-media" href="/article/' + a.slug + '/"'
       + (img ? ' style="background-image:url(\'' + img + '\')"' : '') + '></a>'
       + '<div class="bm-card-body">'
       + '<div class="bm-card-tag">' + cat + '</div>'
-      + '<a class="bm-card-title" href="/article/?slug=' + a.slug + '">' + title + '</a>'
+      + '<a class="bm-card-title" href="/article/' + a.slug + '/">' + title + '</a>'
       + '<div class="bm-card-meta">' + date + '</div>'
       + '</div>'
       + '<button class="bm-card-remove" data-remove-id="' + item.article_id + '" title="移除收藏">'

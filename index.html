@@ -528,7 +528,7 @@
       : t(h.date);
     const avatar = author ? author.trim().split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase() : (a ? '' : h.avatar);
 
-    const heroUrl = _sbHeroArticle ? `/article/?slug=${_sbHeroArticle.slug}` : null;
+    const heroUrl = _sbHeroArticle ? `/article/${_sbHeroArticle.slug}/` : null;
 
     const heroMainEl = document.getElementById('heroMain');
     heroMainEl.style.cursor = heroUrl ? 'pointer' : '';
@@ -565,7 +565,7 @@
           const sideImg = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=70';
           const pubDate = a.published_at ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', { month: 'short', day: 'numeric' }) : '';
           const sideMeta = pubDate;
-          return `<a class="side-card" href="/article/?slug=${a.slug}">
+          return `<a class="side-card" href="/article/${a.slug}/">
             <div class="side-thumb" style="background-image: url('${sideImg}')">
               <div class="side-thumb-num">${String(i + 1).padStart(2, '0')}</div>
             </div>
@@ -650,12 +650,12 @@
     const cat = a.category_key || '';
     const author = a.author || '';
     const date = a.published_at ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', { year:'numeric', month:'short', day:'numeric' }) : '';
-    const url = `/article/?slug=${a.slug}`;
+    const url = `/article/${a.slug}/`;
     return `
       <article class="card ${opts.featured ? 'featured' : ''}${opts.overlay ? ' overlay' : ''}" onclick="if(!event.target.closest('a'))window.location.href='${url}'" style="cursor:pointer">
         <a class="card-media" href="${url}" style="background-image: url('${img}')">
         </a>
-        <a class="card-edit-chip" href="/article/?slug=${a.slug}&edit=1" title="編輯文章">
+        <a class="card-edit-chip" href="/article/${a.slug}/?edit=1" title="編輯文章">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
           Edit
         </a>

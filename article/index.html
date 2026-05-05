@@ -360,7 +360,7 @@
     var img    = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=70';
     var cat    = a.category_key || '';
     var date   = a.published_at ? new Date(a.published_at).toLocaleDateString(lang==='tc'?'zh-Hant':'en',{month:'short',day:'numeric'}) : '';
-    return '<a class="card-compact" href="/article/?slug='+a.slug+'" style="text-decoration:none;">'
+    return '<a class="card-compact" href="/article/'+a.slug+'/" style="text-decoration:none;">'
       + '<div class="card-compact-media" style="background-image:url(\''+img+'\')"></div>'
       + '<div class="card-compact-body">'
       + '<div class="card-compact-tag">'+cat+'</div>'
