@@ -236,7 +236,6 @@
     return `
       <article class="card ${opts.featured ? 'featured' : ''}">
         <a class="card-media" href="${url}" style="background-image: url('${a.img}')">
-          <span class="card-tag cat-${a.cat}">${tag}</span>
         </a>
         <div class="card-body">
           <h3 class="card-title">${title}</h3>
