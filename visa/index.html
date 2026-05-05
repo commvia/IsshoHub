@@ -789,6 +789,7 @@
   renderAll();
   if (window.IsshoEditor) window.IsshoEditor.init();
   if (window.IsshoSearch) window.IsshoSearch.init();
+  document.body.classList.add('js-ready');
 
   /* ── Sync ticker1 from Supabase site_settings ── */
   if (window.IsshoAPI && window.IsshoAPI.fetchSiteSettings) {

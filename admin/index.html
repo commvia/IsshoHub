@@ -166,6 +166,7 @@
 
   function initAdmin() {
     if (window.IsshoEditor) window.IsshoEditor.init();
+  document.body.classList.add('js-ready');
 
     var catSel = document.getElementById('admCatFilter');
     (window.ISSHO_DATA.nav || []).forEach(function(n) {

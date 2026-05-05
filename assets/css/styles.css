@@ -1,7 +1,8 @@
 /* IsshoHub — shared styles */
-/* Anti-FOUC: hide body until JS finishes first render */
-body { opacity: 0; }
-body.js-ready { opacity: 1; transition: opacity 0.15s ease; }
+/* Anti-FOUC: hide body until JS finishes first render (max 600ms fallback) */
+body { opacity: 0; animation: fouc-show 0s 0.6s forwards; }
+body.js-ready { opacity: 1; transition: opacity 0.15s ease; animation: none; }
+@keyframes fouc-show { to { opacity: 1; } }
 :root {
   --navy: #0d2444;
   --navy-2: #142f55;
