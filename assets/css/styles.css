@@ -1,4 +1,7 @@
 /* IsshoHub — shared styles */
+/* Anti-FOUC: hide body until JS finishes first render */
+body { opacity: 0; }
+body.js-ready { opacity: 1; transition: opacity 0.15s ease; }
 :root {
   --navy: #0d2444;
   --navy-2: #142f55;

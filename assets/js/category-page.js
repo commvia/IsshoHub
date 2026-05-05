@@ -268,7 +268,10 @@
       if (global.IsshoSearch) global.IsshoSearch.init();
 
       /* Load featured order + ticker from site_settings, then render */
-      loadFeaturedOrder().then(function () { renderAll(); });
+      loadFeaturedOrder().then(function () {
+        renderAll();
+        document.body.classList.add('js-ready');
+      });
     },
   };
 }(window));
