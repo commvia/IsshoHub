@@ -693,13 +693,21 @@
     if (fsEl) fsEl.textContent = lang === 'tc' ? '編輯部本月深度推薦。' : 'Editor\'s pick this month.';
   }
 
+  /* ── Backward-compatible sub-category helper ── */
+  function articleHasSub(a, subKey) {
+    if (a.sub_category_keys && a.sub_category_keys.length) {
+      return a.sub_category_keys.includes(subKey);
+    }
+    return a.sub_category_key === subKey;
+  }
+
   /* ── Build sub-category nav with real article counts ── */
   function renderSubcatNav(articles) {
     const lang = getLang();
     const total = articles ? articles.length : 0;
     const tabs = [{ key: 'all', tc: '全部', en: 'All', count: total }];
     SUBS.forEach(s => {
-      const count = articles ? articles.filter(a => a.sub_category_key === s.key).length : 0;
+      const count = articles ? articles.filter(a => articleHasSub(a, s.key)).length : 0;
       tabs.push({ key: s.key, tc: s.tc, en: s.en, count });
     });
 
@@ -727,7 +735,7 @@
   /* ── Filter articles by active sub-category ── */
   function filterArticles(articles) {
     if (activeSub === 'all') return articles;
-    return articles.filter(a => a.sub_category_key === activeSub);
+    return articles.filter(a => articleHasSub(a, activeSub));
   }
 
   /* ── Core render: featured + articles grid ── */
