@@ -6,6 +6,15 @@
   let categoriesCache = [];
   let subCategoriesCache = {};
 
+  /* ── HTML escape helper ── */
+  function escHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
   /* ── Load sub-categories from data.js nav (single source of truth) ── */
   function loadSubCategories(categoryKey, selectedKey) {
     const selectEl = document.getElementById('editorSubCategory');
@@ -62,12 +71,12 @@
 
     container.innerHTML = groups.map(g => `
       <div class="editor-subcat-group">
-        <div class="editor-subcat-group-label">${g.catName}</div>
+        <div class="editor-subcat-group-label">${escHtml(g.catName)}</div>
         ${g.subs.map(s => `
           <label class="editor-cat-check">
-            <input type="checkbox" name="subCatKey" value="${s.key}"
+            <input type="checkbox" name="subCatKey" value="${escHtml(s.key)}"
               ${selectedKeys.includes(s.key) ? 'checked' : ''}>
-            ${s.name_tc} / ${s.name_en}
+            ${escHtml(s.name_tc)} / ${escHtml(s.name_en)}
           </label>
         `).join('')}
       </div>
@@ -556,7 +565,6 @@
     // When category changes, re-render extra cat checkboxes and sub-cat checkboxes
     document.getElementById('editorCategory').addEventListener('change', e => {
       renderExtraCatCheckboxes(e.target.value);
-      renderSubCatCheckboxes();
     });
 
     // Save draft
@@ -622,6 +630,7 @@
       slug,
       category_key: category,
       category_keys: categoryKeys,
+      /* sub_category_key: first selected sub-cat, kept for backward compatibility */
       sub_category_key: (function() {
         const checked = Array.from(document.querySelectorAll('#editorSubCatChecks input[name="subCatKey"]:checked'));
         return checked.length ? checked[0].value : null;
@@ -703,15 +712,14 @@
       document.getElementById('bodyTc').value = articleData.body_tc || '';
       document.getElementById('bodyEn').value = articleData.body_en || '';
       document.getElementById('coverImageUrl').value = articleData.cover_image_url || '';
-      /* Populate sub-cat checkboxes after categories are loaded */
-      const existingSubKeys = articleData.sub_category_keys ||
-        (articleData.sub_category_key ? [articleData.sub_category_key] : []);
-      /* Delay to ensure category + extra cats are rendered first */
-      setTimeout(() => renderSubCatCheckboxes(existingSubKeys), 50);
       document.getElementById('editorAuthor').value = articleData.author || '';
       document.getElementById('editorTags').value = (articleData.tags || []).join(', ');
       document.getElementById('editorFeatured').checked = articleData.featured || false;
       loadCategories(document.getElementById('editorCategory'), articleData.category_key, articleData.category_keys || []);
+      /* Populate sub-cat checkboxes after categories are loaded */
+      const existingSubKeys = articleData.sub_category_keys ||
+        (articleData.sub_category_key ? [articleData.sub_category_key] : []);
+      renderSubCatCheckboxes(existingSubKeys);
       if (articleData.cover_image_url) {
         document.getElementById('coverImagePreview').src = articleData.cover_image_url;
         document.getElementById('coverImagePreview').style.display = 'block';
