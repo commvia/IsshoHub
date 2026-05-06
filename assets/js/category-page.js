@@ -123,7 +123,7 @@
         var total = articles ? articles.length : 0;
         var tabs  = [{ key: '', tc: '全部', en: 'All', count: total }];
         SUBS.forEach(function (s) {
-          var count = articles ? articles.filter(function (a) { return a.sub_category_key === s.key; }).length : 0;
+          var count = articles ? articles.filter(function (a) { return articleHasSub(a, s.key); }).length : 0;
           tabs.push({ key: s.key, tc: s.tc, en: s.en, count: count });
         });
 
@@ -178,10 +178,18 @@
           });
       }
 
+      /* Helper: check if article belongs to a given sub-category key (backward compatible) */
+      function articleHasSub(a, subKey) {
+        if (a.sub_category_keys && a.sub_category_keys.length) {
+          return a.sub_category_keys.includes(subKey);
+        }
+        return a.sub_category_key === subKey;
+      }
+
       /* ── Filter by active sub ── */
       function filterArticles(articles) {
         if (!activeSub) return articles;
-        return articles.filter(function (a) { return a.sub_category_key === activeSub; });
+        return articles.filter(function (a) { return articleHasSub(a, activeSub); });
       }
 
       /* ── Render featured + grid ── */
