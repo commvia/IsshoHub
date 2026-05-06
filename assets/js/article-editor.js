@@ -27,6 +27,55 @@
     return Promise.resolve();
   }
 
+  /* ── Render multi-select sub-category checkboxes ── */
+  function renderSubCatCheckboxes(selectedKeys) {
+    const container = document.getElementById('editorSubCatChecks');
+    const field = document.getElementById('editorSubCatField');
+    if (!container) return;
+
+    selectedKeys = selectedKeys || [];
+
+    /* Collect all selected main category keys */
+    const primaryKey = (document.getElementById('editorCategory') || {}).value || '';
+    const extraChecked = Array.from(
+      document.querySelectorAll('#editorExtraCats input[name="extraCat"]:checked:not(:disabled)')
+    ).map(el => el.value);
+    const allCatKeys = [...new Set([primaryKey, ...extraChecked].filter(Boolean))];
+
+    /* Build groups: only categories that have sub entries */
+    const nav = (window.ISSHO_DATA && window.ISSHO_DATA.nav) || [];
+    const groups = allCatKeys.map(catKey => {
+      const navEntry = nav.find(n => n.key === catKey);
+      if (!navEntry || !navEntry.sub || !navEntry.sub.length) return null;
+      const subs = navEntry.sub.map(s => ({
+        key: (s.url || '').split('#')[1] || '',
+        name_tc: s.tc,
+        name_en: s.en,
+      })).filter(s => s.key);
+      return { catKey, catName: navEntry.tc, subs };
+    }).filter(Boolean);
+
+    if (!groups.length) {
+      if (field) field.style.display = 'none';
+      return;
+    }
+
+    container.innerHTML = groups.map(g => `
+      <div class="editor-subcat-group">
+        <div class="editor-subcat-group-label">${g.catName}</div>
+        ${g.subs.map(s => `
+          <label class="editor-cat-check">
+            <input type="checkbox" name="subCatKey" value="${s.key}"
+              ${selectedKeys.includes(s.key) ? 'checked' : ''}>
+            ${s.name_tc} / ${s.name_en}
+          </label>
+        `).join('')}
+      </div>
+    `).join('');
+
+    if (field) field.style.display = '';
+  }
+
   /* ── Markdown toolbar HTML ── */
   function mdToolbarHTML(taId) {
     return `
@@ -252,6 +301,11 @@
     }).join('');
 
     if (field) field.style.display = '';
+    /* Re-render sub-cat checkboxes whenever extra cats change */
+    container.querySelectorAll('input[name="extraCat"]').forEach(function(cb) {
+      cb.addEventListener('change', function() { renderSubCatCheckboxes(); });
+    });
+    renderSubCatCheckboxes();
   }
 
   /* ── Load categories from data.js nav (single source of truth) ── */
@@ -373,12 +427,10 @@
               <select id="editorCategory"></select>
             </div>
 
-            <!-- Sub-category -->
-            <div class="editor-field">
-              <label>子分類 Sub-category</label>
-              <select id="editorSubCategory">
-                <option value="">請先選擇分類</option>
-              </select>
+            <!-- Sub-category (multi-select checkboxes) -->
+            <div class="editor-field" id="editorSubCatField" style="display:none">
+              <label>副分類 Sub-category（可多選）</label>
+              <div class="editor-cat-checks" id="editorSubCatChecks"></div>
             </div>
 
             <!-- Extra categories (multi-category) -->
@@ -501,10 +553,10 @@
     // Load categories
     loadCategories(document.getElementById('editorCategory'));
 
-    // When category changes, load sub-categories and re-render checkboxes
+    // When category changes, re-render extra cat checkboxes and sub-cat checkboxes
     document.getElementById('editorCategory').addEventListener('change', e => {
-      loadSubCategories(e.target.value);
       renderExtraCatCheckboxes(e.target.value);
+      renderSubCatCheckboxes();
     });
 
     // Save draft
@@ -570,7 +622,14 @@
       slug,
       category_key: category,
       category_keys: categoryKeys,
-      sub_category_key: document.getElementById('editorSubCategory').value.trim() || null,
+      sub_category_key: (function() {
+        const checked = Array.from(document.querySelectorAll('#editorSubCatChecks input[name="subCatKey"]:checked'));
+        return checked.length ? checked[0].value : null;
+      })(),
+      sub_category_keys: (function() {
+        const checked = Array.from(document.querySelectorAll('#editorSubCatChecks input[name="subCatKey"]:checked')).map(el => el.value);
+        return checked.length ? checked : null;
+      })(),
       cover_image_url: document.getElementById('coverImageUrl').value.trim() || null,
       excerpt_tc: document.getElementById('excerptTc').value.trim() || null,
       excerpt_en: document.getElementById('excerptEn').value.trim() || null,
@@ -644,7 +703,11 @@
       document.getElementById('bodyTc').value = articleData.body_tc || '';
       document.getElementById('bodyEn').value = articleData.body_en || '';
       document.getElementById('coverImageUrl').value = articleData.cover_image_url || '';
-      loadSubCategories(articleData.category_key, articleData.sub_category_key);
+      /* Populate sub-cat checkboxes after categories are loaded */
+      const existingSubKeys = articleData.sub_category_keys ||
+        (articleData.sub_category_key ? [articleData.sub_category_key] : []);
+      /* Delay to ensure category + extra cats are rendered first */
+      setTimeout(() => renderSubCatCheckboxes(existingSubKeys), 50);
       document.getElementById('editorAuthor').value = articleData.author || '';
       document.getElementById('editorTags').value = (articleData.tags || []).join(', ');
       document.getElementById('editorFeatured').checked = articleData.featured || false;
