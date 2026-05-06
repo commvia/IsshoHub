@@ -211,6 +211,22 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .editor-cat-check input { margin: 0; accent-color: var(--navy); cursor: pointer; }
 .editor-cat-check.primary { background: rgba(13,36,68,.06); border-color: var(--navy); color: var(--navy); font-weight: 600; }
 .editor-cat-check.primary input { cursor: not-allowed; }
+.editor-subcat-group {
+  margin-bottom: 12px;
+}
+.editor-subcat-group:last-child {
+  margin-bottom: 0;
+}
+.editor-subcat-group-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #aaa;
+  margin-bottom: 6px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #e8e4db;
+}
 .editor-image-upload {
   border: 2px dashed var(--line);
   border-radius: 10px; padding: 20px;
