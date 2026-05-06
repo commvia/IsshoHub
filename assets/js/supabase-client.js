@@ -108,7 +108,7 @@
   async function fetchAllArticles(options = {}) {
     let query = getClient()
       .from('articles')
-      .select('id, slug, title_tc, title_en, category_key, sub_category_key, status, published_at, updated_at, featured, author')
+      .select('id, slug, title_tc, title_en, category_key, sub_category_key, sub_category_keys, status, published_at, updated_at, featured, author')
       .order('updated_at', { ascending: false })
       .range(0, 999);
     if (options.category) query = query.eq('category_key', options.category);
