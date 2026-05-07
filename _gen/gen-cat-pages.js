@@ -45,8 +45,8 @@ const PAGES = [
   },
   {
     key: 'life',
-    title_tc: '日常手續',
-    title_en: 'Daily Life',
+    title_tc: '生活',
+    title_en: 'Life',
     meta_desc: '駕照切換、銀行開戶、電話卡、交通規則——移居日本後所有日常必辦手續的完整指南。',
     desc_tc: '駕照切換、銀行開戶、電話卡、交通規則——移居日本後所有日常必辦手續的完整雙語指南。',
     desc_en: 'Driver\'s licence conversion, bank accounts, SIM cards, traffic rules — a complete guide to everyday admin after moving to Japan.',

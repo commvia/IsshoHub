@@ -29,7 +29,7 @@ window.ISSHO_DATA = {
     },
     { key: "culture",url: "/culture/",tc: "文化",             en: "Culture",                 short_tc: "文化",   short_en: "Culture" },
     { key: "tax",    url: "/tax/",    tc: "稅務・保險・年金", en: "Tax, Insurance & Pension", short_tc: "稅務",   short_en: "Tax" },
-    { key: "life",   url: "/life/",   tc: "日常手續",         en: "Daily Life",              short_tc: "生活",   short_en: "Daily Life",
+    { key: "life",   url: "/life/",   tc: "生活",         en: "Life",              short_tc: "生活",   short_en: "Life",
       sub: [
         { tc: "外免切替",   en: "Driver's Licence Conversion", url: "/life/#licence" },
         { tc: "交通規則",   en: "Traffic Rules",               url: "/life/#traffic" },
@@ -128,7 +128,7 @@ window.ISSHO_DATA = {
     {
       cat: "life",
       num: "03",
-      tc_tag: "日常手續", en_tag: "Daily Life",
+      tc_tag: "生活", en_tag: "Life",
       tc: "外免切替 2026：香港台灣駕照轉換完整時間線", en: "Driver's licence conversion 2026: the full timeline",
       meta: { tc: "6 分鐘閱讀 · 4月14日", en: "6 min · Apr 14" },
       img: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=600&q=70",
@@ -154,7 +154,7 @@ window.ISSHO_DATA = {
     { key: "house",  count: 51, tc: "住屋",              en: "Housing",                 icon: "home",     url: "/house/" },
     { key: "culture",count: 0,  tc: "文化",              en: "Culture",                 icon: "culture",  url: "/culture/" },
     { key: "tax",    count: 47, tc: "稅務・保險・年金",  en: "Tax, Insurance & Pension",icon: "yen",      url: "/tax/" },
-    { key: "life",   count: 93, tc: "日常手續",          en: "Daily Life",              icon: "life",     url: "/life/" },
+    { key: "life",   count: 93, tc: "生活",          en: "Life",              icon: "life",     url: "/life/" },
     { key: "places", count: 68, tc: "好去處",            en: "Leisure",                 icon: "torii",    url: "/places/" },
     { key: "pets",   count: 29, tc: "寵物",              en: "Pets in Japan",           icon: "paw",      url: "/pets/" },
     { key: "story",  count: 41, tc: "人物故事",          en: "Stories",                 icon: "quote",    url: "/story/" },
@@ -216,7 +216,7 @@ window.ISSHO_DATA = {
     },
     {
       cat: "life",
-      tc_tag: "日常手續", en_tag: "Daily Life",
+      tc_tag: "生活", en_tag: "Life",
       tc: "區公所日文太難？我們整理了 23 句轉入手續常用對話",
       en: "City hall Japanese too hard? 23 phrases you actually need for moving-in paperwork",
       tc_excerpt: "從住民票到國民健康保險，附上漢字、假名、羅馬拼音對照。",
