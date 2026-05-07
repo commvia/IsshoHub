@@ -384,6 +384,20 @@
   </div>
 </nav>
 
+<!-- =============== HSP CALCULATOR =============== -->
+<section class="section hsp-calc-section" id="hsp">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow">— 高度専門職</div>
+        <h2 class="section-title" id="hspCalcTitle">高度專門職積分試算</h2>
+        <div class="section-sub" id="hspCalcSub">根據官方積分表，初步估算你的高度專門職資格分數。</div>
+      </div>
+    </div>
+    <div id="hspCalculator" class="hsp-calculator"></div>
+  </div>
+</section>
+
 <!-- =============== FEATURED ARTICLE =============== -->
 <section class="cat-featured-section">
   <div class="container">
@@ -611,6 +625,7 @@
 <script src="/assets/js/search.js?v=5"></script>
 <script src="/assets/js/earthquake-alert.js" defer></script>
 <script src="/assets/js/core.js?v=9"></script>
+<script src="/assets/js/hsp-calculator.js?v=1"></script>
 <script>
 (function () {
   const D = window.ISSHO_DATA;
@@ -869,6 +884,22 @@
   })();
 
 })();
+
+  /* HSP Calculator section 雙語 */
+  (function updateHspI18n() {
+    function setHspLang() {
+      var lang = (window.IsshoCore && window.IsshoCore.getLang()) || 'tc';
+      var L = lang === 'tc';
+      var title = document.getElementById('hspCalcTitle');
+      var sub   = document.getElementById('hspCalcSub');
+      if (title) title.textContent = L ? '高度專門職積分試算' : 'HSP Points Calculator';
+      if (sub)   sub.textContent   = L ? '根據官方積分表，初步估算你的高度專門職資格分數。' : 'Estimate your Highly Skilled Professional visa points based on the official scoring table.';
+    }
+    setHspLang();
+    if (window.IsshoCore && window.IsshoCore.onLangChange) {
+      window.IsshoCore.onLangChange(setHspLang);
+    }
+  })();
 </script>
 </body>
 </html>
