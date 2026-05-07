@@ -270,7 +270,23 @@
   </div>
 </section>
 
-<!-- =============== CHECKLIST =============== -->
+<!-- =============== NEWS =============== -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow">— News</div>
+        <h2 class="section-title" data-i18n="news_title"></h2>
+        <div class="section-sub" data-i18n="news_sub"></div>
+      </div>
+      <div class="section-actions">
+        <a href="/news/" class="btn-outline" data-i18n="news_more"></a>
+      </div>
+    </div>
+    <div class="article-grid" id="newsGrid"></div>
+  </div>
+</section>
+
 <!-- =============== LATEST =============== -->
 <section class="section">
   <div class="container">
@@ -756,6 +772,18 @@
     }
   }
 
+  function renderNews() {
+    const newsGrid = document.getElementById('newsGrid');
+    if (!newsGrid) return;
+    window.IsshoAPI.fetchArticles({ category: 'news', limit: 3 }).then(({ data }) => {
+      if (data && data.length) {
+        newsGrid.innerHTML = data.map(a => sbCardHTML(a)).join('');
+      } else {
+        newsGrid.closest('section').style.display = 'none';
+      }
+    });
+  }
+
   function renderLatest() {
     const latestGrid = document.getElementById('latestGrid');
     loadSupabaseArticles().then(articles => {
@@ -971,6 +999,7 @@
     renderHot();
     renderCats();
     renderEditor();
+    renderNews();
     renderLatest();
     renderStories();
     renderCatSections();
