@@ -2,11 +2,13 @@
 (function () {
   'use strict';
 
-  var FEED_URL     = 'https://www.data.jma.go.jp/developer/xml/feed/eqvol.xml';
-  var POLL_MS      = 5 * 60 * 1000;        // poll every 5 minutes
-  var LOOK_BACK_MS = 2 * 60 * 60 * 1000;  // entries within last 2 hours
-  var HIGH_INT     = new Set(['3', '4', '5-', '5+', '6-', '6+', '7']);
-  var INT_LABEL    = { '3':'３', '4':'４', '5-':'５弱', '5+':'５強', '6-':'６弱', '6+':'６強', '7':'７' };
+  var FEED_URL      = 'https://www.data.jma.go.jp/developer/xml/feed/eqvol.xml';
+  var POLL_MS       = 5 * 60 * 1000;        // poll every 5 minutes
+  var LOOK_BACK_MS  = 2 * 60 * 60 * 1000;  // entries within last 2 hours
+  var HIDE_AFTER_MS = 24 * 60 * 60 * 1000; // hide 24 h after last alert
+  var CYCLE_MS      = 5 * 1000;            // rotate alerts every 5 seconds
+  var HIGH_INT      = new Set(['3', '4', '5-', '5+', '6-', '6+', '7']);
+  var INT_LABEL     = { '3':'３', '4':'４', '5-':'５弱', '5+':'５強', '6-':'６弱', '6+':'６強', '7':'７' };
 
   /* Prefecture name translation (Japanese → TC / EN) */
   var PREF_TC = {
@@ -39,43 +41,79 @@
     return lang === 'en' ? (PREF_EN[jpName] || jpName) : (PREF_TC[jpName] || jpName);
   }
 
-  var lastInfo      = null; /* remember last alert so lang-switch can re-render */
-  var lastAlertTime = 0;   /* timestamp when alert was last refreshed */
-  var HIDE_AFTER_MS = 24 * 60 * 60 * 1000; /* hide 24 h after last earthquake */
+  /* Alert state */
+  var alerts     = [];   /* active alerts, newest first: { intensity, time, region, shownAt } */
+  var cycleIdx   = 0;    /* which alert is currently shown */
+  var cycleTimer = null;
+
+  function pruneAlerts() {
+    var now = Date.now();
+    alerts = alerts.filter(function (a) { return (now - a.shownAt) < HIDE_AFTER_MS; });
+  }
 
   function hideTopbar() {
     var el  = document.getElementById('eqTopbar');
     var sep = document.querySelector('.eq-topbar-sep');
     if (el)  el.style.display = 'none';
     if (sep) sep.style.display = 'none';
-    lastInfo      = null;
-    lastAlertTime = 0;
+    if (cycleTimer) { clearInterval(cycleTimer); cycleTimer = null; }
+    alerts   = [];
+    cycleIdx = 0;
   }
 
-  /* Update the topbar eqTopbar span */
-  function showInTopbar(info) {
-    if (info) { lastInfo = info; lastAlertTime = Date.now(); }
+  function renderCurrent() {
+    if (!alerts.length) return;
+    var a   = alerts[cycleIdx];
     var el  = document.getElementById('eqTopbar');
     var sep = document.querySelector('.eq-topbar-sep');
     if (!el) return;
 
-    var lang   = document.body.dataset.lang || 'tc';
-    var intLbl = INT_LABEL[lastInfo.intensity] || lastInfo.intensity;
-    var region = translateRegion(lastInfo.region, lang === 'en' ? 'en' : 'tc');
-    var dt     = new Date(lastInfo.time);
+    var lang    = document.body.dataset.lang || 'tc';
+    var intLbl  = INT_LABEL[a.intensity] || a.intensity;
+    var region  = translateRegion(a.region, lang === 'en' ? 'en' : 'tc');
+    var dt      = new Date(a.time);
     var timeStr = isNaN(dt.getTime()) ? '' :
       dt.toLocaleTimeString(lang === 'tc' ? 'zh-Hant' : 'en-US',
         { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Tokyo' });
 
+    /* show (1/2) counter only when multiple alerts are active */
+    var prefix = alerts.length > 1 ? '(' + (cycleIdx + 1) + '/' + alerts.length + ') ' : '';
+
     var text = lang === 'en'
-      ? '⚠ Earthquake Intensity ' + intLbl + (region ? ' · ' + region : '') + (timeStr ? ' ' + timeStr : '')
-      : '⚠ 地震速報 震度' + intLbl + (region ? ' · ' + region : '') + (timeStr ? ' ' + timeStr : '');
+      ? '⚠ ' + prefix + 'Earthquake Intensity ' + intLbl + (region ? ' · ' + region : '') + (timeStr ? ' ' + timeStr : '')
+      : '⚠ ' + prefix + '地震速報 震度' + intLbl + (region ? ' · ' + region : '') + (timeStr ? ' ' + timeStr : '');
 
     el.textContent = text;
     el.style.display = '';
-    el.style.color = '#fbbf24'; /* amber — visible on dark topbar */
+    el.style.color = '#fbbf24';
     el.style.fontWeight = '600';
     if (sep) sep.style.display = '';
+  }
+
+  function startCycle() {
+    if (cycleTimer) { clearInterval(cycleTimer); cycleTimer = null; }
+    if (alerts.length <= 1) return;
+    cycleTimer = setInterval(function () {
+      cycleIdx = (cycleIdx + 1) % alerts.length;
+      renderCurrent();
+    }, CYCLE_MS);
+  }
+
+  function addAlert(info) {
+    /* deduplicate by earthquake time */
+    var exists = alerts.some(function (a) { return a.time === info.time; });
+    if (!exists) {
+      alerts.unshift({ intensity: info.intensity, time: info.time, region: info.region, shownAt: Date.now() });
+    }
+  }
+
+  function showInTopbar(info) {
+    if (info) addAlert(info);
+    pruneAlerts();
+    if (!alerts.length) { hideTopbar(); return; }
+    cycleIdx = 0;
+    renderCurrent();
+    startCycle();
   }
 
   /* Fetch and parse one detail XML */
@@ -117,10 +155,9 @@
 
       (function next(i) {
         if (i >= candidates.length) {
-          /* No qualifying earthquake found — hide if 24 h have elapsed */
-          if (lastAlertTime && (Date.now() - lastAlertTime) >= HIDE_AFTER_MS) {
-            hideTopbar();
-          }
+          /* No new qualifying earthquake — prune old alerts, hide if none left */
+          pruneAlerts();
+          if (!alerts.length) hideTopbar();
           return;
         }
         var entry   = candidates[i];
@@ -146,11 +183,11 @@
   }
   setInterval(checkFeed, POLL_MS);
 
-  /* Re-render topbar text when user switches language */
+  /* Re-render current alert when user switches language */
   function registerLangListener() {
     if (window.IsshoCore && window.IsshoCore.onLangChange) {
       window.IsshoCore.onLangChange(function () {
-        if (lastInfo) showInTopbar(lastInfo);
+        if (alerts.length) renderCurrent();
       });
     }
   }
