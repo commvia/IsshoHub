@@ -5,6 +5,19 @@
   let _article = null;
   let _editing  = false;
 
+  /* ── Upload image to Supabase Storage ── */
+  async function uploadImage(file) {
+    const ext = file.name.split('.').pop();
+    const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+    const client = window.IsshoAuth.getClient();
+    const { data, error } = await client.storage
+      .from('article-images')
+      .upload(filename, file, { contentType: file.type, upsert: false });
+    if (error) return { url: null, error };
+    const { data: urlData } = client.storage.from('article-images').getPublicUrl(filename);
+    return { url: urlData.publicUrl, error: null };
+  }
+
   /* ══════════════════════════════════════════
      Markdown toolbar helpers
   ══════════════════════════════════════════ */
@@ -25,7 +38,10 @@
       <div class="md-toolbar-hint" id="inlineMdHint">📋 貼上 Word 內容可自動轉換格式</div>
     </div>
     <div class="md-img-form" id="inlineMdImgForm" style="display:none">
-      <input type="url" id="inlineMdImgUrl" placeholder="圖片 URL（https://...）" />
+      <button type="button" class="md-img-upload-btn" id="inlineMdImgUploadBtn">⬆ 從電腦上傳</button>
+      <input type="file" id="inlineMdImgFileInput" accept="image/*" style="display:none" />
+      <span class="md-img-form-or">或</span>
+      <input type="url" id="inlineMdImgUrl" placeholder="貼上圖片 URL" />
       <input type="text" id="inlineMdImgAlt" placeholder="說明文字（可留空）" />
       <button type="button" class="md-img-form-insert" id="inlineMdImgInsert">插入</button>
       <button type="button" class="md-img-form-cancel" id="inlineMdImgCancel">✕</button>
@@ -175,6 +191,35 @@
         imgForm.style.display = 'none';
         ta.focus();
       });
+
+      /* Upload from computer */
+      const uploadBtn   = document.getElementById('inlineMdImgUploadBtn');
+      const fileInput   = document.getElementById('inlineMdImgFileInput');
+      if (uploadBtn && fileInput) {
+        uploadBtn.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', async e => {
+          const file = e.target.files[0];
+          if (!file) return;
+          const savedLabel = uploadBtn.textContent;
+          uploadBtn.textContent = '上傳中…';
+          uploadBtn.disabled = true;
+          const { url, error } = await uploadImage(file);
+          uploadBtn.textContent = savedLabel;
+          uploadBtn.disabled = false;
+          fileInput.value = '';
+          if (error || !url) { alert('圖片上傳失敗，請重試'); return; }
+          /* directly insert without filling form */
+          const ins = `\n![](${url})\n`;
+          const pos = imgForm._cursor != null ? imgForm._cursor : (imgForm._ta ? imgForm._ta.value.length : 0);
+          if (imgForm._ta) {
+            imgForm._ta.value = imgForm._ta.value.substring(0, pos) + ins + imgForm._ta.value.substring(pos);
+            imgForm._ta.selectionStart = imgForm._ta.selectionEnd = pos + ins.length;
+            autoResize(imgForm._ta);
+            imgForm._ta.focus();
+          }
+          imgForm.style.display = 'none';
+        });
+      }
     }
 
     ta.addEventListener('paste', e => {

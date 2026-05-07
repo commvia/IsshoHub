@@ -98,6 +98,9 @@
         <button type="button" class="md-toolbar-btn" data-md="ul" title="項目清單">• 清單</button>
         <button type="button" class="md-toolbar-btn" data-md="blockquote" title="引言">" 引言</button>
         <button type="button" class="md-toolbar-btn" data-md="hr" title="分隔線">— —</button>
+        <div class="md-toolbar-sep"></div>
+        <button type="button" class="md-toolbar-btn md-img-btn" data-md="image" title="插入圖片">🖼 插圖</button>
+        <input type="file" class="md-img-input" accept="image/*" style="display:none" />
         <div class="md-toolbar-hint">📋 貼上 Word 內容可自動轉換格式</div>
       </div>`;
   }
@@ -258,6 +261,31 @@
       if ((e.ctrlKey || e.metaKey) && e.key === 'b') { e.preventDefault(); applyMdFormat(ta, 'bold'); }
       if ((e.ctrlKey || e.metaKey) && e.key === 'i') { e.preventDefault(); applyMdFormat(ta, 'italic'); }
     });
+
+    /* Image upload button */
+    const imgBtn   = toolbarEl.querySelector('.md-img-btn');
+    const imgInput = toolbarEl.querySelector('.md-img-input');
+    if (imgBtn && imgInput) {
+      imgBtn.addEventListener('mousedown', e => { e.preventDefault(); imgInput.click(); });
+      imgInput.addEventListener('change', async e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const savedHTML = imgBtn.innerHTML;
+        imgBtn.textContent = '上傳中…';
+        imgBtn.disabled = true;
+        const cursorPos = ta.selectionStart;
+        const { url, error } = await uploadImage(file);
+        imgBtn.innerHTML = savedHTML;
+        imgBtn.disabled = false;
+        imgInput.value = '';
+        if (error || !url) { alert('圖片上傳失敗，請重試'); return; }
+        const insertion = `\n![](${url})\n`;
+        ta.value = ta.value.substring(0, cursorPos) + insertion + ta.value.substring(cursorPos);
+        ta.selectionStart = ta.selectionEnd = cursorPos + insertion.length;
+        autoResizeTA(ta);
+        ta.focus();
+      });
+    }
 
     /* Smart paste: convert Word/HTML clipboard to Markdown */
     ta.addEventListener('paste', e => {

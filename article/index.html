@@ -321,10 +321,14 @@
         .replace(/\*\*(.+?)\*\*/g,     '<strong>$1</strong>')
         .replace(/\*(.+?)\*/g,         '<em>$1</em>')
         .replace(/`(.+?)`/g,           '<code>$1</code>')
+        .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" loading="lazy" class="article-inline-img">')
         .replace(/\[(.+?)\]\((.+?)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
     }
     for (var i = 0; i < lines.length; i++) {
       var t = lines[i].trim();
+      /* Standalone image line → block-level img */
+      var imgM = /^!\[([^\]]*)\]\(([^)]+)\)$/.exec(t);
+      if (imgM) { closeLists(); closeBq(); out.push('<img src="'+imgM[2]+'" alt="'+imgM[1]+'" loading="lazy" class="article-inline-img">'); continue; }
       /* Table row detection */
       if (/^\|.+/.test(t)) {
         closeLists(); closeBq();
@@ -349,7 +353,7 @@
     return out.join('\n').split(/\n{2,}/).map(function(b){
       b = b.trim();
       if (!b) return '';
-      if (/^<(h[1-6]|ul|ol|li|hr|blockquote|p|table)/.test(b)) return b;
+      if (/^<(h[1-6]|ul|ol|li|hr|blockquote|p|table|img)/.test(b)) return b;
       return '<p>'+b.replace(/\n/g,'<br>')+'</p>';
     }).filter(Boolean).join('\n');
   }

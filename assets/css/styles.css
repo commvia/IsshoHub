@@ -2562,3 +2562,33 @@ body[data-lang="en"] .cat-articles-title { font-family: var(--sans-en); }
   .hot-pills { gap: 6px; }
   .pill { font-size: 12px; padding: 6px 10px; }
 }
+
+/* ── Inline image (inserted via editor) ── */
+.article-inline-img {
+  display: block;
+  max-width: 100%;
+  width: 100%;
+  border-radius: 10px;
+  margin: 20px 0;
+  object-fit: cover;
+}
+
+/* ── md-img-form upload button ── */
+.md-img-upload-btn {
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 5px 12px;
+  background: var(--navy);
+  color: #fff;
+  border-radius: 5px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background .15s;
+}
+.md-img-upload-btn:hover { background: var(--accent); }
+.md-img-upload-btn:disabled { background: var(--ink-3); cursor: not-allowed; }
+.md-img-form-or {
+  font-size: 12px;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
