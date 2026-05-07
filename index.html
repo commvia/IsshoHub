@@ -858,7 +858,7 @@
 
       const viewAll = lang === 'tc' ? '查看全部' : 'View all';
 
-      const html = nav.map(function(cat) {
+      const html = nav.filter(function(cat) { return cat.key !== 'news'; }).map(function(cat) {
         const arts = (bycat[cat.key] || []).slice(0, 3);
         if (!arts.length) return '';
         const title = lang === 'tc' ? cat.tc : cat.en;
