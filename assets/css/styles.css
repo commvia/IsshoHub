@@ -2592,3 +2592,76 @@ body[data-lang="en"] .cat-articles-title { font-family: var(--sans-en); }
   color: var(--ink-3);
   white-space: nowrap;
 }
+
+/* ── Earthquake Alert Banner ── */
+.eq-alert {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 9999;
+  background: linear-gradient(90deg, #991b1b, #dc2626);
+  color: #fff;
+  box-shadow: 0 3px 16px rgba(153,27,27,0.45);
+  animation: eq-slide-down .35s cubic-bezier(.32,.72,0,1);
+}
+@keyframes eq-slide-down {
+  from { transform: translateY(-100%); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+.eq-alert-inner {
+  display: flex; align-items: center; gap: 12px;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 10px 20px;
+}
+.eq-alert-badge {
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  font-family: var(--sans-en);
+}
+.eq-alert-text {
+  flex: 1; min-width: 0;
+}
+.eq-alert-text strong {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.eq-alert-text span {
+  font-size: 11.5px;
+  opacity: 0.82;
+  font-family: var(--sans-en);
+}
+.eq-alert-link {
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.eq-alert-close {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  font-size: 13px;
+  display: grid; place-items: center;
+  flex-shrink: 0;
+  transition: background .15s;
+}
+.eq-alert-close:hover { background: rgba(255,255,255,0.3); }
+@media (max-width: 599px) {
+  .eq-alert-inner { gap: 8px; padding: 8px 14px; }
+  .eq-alert-text strong { font-size: 12.5px; }
+  .eq-alert-link { display: none; }
+}
