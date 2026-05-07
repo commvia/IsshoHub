@@ -43,6 +43,15 @@
           <div class="ss-section">
             <div class="ss-section-title">📰 首頁文章設定</div>
             <div class="ss-row">
+              <label>Hero Kicker 標籤（繁中）</label>
+              <input type="text" id="ss_hero_kicker_tc" placeholder="例：2026 最新政策解讀" style="width:100%" />
+            </div>
+            <div class="ss-row">
+              <label>Hero Kicker 標籤（English）</label>
+              <input type="text" id="ss_hero_kicker_en" placeholder="e.g. 2026 policy deep-dive" style="width:100%" />
+              <div style="font-size:11px;color:var(--ink-3);margin-top:4px">顯示在 Hero 大圖標題上方的小標籤。留空則自動顯示文章分類名稱。</div>
+            </div>
+            <div class="ss-row">
               <label>Hero 大圖文章 Slug</label>
               <textarea id="ss_hero_article_slug" rows="1" placeholder="article-slug"></textarea>
               <div style="font-size:11px;color:var(--ink-3);margin-top:4px">Hero 大圖連結的文章。Slug 可在文章編輯器找到。</div>
@@ -167,6 +176,10 @@
       }
     }
     /* Homepage article slugs */
+    const heroKickerTcEl = document.getElementById('ss_hero_kicker_tc');
+    if (heroKickerTcEl && map.hero_kicker) heroKickerTcEl.value = map.hero_kicker.value_tc || '';
+    const heroKickerEnEl = document.getElementById('ss_hero_kicker_en');
+    if (heroKickerEnEl && map.hero_kicker) heroKickerEnEl.value = map.hero_kicker.value_en || '';
     const heroSlugEl = document.getElementById('ss_hero_article_slug');
     if (heroSlugEl && map.hero_article_slug) heroSlugEl.value = map.hero_article_slug.value_tc || '';
     const sideSlugEl = document.getElementById('ss_homepage_side_slugs');
@@ -205,6 +218,7 @@
     const sideSlugs = document.getElementById('ss_homepage_side_slugs')?.value.trim() || '';
     const picksSlugs = document.getElementById('ss_homepage_picks_slugs')?.value.trim() || '';
     const settings = [
+      { key: 'hero_kicker', tc: document.getElementById('ss_hero_kicker_tc')?.value.trim() || '', en: document.getElementById('ss_hero_kicker_en')?.value.trim() || '' },
       { key: 'hero_article_slug',    tc: heroArticleSlug, en: heroArticleSlug },
       { key: 'homepage_side_slugs',  tc: sideSlugs,       en: sideSlugs },
       { key: 'homepage_picks_slugs', tc: picksSlugs,      en: picksSlugs },
