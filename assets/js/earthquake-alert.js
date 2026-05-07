@@ -185,7 +185,7 @@
     /* deduplicate by earthquake time */
     var exists = alerts.some(function (a) { return a.time === info.time; });
     if (!exists) {
-      alerts.unshift({ intensity: info.intensity, time: info.time, region: info.region, shownAt: Date.now() });
+      alerts.unshift({ intensity: info.intensity, time: info.time, region: info.region, hypo: info.hypo || '', shownAt: Date.now() });
     }
   }
 
