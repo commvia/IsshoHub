@@ -369,7 +369,8 @@
     return out.join('\n').split(/\n{2,}/).map(function(b){
       b = b.trim();
       if (!b) return '';
-      if (/^<(h[1-6]|ul|ol|li|hr|blockquote|p|table|img)/.test(b)) return b;
+      if (/^<\//.test(b)) return b;
+      if (/^<(h[1-6]|ul|ol|li|hr|blockquote|p|table|img|div|section|figure|figcaption|iframe|video|audio|style|details|summary)/.test(b)) return b;
       return '<p>'+b.replace(/\n/g,'<br>')+'</p>';
     }).filter(Boolean).join('\n');
   }
