@@ -79,9 +79,12 @@
     /* show (1/2) counter only when multiple alerts are active */
     var prefix = alerts.length > 1 ? '(' + (cycleIdx + 1) + '/' + alerts.length + ') ' : '';
 
+    var location = a.hypo
+      ? a.hypo + (region ? '（' + region + '）' : '')
+      : region;
     var text = lang === 'en'
-      ? '⚠ ' + prefix + 'Earthquake Intensity ' + intLbl + (region ? ' · ' + region : '') + (timeStr ? ' ' + timeStr : '')
-      : '⚠ ' + prefix + '地震速報 震度' + intLbl + (region ? ' · ' + region : '') + (timeStr ? ' ' + timeStr : '');
+      ? '⚠ ' + prefix + 'Earthquake Intensity ' + intLbl + (location ? ' · ' + location : '') + (timeStr ? ' ' + timeStr : '')
+      : '⚠ ' + prefix + '地震速報 震度' + intLbl + (location ? ' · ' + location : '') + (timeStr ? ' ' + timeStr : '');
 
     el.textContent = text;
     el.style.display = '';
@@ -127,10 +130,12 @@
       var maxIntEl   = doc.querySelector('MaxInt');
       var timeEl     = doc.querySelector('ReportDateTime');
       var prefNameEl = doc.querySelector('Intensity Observation Pref Name');
+      var hypoEl     = doc.querySelector('Hypocenter Area Name');
       return {
         intensity: maxIntEl   ? maxIntEl.textContent.trim()   : null,
         time:      timeEl     ? timeEl.textContent.trim()     : '',
         region:    prefNameEl ? prefNameEl.textContent.trim() : '',
+        hypo:      hypoEl     ? hypoEl.textContent.trim()     : '',
       };
     }).catch(function () { return null; });
   }
