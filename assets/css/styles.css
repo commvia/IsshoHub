@@ -2701,6 +2701,7 @@ body[data-lang="en"] .cat-articles-title { font-family: var(--sans-en); }
     flex-direction: row;
     align-items: stretch;
     grid-column: span 1;
+    overflow: hidden;
   }
   #editorGrid .card.overlay .card-media,
   #editorGrid .card.featured.overlay .card-media {
@@ -2711,13 +2712,18 @@ body[data-lang="en"] .cat-articles-title { font-family: var(--sans-en); }
     flex: none;
     border-radius: var(--r-lg) 0 0 var(--r-lg);
   }
+  /* Reset the absolute overlay body → normal flow */
   #editorGrid .card.overlay .card-body,
   #editorGrid .card.featured.overlay .card-body {
+    position: static;
+    inset: auto;
+    flex: 1;
     background: #fff;
     border-radius: 0 var(--r-lg) var(--r-lg) 0;
     padding: 12px 14px;
     gap: 4px;
     justify-content: center;
+    color: var(--navy-ink);
   }
   #editorGrid .card.overlay .card-title,
   #editorGrid .card.featured.overlay .card-title {
