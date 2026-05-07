@@ -606,13 +606,20 @@
           const sideImg = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=70';
           const pubDate = a.published_at ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', { month: 'short', day: 'numeric' }) : '';
           const sideMeta = pubDate;
+          const sideVid = a.video_duration || '';
+          const sideVideoOverlay = sideVid ? `
+            <div class="thumb-video-play"><svg width="11" height="11" viewBox="0 0 24 24" fill="var(--navy)"><polygon points="5,3 19,12 5,21"/></svg></div>
+            <div class="thumb-video-duration">${sideVid}</div>` : '';
           return `<a class="side-card" href="/article/${a.slug}/">
-            <div class="side-thumb" style="background-image: url('${sideImg}')">
+            <div class="side-thumb${sideVid ? ' thumb-has-video' : ''}" style="background-image: url('${sideImg}')">
               <div class="side-thumb-num">${String(i + 1).padStart(2, '0')}</div>
+              ${sideVideoOverlay}
             </div>
             <div class="side-body">
+              ${sideVid ? '<div class="video-label">VIDEO</div>' : ''}
               <div class="side-tag">${catLabel}</div>
               <div class="side-title">${sideTitle}</div>
+              <div class="side-meta">${pubDate}</div>
             </div>
           </a>`;
         }).join('');
@@ -690,22 +697,28 @@
     const img = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80';
     const cat = a.category_key || '';
     const author = a.author || '';
-    const date = a.published_at ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', { year:'numeric', month:'short', day:'numeric' }) : '';
+    const date = a.published_at ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', { month:'short', day:'numeric' }) : '';
     const url = `/article/${a.slug}/`;
+    const vid = a.video_duration || '';
+    const videoOverlay = vid ? `
+      <div class="thumb-video-play"><svg width="12" height="12" viewBox="0 0 24 24" fill="var(--navy)"><polygon points="5,3 19,12 5,21"/></svg></div>
+      <div class="thumb-video-duration">${vid}</div>` : '';
+    const videoLabel = vid ? `<div class="video-label">VIDEO</div>` : '';
     return `
       <article class="card ${opts.featured ? 'featured' : ''}${opts.overlay ? ' overlay' : ''}" onclick="if(!event.target.closest('a'))window.location.href='${url}'" style="cursor:pointer">
-        <a class="card-media" href="${url}" style="background-image: url('${img}')">
+        <a class="card-media${vid ? ' thumb-has-video' : ''}" href="${url}" style="background-image: url('${img}')">
+          ${videoOverlay}
         </a>
         <a class="card-edit-chip" href="/article/${a.slug}/?edit=1" title="編輯文章">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
           Edit
         </a>
         <div class="card-body">
-          ${langBadge}<h3 class="card-title">${title}</h3>
+          ${videoLabel}${langBadge}<h3 class="card-title">${title}</h3>
           <p class="card-excerpt">${excerpt}</p>
           <div class="card-meta">
             <span class="author">${author}</span>
-            <span class="dot"></span>
+            ${author && date ? '<span class="dot"></span>' : ''}
             <span>${date}</span>
           </div>
         </div>
