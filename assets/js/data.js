@@ -148,7 +148,6 @@ window.ISSHO_DATA = {
   ],
 
   cats: [
-    { key: "news",   count: 56, tc: "新聞・資訊",        en: "News & Updates",          icon: "news",     url: "/news/" },
     { key: "visa",   count: 84, tc: "簽證・在留資格",   en: "Visa & Residency",        icon: "passport", url: "/visa/" },
     { key: "biz",    count: 62, tc: "創業・工作",        en: "Business & Work",         icon: "briefcase", url: "/biz/" },
     { key: "house",  count: 51, tc: "住屋",              en: "Housing",                 icon: "home",     url: "/house/" },
