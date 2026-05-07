@@ -75,7 +75,7 @@
     'editor_picks':  { tc: '編輯精選', en: "Editor's picks" },
     'editor_picks_sub': { tc: '本月最多人閱讀、最實用的在日指南。', en: 'The most-read, most-useful guides this month.' },
     'view_all':      { tc: '查看全部', en: 'View all' },
-    'news_title':    { tc: '日本新聞資訊', en: 'Japan News' },
+    'news_title':    { tc: '新聞資訊', en: 'News' },
     'news_sub':      { tc: '最新日本時事、政策與生活相關新聞。', en: 'Latest news on Japan policy, society and daily life.' },
     'news_more':     { tc: '查看全部新聞', en: 'All news' },
     'latest':        { tc: '最新文章', en: 'Latest articles' },
