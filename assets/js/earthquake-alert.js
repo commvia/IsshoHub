@@ -39,19 +39,30 @@
     return lang === 'en' ? (PREF_EN[jpName] || jpName) : (PREF_TC[jpName] || jpName);
   }
 
-  var lastInfo = null; /* remember last alert so lang-switch can re-render */
+  var lastInfo      = null; /* remember last alert so lang-switch can re-render */
+  var lastAlertTime = 0;   /* timestamp when alert was last refreshed */
+  var HIDE_AFTER_MS = 24 * 60 * 60 * 1000; /* hide 24 h after last earthquake */
+
+  function hideTopbar() {
+    var el  = document.getElementById('eqTopbar');
+    var sep = document.querySelector('.eq-topbar-sep');
+    if (el)  el.style.display = 'none';
+    if (sep) sep.style.display = 'none';
+    lastInfo      = null;
+    lastAlertTime = 0;
+  }
 
   /* Update the topbar eqTopbar span */
   function showInTopbar(info) {
-    if (info) lastInfo = info;
+    if (info) { lastInfo = info; lastAlertTime = Date.now(); }
     var el  = document.getElementById('eqTopbar');
     var sep = document.querySelector('.eq-topbar-sep');
     if (!el) return;
 
     var lang   = document.body.dataset.lang || 'tc';
-    var intLbl = INT_LABEL[info.intensity] || info.intensity;
-    var region = translateRegion(info.region, lang === 'en' ? 'en' : 'tc');
-    var dt     = new Date(info.time);
+    var intLbl = INT_LABEL[lastInfo.intensity] || lastInfo.intensity;
+    var region = translateRegion(lastInfo.region, lang === 'en' ? 'en' : 'tc');
+    var dt     = new Date(lastInfo.time);
     var timeStr = isNaN(dt.getTime()) ? '' :
       dt.toLocaleTimeString(lang === 'tc' ? 'zh-Hant' : 'en-US',
         { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Tokyo' });
@@ -105,7 +116,13 @@
       }).slice(0, 3);
 
       (function next(i) {
-        if (i >= candidates.length) return;
+        if (i >= candidates.length) {
+          /* No qualifying earthquake found — hide if 24 h have elapsed */
+          if (lastAlertTime && (Date.now() - lastAlertTime) >= HIDE_AFTER_MS) {
+            hideTopbar();
+          }
+          return;
+        }
         var entry   = candidates[i];
         var linkEl  = entry.querySelector('link');
         var linkUrl = linkEl ? (linkEl.getAttribute('href') || '') : '';
