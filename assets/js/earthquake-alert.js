@@ -5,8 +5,8 @@
   var FEED_URL       = 'https://www.data.jma.go.jp/developer/xml/feed/eqvol.xml';
   var POLL_MS        = 5 * 60 * 1000;   // poll every 5 minutes
   var LOOK_BACK_MS   = 2 * 60 * 60 * 1000; // only entries within last 2 hours
-  var HIGH_INT       = new Set(['4', '5-', '5+', '6-', '6+', '7']);
-  var INT_LABEL      = { '4':'４', '5-':'５弱', '5+':'５強', '6-':'６弱', '6+':'６強', '7':'７' };
+  var HIGH_INT       = new Set(['3', '4', '5-', '5+', '6-', '6+', '7']);
+  var INT_LABEL      = { '3':'３', '4':'４', '5-':'５弱', '5+':'５強', '6-':'６弱', '6+':'６強', '7':'７' };
 
   /* Track which alerts have already been shown this session */
   var _shown;
