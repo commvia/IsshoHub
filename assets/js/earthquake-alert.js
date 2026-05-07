@@ -41,6 +41,84 @@
     return lang === 'en' ? (PREF_EN[jpName] || jpName) : (PREF_TC[jpName] || jpName);
   }
 
+  /* Hypocenter area translation (Japanese → TC / EN) */
+  var HYPO_TC = {
+    /* 灣（湾→灣） */
+    '東京湾':'東京灣','相模湾':'相模灣','駿河湾':'駿河灣','伊勢湾':'伊勢灣',
+    '大阪湾':'大阪灣','富山湾':'富山灣','若狭湾':'若狹灣','陸奥湾':'陸奧灣',
+    /* 沖繩 */
+    '沖縄本島近海':'沖繩本島近海','沖縄本島北西沖':'沖繩本島西北沖',
+    '沖縄本島南方沖':'沖繩本島南方沖','沖縄本島西方沖':'沖繩本島西方沖',
+    '与那国島近海':'与那國島近海','宮古島近海':'宮古島近海',
+    '宮古島北西沖':'宮古島西北沖','石垣島近海':'石垣島近海',
+    '石垣島北西沖':'石垣島西北沖','沖縄トラフ':'沖繩海槽',
+    /* 瀨戶內海 */
+    '瀬戸内海':'瀨戶內海',
+    /* 豊後水道 */
+    '豊後水道':'豐後水道',
+    /* 千島列島 */
+    '択捉島沖':'擇捉島沖','国後島沖':'國後島沖',
+    '色丹島沖':'色丹島沖','歯舞群島沖':'齒舞群島沖',
+    /* 龍（竜→龍） */
+    '竜飛崎沖':'龍飛崎沖',
+    /* 廣（広→廣） */
+    '広尾沖':'廣尾沖',
+  };
+  var HYPO_EN = {
+    /* Okinawa */
+    '沖縄本島近海':'Near Okinawa','沖縄本島北西沖':'NW of Okinawa',
+    '沖縄本島南方沖':'S of Okinawa','沖縄本島西方沖':'W of Okinawa',
+    '与那国島近海':'Near Yonaguni Island','石垣島近海':'Near Ishigaki Island',
+    '石垣島北西沖':'NW of Ishigaki Island','宮古島近海':'Near Miyako Islands',
+    '宮古島北西沖':'NW of Miyako Islands','沖縄トラフ':'Okinawa Trough',
+    /* Ryukyu / Kagoshima */
+    '吐噶喇列島近海':'Near Tokara Islands','奄美大島近海':'Near Amami-Oshima',
+    '奄美大島北東沖':'NE of Amami-Oshima','種子島近海':'Near Tanegashima',
+    '屋久島近海':'Near Yakushima','薩摩半島西方沖':'W of Satsuma Peninsula',
+    '大隅半島東方沖':'E of Osumi Peninsula','トカラ列島近海':'Near Tokara Islands',
+    /* Kyushu */
+    '日向灘':'Hyuga-nada Sea','豊後水道':'Bungo Channel','有明海':'Ariake Sea',
+    '熊本県熊本地方':'Kumamoto area','阿蘇山':'Near Mt. Aso',
+    '大分県中部':'Central Oita','大分県西部':'W Oita',
+    /* Kinki / Tokai */
+    '紀伊水道':'Kii Channel','熊野灘':'Kumano-nada Sea','遠州灘':'Enshu-nada Sea',
+    '駿河湾':'Suruga Bay','駿河湾南部':'S Suruga Bay',
+    '相模湾':'Sagami Bay','伊勢湾':'Ise Bay','東京湾':'Tokyo Bay',
+    '大阪湾':'Osaka Bay','瀬戸内海':'Seto Inland Sea',
+    /* Kanto offshore */
+    '千葉県東方沖':'E off Chiba','千葉県北西部':'NW Chiba',
+    '茨城県沖':'Off Ibaraki','茨城県北部':'N Ibaraki','茨城県南部':'S Ibaraki',
+    '神奈川県西部':'W Kanagawa','東京都23区':'Tokyo (23 wards)',
+    /* Tohoku offshore */
+    '福島県沖':'Off Fukushima','宮城県沖':'Off Miyagi','岩手県沖':'Off Iwate',
+    '三陸沖':'Off Sanriku','青森県東方沖':'E off Aomori',
+    '宮城県北部':'N Miyagi','福島県中通り':'Central Fukushima',
+    /* Hokkaido */
+    '根室半島南東沖':'SE of Nemuro Peninsula','十勝沖':'Off Tokachi',
+    '浦河沖':'Off Urakawa','日高地方':'Hidaka','胆振地方中東部':'E-central Iburi',
+    '石狩地方南部':'S Ishikari','函館沖':'Off Hakodate','釧路沖':'Off Kushiro',
+    '広尾沖':'Off Hiroo','日本海北部':'N Sea of Japan',
+    /* Kurils */
+    '択捉島沖':'Off Etorofu Island','国後島沖':'Off Kunashiri Island',
+    '色丹島沖':'Off Shikotan Island','歯舞群島沖':'Off Habomai Islands',
+    /* Sea of Japan side */
+    '秋田県沖':'Off Akita','山形県沖':'Off Yamagata',
+    '新潟県上越地方':'Joetsu, Niigata','新潟県中越':'Chuetsu, Niigata',
+    '新潟県中越沖':'Off Chuetsu, Niigata','能登半島沖':'Off Noto Peninsula',
+    '富山湾':'Toyama Bay','若狭湾':'Wakasa Bay','島根県沖':'Off Shimane',
+    /* Inland */
+    '長野県北部':'N Nagano','長野県南部':'S Nagano','長野県中部':'Central Nagano',
+    '岐阜県飛騨地方':'Hida, Gifu','山梨県東部・富士五湖':'E Yamanashi / Fuji Five Lakes',
+    '静岡県西部':'W Shizuoka','静岡県中部':'Central Shizuoka',
+    '和歌山県北部':'N Wakayama','和歌山県南部':'S Wakayama',
+    '陸奥湾':'Mutsu Bay','青森県三八上北地方':'Sanpachi-Kamikita, Aomori',
+  };
+
+  function translateHypo(jpName, lang) {
+    if (!jpName) return '';
+    return lang === 'en' ? (HYPO_EN[jpName] || jpName) : (HYPO_TC[jpName] || jpName);
+  }
+
   /* Alert state */
   var alerts     = [];   /* active alerts, newest first: { intensity, time, region, shownAt } */
   var cycleIdx   = 0;    /* which alert is currently shown */
@@ -79,8 +157,9 @@
     /* show (1/2) counter only when multiple alerts are active */
     var prefix = alerts.length > 1 ? '(' + (cycleIdx + 1) + '/' + alerts.length + ') ' : '';
 
-    var location = a.hypo
-      ? a.hypo + (region ? '（' + region + '）' : '')
+    var hypo     = a.hypo ? translateHypo(a.hypo, lang === 'en' ? 'en' : 'tc') : '';
+    var location = hypo
+      ? hypo + (region ? '（' + region + '）' : '')
       : region;
     var text = lang === 'en'
       ? '⚠ ' + prefix + 'Earthquake Intensity ' + intLbl + (location ? ' · ' + location : '') + (timeStr ? ' ' + timeStr : '')
