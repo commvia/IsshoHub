@@ -182,10 +182,14 @@
   }
 
   function addAlert(info) {
-    /* deduplicate by earthquake time */
-    var exists = alerts.some(function (a) { return a.time === info.time; });
-    if (!exists) {
-      alerts.unshift({ intensity: info.intensity, time: info.time, region: info.region, hypo: info.hypo || '', shownAt: Date.now() });
+    /* use originTime as event key; fall back to reportTime if absent */
+    var key = info.originTime || info.time;
+    var existing = alerts.find(function (a) { return a.key === key; });
+    if (existing) {
+      /* update hypocenter name if the newer report has it */
+      if (info.hypo) existing.hypo = info.hypo;
+    } else {
+      alerts.unshift({ key: key, intensity: info.intensity, time: info.time, region: info.region, hypo: info.hypo || '', shownAt: Date.now() });
     }
   }
 
@@ -206,15 +210,17 @@
     }).then(function (text) {
       if (!text) return null;
       var doc = new DOMParser().parseFromString(text, 'text/xml');
-      var maxIntEl   = doc.querySelector('MaxInt');
-      var timeEl     = doc.querySelector('ReportDateTime');
-      var prefNameEl = doc.querySelector('Intensity Observation Pref Name');
-      var hypoEl     = doc.querySelector('Hypocenter Area Name');
+      var maxIntEl    = doc.querySelector('MaxInt');
+      var originEl    = doc.querySelector('OriginTime');
+      var reportEl    = doc.querySelector('ReportDateTime');
+      var prefNameEl  = doc.querySelector('Intensity Observation Pref Name');
+      var hypoEl      = doc.querySelector('Hypocenter Area Name');
       return {
-        intensity: maxIntEl   ? maxIntEl.textContent.trim()   : null,
-        time:      timeEl     ? timeEl.textContent.trim()     : '',
-        region:    prefNameEl ? prefNameEl.textContent.trim() : '',
-        hypo:      hypoEl     ? hypoEl.textContent.trim()     : '',
+        intensity:  maxIntEl   ? maxIntEl.textContent.trim()   : null,
+        originTime: originEl   ? originEl.textContent.trim()   : '',
+        time:       reportEl   ? reportEl.textContent.trim()   : '',
+        region:     prefNameEl ? prefNameEl.textContent.trim() : '',
+        hypo:       hypoEl     ? hypoEl.textContent.trim()     : '',
       };
     }).catch(function () { return null; });
   }
@@ -233,9 +239,9 @@
       var candidates = entries.filter(function (e) {
         var title   = (e.querySelector('title') || {}).textContent || '';
         var updated = (e.querySelector('updated') || {}).textContent || '';
-        return title === '震度速報' &&
+        return (title === '震度速報' || title === '震源・震度情報') &&
                (now - new Date(updated).getTime()) < LOOK_BACK_MS;
-      }).slice(0, 3);
+      }).slice(0, 5);
 
       (function next(i) {
         if (i >= candidates.length) {
