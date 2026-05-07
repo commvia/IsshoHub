@@ -39,8 +39,11 @@
     return lang === 'en' ? (PREF_EN[jpName] || jpName) : (PREF_TC[jpName] || jpName);
   }
 
+  var lastInfo = null; /* remember last alert so lang-switch can re-render */
+
   /* Update the topbar eqTopbar span */
   function showInTopbar(info) {
+    if (info) lastInfo = info;
     var el  = document.getElementById('eqTopbar');
     var sep = document.querySelector('.eq-topbar-sep');
     if (!el) return;
@@ -125,4 +128,18 @@
     checkFeed();
   }
   setInterval(checkFeed, POLL_MS);
+
+  /* Re-render topbar text when user switches language */
+  function registerLangListener() {
+    if (window.IsshoCore && window.IsshoCore.onLangChange) {
+      window.IsshoCore.onLangChange(function () {
+        if (lastInfo) showInTopbar(lastInfo);
+      });
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', registerLangListener);
+  } else {
+    registerLangListener();
+  }
 })();
