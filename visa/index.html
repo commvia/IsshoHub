@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700&family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Zen+Old+Mincho:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/styles.css?v=21">
+<link rel="stylesheet" href="/assets/css/styles.css?v=22">
 
 <!-- Favicon (inline SVG seal) -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'><circle cx='40' cy='40' r='36' fill='%230d2444'/><path d='M 40 8 A 32 32 0 0 1 40 72' stroke='%23d9b683' stroke-width='4' fill='none' stroke-linecap='round'/><text x='40' y='48' text-anchor='middle' font-family='Zen Old Mincho, Shippori Mincho, serif' font-size='26' fill='%23f6f3ec' letter-spacing='-1'>%E4%B8%80</text></svg>">
@@ -758,7 +758,10 @@
         </svg>
       </div>
       <div class="hsp-tool-card-title">${L ? '高度專門職積分計算' : 'HSP Points Calculator'}</div>
-      <div class="hsp-tool-card-desc">${L ? '涵蓋 (イ) 學術研究、(ロ) 專門技術、(ハ) 經營管理三條路徑，快速估算是否達 70 / 80 分申請門檻。' : 'Covers academic research (イ), technical skills (ロ), and business management (ハ) — estimate if you reach the 70 or 80 point threshold.'}</div>
+      <div class="hsp-tool-card-desc">${L
+        ? '3 分鐘快速評估，看看是否符合 70 / 80 分申請門檻。<br><br>・高度専門職 1 號 (イ)：高度學術研究活動<br>・高度専門職 1 號 (ロ)：高度專門・技術活動<br>・高度専門職 1 號 (ハ)：高度經營・管理活動'
+        : 'A quick 3-minute estimate to see if you reach the 70 or 80 point threshold.<br><br>・Type (イ): Academic / Research<br>・Type (ロ): Technical / Engineering<br>・Type (ハ): Business Management'
+      }</div>
       <a href="/visa/hsp-calculator/" class="hsp-tool-card-btn">${L ? '開始計算 →' : 'Calculate →'}</a>
     </div>`;
   }
