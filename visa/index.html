@@ -782,8 +782,13 @@
       /* Articles grid: exclude the featured article shown in hero spot */
       const gridArticles = activeSub === 'all' ? articles.filter(a => a.id !== (featured && featured.id)) : filtered;
       const toolCard = buildHspToolCard(lang);
+      function injectToolCard(htmlArr) {
+        const before = htmlArr.slice(0, 2).join('');
+        const after = htmlArr.slice(2).join('');
+        return before + toolCard + after;
+      }
       if (gridArticles.length) {
-        document.getElementById('visaArticlesGrid').innerHTML = toolCard + gridArticles.map(a => sbCardHTML(a)).join('');
+        document.getElementById('visaArticlesGrid').innerHTML = injectToolCard(gridArticles.map(a => sbCardHTML(a)));
       } else if (articles.length) {
         /* Sub-cat exists but no articles yet */
         document.getElementById('visaArticlesGrid').innerHTML = toolCard + `
@@ -793,7 +798,7 @@
           </div>`;
       } else {
         /* No Supabase articles at all — fallback to static data */
-        document.getElementById('visaArticlesGrid').innerHTML = toolCard + D.visa_articles.map(a => C.cardHTML(a)).join('');
+        document.getElementById('visaArticlesGrid').innerHTML = injectToolCard(D.visa_articles.map(a => C.cardHTML(a)));
       }
 
       /* Update hero article count */
