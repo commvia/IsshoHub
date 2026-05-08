@@ -2934,11 +2934,12 @@ body[data-lang="en"] .cat-articles-title { font-family: var(--sans-en); }
 }
 .hsp-tool-card-btn {
   align-self: flex-start; padding: 10px 18px; border-radius: 8px;
-  background: var(--navy-ink, #0d2444); color: #fff;
+  background: transparent; color: var(--navy-ink, #0d2444);
+  border: 1.5px solid var(--navy-ink, #0d2444);
   font-size: 13px; font-weight: 700;
   text-decoration: none; transition: opacity .15s; white-space: nowrap;
 }
-.hsp-tool-card-btn:hover { opacity: .8; }
+.hsp-tool-card-btn:hover { opacity: .7; }
 
 /* ═══════════════════════════════════════
    HSP Calculator Page Hero (/visa/hsp-calculator/)
