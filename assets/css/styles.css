@@ -2935,8 +2935,8 @@ body[data-lang="en"] .cat-articles-title { font-family: var(--sans-en); }
 .hsp-tool-card-btn {
   display: block; width: 100%; text-align: center;
   padding: 12px 18px; border-radius: 8px;
-  background: var(--paper, #fbf9f3); color: var(--ink, #1a1714);
-  border: 1px solid var(--line, #e0ddd6);
+  background: #f3efe6; color: var(--ink, #1a1714);
+  border: 1.5px solid #c8c3bb;
   font-size: 13px; font-weight: 600;
   text-decoration: none; transition: opacity .15s;
 }
