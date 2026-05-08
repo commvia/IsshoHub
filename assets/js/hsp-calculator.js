@@ -302,9 +302,9 @@
     }
 
     var paths = [
-      { value: 'academic',  tc: '學術研究',  en: 'Academic Research' },
-      { value: 'technical', tc: '高度技術',  en: 'Advanced Technical' },
-      { value: 'business',  tc: '高度經營',  en: 'Business Management' },
+      { value: 'academic',  tc: '高度學術研究活動',    en: 'Academic Research' },
+      { value: 'technical', tc: '高度專門・技術活動',  en: 'Advanced Technical' },
+      { value: 'business',  tc: '高度經營・管理活動',  en: 'Business Management' },
     ];
     var pathHTML = paths.map(function(p) {
       return '<button class="hsp-path-btn' + (p.value === path ? ' active' : '') + '" data-path="' + p.value + '">' +
