@@ -369,7 +369,7 @@
               (L ? S.dual_degree.tc : S.dual_degree.en) +
             '</label>' +
           '</div>' +
-          '<div class="hsp-section"><div class="hsp-section-label">' + (L ? (path === 'business' ? '經營管理職業經歷' : '職業經歷') : 'Work Experience') + '</div>' +
+          '<div class="hsp-section"><div class="hsp-section-label">' + (L ? '職歷（相關實務經驗）' : 'Work Experience') + '</div>' +
             radio('exp', expList, state.exp) +
           '</div>' +
           ageHTML +
