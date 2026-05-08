@@ -117,7 +117,7 @@
       { key: 'jlpt_n1',        pts: 15, tc: '日語 N1 或日語專業學位',             en: 'JLPT N1 or Japanese language major' },
       { key: 'jlpt_n2',        pts: 10, tc: '日語 N2（不可與N1重複）',           en: 'JLPT N2 (cannot combine with N1)' },
       { key: 'growth_field',   pts: 10, tc: '成長領域先端項目',                   en: 'Leading project in growth sector' },
-      { key: 'top_uni',        pts: 10, tc: '世界排名前300大學（QS/THE/上交大任2項）或Top Global校', en: 'Top 300 world university (2 of QS/THE/SJTU) or Top Global' },
+      { key: 'top_uni',        pts: 10, tc: '世界排名前300大學（QS/THE/ARWU其中2項）或日本「Super Global」大學、「Innovative Asia」合作院校', en: 'Top 300 world university (2 of QS/THE/ARWU) or Japan Super Global / Innovative Asia partner' },
       { key: 'jica',           pts: 5,  tc: 'JICA Innovative Asia 培訓1年以上',  en: 'JICA Innovative Asia training (1+ year)' },
     ],
 
