@@ -2904,3 +2904,59 @@ body[data-lang="en"] .cat-articles-title { font-family: var(--sans-en); }
   .hsp-result-btn { width: auto; margin-left: auto; white-space: nowrap; }
   .hsp-questions { padding-bottom: 80px; }
 }
+
+/* ═══════════════════════════════════════
+   HSP Tool Card (visa/index.html article grid)
+   ═══════════════════════════════════════ */
+.hsp-tool-card {
+  grid-column: 1 / -1;
+  display: flex; align-items: center; gap: 20px;
+  background: var(--navy-ink, #0d2444); color: #fff;
+  border-radius: var(--r-lg, 16px); padding: 20px 24px;
+  margin-bottom: 4px;
+}
+.hsp-tool-card-icon {
+  font-size: 28px; flex-shrink: 0;
+  width: 56px; height: 56px;
+  background: rgba(217,182,131,.15);
+  border: 1px solid rgba(217,182,131,.3);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  color: #d9b683;
+}
+.hsp-tool-card-body { flex: 1; min-width: 0; }
+.hsp-tool-card-tag { font-size: 10px; letter-spacing: .14em; color: #d9b683; margin-bottom: 4px; text-transform: uppercase; }
+.hsp-tool-card-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.hsp-tool-card-desc { font-size: 13px; opacity: .7; line-height: 1.5; }
+.hsp-tool-card-btn {
+  flex-shrink: 0; padding: 10px 20px; border-radius: 8px;
+  background: #d9b683; color: var(--navy-ink, #0d2444);
+  font-size: 13px; font-weight: 700; white-space: nowrap;
+  text-decoration: none; transition: opacity .15s;
+}
+.hsp-tool-card-btn:hover { opacity: .85; }
+
+@media (max-width: 600px) {
+  .hsp-tool-card { flex-wrap: wrap; }
+  .hsp-tool-card-btn { width: 100%; text-align: center; margin-top: 4px; }
+}
+
+/* ═══════════════════════════════════════
+   HSP Calculator Page Hero (/visa/hsp-calculator/)
+   ═══════════════════════════════════════ */
+.hsp-page-hero {
+  background: var(--navy-ink, #0d2444);
+  padding: 48px 0 40px;
+  color: #fff;
+}
+.hsp-page-breadcrumb {
+  font-size: 12px; color: rgba(255,255,255,.5);
+  margin-bottom: 16px; display: flex; align-items: center; gap: 6px;
+}
+.hsp-page-breadcrumb a { color: rgba(217,182,131,.8); text-decoration: none; }
+.hsp-page-breadcrumb a:hover { color: #d9b683; }
+.hsp-page-breadcrumb-sep { opacity: .4; }
+.hsp-page-title { font-size: clamp(24px,4vw,36px); font-weight: 800; margin-bottom: 10px; line-height: 1.2; }
+.hsp-page-sub { font-size: 15px; opacity: .7; max-width: 540px; line-height: 1.6; }
+
+.hsp-page-calc-section { padding: 40px 0 64px; background: var(--paper, #fbf9f3); }
