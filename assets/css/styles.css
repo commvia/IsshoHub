@@ -2912,7 +2912,6 @@ body[data-lang="en"] .cat-articles-title { font-family: var(--sans-en); }
   display: flex; flex-direction: column; gap: 14px;
   background: #f3efe6; border: 1px solid #ddd6c8;
   border-radius: var(--r-lg, 16px); padding: 22px;
-  align-self: start;
 }
 .hsp-tool-card-eyebrow {
   font-size: 11px; color: #a8762f;
@@ -2940,6 +2939,7 @@ body[data-lang="en"] .cat-articles-title { font-family: var(--sans-en); }
   border: 1.5px solid #a8762f;
   font-size: 13px; font-weight: 600;
   text-decoration: none; transition: opacity .15s;
+  margin-top: auto;
 }
 .hsp-tool-card-btn:hover { opacity: .7; }
 
