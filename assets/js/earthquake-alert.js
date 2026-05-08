@@ -2,7 +2,7 @@
 (function () {
   'use strict';
 
-  var FEED_URL      = 'https://www.data.jma.go.jp/developer/xml/feed/eqvol.xml';
+  var FEED_URL      = '/api/jma-feed';
   var POLL_MS       = 5 * 60 * 1000;        // poll every 5 minutes
   var LOOK_BACK_MS  = 2 * 60 * 60 * 1000;  // entries within last 2 hours
   var HIDE_AFTER_MS = 24 * 60 * 60 * 1000; // hide 24 h after last alert
@@ -204,7 +204,7 @@
 
   /* Fetch and parse one detail XML */
   function fetchDetail(url) {
-    return fetch(url).then(function (r) {
+    return fetch('/api/jma-detail?url=' + encodeURIComponent(url)).then(function (r) {
       if (!r.ok) return null;
       return r.text();
     }).then(function (text) {
