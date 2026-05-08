@@ -384,19 +384,6 @@
   </div>
 </nav>
 
-<!-- =============== HSP CALCULATOR =============== -->
-<section class="section hsp-calc-section" id="hsp">
-  <div class="container">
-    <div class="section-head">
-      <div>
-        <div class="section-eyebrow">— 高度専門職</div>
-        <h2 class="section-title" id="hspCalcTitle">高度專門職積分試算</h2>
-        <div class="section-sub" id="hspCalcSub">根據官方積分表，初步估算你的高度專門職資格分數。</div>
-      </div>
-    </div>
-    <div id="hspCalculator" class="hsp-calculator"></div>
-  </div>
-</section>
 
 <!-- =============== FEATURED ARTICLE =============== -->
 <section class="cat-featured-section">
@@ -625,7 +612,6 @@
 <script src="/assets/js/search.js?v=5"></script>
 <script src="/assets/js/earthquake-alert.js" defer></script>
 <script src="/assets/js/core.js?v=9"></script>
-<script src="/assets/js/hsp-calculator.js?v=1"></script>
 <script>
 (function () {
   const D = window.ISSHO_DATA;
@@ -754,6 +740,20 @@
     return articles.filter(a => articleHasSub(a, activeSub));
   }
 
+  /* ── HSP 工具卡 ── */
+  function buildHspToolCard(lang) {
+    const L = lang === 'tc';
+    return `<div class="hsp-tool-card">
+      <div class="hsp-tool-card-icon">⬡</div>
+      <div class="hsp-tool-card-body">
+        <div class="hsp-tool-card-tag">${L ? '工具' : 'Tool'}</div>
+        <div class="hsp-tool-card-title">${L ? '高度專門職積分試算' : 'HSP Points Calculator'}</div>
+        <div class="hsp-tool-card-desc">${L ? '根據日本官方積分表，估算你的高度專門職資格分數。' : 'Estimate your Highly Skilled Professional visa points based on the official scoring table.'}</div>
+      </div>
+      <a href="/visa/hsp-calculator/" class="hsp-tool-card-btn">${L ? '開始試算 →' : 'Calculate →'}</a>
+    </div>`;
+  }
+
   /* ── Core render: featured + articles grid ── */
   function filterAndRender() {
     loadArticles().then(articles => {
@@ -778,18 +778,19 @@
 
       /* Articles grid: exclude the featured article shown in hero spot */
       const gridArticles = activeSub === 'all' ? articles.filter(a => a.id !== (featured && featured.id)) : filtered;
+      const toolCard = buildHspToolCard(lang);
       if (gridArticles.length) {
-        document.getElementById('visaArticlesGrid').innerHTML = gridArticles.map(a => sbCardHTML(a)).join('');
+        document.getElementById('visaArticlesGrid').innerHTML = toolCard + gridArticles.map(a => sbCardHTML(a)).join('');
       } else if (articles.length) {
         /* Sub-cat exists but no articles yet */
-        document.getElementById('visaArticlesGrid').innerHTML = `
+        document.getElementById('visaArticlesGrid').innerHTML = toolCard + `
           <div style="grid-column:1/-1;text-align:center;padding:60px 0;color:var(--ink-3);">
             <div style="font-size:36px;margin-bottom:12px;">📭</div>
             <div style="font-size:15px;font-weight:500;">${lang === 'tc' ? '這個分類暫時沒有文章' : 'No articles in this sub-category yet'}</div>
           </div>`;
       } else {
         /* No Supabase articles at all — fallback to static data */
-        document.getElementById('visaArticlesGrid').innerHTML = D.visa_articles.map(a => C.cardHTML(a)).join('');
+        document.getElementById('visaArticlesGrid').innerHTML = toolCard + D.visa_articles.map(a => C.cardHTML(a)).join('');
       }
 
       /* Update hero article count */
@@ -885,21 +886,6 @@
 
 })();
 
-  /* HSP Calculator section 雙語 */
-  (function updateHspI18n() {
-    function setHspLang() {
-      var lang = (window.IsshoCore && window.IsshoCore.getLang()) || 'tc';
-      var L = lang === 'tc';
-      var title = document.getElementById('hspCalcTitle');
-      var sub   = document.getElementById('hspCalcSub');
-      if (title) title.textContent = L ? '高度專門職積分試算' : 'HSP Points Calculator';
-      if (sub)   sub.textContent   = L ? '根據官方積分表，初步估算你的高度專門職資格分數。' : 'Estimate your Highly Skilled Professional visa points based on the official scoring table.';
-    }
-    setHspLang();
-    if (window.IsshoCore && window.IsshoCore.onLangChange) {
-      window.IsshoCore.onLangChange(setHspLang);
-    }
-  })();
 </script>
 </body>
 </html>
