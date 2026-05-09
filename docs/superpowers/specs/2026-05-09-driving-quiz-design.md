@@ -171,16 +171,24 @@ create table quiz_wrong_answers (
 ```
 
 **錯題邏輯：**
-- 每次作答錯誤 → upsert `quiz_wrong_answers`：`wrong_count + 1`、更新 `last_wrong_at`
+- 測驗進行中，JS 維護一個 `sessionWrongs[]` 陣列，記錄本次答錯的題目 ID
+- 每次作答錯誤 → 加入 `sessionWrongs[]`；同時 upsert `quiz_wrong_answers`（`wrong_count + 1`、`last_wrong_at`）
 - 每次作答正確 → 若此題有錯誤記錄，**不刪除**（保留歷史）
-- 複習模式：查詢 `wrong_count > 0` 的題目，依 `last_wrong_at desc` 排序
+- 測驗完成後，`quiz_attempts` 寫入得分
+- 複習模式（`#scene-review`）：從 `sessionWrongs[]` 撈題目在本地顯示，無需再查 Supabase
 
 ### 5.2 RLS 策略
 
 ```sql
--- 用戶只能讀寫自己的記錄
+-- quiz_attempts
+alter table quiz_attempts enable row level security;
+create policy "own attempts" on quiz_attempts
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);
+
+-- quiz_wrong_answers
 alter table quiz_wrong_answers enable row level security;
-create policy "own data" on quiz_wrong_answers
+create policy "own wrong answers" on quiz_wrong_answers
   using (auth.uid() = user_id)
   with check (auth.uid() = user_id);
 ```
@@ -208,7 +216,7 @@ create policy "own data" on quiz_wrong_answers
 
 ### 6.2 實作方式
 
-仿照 `buildHspToolCard(lang)` 建立 `buildDrivingQuizToolCard(lang)` 函式，在「外免切替」子分類（subcategory: `gaimen`）顯示。
+仿照 `buildHspToolCard(lang)` 建立 `buildDrivingQuizToolCard(lang)` 函式，在「外免切替」子分類（subcategory key: `licence`，對應 `data.js` 中 `url: "/life/#licence"`）顯示。
 
 ---
 
@@ -223,14 +231,22 @@ create policy "own data" on quiz_wrong_answers
 
 ---
 
-## 八、檔案清單
+## 八、i18n 與語言切換
+
+頁面語言用 `IsshoCore.getLang()` 取得（回傳 `'tc'` 或 `'en'`），並監聽 `IsshoCore.onLangChange(callback)` 在語言切換時重新渲染題目和 UI 文字。
+
+`driving-quiz.js` 中所有用戶可見字串均需提供 TC / EN 兩個版本。題目資料（`quiz-data.js`）目前只有繁體中文，英文翻譯列為 Phase 2。
+
+---
+
+## 九、檔案清單
 
 | 動作 | 路徑 | 說明 |
 |------|------|------|
 | 新增 | `life/driving-quiz/index.html` | 測驗主頁 |
 | 新增 | `assets/js/quiz-data.js` | 100 題 JSON 資料 |
 | 新增 | `assets/js/driving-quiz.js` | 測驗邏輯、Supabase 寫入 |
-| 新增 | `assets/img/quiz/` | 已存在，20 張圖片 |
+| 已存在 | `assets/img/quiz/` | 20 張圖片（已提取完畢） |
 | 修改 | `assets/css/styles.css` | 新增測驗相關 CSS |
 | 修改 | `life/index.html` | 加入工具字卡 + 子分類邏輯 |
 | Supabase | `quiz_attempts` | 新增資料表（需手動執行 SQL） |
@@ -238,7 +254,17 @@ create policy "own data" on quiz_wrong_answers
 
 ---
 
-## 九、暫緩功能（Phase 2）
+**Script 載入順序（`life/driving-quiz/index.html`）：**
+```html
+<script src="/assets/js/quiz-data.js"></script>      <!-- 先載入題目資料 -->
+<script src="/assets/js/driving-quiz.js"></script>    <!-- 再載入測驗邏輯 -->
+```
+
+Supabase client 和 IsshoCore 由頁面 `<head>` 載入的全域 scripts 提供（與其他頁面一致）。
+
+---
+
+## 十、暫緩功能（Phase 2）
 
 - 成績分享（社交圖片）
 - 每日一題 / 每日挑戰
@@ -247,7 +273,7 @@ create policy "own data" on quiz_wrong_answers
 
 ---
 
-## 十、成功指標
+## 十一、成功指標
 
 | 指標 | 目標 |
 |------|------|
