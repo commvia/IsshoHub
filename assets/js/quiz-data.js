@@ -1,5 +1,5 @@
 // assets/js/quiz-data.js
-const QUIZ_DATA = [
+var QUIZ_DATA = [
   {
     id: 1,
     q: "原動機付自行車（原付）的駕照，年滿 16 歲即可申請取得。",

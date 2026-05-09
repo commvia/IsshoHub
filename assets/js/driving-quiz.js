@@ -136,7 +136,7 @@
 
   /* ── 開始測驗 ── */
   function startQuiz() {
-    if (!global.QUIZ_DATA || !global.QUIZ_DATA.length) return;
+    if (typeof QUIZ_DATA === 'undefined' || !QUIZ_DATA.length) return;
     var isGuest = !user;
     var all = shuffle(QUIZ_DATA.slice());
     questions     = isGuest ? all.slice(0, 20) : all;
