@@ -97,6 +97,14 @@
     return a;
   }
 
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
   function $(id) { return document.getElementById(id); }
 
   function showScene(id) {
@@ -128,6 +136,7 @@
 
   /* ── 開始測驗 ── */
   function startQuiz() {
+    if (!global.QUIZ_DATA || !global.QUIZ_DATA.length) return;
     var isGuest = !user;
     var all = shuffle(QUIZ_DATA.slice());
     questions     = isGuest ? all.slice(0, 20) : all;
@@ -216,6 +225,7 @@
 
   /* ── 下一題 ── */
   function nextQuestion() {
+    if (!answered) return;
     currentIdx++;
     if (currentIdx >= questions.length) {
       endQuiz();
@@ -276,10 +286,10 @@
     list.innerHTML = sessionWrongs.map(function (q, i) {
       return '<div class="quiz-review-item">' +
         '<div class="quiz-review-num">第 ' + (i + 1) + ' 道錯題</div>' +
-        (q.img ? '<img src="' + q.img + '" alt="" class="quiz-review-img">' : '') +
-        '<div class="quiz-review-q">' + q.q + '</div>' +
+        (q.img ? '<img src="' + escapeHtml(q.img) + '" alt="" class="quiz-review-img">' : '') +
+        '<div class="quiz-review-q">' + escapeHtml(q.q) + '</div>' +
         '<div class="quiz-review-answer">' + s.review_answer(q.answer) + '</div>' +
-        '<div class="quiz-review-explanation">' + q.explanation + '</div>' +
+        '<div class="quiz-review-explanation">' + escapeHtml(q.explanation) + '</div>' +
         '</div>';
     }).join('');
     showScene('scene-review');
