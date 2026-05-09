@@ -217,13 +217,39 @@
 <script src="/assets/js/search.js?v=5"></script>
 <script src="/assets/js/earthquake-alert.js" defer></script>
 <script src="/assets/js/core.js?v=9"></script>
-<script src="/assets/js/category-page.js?v=10"></script>
+<script src="/assets/js/category-page.js?v=11"></script>
 <script>
+function buildDrivingQuizToolCard(lang) {
+  var L = lang === 'tc';
+  return '<div class="hsp-tool-card">' +
+    '<div class="hsp-tool-card-eyebrow">— TOOL · ' + (L ? '實用工具' : 'Tool') + '</div>' +
+    '<div class="hsp-tool-card-icon">' +
+      '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' +
+        '<rect x="2" y="7" width="20" height="14" rx="2"/>' +
+        '<path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>' +
+        '<circle cx="8" cy="14" r="1.2" fill="currentColor" stroke="none"/>' +
+        '<circle cx="16" cy="14" r="1.2" fill="currentColor" stroke="none"/>' +
+        '<path d="M8 14h8"/>' +
+      '</svg>' +
+    '</div>' +
+    '<div class="hsp-tool-card-title">' + (L ? '外免切替模擬試題' : 'Driving Test Practice') + '</div>' +
+    '<div class="hsp-tool-card-desc">' + (L
+      ? '免費練習 100 道外免切替筆試是非題，每題附即時解說。登入後系統自動記錄錯題。'
+      : 'Practice 100 true/false questions for the foreign licence conversion written test. Instant explanations, wrong-answer tracking for members.'
+    ) + '</div>' +
+    '<a href="/life/driving-quiz/" class="hsp-tool-card-btn">' + (L ? '開始練習 →' : 'Start Practice →') + '</a>' +
+    '</div>';
+}
 (function(){
   var D=window.ISSHO_DATA,meta=(D.cat_meta||{})['life']||{};
   var iconEl=document.getElementById('catIconSvg');
   if(iconEl&&meta.icon) iconEl.innerHTML=meta.icon;
-  window.IsshoCategory.init('life');
+  window.IsshoCategory.init('life', {
+    toolCard: {
+      subs: ['licence'],
+      build: buildDrivingQuizToolCard
+    }
+  });
   (function(){
     var C=['HKD','TWD','USD','EUR','GBP','CAD','AUD','SGD'];
     var tEl=document.getElementById('tickerRate'),fi=document.getElementById('fxInput'),fo=document.getElementById('fxOutput'),ff=document.getElementById('fxFrom'),fr=document.getElementById('fxRates'),fRoot=document.getElementById('fx'),rates={},last='input';

@@ -55,7 +55,8 @@
   }
 
   global.IsshoCategory = {
-    init: function (categoryKey) {
+    init: function (categoryKey, options) {
+      options = options || {};
       const D    = global.ISSHO_DATA;
       const C    = global.IsshoCore;
       const meta = (D.cat_meta || {})[categoryKey] || {};
@@ -69,6 +70,8 @@
       let activeSub = '';
       let _articles = null;
       let _featuredOrder = [];
+      var _toolCardSubs  = (options.toolCard && options.toolCard.subs) || [];
+      var _buildToolCard = (options.toolCard && options.toolCard.build) || null;
 
       /* Restore sub from URL hash on load */
       const hashKey = (global.location.hash || '').replace('#', '');
@@ -239,17 +242,23 @@
           var _featuredId = featured && featured.id;
           if (articlesGrid) {
             var gridArticles = !activeSub ? articles.filter(function (a) { return a.id !== _featuredId; }) : filtered;
+            var _showTool = _buildToolCard && _toolCardSubs.indexOf(activeSub) !== -1;
+            var _toolHtml = _showTool ? _buildToolCard(lang) : '';
+            function _injectTool(htmlArr) {
+              if (!_toolHtml) return htmlArr.join('');
+              return htmlArr.slice(0, 2).join('') + _toolHtml + htmlArr.slice(2).join('');
+            }
             if (gridArticles.length) {
-              articlesGrid.innerHTML = gridArticles.map(function (a) { return sbCardHTML(a, lang); }).join('');
+              articlesGrid.innerHTML = _injectTool(gridArticles.map(function (a) { return sbCardHTML(a, lang); }));
             } else if (articles.length) {
-              articlesGrid.innerHTML = emptyHTML(lang);
+              articlesGrid.innerHTML = _toolHtml + emptyHTML(lang);
             } else {
               /* No Supabase articles — fallback to static */
               var staticArticles = D[categoryKey + '_articles'];
               if (staticArticles && staticArticles.length && C.cardHTML) {
-                articlesGrid.innerHTML = staticArticles.map(function (a) { return C.cardHTML(a); }).join('');
+                articlesGrid.innerHTML = _injectTool(staticArticles.map(function (a) { return C.cardHTML(a); }));
               } else {
-                articlesGrid.innerHTML = emptyHTML(lang);
+                articlesGrid.innerHTML = _toolHtml + emptyHTML(lang);
               }
             }
           }
