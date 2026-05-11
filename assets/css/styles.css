@@ -3043,8 +3043,8 @@ body[data-lang="en"] .cat-articles-title { font-family: var(--sans-en); }
 .quiz-reference summary::-webkit-details-marker { display: none; }
 .quiz-reference details[open] summary { border-bottom: 1px solid #e4dfd4; }
 .quiz-reference .ref-body { padding: 12px 16px; }
-.quiz-reference .ref-answer { font-size: 13px; font-weight: 600; color: var(--navy-ink, #0d2444); margin-bottom: 4px; }
-.quiz-reference .ref-explanation { font-size: 13px; color: var(--ink-2, #5a5a4a); line-height: 1.6; }
+.quiz-reference .ref-q { font-size: 14px; line-height: 1.65; color: var(--ink, #1a1714); }
+.quiz-reference .ref-body img { max-width: 100%; max-height: 200px; object-fit: contain; display: block; margin-bottom: 8px; border-radius: 6px; }
 
 /* Quiz page layout */
 .quiz-page-inner { padding: 32px 0; }
