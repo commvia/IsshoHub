@@ -519,9 +519,9 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/data.js?v=4"></script>
 <script src="/assets/js/supabase-client.js?v=7"></script>
-<script src="/assets/js/article-editor.js?v=5"></script>
+<script src="/assets/js/article-editor.js?v=6"></script>
 <script src="/assets/js/hot-search-manager.js"></script>
-<script src="/assets/js/site-settings.js?v=5"></script>
+<script src="/assets/js/site-settings.js?v=6"></script>
 <script src="/assets/js/search.js?v=5"></script>
 <script src="/assets/js/earthquake-alert.js" defer></script>
 <script src="/assets/js/core.js?v=9"></script>
@@ -811,27 +811,49 @@
   }
 
 
-  function renderStories() {
-    const lang = getLang();
-    document.getElementById('storiesGrid').innerHTML = D.stories.map(s => {
-      const quote = lang === 'tc' ? s.tc : s.en;
-      const name = lang === 'tc' ? s.name_tc : s.name_en;
-      const role = lang === 'tc' ? s.role_tc : s.role_en;
-      return `
-        <div class="story">
-          <div class="bg" style="background-image: url('${s.img}')"></div>
-          <div class="story-inner">
-            <div class="story-quote">${quote}</div>
-            <div class="story-person">
-              <div class="avatar">${s.avatar}</div>
-              <div>
-                <div class="story-name">${name}</div>
-                <div class="story-role">${role}</div>
-              </div>
+  function storyCardHTML(s, lang) {
+    /* s can be either a static D.stories item or a Supabase article object */
+    const isArticle = !!s.slug;
+    const catMap = { life: '生活', visa: '簽證', biz: '工作', culture: '文化', places: '旅遊', pets: '寵物', house: '住居', tax: '稅務' };
+    const catMapEn = { life: 'Life', visa: 'Visa', biz: 'Work', culture: 'Culture', places: 'Travel', pets: 'Pets', house: 'Housing', tax: 'Tax' };
+    const quote = isArticle
+      ? (s.story_quote || (lang === 'tc' ? s.title_tc : s.title_en) || '')
+      : (lang === 'tc' ? s.tc : s.en);
+    const name  = isArticle ? (s.author || '') : (lang === 'tc' ? s.name_tc : s.name_en);
+    const role  = isArticle
+      ? (lang === 'tc' ? (catMap[s.category_key] || s.category_key) : (catMapEn[s.category_key] || s.category_key))
+      : (lang === 'tc' ? s.role_tc : s.role_en);
+    const img   = isArticle ? (s.cover_image_url || '') : s.img;
+    const avatar = isArticle ? (name ? name.charAt(0).toUpperCase() : '?') : s.avatar;
+    const href  = isArticle ? `/article/${s.slug}/` : null;
+    return `
+      <div class="story"${href ? ` onclick="window.location.href='${href}'" style="cursor:pointer"` : ''}>
+        <div class="bg" style="background-image: url('${img}')"></div>
+        <div class="story-inner">
+          <div class="story-quote">「${quote}」</div>
+          <div class="story-person">
+            <div class="avatar">${avatar}</div>
+            <div>
+              <div class="story-name">${name}</div>
+              <div class="story-role">${role}</div>
             </div>
           </div>
-        </div>`;
-    }).join('');
+        </div>
+      </div>`;
+  }
+
+  let _sbStoryArticles = null; /* cached story articles from Supabase */
+
+  function renderStories() {
+    const lang = getLang();
+    const grid = document.getElementById('storiesGrid');
+    if (!grid) return;
+    /* If Supabase stories loaded, use them; otherwise fall back to static data.js */
+    if (_sbStoryArticles && _sbStoryArticles.length) {
+      grid.innerHTML = _sbStoryArticles.map(s => storyCardHTML(s, lang)).join('');
+    } else {
+      grid.innerHTML = D.stories.map(s => storyCardHTML(s, lang)).join('');
+    }
   }
 
   async function loadCatArticles() {
@@ -922,6 +944,21 @@
       }
     } else {
       renderEditor();
+    }
+
+    /* Story articles from site_settings slugs */
+    if (map.homepage_story_slugs && map.homepage_story_slugs.value_tc) {
+      const storySlugs = map.homepage_story_slugs.value_tc.split(',').map(s => s.trim()).filter(Boolean).slice(0, 3);
+      if (storySlugs.length) {
+        window.IsshoAPI.fetchArticlesBySlug(storySlugs).then(({ data }) => {
+          if (data && data.length) {
+            /* Preserve the order specified in settings */
+            const bySlug = Object.fromEntries(data.map(a => [a.slug, a]));
+            _sbStoryArticles = storySlugs.map(slug => bySlug[slug]).filter(Boolean);
+            renderStories();
+          }
+        });
+      }
     }
 
     /* Hero article + side articles from site_settings slugs */

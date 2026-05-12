@@ -74,6 +74,23 @@
           </div>
 
           <div class="ss-section">
+            <div class="ss-section-title">👥 人物故事 Stories</div>
+            <div class="ss-row">
+              <label>第 1 張故事卡 Slug</label>
+              <input type="text" id="ss_story_slug_1" placeholder="article-slug" style="width:100%" />
+            </div>
+            <div class="ss-row">
+              <label>第 2 張故事卡 Slug</label>
+              <input type="text" id="ss_story_slug_2" placeholder="article-slug" style="width:100%" />
+            </div>
+            <div class="ss-row">
+              <label>第 3 張故事卡 Slug</label>
+              <input type="text" id="ss_story_slug_3" placeholder="article-slug" style="width:100%" />
+              <div style="font-size:11px;color:var(--ink-3);margin-top:4px">文章需在「編輯文章」中填寫「人物故事引言」才會顯示。留空則顯示預設靜態卡片。</div>
+            </div>
+          </div>
+
+          <div class="ss-section">
             <div class="ss-section-title">📢 跑馬燈 Ticker</div>
             <div class="ss-row">
               <label>繁中文字</label>
@@ -189,6 +206,17 @@
     const featOrderEl = document.getElementById('ss_featured_order');
     if (featOrderEl && map.featured_order) featOrderEl.value = map.featured_order.value_tc || '';
 
+    /* Story slugs */
+    if (map.homepage_story_slugs) {
+      const slugs = (map.homepage_story_slugs.value_tc || '').split(',').map(s => s.trim());
+      const el1 = document.getElementById('ss_story_slug_1');
+      const el2 = document.getElementById('ss_story_slug_2');
+      const el3 = document.getElementById('ss_story_slug_3');
+      if (el1) el1.value = slugs[0] || '';
+      if (el2) el2.value = slugs[1] || '';
+      if (el3) el3.value = slugs[2] || '';
+    }
+
     /* Ticker */
     if (map.ticker) {
       document.getElementById('ss_ticker_tc').value = map.ticker.value_tc || '';
@@ -217,7 +245,13 @@
     const heroArticleSlug = document.getElementById('ss_hero_article_slug')?.value.trim() || '';
     const sideSlugs = document.getElementById('ss_homepage_side_slugs')?.value.trim() || '';
     const picksSlugs = document.getElementById('ss_homepage_picks_slugs')?.value.trim() || '';
+    const storySlugs = [
+      document.getElementById('ss_story_slug_1')?.value.trim() || '',
+      document.getElementById('ss_story_slug_2')?.value.trim() || '',
+      document.getElementById('ss_story_slug_3')?.value.trim() || '',
+    ].filter(Boolean).join(', ');
     const settings = [
+      { key: 'homepage_story_slugs', tc: storySlugs, en: storySlugs },
       { key: 'hero_kicker', tc: document.getElementById('ss_hero_kicker_tc')?.value.trim() || '', en: document.getElementById('ss_hero_kicker_en')?.value.trim() || '' },
       { key: 'hero_article_slug',    tc: heroArticleSlug, en: heroArticleSlug },
       { key: 'homepage_side_slugs',  tc: sideSlugs,       en: sideSlugs },

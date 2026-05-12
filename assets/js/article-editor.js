@@ -494,6 +494,13 @@
               <input type="text" id="editorTags" placeholder="用逗號分隔，例：簽證,在留資格" />
             </div>
 
+            <!-- Story Quote -->
+            <div class="editor-field">
+              <label>人物故事引言 Story Quote</label>
+              <textarea id="editorStoryQuote" rows="3" placeholder="「一句話描述移日的心情或轉捩點。」（選填，填寫後可在首頁人物故事欄顯示）"></textarea>
+              <div style="font-size:11px;color:var(--ink-3);margin-top:4px">填寫後，可在「網站設定」→「人物故事」欄，用此文章 Slug 設定要顯示的卡片。</div>
+            </div>
+
             <!-- Featured -->
             <div class="editor-field editor-field-toggle">
               <label>精選文章 Featured</label>
@@ -673,6 +680,7 @@
       body_tc: document.getElementById('bodyTc').value.trim() || null,
       body_en: document.getElementById('bodyEn').value.trim() || null,
       author: document.getElementById('editorAuthor').value.trim() || null,
+      story_quote: document.getElementById('editorStoryQuote').value.trim() || null,
       tags,
       featured: document.getElementById('editorFeatured').checked,
       status,
@@ -741,6 +749,7 @@
       document.getElementById('bodyEn').value = articleData.body_en || '';
       document.getElementById('coverImageUrl').value = articleData.cover_image_url || '';
       document.getElementById('editorAuthor').value = articleData.author || '';
+      document.getElementById('editorStoryQuote').value = articleData.story_quote || '';
       document.getElementById('editorTags').value = (articleData.tags || []).join(', ');
       document.getElementById('editorFeatured').checked = articleData.featured || false;
       loadCategories(document.getElementById('editorCategory'), articleData.category_key, articleData.category_keys || []);
