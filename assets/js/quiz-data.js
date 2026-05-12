@@ -266,7 +266,7 @@ var QUIZ_DATA = [
   },
   {
     id: 34,
-    q: "道路上某個標誌表示前方車道數量即將減少。",
+    q: "道路上這個標誌表示前方車道數量即將減少。",
     answer: false,
     explanation: "該標誌表示的是「道路寬度正在縮窄」，而非車道數量減少。",
     img: "/assets/img/quiz/q034.gif",
@@ -298,7 +298,7 @@ var QUIZ_DATA = [
   },
   {
     id: 38,
-    q: "面對某個特定號誌的車輛，可以慢行通過路口。",
+    q: "面對這個特定號誌的車輛，可以慢行通過路口。",
     answer: false,
     explanation: "該號誌要求車輛必須完全暫停（一時停止），而非慢行通過。",
     img: "/assets/img/quiz/q038.png",
@@ -306,7 +306,7 @@ var QUIZ_DATA = [
   },
   {
     id: 39,
-    q: "某個標誌與某條標線所表達的意思相同，均代表禁止駐車及停車。",
+    q: "這個標誌與這條標線所表達的意思相同，均代表禁止駐車及停車。",
     answer: true,
     explanation: "兩者均表示該處禁止駐車及停車。",
     img: "/assets/img/quiz/q039.png",
@@ -578,7 +578,7 @@ var QUIZ_DATA = [
   },
   {
     id: 73,
-    q: "路上某個標誌表示此處設有行人穿越道。",
+    q: "路上這個標誌表示此處設有行人穿越道。",
     answer: false,
     explanation: "該標誌實際上表示「附近有學校、幼兒園或托兒中心」，而非行人穿越道。",
     img: "/assets/img/quiz/q073.png",
@@ -586,7 +586,7 @@ var QUIZ_DATA = [
   },
   {
     id: 74,
-    q: "面對某個特定號誌的車輛，必須以慢行（徐行）方式通過路口。",
+    q: "面對這個特定號誌的車輛，必須以慢行（徐行）方式通過路口。",
     answer: false,
     explanation: "車輛可以注意周圍交通後前進，並沒有規定必須慢行（徐行）通過。",
     img: "/assets/img/quiz/q074.png",
@@ -618,7 +618,7 @@ var QUIZ_DATA = [
   },
   {
     id: 78,
-    q: "某個標誌表示「匯流交通」，提醒前方有車道匯合。",
+    q: "這個標誌表示「匯流交通」，提醒前方有車道匯合。",
     answer: false,
     explanation: "該標誌實際上表示「Y字路口（Y字交差点）」，而非匯流交通。",
     img: "/assets/img/quiz/q078.png",
@@ -650,7 +650,7 @@ var QUIZ_DATA = [
   },
   {
     id: 82,
-    q: "某個標誌表示此路段為自行車與行人共用的專用道路。",
+    q: "這個標誌表示此路段為自行車與行人共用的專用道路。",
     answer: false,
     explanation: "該標誌表示的是「行人穿越道與自行車橫越道（横断歩道と自転車横断帯）」，並非共用道路。",
     img: "/assets/img/quiz/q082.png",
@@ -658,7 +658,7 @@ var QUIZ_DATA = [
   },
   {
     id: 83,
-    q: "某個標誌表示除了二輪車以外的所有汽車都不能通行。",
+    q: "這個標誌表示除了二輪車以外的所有汽車都不能通行。",
     answer: false,
     explanation: "該標誌的意思正好相反，表示「二輪車禁止通行」，而非其他車輛禁止通行。",
     img: "/assets/img/quiz/q083.png",
@@ -674,7 +674,7 @@ var QUIZ_DATA = [
   },
   {
     id: 85,
-    q: "某個標誌表示大型車以外的車輛不得直行。",
+    q: "這個標誌表示大型車以外的車輛不得直行。",
     answer: false,
     explanation: "該標誌表示大型車只能直行；大型車以外的車輛也可以直行。",
     img: "/assets/img/quiz/q085.png",
@@ -738,7 +738,7 @@ var QUIZ_DATA = [
   },
   {
     id: 93,
-    q: "某個路標顯示此處設有供學齡兒童和幼兒專用的行人穿越道。",
+    q: "這個路標顯示此處設有供學齡兒童和幼兒專用的行人穿越道。",
     answer: false,
     explanation: "該標誌表示的是該路段僅供行人通行，並非專為兒童設置的行人穿越道。",
     img: "/assets/img/quiz/q093.gif",
@@ -786,7 +786,7 @@ var QUIZ_DATA = [
   },
   {
     id: 99,
-    q: "某個標誌表示載貨重量超過 5.5 噸的車輛不能通行。",
+    q: "這個標誌表示載貨重量超過 5.5 噸的車輛不能通行。",
     answer: false,
     explanation: "該標誌限制的是車輛的總重量，而非載貨重量。",
     img: "/assets/img/quiz/q099.png",
@@ -794,7 +794,7 @@ var QUIZ_DATA = [
   },
   {
     id: 100,
-    q: "某個路標牌表示此處為單行道。",
+    q: "這個路標牌表示此處為單行道。",
     answer: false,
     explanation: "該標誌表示的是「允許左轉（左折可）」，並非單行道標誌。",
     img: "/assets/img/quiz/q100.png",
