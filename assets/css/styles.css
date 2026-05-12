@@ -3053,3 +3053,142 @@ body[data-lang="en"] .cat-articles-title { font-family: var(--sans-en); }
   .quiz-intro-title { font-size: 22px; }
   .quiz-result-pct { font-size: 52px; }
 }
+
+/* ═══════════════════════════════════════
+   Driving Quiz Tool Card (.dq-card)
+   青海波 / seigaiha aesthetic
+   ═══════════════════════════════════════ */
+.dq-card {
+  position: relative;
+  background-color: #f5e9cc;
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30'><path d='M-15 15 a15 15 0 0 1 30 0' fill='%23b48228' fill-opacity='.06' stroke='%23966414' stroke-opacity='.22' stroke-width='.7'/><path d='M-10 15 a10 10 0 0 1 20 0' fill='none' stroke='%23966414' stroke-opacity='.14' stroke-width='.5'/><path d='M15 15 a15 15 0 0 1 30 0' fill='%23b48228' fill-opacity='.06' stroke='%23966414' stroke-opacity='.22' stroke-width='.7'/><path d='M20 15 a10 10 0 0 1 20 0' fill='none' stroke='%23966414' stroke-opacity='.14' stroke-width='.5'/><path d='M0 30 a15 15 0 0 1 30 0' fill='%23b48228' fill-opacity='.06' stroke='%23966414' stroke-opacity='.22' stroke-width='.7'/><path d='M5 30 a10 10 0 0 1 20 0' fill='none' stroke='%23966414' stroke-opacity='.14' stroke-width='.5'/><path d='M10 30 a5 5 0 0 1 10 0' fill='none' stroke='%23966414' stroke-opacity='.12' stroke-width='.4'/></svg>");
+  background-size: 30px 30px;
+  border: 2px solid #7a4f1e;
+  border-radius: 14px;
+  padding: 0 0 18px;
+  overflow: hidden;
+}
+/* Sakura corner decorations */
+.dq-sakura {
+  position: absolute;
+  font-size: 17px;
+  opacity: .55;
+  line-height: 1;
+  pointer-events: none;
+  z-index: 1;
+}
+.dq-sakura-tl { top: 7px; left: 9px; }
+.dq-sakura-tr { top: 7px; right: 9px; }
+/* Scroll / ribbon banner */
+.dq-banner {
+  position: relative;
+  background: #7a4f1e;
+  color: #f5e9cc;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .11em;
+  padding: 7px 44px;
+  margin-bottom: 16px;
+}
+.dq-banner::before, .dq-banner::after {
+  content: '';
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  width: 28px; height: 18px;
+  background: #f5e9cc;
+  border: 1.5px solid #7a4f1e;
+  border-radius: 3px;
+}
+.dq-banner::before { left: 5px; }
+.dq-banner::after  { right: 5px; }
+/* Two-column body: bubble + signs */
+.dq-body {
+  display: flex;
+  gap: 10px;
+  padding: 0 14px;
+  margin-bottom: 13px;
+  align-items: center;
+}
+/* Cloud speech bubble (left) */
+.dq-bubble {
+  flex: 1;
+  background: #fff;
+  border: 2px solid #7a4f1e;
+  border-radius: 12px;
+  padding: 11px 10px 11px;
+  text-align: center;
+  min-width: 0;
+  position: relative;
+}
+.dq-bubble::after {
+  content: '';
+  position: absolute;
+  right: -11px; top: 50%;
+  transform: translateY(-50%);
+  border: 5px solid transparent;
+  border-left-color: #7a4f1e;
+}
+.dq-bubble-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #1a1714;
+  line-height: 1.45;
+  font-family: var(--serif-jp, serif);
+}
+.dq-bubble-sub {
+  font-size: 9.5px;
+  color: #7a4f1e;
+  margin-top: 5px;
+  letter-spacing: .04em;
+}
+/* Traffic sign icons cluster (right) */
+.dq-signs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  flex-shrink: 0;
+  width: 100px;
+  align-items: center;
+  justify-items: center;
+}
+/* Features list */
+.dq-features {
+  list-style: none;
+  margin: 0;
+  padding: 0 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.dq-features li {
+  font-size: 12.5px;
+  color: #3d2210;
+  line-height: 1.5;
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+}
+.dq-features li::before {
+  content: '▸';
+  color: #a8762f;
+  flex-shrink: 0;
+  margin-top: 1px;
+  font-size: 11px;
+}
+/* CTA button */
+.dq-btn {
+  display: block;
+  margin: 14px 14px 0;
+  padding: 11px;
+  text-align: center;
+  background: #7a4f1e;
+  color: #f5e9cc;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: .03em;
+  transition: opacity .15s;
+}
+.dq-btn:hover { opacity: .8; }

@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700&family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Zen+Old+Mincho:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/styles.css?v=27">
+<link rel="stylesheet" href="/assets/css/styles.css?v=28">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'><circle cx='40' cy='40' r='36' fill='%230d2444'/><path d='M 40 8 A 32 32 0 0 1 40 72' stroke='%23d9b683' stroke-width='4' fill='none' stroke-linecap='round'/><text x='40' y='48' text-anchor='middle' font-family='Zen Old Mincho, Shippori Mincho, serif' font-size='26' fill='%23f6f3ec' letter-spacing='-1'>%E4%B8%80</text></svg>">
 <style>
   .brand .brand-mark,.footer-brand .brand-mark,.modal-brand .brand-mark,.mobile-menu-head .brand-mark{background:transparent!important;border:0!important;padding:0!important;color:inherit!important;font-size:0!important;line-height:0!important;width:auto!important;height:auto!important;box-shadow:none!important;border-radius:0!important;overflow:visible!important;display:inline-flex;align-items:center;justify-content:center;}
@@ -221,23 +221,29 @@
 <script>
 function buildDrivingQuizToolCard(lang) {
   var L = lang === 'tc';
-  return '<div class="hsp-tool-card">' +
-    '<div class="hsp-tool-card-eyebrow">— TOOL · ' + (L ? '實用工具' : 'Tool') + '</div>' +
-    '<div class="hsp-tool-card-icon">' +
-      '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' +
-        '<rect x="2" y="7" width="20" height="14" rx="2"/>' +
-        '<path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>' +
-        '<circle cx="8" cy="14" r="1.2" fill="currentColor" stroke="none"/>' +
-        '<circle cx="16" cy="14" r="1.2" fill="currentColor" stroke="none"/>' +
-        '<path d="M8 14h8"/>' +
-      '</svg>' +
+  // Traffic sign SVGs (arrow, warning, prohibition, traffic light)
+  var svgArrow = '<svg width="44" height="32" viewBox="0 0 44 32"><rect x="1" y="1" width="42" height="30" rx="4" fill="#1a4fa8" stroke="#0d2f6e" stroke-width="1.5"/><path d="M9 16 L29 16 M23 10 L31 16 L23 22" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var svgWarn  = '<svg width="40" height="36" viewBox="0 0 40 36"><path d="M20 3 L37 33 H3 Z" fill="white" stroke="#d42020" stroke-width="2.5" stroke-linejoin="round"/><text x="20" y="29" text-anchor="middle" font-size="19" font-weight="900" fill="#d42020">!</text></svg>';
+  var svgProhib = '<svg width="36" height="36" viewBox="0 0 36 36"><circle cx="18" cy="18" r="16" fill="white" stroke="#d42020" stroke-width="2.5"/><rect x="4" y="16" width="28" height="4.5" rx="2.2" fill="#d42020"/></svg>';
+  var svgLight = '<svg width="24" height="42" viewBox="0 0 24 42"><rect x="1" y="1" width="22" height="40" rx="5.5" fill="#2a2a2a"/><circle cx="12" cy="10" r="5" fill="#e03030"/><circle cx="12" cy="21" r="5" fill="#e0a820"/><circle cx="12" cy="32" r="5" fill="#32b832"/></svg>';
+  var feats_tc = ['100 道是非題，附即時解說', '3 種答題模式覆蓋常見考點', '登入後自動追蹤錯題', '訪客免費體驗 20 題'];
+  var feats_en = ['100 true/false questions with explanations', 'Covers common exam scenarios', 'Wrong-answer tracking for members', 'Guests get 20 free questions'];
+  var feats = (L ? feats_tc : feats_en).map(function(f){ return '<li>' + f + '</li>'; }).join('');
+  return '<div class="dq-card">' +
+    '<span class="dq-sakura dq-sakura-tl">🌸</span>' +
+    '<span class="dq-sakura dq-sakura-tr">🌸</span>' +
+    '<div class="dq-banner">— TOOL \xB7 ' + (L ? '實用工具' : 'Practical Tool') + ' —</div>' +
+    '<div class="dq-body">' +
+      '<div class="dq-bubble">' +
+        '<div class="dq-bubble-title">' + (L ? '外國駕照換領<br>模擬試題' : 'Licence Conversion<br>Practice Test') + '</div>' +
+        '<div class="dq-bubble-sub">' + (L ? 'Driving Licence Conversion' : '外免切替') + '</div>' +
+      '</div>' +
+      '<div class="dq-signs">' +
+        svgArrow + svgWarn + svgProhib + svgLight +
+      '</div>' +
     '</div>' +
-    '<div class="hsp-tool-card-title">' + (L ? '外免切替模擬試題' : 'Driving Test Practice') + '</div>' +
-    '<div class="hsp-tool-card-desc">' + (L
-      ? '免費練習 100 道外免切替筆試是非題，每題附即時解說。登入後系統自動記錄錯題。'
-      : 'Practice 100 true/false questions for the foreign licence conversion written test. Instant explanations, wrong-answer tracking for members.'
-    ) + '</div>' +
-    '<a href="/life/driving-quiz/" class="hsp-tool-card-btn">' + (L ? '開始練習 →' : 'Start Practice →') + '</a>' +
+    '<ul class="dq-features">' + feats + '</ul>' +
+    '<a href="/life/driving-quiz/" class="dq-btn">' + (L ? '開始練習 →' : 'Start Practice →') + '</a>' +
     '</div>';
 }
 (function(){
