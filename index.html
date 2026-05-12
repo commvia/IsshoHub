@@ -519,7 +519,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/data.js?v=4"></script>
 <script src="/assets/js/supabase-client.js?v=7"></script>
-<script src="/assets/js/article-editor.js?v=6"></script>
+<script src="/assets/js/article-editor.js?v=7"></script>
 <script src="/assets/js/hot-search-manager.js"></script>
 <script src="/assets/js/site-settings.js?v=6"></script>
 <script src="/assets/js/search.js?v=5"></script>
@@ -817,7 +817,7 @@
     const catMap = { life: '生活', visa: '簽證', biz: '工作', culture: '文化', places: '旅遊', pets: '寵物', house: '住居', tax: '稅務' };
     const catMapEn = { life: 'Life', visa: 'Visa', biz: 'Work', culture: 'Culture', places: 'Travel', pets: 'Pets', house: 'Housing', tax: 'Tax' };
     const quote = isArticle
-      ? (s.story_quote || (lang === 'tc' ? s.title_tc : s.title_en) || '')
+      ? ((lang === 'tc' ? s.story_quote : (s.story_quote_en || s.story_quote)) || (lang === 'tc' ? s.title_tc : s.title_en) || '')
       : (lang === 'tc' ? s.tc : s.en);
     const name  = isArticle ? (s.author || '') : (lang === 'tc' ? s.name_tc : s.name_en);
     const role  = isArticle

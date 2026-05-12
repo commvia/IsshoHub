@@ -496,8 +496,12 @@
 
             <!-- Story Quote -->
             <div class="editor-field">
-              <label>人物故事引言 Story Quote</label>
-              <textarea id="editorStoryQuote" rows="3" placeholder="「一句話描述移日的心情或轉捩點。」（選填，填寫後可在首頁人物故事欄顯示）"></textarea>
+              <label>人物故事引言（繁中）Story Quote TC</label>
+              <textarea id="editorStoryQuoteTc" rows="3" placeholder="「一句話描述移日的心情或轉捩點。」"></textarea>
+            </div>
+            <div class="editor-field">
+              <label>人物故事引言（English）Story Quote EN</label>
+              <textarea id="editorStoryQuoteEn" rows="3" placeholder="&quot;One line about the turning point of moving to Japan.&quot;"></textarea>
               <div style="font-size:11px;color:var(--ink-3);margin-top:4px">填寫後，可在「網站設定」→「人物故事」欄，用此文章 Slug 設定要顯示的卡片。</div>
             </div>
 
@@ -680,7 +684,8 @@
       body_tc: document.getElementById('bodyTc').value.trim() || null,
       body_en: document.getElementById('bodyEn').value.trim() || null,
       author: document.getElementById('editorAuthor').value.trim() || null,
-      story_quote: document.getElementById('editorStoryQuote').value.trim() || null,
+      story_quote: document.getElementById('editorStoryQuoteTc').value.trim() || null,
+      story_quote_en: document.getElementById('editorStoryQuoteEn').value.trim() || null,
       tags,
       featured: document.getElementById('editorFeatured').checked,
       status,
@@ -749,7 +754,8 @@
       document.getElementById('bodyEn').value = articleData.body_en || '';
       document.getElementById('coverImageUrl').value = articleData.cover_image_url || '';
       document.getElementById('editorAuthor').value = articleData.author || '';
-      document.getElementById('editorStoryQuote').value = articleData.story_quote || '';
+      document.getElementById('editorStoryQuoteTc').value = articleData.story_quote || '';
+      document.getElementById('editorStoryQuoteEn').value = articleData.story_quote_en || '';
       document.getElementById('editorTags').value = (articleData.tags || []).join(', ');
       document.getElementById('editorFeatured').checked = articleData.featured || false;
       loadCategories(document.getElementById('editorCategory'), articleData.category_key, articleData.category_keys || []);
