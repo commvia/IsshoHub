@@ -301,6 +301,37 @@
     showScene('scene-review');
   }
 
+  /* ── 題目庫參考（SEO，動態渲染）── */
+  function renderReference() {
+    var titleEl = $('ref-title');
+    var noteEl  = $('ref-note');
+    var listEl  = $('ref-list');
+    if (!titleEl || !noteEl || !listEl) return;
+    if (typeof QUIZ_DATA === 'undefined' || !QUIZ_DATA.length) return;
+
+    var lang = C.getLang();
+    var isEn = lang === 'en';
+
+    titleEl.textContent = isEn ? 'Driving Test Question Reference' : '外免切替筆試題庫參考';
+    noteEl.textContent  = isEn
+      ? 'All 100 practice questions. Expand each to see the question. Image questions (🖼) should be answered with reference to the image shown.'
+      : '以下為全部 100 道練習題，展開可查看題目。有圖片的題目（🖼）需對照圖片作答。';
+
+    listEl.innerHTML = QUIZ_DATA.map(function (q) {
+      var qText  = (isEn && q.q_en) ? q.q_en : q.q;
+      var hasImg = !!q.img;
+      var imgIcon = hasImg ? ' 🖼' : '';
+      var label  = isEn ? ('Q' + q.id + imgIcon + ': ') : ('第 ' + q.id + ' 題' + imgIcon + '：');
+      var imgHtml = hasImg
+        ? '<img src="' + q.img + '" alt="' + ((isEn && q.img_alt_en) ? q.img_alt_en : '') + '" style="max-width:100%;max-height:200px;display:block;margin-bottom:8px;">'
+        : '';
+      return '<details>' +
+        '<summary>' + label + qText + '</summary>' +
+        '<div class="ref-body">' + imgHtml + '<div class="ref-q">' + qText + '</div></div>' +
+        '</details>';
+    }).join('\n');
+  }
+
   /* ── 語言切換重新渲染 ── */
   function onLangChange() {
     var scenes = ['scene-intro','scene-quiz','scene-result','scene-review'];
@@ -313,6 +344,7 @@
     if (visible === 'scene-result') renderResult();
     if (visible === 'scene-review') showReview();
     if (visible === 'scene-quiz')   renderQuestion();
+    renderReference();
   }
 
   /* ── 初始化 ── */
@@ -352,6 +384,7 @@
 
     C.onLangChange(onLangChange);
     showScene('scene-intro');
+    renderReference();
   }
 
   if (document.readyState === 'loading') {
