@@ -218,7 +218,7 @@
 
     var fb = $('quiz-feedback');
     fb.className     = 'quiz-feedback ' + (correct ? 'correct' : 'wrong');
-    fb.style.display = '';
+    fb.style.display = 'block';
     var lang = C.getLang();
     $('feedback-label').textContent       = correct ? s.correct : s.wrong(q.answer);
     $('feedback-explanation').textContent = (lang === 'en' && q.explanation_en) ? q.explanation_en : q.explanation;
