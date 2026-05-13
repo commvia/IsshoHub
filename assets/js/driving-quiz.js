@@ -158,16 +158,17 @@
     $('quiz-progress-fill').style.width = (currentIdx / total * 100) + '%';
     $('quiz-progress-text').textContent = s.progress(currentIdx + 1, total);
 
+    var lang = C.getLang();
     var imgEl = $('quiz-img');
     if (q.img) {
       imgEl.src           = q.img;
-      imgEl.alt           = '';
+      imgEl.alt           = (lang === 'en' && q.img_alt_en) ? q.img_alt_en : '';
       imgEl.style.display = '';
     } else {
       imgEl.style.display = 'none';
     }
 
-    $('quiz-question').textContent = q.q;
+    $('quiz-question').textContent = (lang === 'en' && q.q_en) ? q.q_en : q.q;
 
     $('quiz-btn-true').textContent  = s.btn_true;
     $('quiz-btn-false').textContent = s.btn_false;
@@ -218,8 +219,9 @@
     var fb = $('quiz-feedback');
     fb.className     = 'quiz-feedback ' + (correct ? 'correct' : 'wrong');
     fb.style.display = '';
+    var lang = C.getLang();
     $('feedback-label').textContent       = correct ? s.correct : s.wrong(q.answer);
-    $('feedback-explanation').textContent = q.explanation;
+    $('feedback-explanation').textContent = (lang === 'en' && q.explanation_en) ? q.explanation_en : q.explanation;
     $('quiz-next-btn').textContent        = s.next;
   }
 
@@ -283,13 +285,17 @@
     $('review-title').textContent    = s.review_title;
     $('review-back-btn').textContent = s.review_back;
     var list = $('review-list');
+    var lang = C.getLang();
     list.innerHTML = sessionWrongs.map(function (q, i) {
+      var qText   = (lang === 'en' && q.q_en)           ? q.q_en           : q.q;
+      var expText = (lang === 'en' && q.explanation_en) ? q.explanation_en : q.explanation;
+      var numLabel = lang === 'en' ? 'Wrong answer #' + (i + 1) : '第 ' + (i + 1) + ' 道錯題';
       return '<div class="quiz-review-item">' +
-        '<div class="quiz-review-num">第 ' + (i + 1) + ' 道錯題</div>' +
-        (q.img ? '<img src="' + escapeHtml(q.img) + '" alt="" class="quiz-review-img">' : '') +
-        '<div class="quiz-review-q">' + escapeHtml(q.q) + '</div>' +
+        '<div class="quiz-review-num">' + numLabel + '</div>' +
+        (q.img ? '<img src="' + escapeHtml(q.img) + '" alt="' + escapeHtml((lang === 'en' && q.img_alt_en) ? q.img_alt_en : '') + '" class="quiz-review-img">' : '') +
+        '<div class="quiz-review-q">' + escapeHtml(qText) + '</div>' +
         '<div class="quiz-review-answer">' + s.review_answer(q.answer) + '</div>' +
-        '<div class="quiz-review-explanation">' + escapeHtml(q.explanation) + '</div>' +
+        '<div class="quiz-review-explanation">' + escapeHtml(expText) + '</div>' +
         '</div>';
     }).join('');
     showScene('scene-review');
