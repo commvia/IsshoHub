@@ -578,6 +578,30 @@
     });
   }
 
+  /* ── 複製加來源（文章頁用，測驗頁除外）── */
+  function wireCopyAttribution() {
+    /* 測驗頁有自己的防複製邏輯，跳過 */
+    if (document.querySelector('.quiz-card')) return;
+
+    document.addEventListener('copy', function (e) {
+      if (!e.clipboardData) return;
+      var sel = window.getSelection();
+      if (!sel || sel.isCollapsed) return;
+      var text = sel.toString();
+      if (!text.trim()) return;
+
+      var url  = window.location.href;
+      var lang = getLang();
+      var label = lang === 'en' ? 'Source: ' : '來源：';
+      var plain = text + '\n\n' + label + url;
+      var html  = text + '<br><br>' + label + '<a href="' + url + '">' + url + '</a>';
+
+      e.clipboardData.setData('text/plain', plain);
+      e.clipboardData.setData('text/html',  html);
+      e.preventDefault();
+    });
+  }
+
   /* ── Init ── */
   function init(activeKey) {
     applyLang();
@@ -590,6 +614,7 @@
     wireLoginModal();
     wireNewsletter();
     loadTicker();
+    wireCopyAttribution();
 
     /* register core nav/i18n re-render on lang change */
     onLangChange(function () {
