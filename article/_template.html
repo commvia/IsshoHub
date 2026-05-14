@@ -63,6 +63,9 @@
   .article-prose a{color:var(--accent,#378ADD);text-decoration:underline;text-underline-offset:2px;}
   .article-prose a:hover{color:var(--accent-ink,#1f6bb8);}
   .article-prose img{max-width:100%;border-radius:8px;margin:28px 0;display:block;}
+  .article-prose img[style*="float"]{display:inline;margin-bottom:12px;}
+  .article-prose p:has(+p) img[style*="float:left"],.article-prose p img[style*="float:left"]{margin-right:20px;}
+  .article-prose::after,.article-prose p::after{content:'';display:table;clear:both;}
   .article-prose code{font-size:14px;background:var(--surface-2,#f2ede6);padding:2px 6px;border-radius:4px;font-family:monospace;}
   .article-prose hr{border:none;border-top:1px solid var(--line,#e4dfd3);margin:36px 0;}
   .article-prose strong{color:var(--navy-ink,#0a1a31);font-weight:700;}
@@ -294,6 +297,24 @@
   }, { passive: true });
 
   /* ── Markdown parser ── */
+  /* ── Image size modifier: ![alt|small](url) / |medium / |left / |right ── */
+  function imgTag(alt, src) {
+    var sizeMap = { small: 'max-width:45%', medium: 'max-width:65%', left: 'max-width:40%;float:left;margin-right:20px;margin-bottom:12px;margin-top:4px', right: 'max-width:40%;float:right;margin-left:20px;margin-bottom:12px;margin-top:4px' };
+    var cleanAlt = alt, extraStyle = '';
+    var pipeIdx = alt.lastIndexOf('|');
+    if (pipeIdx !== -1) {
+      var modifier = alt.slice(pipeIdx + 1).trim().toLowerCase();
+      cleanAlt = alt.slice(0, pipeIdx).trim();
+      if (sizeMap[modifier]) {
+        extraStyle = sizeMap[modifier];
+      } else if (/^\d+%$/.test(modifier)) {
+        extraStyle = 'max-width:' + modifier;
+      }
+    }
+    var style = extraStyle ? 'style="' + extraStyle + '"' : '';
+    return '<img src="' + src + '" alt="' + cleanAlt + '" loading="lazy" class="article-inline-img" ' + style + '>';
+  }
+
   function md(text) {
     if (!text) return '';
     var lines = text.split('\n');
@@ -337,14 +358,14 @@
         .replace(/\*\*(.+?)\*\*/g,     '<strong>$1</strong>')
         .replace(/\*(.+?)\*/g,         '<em>$1</em>')
         .replace(/`(.+?)`/g,           '<code>$1</code>')
-        .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" loading="lazy" class="article-inline-img">')
+        .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, function(_,alt,src){ return imgTag(alt,src); })
         .replace(/\[(.+?)\]\((.+?)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
     }
     for (var i = 0; i < lines.length; i++) {
       var t = lines[i].trim();
       /* Standalone image line → block-level img */
       var imgM = /^!\[([^\]]*)\]\(([^)]+)\)$/.exec(t);
-      if (imgM) { closeLists(); closeBq(); out.push('<img src="'+imgM[2]+'" alt="'+imgM[1]+'" loading="lazy" class="article-inline-img">'); continue; }
+      if (imgM) { closeLists(); closeBq(); out.push(imgTag(imgM[1], imgM[2])); continue; }
       /* Table row detection */
       if (/^\|.+/.test(t)) {
         closeLists(); closeBq();
