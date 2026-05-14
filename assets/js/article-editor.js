@@ -99,8 +99,22 @@
         <button type="button" class="md-toolbar-btn" data-md="blockquote" title="引言">" 引言</button>
         <button type="button" class="md-toolbar-btn" data-md="hr" title="分隔線">— —</button>
         <div class="md-toolbar-sep"></div>
-        <button type="button" class="md-toolbar-btn md-img-btn" data-md="image" title="插入圖片">🖼 插圖</button>
-        <input type="file" class="md-img-input" accept="image/*" style="display:none" />
+        <button type="button" class="md-toolbar-btn md-img-btn" title="插入圖片">🖼 插圖</button>
+        <div class="md-img-panel" style="display:none">
+          <div class="md-img-panel-row">
+            <input type="text" class="md-img-url-input" placeholder="貼上圖片網址">
+            <label class="md-img-upload-label">上傳<input type="file" class="md-img-input" accept="image/*" style="display:none"></label>
+          </div>
+          <div class="md-img-panel-hint" style="display:none">上傳中…</div>
+          <div class="md-img-sizes">
+            <span style="font-size:11px;color:#888;margin-right:4px;">尺寸：</span>
+            <button type="button" data-size="">全寬</button>
+            <button type="button" data-size="medium">中</button>
+            <button type="button" data-size="small">小</button>
+            <button type="button" data-size="left">靠左</button>
+            <button type="button" data-size="right">靠右</button>
+          </div>
+        </div>
         <div class="md-toolbar-hint">📋 貼上 Word 內容可自動轉換格式</div>
       </div>`;
   }
@@ -262,28 +276,70 @@
       if ((e.ctrlKey || e.metaKey) && e.key === 'i') { e.preventDefault(); applyMdFormat(ta, 'italic'); }
     });
 
-    /* Image upload button */
-    const imgBtn   = toolbarEl.querySelector('.md-img-btn');
-    const imgInput = toolbarEl.querySelector('.md-img-input');
-    if (imgBtn && imgInput) {
-      imgBtn.addEventListener('mousedown', e => { e.preventDefault(); imgInput.click(); });
+    /* Image panel */
+    const imgBtn    = toolbarEl.querySelector('.md-img-btn');
+    const imgPanel  = toolbarEl.querySelector('.md-img-panel');
+    const imgUrlIn  = toolbarEl.querySelector('.md-img-url-input');
+    const imgInput  = toolbarEl.querySelector('.md-img-input');
+    const imgHint   = toolbarEl.querySelector('.md-img-panel-hint');
+    let imgCursorPos = 0;
+
+    if (imgBtn && imgPanel) {
+      /* Toggle panel */
+      imgBtn.addEventListener('mousedown', e => {
+        e.preventDefault();
+        const open = imgPanel.style.display !== 'none';
+        imgPanel.style.display = open ? 'none' : '';
+        if (!open) {
+          imgCursorPos = ta.selectionStart;
+          imgUrlIn.value = '';
+          imgUrlIn.focus();
+        }
+      });
+
+      /* Close panel when clicking outside */
+      document.addEventListener('mousedown', e => {
+        if (!imgPanel.contains(e.target) && e.target !== imgBtn) {
+          imgPanel.style.display = 'none';
+        }
+      });
+
+      /* File upload → populate URL input */
       imgInput.addEventListener('change', async e => {
         const file = e.target.files[0];
         if (!file) return;
-        const savedHTML = imgBtn.innerHTML;
-        imgBtn.textContent = '上傳中…';
-        imgBtn.disabled = true;
-        const cursorPos = ta.selectionStart;
+        imgHint.textContent = '上傳中…'; imgHint.style.display = '';
         const { url, error } = await uploadImage(file);
-        imgBtn.innerHTML = savedHTML;
-        imgBtn.disabled = false;
+        imgHint.style.display = 'none';
         imgInput.value = '';
-        if (error || !url) { alert('圖片上傳失敗，請重試'); return; }
-        const insertion = `\n![](${url})\n`;
-        ta.value = ta.value.substring(0, cursorPos) + insertion + ta.value.substring(cursorPos);
-        ta.selectionStart = ta.selectionEnd = cursorPos + insertion.length;
-        autoResizeTA(ta);
-        ta.focus();
+        if (error || !url) { imgHint.textContent = '上傳失敗'; imgHint.style.display = ''; return; }
+        imgUrlIn.value = url;
+      });
+
+      /* Upload label click → trigger file input */
+      const uploadLabel = toolbarEl.querySelector('.md-img-upload-label');
+      if (uploadLabel) {
+        uploadLabel.addEventListener('mousedown', e => {
+          e.stopPropagation();
+          imgInput.click();
+        });
+      }
+
+      /* Size buttons → insert Markdown */
+      toolbarEl.querySelectorAll('.md-img-sizes button').forEach(btn => {
+        btn.addEventListener('mousedown', e => {
+          e.preventDefault();
+          const url = imgUrlIn.value.trim();
+          if (!url) { imgUrlIn.focus(); imgUrlIn.style.outline = '2px solid red'; setTimeout(() => { imgUrlIn.style.outline = ''; }, 1000); return; }
+          const size = btn.getAttribute('data-size');
+          const altPart = size ? '|' + size : '';
+          const insertion = '\n![' + altPart + '](' + url + ')\n';
+          ta.value = ta.value.substring(0, imgCursorPos) + insertion + ta.value.substring(imgCursorPos);
+          ta.selectionStart = ta.selectionEnd = imgCursorPos + insertion.length;
+          autoResizeTA(ta);
+          ta.focus();
+          imgPanel.style.display = 'none';
+        });
       });
     }
 
