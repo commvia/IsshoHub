@@ -3036,6 +3036,14 @@ body[data-lang="en"] .cat-articles-title { font-family: var(--sans-en); }
 .quiz-review-explanation { font-size: 13px; color: var(--ink-2, #5a5a4a); line-height: 1.6; }
 
 /* SEO reference section */
+/* Anti-copy: quiz content areas */
+.quiz-card,
+.quiz-reference {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
 .quiz-reference { max-width: 680px; margin: 80px auto 0; padding: 40px 16px 80px; border-top: 1px solid #e4dfd4; }
 .quiz-reference-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
 .quiz-reference-note { font-size: 13px; color: var(--ink-3, #999); margin-bottom: 24px; }

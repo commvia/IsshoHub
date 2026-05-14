@@ -385,6 +385,17 @@
     C.onLangChange(onLangChange);
     showScene('scene-intro');
     renderReference();
+
+    /* ── 防複製：右鍵 + Cmd/Ctrl+C ── */
+    var lockEls = [
+      document.querySelector('.quiz-card'),
+      document.getElementById('question-reference')
+    ];
+    lockEls.forEach(function (el) {
+      if (!el) return;
+      el.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+      el.addEventListener('copy',        function (e) { e.preventDefault(); });
+    });
   }
 
   if (document.readyState === 'loading') {
