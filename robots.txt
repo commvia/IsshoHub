@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://isshohub.pages.dev/sitemap.xml
+LLMs: https://isshohub.pages.dev/llms.txt

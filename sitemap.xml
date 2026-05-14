@@ -82,4 +82,28 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://isshohub.pages.dev/story/"/>
   </url>
 
+  <url>
+    <loc>https://isshohub.pages.dev/culture/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://isshohub.pages.dev/culture/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://isshohub.pages.dev/culture/"/>
+  </url>
+
+  <url>
+    <loc>https://isshohub.pages.dev/visa/hsp-calculator/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://isshohub.pages.dev/visa/hsp-calculator/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://isshohub.pages.dev/visa/hsp-calculator/"/>
+  </url>
+
+  <url>
+    <loc>https://isshohub.pages.dev/life/driving-quiz/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://isshohub.pages.dev/life/driving-quiz/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://isshohub.pages.dev/life/driving-quiz/"/>
+  </url>
+
 </urlset>
