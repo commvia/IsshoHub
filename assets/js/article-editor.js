@@ -362,6 +362,98 @@
     return Promise.resolve();
   }
 
+  /* ── Cover image position picker ── */
+  var _pickerPosX = 50, _pickerPosY = 50;
+  var _pickerDragging = false, _pickerLastX = 0, _pickerLastY = 0;
+
+  function _pickerOverflow() {
+    var picker = document.getElementById('coverPosPicker');
+    var img    = document.getElementById('coverPosImg');
+    if (!picker || !img) return { x: 1, y: 1 };
+    var cW = picker.offsetWidth || 300;
+    var cH = picker.offsetHeight || 168;
+    var nW = img.naturalWidth  || cW;
+    var nH = img.naturalHeight || cH;
+    var scale = Math.max(cW / nW, cH / nH);
+    return {
+      x: Math.max(1, nW * scale - cW),
+      y: Math.max(1, nH * scale - cH)
+    };
+  }
+
+  function _pickerApply() {
+    var img = document.getElementById('coverPosImg');
+    if (img) img.style.objectPosition = _pickerPosX + '% ' + _pickerPosY + '%';
+  }
+
+  function _pickerMove(dx, dy) {
+    var ov = _pickerOverflow();
+    if (ov.x > 0.5) _pickerPosX = Math.max(0, Math.min(100, _pickerPosX - dx / ov.x * 100));
+    if (ov.y > 0.5) _pickerPosY = Math.max(0, Math.min(100, _pickerPosY - dy / ov.y * 100));
+    _pickerApply();
+  }
+
+  function initCoverPosPicker() {
+    var picker   = document.getElementById('coverPosPicker');
+    var resetBtn = document.getElementById('coverPosReset');
+    if (!picker) return;
+
+    picker.addEventListener('mousedown', function (e) {
+      _pickerDragging = true;
+      _pickerLastX = e.clientX; _pickerLastY = e.clientY;
+      picker.style.cursor = 'grabbing';
+      e.preventDefault();
+    });
+    document.addEventListener('mousemove', function (e) {
+      if (!_pickerDragging) return;
+      _pickerMove(e.clientX - _pickerLastX, e.clientY - _pickerLastY);
+      _pickerLastX = e.clientX; _pickerLastY = e.clientY;
+    });
+    document.addEventListener('mouseup', function () {
+      if (_pickerDragging) { _pickerDragging = false; picker.style.cursor = 'grab'; }
+    });
+    picker.addEventListener('touchstart', function (e) {
+      _pickerDragging = true;
+      _pickerLastX = e.touches[0].clientX; _pickerLastY = e.touches[0].clientY;
+      e.preventDefault();
+    }, { passive: false });
+    document.addEventListener('touchmove', function (e) {
+      if (!_pickerDragging) return;
+      _pickerMove(e.touches[0].clientX - _pickerLastX, e.touches[0].clientY - _pickerLastY);
+      _pickerLastX = e.touches[0].clientX; _pickerLastY = e.touches[0].clientY;
+    }, { passive: false });
+    document.addEventListener('touchend', function () { _pickerDragging = false; });
+
+    if (resetBtn) resetBtn.addEventListener('click', function () {
+      _pickerPosX = 50; _pickerPosY = 50; _pickerApply();
+    });
+  }
+
+  function showCoverPosPicker(url, savedPos) {
+    var parts = (savedPos || '50% 50%').split(' ');
+    _pickerPosX = parseFloat(parts[0]) || 50;
+    _pickerPosY = parseFloat(parts[1]) || 50;
+    var img      = document.getElementById('coverPosImg');
+    var picker   = document.getElementById('coverPosPicker');
+    var resetBtn = document.getElementById('coverPosReset');
+    if (!img || !picker) return;
+    img.src = url;
+    _pickerApply();
+    picker.style.display   = '';
+    if (resetBtn) resetBtn.style.display = '';
+  }
+
+  function hideCoverPosPicker() {
+    var picker   = document.getElementById('coverPosPicker');
+    var resetBtn = document.getElementById('coverPosReset');
+    if (picker)   picker.style.display   = 'none';
+    if (resetBtn) resetBtn.style.display = 'none';
+  }
+
+  function getCoverPosValue() {
+    return Math.round(_pickerPosX) + '% ' + Math.round(_pickerPosY) + '%';
+  }
+
   /* ── Upload image to Supabase Storage ── */
   async function uploadImage(file) {
     const ext = file.name.split('.').pop();
@@ -452,7 +544,11 @@
                   <span>點擊上傳圖片</span>
                   <span style="font-size:11px;color:#aaa">JPG, PNG, WebP · 最大 5MB</span>
                 </div>
-                <img id="coverImagePreview" style="display:none;width:100%;border-radius:8px;object-fit:cover;max-height:180px;" />
+                <div id="coverPosPicker" style="display:none;position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:8px;cursor:grab;background:#e8e8e8;touch-action:none;">
+                  <img id="coverPosImg" draggable="false" style="width:100%;height:100%;object-fit:cover;pointer-events:none;user-select:none;-webkit-user-select:none;display:block;" />
+                  <div style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.55);color:#fff;font-size:11px;padding:4px 10px;border-radius:999px;pointer-events:none;white-space:nowrap;">⠿ 拖動調整位置</div>
+                </div>
+                <button type="button" id="coverPosReset" style="display:none;margin-top:4px;font-size:11px;color:#888;background:none;border:none;padding:0;cursor:pointer;">↺ 重置置中</button>
                 <input type="file" id="coverImageInput" accept="image/*" style="display:none" />
               </div>
               <input type="text" id="coverImageUrl" placeholder="或貼上圖片網址" style="margin-top:8px" />
@@ -563,9 +659,10 @@
     // Cover image upload
     const imageArea = document.getElementById('coverImageArea');
     const imageInput = document.getElementById('coverImageInput');
-    const imagePreview = document.getElementById('coverImagePreview');
     const imagePlaceholder = document.getElementById('coverImagePlaceholder');
     const imageUrlInput = document.getElementById('coverImageUrl');
+
+    initCoverPosPicker();
 
     imageArea.addEventListener('click', () => imageInput.click());
     imageInput.addEventListener('change', async e => {
@@ -577,17 +674,18 @@
         imagePlaceholder.innerHTML = '<span style="color:red">上傳失敗，請使用網址</span>';
       } else {
         imageUrlInput.value = url;
-        imagePreview.src = url;
-        imagePreview.style.display = 'block';
         imagePlaceholder.style.display = 'none';
+        showCoverPosPicker(url);
       }
     });
 
     imageUrlInput.addEventListener('input', e => {
       if (e.target.value) {
-        imagePreview.src = e.target.value;
-        imagePreview.style.display = 'block';
         imagePlaceholder.style.display = 'none';
+        showCoverPosPicker(e.target.value);
+      } else {
+        hideCoverPosPicker();
+        imagePlaceholder.style.display = '';
       }
     });
 
@@ -679,6 +777,7 @@
         return checked.length ? checked : null;
       })(),
       cover_image_url: document.getElementById('coverImageUrl').value.trim() || null,
+      cover_image_position: document.getElementById('coverImageUrl').value.trim() ? getCoverPosValue() : null,
       excerpt_tc: document.getElementById('excerptTc').value.trim() || null,
       excerpt_en: document.getElementById('excerptEn').value.trim() || null,
       body_tc: document.getElementById('bodyTc').value.trim() || null,
@@ -764,9 +863,8 @@
         (articleData.sub_category_key ? [articleData.sub_category_key] : []);
       renderSubCatCheckboxes(existingSubKeys);
       if (articleData.cover_image_url) {
-        document.getElementById('coverImagePreview').src = articleData.cover_image_url;
-        document.getElementById('coverImagePreview').style.display = 'block';
         document.getElementById('coverImagePlaceholder').style.display = 'none';
+        showCoverPosPicker(articleData.cover_image_url, articleData.cover_image_position);
       }
     } else {
       document.getElementById('editorTitle').textContent = '新增文章';

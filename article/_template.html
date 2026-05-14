@@ -499,7 +499,7 @@
 
     /* ── Cover image shown clearly below hero ── */
     layoutEl.innerHTML = a.cover_image_url
-      ? '<div class="article-cover-img" style="background-image:url(\''+a.cover_image_url+'\')"></div>'
+      ? '<div class="article-cover-img" style="background-image:url(\''+a.cover_image_url+'\');background-position:'+(a.cover_image_position||'50% 50%')+'"></div>'
       : '';
 
     /* Body */
