@@ -1795,6 +1795,28 @@ body[data-lang="en"] .modal-title { font-family: var(--sans-en); }
   transition: all .18s;
 }
 .btn-submit:hover { background: var(--accent); }
+.btn-submit:disabled { opacity: .55; cursor: not-allowed; }
+
+/* Contact modal */
+.contact-form-fields { display: flex; flex-direction: column; gap: 16px; }
+.contact-textarea {
+  padding: 13px 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font: inherit;
+  font-size: 14.5px;
+  color: var(--navy-ink);
+  background: var(--paper);
+  outline: none;
+  resize: vertical;
+  min-height: 120px;
+  transition: border-color .18s, box-shadow .18s;
+}
+.contact-textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(55,138,221,0.14);
+  background: #fff;
+}
 .modal-tabs {
   display: flex; gap: 4px;
   background: var(--paper-2);
