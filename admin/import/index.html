@@ -573,9 +573,19 @@
       document.getElementById('f_body_tc').value = a.body_tc || '';
       document.getElementById('f_body_en').value = a.body_en || '';
     } else if (originalContent) {
-      /* Import mode: put original text in body_tc for user to review/edit */
-      document.getElementById('f_body_tc').value = originalContent;
-      document.getElementById('f_body_en').value = '';
+      /* Route original text to the correct language field based on AI detection */
+      var lang = a.original_language || 'tc';
+      if (lang === 'en') {
+        document.getElementById('f_body_tc').value = '';
+        document.getElementById('f_body_en').value = originalContent;
+      } else if (lang === 'both') {
+        /* Bilingual article: put full text in both tabs, user trims as needed */
+        document.getElementById('f_body_tc').value = originalContent;
+        document.getElementById('f_body_en').value = originalContent;
+      } else {
+        document.getElementById('f_body_tc').value = originalContent;
+        document.getElementById('f_body_en').value = '';
+      }
     }
 
     if (a.category_key) {

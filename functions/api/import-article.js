@@ -50,6 +50,7 @@ export async function onRequestPost(context) {
   "excerpt_en": "English excerpt (80-120 words, summarise key points naturally)",
   "category_key": "最合適的分類key",
   "author": "如文章有提及作者名稱就填入，否則空字串",
+  "original_language": "原文主要語言：'tc'（繁體中文）、'en'（英文）、'both'（中英雙語）",
   "image_prompt": "English image generation prompt for cover photo (real-life scene, photography style, mood, lighting. Max 20 words. No text, no logos, no close-up faces.)"
 }`;
 
