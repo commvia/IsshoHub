@@ -644,10 +644,11 @@
   /* ── Cover image generation (Pollinations.ai — free, no key needed) ── */
   var _currentSeed = 0;
 
+  var _LOADING_HTML = '<div class="spinner"></div> 生成中，約需 10-20 秒…';
+
   window.generateCover = function () {
     var prompt = _imagePrompt;
     if (!prompt) {
-      /* Fallback: build basic prompt from title */
       var title = document.getElementById('f_title_en').value || document.getElementById('f_title_tc').value;
       prompt = 'lifestyle photography related to: ' + title + ', Japan, natural light, editorial style';
     }
@@ -660,13 +661,13 @@
     var preview  = document.getElementById('coverPreview');
     var loading  = document.getElementById('coverLoading');
     var img      = document.getElementById('coverImg');
-    var actions  = document.getElementById('coverActions');
 
-    btn.disabled = true;
-    preview.style.display  = 'block';
-    loading.style.display  = 'flex';
-    img.style.display      = 'none';
-    actions.style.display  = 'none';
+    btn.disabled        = true;
+    preview.style.display = 'block';
+    loading.innerHTML   = _LOADING_HTML;
+    loading.style.display = 'flex';
+    img.style.display   = 'none';
+    document.getElementById('coverActions').style.display = 'none';
 
     img.src = imgUrl;
   };
@@ -687,8 +688,13 @@
   };
 
   window.onImgError = function () {
-    document.getElementById('coverLoading').innerHTML = '⚠️ 生成失敗，請重試';
-    document.getElementById('genImgBtn').disabled     = false;
+    var loading = document.getElementById('coverLoading');
+    loading.innerHTML = '⚠️ 生成失敗，請再試一次';
+    loading.style.display = 'flex';
+    document.getElementById('coverImg').style.display   = 'none';
+    document.getElementById('coverActions').style.display = 'flex';
+    document.getElementById('imgPromptArea').style.display = 'block';
+    document.getElementById('genImgBtn').disabled = false;
   };
 
   window.useCoverImg = function () {
