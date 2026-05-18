@@ -10,8 +10,8 @@ const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
 
 if (!SUPABASE_URL || !SUPABASE_KEY) {
-  console.error('❌ 缺少環境變數 SUPABASE_URL 或 SUPABASE_SERVICE_KEY');
-  process.exit(1);
+  console.warn('⚠️  缺少 SUPABASE_URL 或 SUPABASE_SERVICE_KEY，跳過靜態頁面生成');
+  process.exit(0);
 }
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
