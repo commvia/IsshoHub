@@ -555,7 +555,7 @@
 
   /* ── Contact modal ── */
   /* Replace Formspree placeholder with your actual form ID from formspree.io */
-  var CONTACT_FORMSPREE = 'https://formspree.io/f/YOUR_FORM_ID';
+  var CONTACT_FORMSPREE = 'https://formspree.io/f/xjgzvozy';
 
   function wireContactModal() {
     /* Inject modal HTML once */
