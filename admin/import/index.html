@@ -557,6 +557,32 @@
     }
   };
 
+  /* ── Bilingual splitter: route paragraphs to TC or EN by character composition ── */
+  function splitBilingual(text) {
+    var lines = text.split('\n');
+    var tcLines = [], enLines = [];
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      var trimmed = line.trim();
+      if (!trimmed) { tcLines.push(''); enLines.push(''); continue; }
+      var chineseCount = (trimmed.match(/[一-鿿㐀-䶿]/g) || []).length;
+      var latinWords   = (trimmed.match(/\b[a-zA-Z]{3,}\b/g) || []).length;
+      if (chineseCount >= 4) {
+        tcLines.push(line);
+      } else if (latinWords >= 3) {
+        enLines.push(line);
+      } else {
+        /* Short / mixed line — keep in both */
+        tcLines.push(line);
+        enLines.push(line);
+      }
+    }
+    return {
+      tc: tcLines.join('\n').trim(),
+      en: enLines.join('\n').trim(),
+    };
+  }
+
   /* ── Fill form ── */
   var _imagePrompt = '';
 
@@ -573,15 +599,14 @@
       document.getElementById('f_body_tc').value = a.body_tc || '';
       document.getElementById('f_body_en').value = a.body_en || '';
     } else if (originalContent) {
-      /* Route original text to the correct language field based on AI detection */
       var lang = a.original_language || 'tc';
       if (lang === 'en') {
         document.getElementById('f_body_tc').value = '';
         document.getElementById('f_body_en').value = originalContent;
       } else if (lang === 'both') {
-        /* Bilingual article: put full text in both tabs, user trims as needed */
-        document.getElementById('f_body_tc').value = originalContent;
-        document.getElementById('f_body_en').value = originalContent;
+        var split = splitBilingual(originalContent);
+        document.getElementById('f_body_tc').value = split.tc;
+        document.getElementById('f_body_en').value = split.en;
       } else {
         document.getElementById('f_body_tc').value = originalContent;
         document.getElementById('f_body_en').value = '';
