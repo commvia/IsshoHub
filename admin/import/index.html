@@ -557,22 +557,47 @@
     }
   };
 
-  /* ── Bilingual splitter: route paragraphs to TC or EN by character composition ── */
+  /* ── Language helpers ── */
+  function cjkCount(s)  { return (s.match(/[一-鿿㐀-䶿]/g) || []).length; }
+  function latinCount(s){ return (s.match(/[a-zA-Z]/g) || []).length; }
+
+  /* ── Bilingual splitter ── */
   function splitBilingual(text) {
+    /* 1. Try to find an explicit section divider first */
+    var DIVIDER_RE = /\n(?:英文版|English\s*Version|EN\s*Version)\s*\n[=\-*]{3,}/i;
+    var dividerMatch = DIVIDER_RE.exec(text);
+    if (!dividerMatch) {
+      /* Also try: blank line + 英文版 / English Version + blank line */
+      DIVIDER_RE = /\n\n(英文版|English\s*Version)\s*\n/i;
+      dividerMatch = DIVIDER_RE.exec(text);
+    }
+    if (dividerMatch) {
+      var before = text.slice(0, dividerMatch.index).trim();
+      var after  = text.slice(dividerMatch.index + dividerMatch[0].length).trim();
+      /* Determine which half is Chinese and which is English */
+      var beforeRatio = cjkCount(before) / (cjkCount(before) + latinCount(before) + 1);
+      if (beforeRatio > 0.3) {
+        return { tc: before, en: after };
+      } else {
+        return { tc: after, en: before };
+      }
+    }
+
+    /* 2. No divider — split paragraph by paragraph */
     var lines = text.split('\n');
     var tcLines = [], enLines = [];
     for (var i = 0; i < lines.length; i++) {
-      var line = lines[i];
+      var line    = lines[i];
       var trimmed = line.trim();
       if (!trimmed) { tcLines.push(''); enLines.push(''); continue; }
-      var chineseCount = (trimmed.match(/[一-鿿㐀-䶿]/g) || []).length;
-      var latinWords   = (trimmed.match(/\b[a-zA-Z]{3,}\b/g) || []).length;
-      if (chineseCount >= 4) {
+      var cjk   = cjkCount(trimmed);
+      var latin = latinCount(trimmed);
+      var total = cjk + latin || 1;
+      if (cjk / total > 0.4) {
         tcLines.push(line);
-      } else if (latinWords >= 3) {
+      } else if (latin / total > 0.7) {
         enLines.push(line);
       } else {
-        /* Short / mixed line — keep in both */
         tcLines.push(line);
         enLines.push(line);
       }
@@ -599,23 +624,24 @@
       document.getElementById('f_body_tc').value = a.body_tc || '';
       document.getElementById('f_body_en').value = a.body_en || '';
     } else if (originalContent) {
-      /* Client-side language detection — count CJK vs Latin chars */
-      var cjk   = (originalContent.match(/[一-鿿]/g) || []).length;
-      var latin = (originalContent.match(/[a-zA-Z]/g) || []).length;
+      /* Detect language composition */
+      var cjk   = cjkCount(originalContent);
+      var latin = latinCount(originalContent);
       var total = cjk + latin || 1;
       var cjkRatio = cjk / total;
 
-      if (cjkRatio > 0.70) {
-        /* Mostly Chinese */
+      var split;
+      if (cjkRatio > 0.65) {
+        /* Mostly Chinese — all in TC */
         document.getElementById('f_body_tc').value = originalContent;
         document.getElementById('f_body_en').value = '';
-      } else if (cjkRatio < 0.20) {
-        /* Mostly English */
+      } else if (cjkRatio < 0.10) {
+        /* Mostly English — all in EN */
         document.getElementById('f_body_tc').value = '';
         document.getElementById('f_body_en').value = originalContent;
       } else {
-        /* Bilingual — split paragraph by paragraph */
-        var split = splitBilingual(originalContent);
+        /* Bilingual — use divider or paragraph-level split */
+        split = splitBilingual(originalContent);
         document.getElementById('f_body_tc').value = split.tc;
         document.getElementById('f_body_en').value = split.en;
       }
