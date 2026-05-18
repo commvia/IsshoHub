@@ -599,17 +599,25 @@
       document.getElementById('f_body_tc').value = a.body_tc || '';
       document.getElementById('f_body_en').value = a.body_en || '';
     } else if (originalContent) {
-      var lang = a.original_language || 'tc';
-      if (lang === 'en') {
+      /* Client-side language detection — count CJK vs Latin chars */
+      var cjk   = (originalContent.match(/[一-鿿]/g) || []).length;
+      var latin = (originalContent.match(/[a-zA-Z]/g) || []).length;
+      var total = cjk + latin || 1;
+      var cjkRatio = cjk / total;
+
+      if (cjkRatio > 0.70) {
+        /* Mostly Chinese */
+        document.getElementById('f_body_tc').value = originalContent;
+        document.getElementById('f_body_en').value = '';
+      } else if (cjkRatio < 0.20) {
+        /* Mostly English */
         document.getElementById('f_body_tc').value = '';
         document.getElementById('f_body_en').value = originalContent;
-      } else if (lang === 'both') {
+      } else {
+        /* Bilingual — split paragraph by paragraph */
         var split = splitBilingual(originalContent);
         document.getElementById('f_body_tc').value = split.tc;
         document.getElementById('f_body_en').value = split.en;
-      } else {
-        document.getElementById('f_body_tc').value = originalContent;
-        document.getElementById('f_body_en').value = '';
       }
     }
 
