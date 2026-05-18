@@ -388,6 +388,16 @@
             <button class="btn-use-img" onclick="useCoverImg()">✓ 使用此圖</button>
             <button class="btn-regen-img" onclick="generateCover()">↺ 重新生成</button>
           </div>
+          <div id="imgPromptArea" style="display:none;margin-top:10px;">
+            <div class="field-label" style="margin-bottom:5px;">修改圖片描述後重新生成</div>
+            <div style="display:flex;gap:8px;">
+              <input class="field-input" id="imgPromptInput" type="text" style="flex:1;font-size:13px;" placeholder="例：bright outdoor scene, no people, cherry blossom">
+              <button onclick="generateCoverWithPrompt()"
+                style="padding:10px 14px;background:var(--navy,#0a1a31);color:#fff;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;">
+                重新生成
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -662,10 +672,18 @@
   };
 
   window.onImgLoaded = function () {
-    document.getElementById('coverLoading').style.display = 'none';
-    document.getElementById('coverImg').style.display     = 'block';
-    document.getElementById('coverActions').style.display = 'flex';
-    document.getElementById('genImgBtn').disabled         = false;
+    document.getElementById('coverLoading').style.display  = 'none';
+    document.getElementById('coverImg').style.display      = 'block';
+    document.getElementById('coverActions').style.display  = 'flex';
+    document.getElementById('imgPromptArea').style.display = 'block';
+    document.getElementById('imgPromptInput').value        = _imagePrompt || '';
+    document.getElementById('genImgBtn').disabled          = false;
+  };
+
+  window.generateCoverWithPrompt = function () {
+    var custom = document.getElementById('imgPromptInput').value.trim();
+    if (custom) _imagePrompt = custom;
+    generateCover();
   };
 
   window.onImgError = function () {
