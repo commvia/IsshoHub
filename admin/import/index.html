@@ -391,7 +391,24 @@
         </div>
       </div>
 
-      <div class="action-row">
+      <!-- Revision -->
+      <div id="revisionArea" style="margin-top:24px;padding-top:24px;border-top:1px solid #ece9e3;">
+        <div class="field-label" style="margin-bottom:8px;">不滿意？告訴 Claude 要修改什麼</div>
+        <div style="display:flex;gap:8px;align-items:flex-start;">
+          <textarea class="field-input field-textarea" id="revisionInput" rows="2" style="min-height:70px;flex:1;"
+            placeholder="例：標題改得更吸引一點，英文正文加多一些實用建議…"></textarea>
+          <button id="reviseBtn" onclick="requestRevision()"
+            style="padding:12px 18px;background:#f0f6ff;border:1.5px solid #bbd3f5;border-radius:9px;font-size:13px;font-weight:600;color:#1a56a8;cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0;">
+            ↺ 重新修改
+          </button>
+        </div>
+        <div class="analyzing-bar" id="revisingBar" style="margin-top:10px;">
+          <div class="spinner"></div>
+          <span>Claude 正在修改，稍等…</span>
+        </div>
+      </div>
+
+      <div class="action-row" style="margin-top:20px;">
         <button class="btn-save" id="saveBtn" onclick="saveDraft()">
           💾 儲存草稿
         </button>
@@ -558,6 +575,52 @@
     document.getElementById('coverActions').style.display  = 'none';
     document.getElementById('f_cover_url').value = '';
   }
+
+  /* ── Revision ── */
+  window.requestRevision = async function () {
+    var revision = document.getElementById('revisionInput').value.trim();
+    if (!revision) { alert('請輸入修改要求。'); return; }
+
+    /* Collect current article state from form */
+    var current = {
+      title_tc:    document.getElementById('f_title_tc').value,
+      title_en:    document.getElementById('f_title_en').value,
+      excerpt_tc:  document.getElementById('f_excerpt_tc').value,
+      excerpt_en:  document.getElementById('f_excerpt_en').value,
+      body_tc:     document.getElementById('f_body_tc').value,
+      body_en:     document.getElementById('f_body_en').value,
+      category_key:document.getElementById('f_category').value,
+      author:      document.getElementById('f_author').value,
+      image_prompt: _imagePrompt,
+    };
+
+    var btn = document.getElementById('reviseBtn');
+    var bar = document.getElementById('revisingBar');
+    btn.disabled = true;
+    bar.style.display = 'flex';
+
+    try {
+      var resp = await fetch('/api/import-article', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mode: 'revise', article: current, revision: revision }),
+      });
+      var data = await resp.json();
+      if (!data.ok || !data.article) throw new Error(data.error || '修改失敗');
+
+      fillForm(data.article);
+      document.getElementById('revisionInput').value = '';
+      /* Flash green to confirm update */
+      document.getElementById('reviewSection').style.outline = '2px solid #1a6b2a';
+      setTimeout(function () { document.getElementById('reviewSection').style.outline = ''; }, 1200);
+
+    } catch (err) {
+      alert('錯誤：' + err.message);
+    } finally {
+      btn.disabled = false;
+      bar.style.display = 'none';
+    }
+  };
 
   /* ── Cover image generation (Pollinations.ai — free, no key needed) ── */
   var _currentSeed = 0;

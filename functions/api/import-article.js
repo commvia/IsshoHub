@@ -20,6 +20,9 @@ export async function onRequestPost(context) {
     if (mode === 'write' && !topic) {
       return new Response(JSON.stringify({ error: 'No topic provided' }), { status: 400, headers: cors });
     }
+    if (mode === 'revise' && (!body.article || !body.revision)) {
+      return new Response(JSON.stringify({ error: 'Missing article or revision instructions' }), { status: 400, headers: cors });
+    }
 
     const apiKey = env.ANTHROPIC_API_KEY;
     if (!apiKey) {
@@ -52,7 +55,21 @@ export async function onRequestPost(context) {
 
     let prompt;
 
-    if (mode === 'write') {
+    if (mode === 'revise') {
+      const existing = body.article;
+      const revision = body.revision;
+      prompt = `你是 IsshoHub 的文章編輯助手。以下是一篇已生成的文章 JSON，請根據用戶的修改要求進行修改，輸出更新後的完整 JSON。
+
+現有文章：
+${JSON.stringify(existing, null, 2)}
+
+用戶修改要求：
+${revision}
+
+請根據要求修改，保持 JSON 結構不變，只輸出更新後的完整 JSON，不要任何其他文字：
+${JSON_SCHEMA}`;
+
+    } else if (mode === 'write') {
       const category = (body.category || '').trim();
       const notes    = (body.notes    || '').trim();
       prompt = `你是 IsshoHub 的專業撰稿人。IsshoHub 是繁體中文與英文雙語的在日外國人資訊平台，讀者主要是移居日本的香港、台灣人。
