@@ -534,7 +534,8 @@
         throw new Error(data.error || '分析失敗，請重試。');
       }
 
-      fillForm(data.article);
+      var originalContent = _currentMode === 'import' ? (document.getElementById('contentInput').value.trim()) : '';
+      fillForm(data.article, originalContent);
       document.getElementById('reviewSection').style.display = 'block';
       document.getElementById('reviewSection').scrollIntoView({ behavior: 'smooth' });
 
@@ -549,15 +550,23 @@
   /* ── Fill form ── */
   var _imagePrompt = '';
 
-  function fillForm(a) {
+  function fillForm(a, originalContent) {
     document.getElementById('f_title_tc').value   = a.title_tc   || '';
     document.getElementById('f_title_en').value   = a.title_en   || '';
     document.getElementById('f_excerpt_tc').value = a.excerpt_tc || '';
     document.getElementById('f_excerpt_en').value = a.excerpt_en || '';
-    document.getElementById('f_body_tc').value    = a.body_tc    || '';
-    document.getElementById('f_body_en').value    = a.body_en    || '';
     document.getElementById('f_author').value     = a.author     || '';
     _imagePrompt = a.image_prompt || '';
+
+    /* For import mode: fill body with original text; for write mode: use AI output */
+    if (a.body_tc || a.body_en) {
+      document.getElementById('f_body_tc').value = a.body_tc || '';
+      document.getElementById('f_body_en').value = a.body_en || '';
+    } else if (originalContent) {
+      /* Import mode: put original text in body_tc for user to review/edit */
+      document.getElementById('f_body_tc').value = originalContent;
+      document.getElementById('f_body_en').value = '';
+    }
 
     if (a.category_key) {
       document.getElementById('f_category').value = a.category_key;

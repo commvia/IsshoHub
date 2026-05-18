@@ -29,7 +29,8 @@ export async function onRequestPost(context) {
       return new Response(JSON.stringify({ error: 'ANTHROPIC_API_KEY environment variable not set' }), { status: 500, headers: cors });
     }
 
-    const JSON_SCHEMA = `{
+    /* Schema for write mode (full body needed) */
+    const JSON_SCHEMA_WRITE = `{
   "title_tc": "繁體中文標題（吸引人，20字以內）",
   "title_en": "English title (catchy, under 12 words)",
   "excerpt_tc": "繁體中文摘要（80-120字，簡介重點，吸引讀者點閱）",
@@ -38,6 +39,17 @@ export async function onRequestPost(context) {
   "body_tc": "繁體中文正文（Markdown格式，800-1200字，適當加 ## 小標題，段落清晰）",
   "body_en": "English body (Markdown, 800-1200 words, natural and engaging)",
   "author": "",
+  "image_prompt": "English image generation prompt for cover photo (real-life scene, photography style, mood, lighting. Max 20 words. No text, no logos, no close-up faces.)"
+}`;
+
+    /* Schema for import mode (metadata only — body filled from original) */
+    const JSON_SCHEMA_IMPORT = `{
+  "title_tc": "繁體中文標題（吸引人，20字以內）",
+  "title_en": "English title (catchy, under 12 words)",
+  "excerpt_tc": "繁體中文摘要（80-120字，簡介重點，吸引讀者點閱）",
+  "excerpt_en": "English excerpt (80-120 words, summarise key points naturally)",
+  "category_key": "最合適的分類key",
+  "author": "如文章有提及作者名稱就填入，否則空字串",
   "image_prompt": "English image generation prompt for cover photo (real-life scene, photography style, mood, lighting. Max 20 words. No text, no logos, no close-up faces.)"
 }`;
 
@@ -67,7 +79,7 @@ ${JSON.stringify(existing, null, 2)}
 ${revision}
 
 請根據要求修改，保持 JSON 結構不變，只輸出更新後的完整 JSON，不要任何其他文字：
-${JSON_SCHEMA}`;
+${JSON_SCHEMA_WRITE}`;
 
     } else if (mode === 'write') {
       const category = (body.category || '').trim();
@@ -89,28 +101,27 @@ ${notes ? '補充要點／大綱：\n' + notes : ''}
 ${CATEGORIES}
 
 請只輸出以下 JSON，不要任何其他文字：
-${JSON_SCHEMA}`;
+${JSON_SCHEMA_WRITE}`;
 
     } else {
+      /* Import mode: only extract metadata, body is passed through from original */
       prompt = `你是 IsshoHub 的文章編輯助手。IsshoHub 是繁體中文與英文雙語的在日外國人資訊平台，讀者主要是移居日本的香港、台灣人。
 
-請分析以下文章內容，生成結構化資料供 CMS 使用。
+請分析以下文章內容，只需提取元資料（標題、摘要、分類、作者），不需要重寫正文。
 
 【語言規則】
-- 如果內容同時有繁體中文和英文，請分別識別放入對應欄位
-- 如果只有繁中，_tc 填原文，_en 翻譯成自然英文
-- 如果只有英文，_en 填原文，_tc 翻譯成自然繁體中文
-- 正文完整保留原文內容，不要刪減
+- 標題和摘要：如果原文是繁中，tc填原文，en翻譯；如果是英文，en填原文，tc翻譯；兩語都有則各自填入
+- 請只分析文章開頭 3000 字就足夠
 
 ${CATEGORIES}
 
-文章內容：
+文章內容（只需看前段）：
 ---
-${content.slice(0, 10000)}
+${content.slice(0, 3000)}
 ---
 
 請只輸出以下 JSON，不要任何其他文字：
-${JSON_SCHEMA}`;
+${JSON_SCHEMA_IMPORT}`;
     }
 
     const aiResp = await fetch('https://api.anthropic.com/v1/messages', {
