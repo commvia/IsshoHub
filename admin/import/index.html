@@ -220,27 +220,71 @@
 
     <!-- Step 1: Input -->
     <div class="imp-card" id="inputSection">
-      <h2><span class="step-badge">1</span>貼上文章內容 或 上傳 Word 檔</h2>
-      <p class="sub">AI 會自動填寫標題、摘要、分類、正文，你只需審閱後儲存草稿。</p>
 
-      <textarea class="inp-area" id="contentInput" placeholder="在此貼上文章內容…（支援繁中或英文）"></textarea>
+      <!-- Mode tabs -->
+      <div style="display:flex;gap:4px;background:#f5f1ea;border-radius:10px;padding:4px;margin-bottom:24px;">
+        <button id="tabImport" onclick="switchMode('import')"
+          style="flex:1;padding:9px;border-radius:7px;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;background:var(--navy,#0a1a31);color:#fff;">
+          📋 匯入已有文章
+        </button>
+        <button id="tabWrite" onclick="switchMode('write')"
+          style="flex:1;padding:9px;border-radius:7px;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;background:transparent;color:#888;">
+          ✍️ 請 Claude 寫文章
+        </button>
+      </div>
 
-      <div class="or-divider">或</div>
+      <!-- Import mode -->
+      <div id="modeImport">
+        <p class="sub" style="margin-top:0;">貼上文章原文或上傳 Word 檔，AI 自動整理標題、摘要、分類、正文。</p>
+        <textarea class="inp-area" id="contentInput" placeholder="在此貼上文章內容…（支援繁中、英文，或中英對照）"></textarea>
+        <div class="or-divider">或</div>
+        <label class="upload-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          上傳 .docx 檔案
+          <input type="file" id="docxInput" accept=".docx,.doc">
+        </label>
+        <span class="file-name" id="fileName"></span>
+      </div>
 
-      <label class="upload-btn">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        上傳 .docx 檔案
-        <input type="file" id="docxInput" accept=".docx,.doc">
-      </label>
-      <span class="file-name" id="fileName"></span>
+      <!-- Write mode -->
+      <div id="modeWrite" style="display:none;">
+        <p class="sub" style="margin-top:0;">告訴 Claude 題目和重點，它會幫你寫好中英雙語全文。</p>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div>
+            <div class="field-label">文章題目 / 主題 <span style="color:#c0392b;">*</span></div>
+            <input class="field-input" id="writeTopic" type="text" placeholder="例：在日本辦銀行戶口的完整步驟">
+          </div>
+          <div>
+            <div class="field-label">指定分類（選填）</div>
+            <select class="field-input cat-select" id="writeCategory" style="max-width:280px;">
+              <option value="">讓 AI 自動判斷</option>
+              <option value="news">新聞・資訊</option>
+              <option value="visa">簽證・在留資格</option>
+              <option value="biz">創業・工作</option>
+              <option value="house">住屋</option>
+              <option value="tax">稅務・保險・年金</option>
+              <option value="life">生活</option>
+              <option value="places">好去處</option>
+              <option value="pets">寵物</option>
+              <option value="story">人物故事</option>
+              <option value="culture">文化</option>
+            </select>
+          </div>
+          <div>
+            <div class="field-label">補充要點 / 大綱（選填）</div>
+            <textarea class="inp-area" id="writeNotes" rows="4" style="min-height:100px;"
+              placeholder="例：&#10;- 需要哪些文件&#10;- 推薦哪間銀行&#10;- 注意事項"></textarea>
+          </div>
+        </div>
+      </div>
 
-      <button class="btn-analyze" id="analyzeBtn" onclick="analyzeContent()">
+      <button class="btn-analyze" id="analyzeBtn" onclick="analyzeContent()" style="margin-top:20px;">
         ✨ AI 分析並填寫欄位
       </button>
 
       <div class="analyzing-bar" id="analyzingBar">
         <div class="spinner"></div>
-        <span>Claude 正在分析文章，約需 5-10 秒…</span>
+        <span id="analyzingMsg">Claude 正在分析文章，約需 5-10 秒…</span>
       </div>
     </div>
 
@@ -386,6 +430,22 @@
   }
   checkAuth();
 
+  /* ── Mode switch ── */
+  var _currentMode = 'import';
+  window.switchMode = function (mode) {
+    _currentMode = mode;
+    document.getElementById('modeImport').style.display = mode === 'import' ? '' : 'none';
+    document.getElementById('modeWrite').style.display  = mode === 'write'  ? '' : 'none';
+    var tabI = document.getElementById('tabImport');
+    var tabW = document.getElementById('tabWrite');
+    tabI.style.background = mode === 'import' ? 'var(--navy,#0a1a31)' : 'transparent';
+    tabI.style.color      = mode === 'import' ? '#fff' : '#888';
+    tabW.style.background = mode === 'write'  ? 'var(--navy,#0a1a31)' : 'transparent';
+    tabW.style.color      = mode === 'write'  ? '#fff' : '#888';
+    document.getElementById('analyzeBtn').textContent =
+      mode === 'write' ? '✨ Claude 幫我寫文章' : '✨ AI 分析並填寫欄位';
+  };
+
   /* ── .docx upload ── */
   document.getElementById('docxInput').addEventListener('change', async function (e) {
     const file = e.target.files[0];
@@ -417,21 +477,39 @@
     document.getElementById('f_slug').value = base + '-' + suffix;
   };
 
-  /* ── Analyze ── */
+  /* ── Analyze / Write ── */
   window.analyzeContent = async function () {
-    const content = document.getElementById('contentInput').value.trim();
-    if (!content) { alert('請先貼上文章內容或上傳 Word 檔。'); return; }
+    var payload;
+
+    if (_currentMode === 'write') {
+      var topic = document.getElementById('writeTopic').value.trim();
+      if (!topic) { alert('請先輸入文章題目。'); return; }
+      payload = {
+        mode:     'write',
+        topic:    topic,
+        category: document.getElementById('writeCategory').value,
+        notes:    document.getElementById('writeNotes').value.trim(),
+      };
+    } else {
+      var content = document.getElementById('contentInput').value.trim();
+      if (!content) { alert('請先貼上文章內容或上傳 Word 檔。'); return; }
+      payload = { mode: 'import', content: content };
+    }
 
     const btn = document.getElementById('analyzeBtn');
     const bar = document.getElementById('analyzingBar');
+    const msg = document.getElementById('analyzingMsg');
     btn.disabled = true;
     bar.style.display = 'flex';
+    msg.textContent = _currentMode === 'write'
+      ? 'Claude 正在撰寫文章，約需 15-30 秒…'
+      : 'Claude 正在分析文章，約需 5-10 秒…';
 
     try {
       const resp = await fetch('/api/import-article', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content }),
+        body: JSON.stringify(payload),
       });
       const data = await resp.json();
 
@@ -605,6 +683,8 @@
     document.getElementById('contentInput').value = '';
     document.getElementById('fileName').textContent = '';
     document.getElementById('docxInput').value = '';
+    document.getElementById('writeTopic').value = '';
+    document.getElementById('writeNotes').value = '';
     document.getElementById('reviewSection').style.display = 'none';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
