@@ -149,6 +149,47 @@
     .result-box.ok { background: #f0faf2; color: #1a6b2a; }
     .result-box.err { background: #fff0f0; color: #c0392b; }
     .result-box a { color: inherit; font-weight: 700; }
+
+    /* Cover image gen */
+    .cover-gen-area { margin-top: 4px; }
+    .btn-gen-img {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 10px 18px; background: #f0f6ff;
+      border: 1.5px solid #bbd3f5; border-radius: 9px;
+      font-size: 13px; font-weight: 600; color: #1a56a8;
+      cursor: pointer; transition: all .18s;
+    }
+    .btn-gen-img:hover { background: #ddeeff; border-color: #378add; }
+    .btn-gen-img:disabled { opacity: .5; cursor: not-allowed; }
+    .cover-preview {
+      display: none; margin-top: 14px;
+      border-radius: 10px; overflow: hidden;
+      border: 1.5px solid #e0ddd6; position: relative;
+    }
+    .cover-preview img {
+      width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block;
+    }
+    .cover-preview-loading {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: #f5f1ea; font-size: 13px; color: #888;
+      gap: 8px;
+    }
+    .cover-actions {
+      display: flex; gap: 8px; margin-top: 10px;
+    }
+    .btn-use-img {
+      flex: 1; padding: 10px; background: #1a6b2a; color: #fff;
+      border-radius: 8px; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: background .15s;
+    }
+    .btn-use-img:hover { background: #14521f; }
+    .btn-regen-img {
+      padding: 10px 16px; background: #f0ede8; color: #555;
+      border-radius: 8px; font-size: 13px; cursor: pointer;
+      transition: background .15s;
+    }
+    .btn-regen-img:hover { background: #e5e2dd; }
     #authGuard {
       text-align: center; padding: 80px 24px;
       font-size: 15px; color: #888;
@@ -283,6 +324,29 @@
         <input class="field-input" id="f_author" type="text" placeholder="作者名稱（選填）" style="max-width:320px;">
       </div>
 
+      <hr class="section-sep">
+
+      <div>
+        <div class="field-label" style="margin-bottom:10px;">封面圖片</div>
+        <input class="field-input" id="f_cover_url" type="text" placeholder="封面圖片網址（選填，或用下方 AI 生成）" style="margin-bottom:10px;">
+        <div class="cover-gen-area">
+          <button class="btn-gen-img" id="genImgBtn" onclick="generateCover()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            AI 自動生成封面圖
+          </button>
+          <div class="cover-preview" id="coverPreview">
+            <div class="cover-preview-loading" id="coverLoading">
+              <div class="spinner"></div> 生成中，約需 10-20 秒…
+            </div>
+            <img id="coverImg" src="" alt="封面預覽" style="display:none;" onload="onImgLoaded()" onerror="onImgError()">
+          </div>
+          <div class="cover-actions" id="coverActions" style="display:none;">
+            <button class="btn-use-img" onclick="useCoverImg()">✓ 使用此圖</button>
+            <button class="btn-regen-img" onclick="generateCover()">↺ 重新生成</button>
+          </div>
+        </div>
+      </div>
+
       <div class="action-row">
         <button class="btn-save" id="saveBtn" onclick="saveDraft()">
           💾 儲存草稿
@@ -388,6 +452,8 @@
   };
 
   /* ── Fill form ── */
+  var _imagePrompt = '';
+
   function fillForm(a) {
     document.getElementById('f_title_tc').value   = a.title_tc   || '';
     document.getElementById('f_title_en').value   = a.title_en   || '';
@@ -396,6 +462,7 @@
     document.getElementById('f_body_tc').value    = a.body_tc    || '';
     document.getElementById('f_body_en').value    = a.body_en    || '';
     document.getElementById('f_author').value     = a.author     || '';
+    _imagePrompt = a.image_prompt || '';
 
     if (a.category_key) {
       document.getElementById('f_category').value = a.category_key;
@@ -407,7 +474,70 @@
       const suffix = Date.now().toString(36).slice(-4);
       document.getElementById('f_slug').value = base + '-' + suffix;
     }
+
+    /* Reset cover area */
+    document.getElementById('coverPreview').style.display  = 'none';
+    document.getElementById('coverActions').style.display  = 'none';
+    document.getElementById('f_cover_url').value = '';
   }
+
+  /* ── Cover image generation (Pollinations.ai — free, no key needed) ── */
+  var _currentSeed = 0;
+
+  window.generateCover = function () {
+    var prompt = _imagePrompt;
+    if (!prompt) {
+      /* Fallback: build basic prompt from title */
+      var title = document.getElementById('f_title_en').value || document.getElementById('f_title_tc').value;
+      prompt = 'lifestyle photography related to: ' + title + ', Japan, natural light, editorial style';
+    }
+
+    _currentSeed = Math.floor(Math.random() * 99999);
+    var encoded  = encodeURIComponent(prompt + ', high quality, no text');
+    var imgUrl   = 'https://image.pollinations.ai/prompt/' + encoded + '?width=1200&height=675&seed=' + _currentSeed + '&nologo=true';
+
+    var btn      = document.getElementById('genImgBtn');
+    var preview  = document.getElementById('coverPreview');
+    var loading  = document.getElementById('coverLoading');
+    var img      = document.getElementById('coverImg');
+    var actions  = document.getElementById('coverActions');
+
+    btn.disabled = true;
+    preview.style.display  = 'block';
+    loading.style.display  = 'flex';
+    img.style.display      = 'none';
+    actions.style.display  = 'none';
+
+    img.src = imgUrl;
+  };
+
+  window.onImgLoaded = function () {
+    document.getElementById('coverLoading').style.display = 'none';
+    document.getElementById('coverImg').style.display     = 'block';
+    document.getElementById('coverActions').style.display = 'flex';
+    document.getElementById('genImgBtn').disabled         = false;
+  };
+
+  window.onImgError = function () {
+    document.getElementById('coverLoading').innerHTML = '⚠️ 生成失敗，請重試';
+    document.getElementById('genImgBtn').disabled     = false;
+  };
+
+  window.useCoverImg = function () {
+    var src = document.getElementById('coverImg').src;
+    document.getElementById('f_cover_url').value = src;
+    document.getElementById('coverActions').style.display = 'none';
+    /* Show confirmation */
+    var btn = document.getElementById('genImgBtn');
+    btn.textContent = '✓ 已選用';
+    btn.style.background = '#f0faf2';
+    btn.style.borderColor = '#1a6b2a';
+    btn.style.color = '#1a6b2a';
+    setTimeout(function () {
+      btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> AI 自動生成封面圖';
+      btn.style.cssText = '';
+    }, 2000);
+  };
 
   /* ── Body tab switch ── */
   window.switchBody = function (lang) {
@@ -441,8 +571,9 @@
       excerpt_en:  document.getElementById('f_excerpt_en').value.trim() || null,
       body_tc:     document.getElementById('f_body_tc').value.trim()    || null,
       body_en:     document.getElementById('f_body_en').value.trim()    || null,
-      category_key:document.getElementById('f_category').value          || null,
-      author:      document.getElementById('f_author').value.trim()     || null,
+      category_key:    document.getElementById('f_category').value          || null,
+      author:          document.getElementById('f_author').value.trim()     || null,
+      cover_image_url: document.getElementById('f_cover_url').value.trim()  || null,
       published:   false,
       published_at:null,
       featured:    false,

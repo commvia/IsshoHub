@@ -57,7 +57,8 @@ ${content.slice(0, 10000)}
   "category_key": "最合適的分類key",
   "body_tc": "繁體中文正文（Markdown格式，整理段落，適當加 ## 小標題）",
   "body_en": "English body (Markdown, translate or adapt naturally)",
-  "author": "如文章有提及作者名稱就填入，否則空字串"
+  "author": "如文章有提及作者名稱就填入，否則空字串",
+  "image_prompt": "English image generation prompt for the cover photo (describe a real-life scene, photography style, mood and lighting that suits the article. Max 20 words. No text, no logos, no people's faces close-up.)"
 }`;
 
     const aiResp = await fetch('https://api.anthropic.com/v1/messages', {
