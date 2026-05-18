@@ -103,10 +103,12 @@
     'footer_a4':     { tc: '聯絡我們', en: 'Contact' },
     'contact_title':             { tc: '聯絡我們', en: 'Contact Us' },
     'contact_sub':               { tc: '有任何問題或意見？留下訊息，我們會盡快回覆。', en: 'Have a question or feedback? Leave us a message and we\'ll get back to you.' },
+    'contact_name_label':        { tc: '您的姓名', en: 'Your name' },
+    'contact_name_placeholder':  { tc: '請輸入姓名', en: 'Your name' },
+    'contact_line_label':        { tc: 'LINE ID', en: 'LINE ID' },
+    'contact_line_placeholder':  { tc: '例：@yourlineid', en: 'e.g. @yourlineid' },
     'contact_msg_label':         { tc: '訊息內容', en: 'Message' },
     'contact_msg_placeholder':   { tc: '請輸入您的訊息…', en: 'Your message…' },
-    'contact_method_label':      { tc: '聯絡方式（電郵 / LINE ID 等）', en: 'How to reach you (email, LINE ID, etc.)' },
-    'contact_method_placeholder':{ tc: '例：your@email.com 或 LINE ID', en: 'e.g. your@email.com or LINE ID' },
     'contact_submit':            { tc: '發送訊息', en: 'Send message' },
     'footer_a5':     { tc: '隱私政策', en: 'Privacy' },
     'footer_lang':   { tc: '繁體中文', en: 'Traditional Chinese' },
@@ -569,12 +571,16 @@
             '<p class="modal-sub" data-i18n="contact_sub"></p>' +
             '<div class="contact-form-fields">' +
               '<div class="form-group">' +
-                '<label data-i18n="contact_msg_label"></label>' +
-                '<textarea class="contact-textarea" name="message" rows="5" required data-i18n-placeholder="contact_msg_placeholder"></textarea>' +
+                '<label data-i18n="contact_name_label"></label>' +
+                '<input type="text" name="name" required data-i18n-placeholder="contact_name_placeholder">' +
               '</div>' +
               '<div class="form-group">' +
-                '<label data-i18n="contact_method_label"></label>' +
-                '<input type="text" name="contact" required data-i18n-placeholder="contact_method_placeholder">' +
+                '<label data-i18n="contact_line_label"></label>' +
+                '<input type="text" name="line_id" required data-i18n-placeholder="contact_line_placeholder">' +
+              '</div>' +
+              '<div class="form-group">' +
+                '<label data-i18n="contact_msg_label"></label>' +
+                '<textarea class="contact-textarea" name="message" rows="5" required data-i18n-placeholder="contact_msg_placeholder"></textarea>' +
               '</div>' +
               '<button type="button" id="contactSubmitBtn" class="btn-submit" data-i18n="contact_submit"></button>' +
               '<div id="contactResult" style="display:none;margin-top:14px;padding:12px 16px;border-radius:8px;font-size:14px;line-height:1.5;"></div>' +
@@ -585,20 +591,22 @@
       updateI18n();
     }
 
-    var modal   = document.getElementById('contactModal');
-    var msgEl   = modal.querySelector('[name="message"]');
-    var ctEl    = modal.querySelector('[name="contact"]');
+    var modal     = document.getElementById('contactModal');
+    var nameEl    = modal.querySelector('[name="name"]');
+    var lineEl    = modal.querySelector('[name="line_id"]');
+    var msgEl     = modal.querySelector('[name="message"]');
     var submitBtn = document.getElementById('contactSubmitBtn');
-    var result  = document.getElementById('contactResult');
+    var result    = document.getElementById('contactResult');
 
     function openModal() {
       modal.classList.add('open');
       document.body.style.overflow = 'hidden';
-      if (msgEl) { msgEl.value = ''; msgEl.disabled = false; }
-      if (ctEl)  { ctEl.value  = ''; ctEl.disabled  = false; }
+      if (nameEl) { nameEl.value = ''; nameEl.disabled = false; }
+      if (lineEl) { lineEl.value = ''; lineEl.disabled = false; }
+      if (msgEl)  { msgEl.value  = ''; msgEl.disabled  = false; }
       if (submitBtn) { submitBtn.style.display = ''; submitBtn.disabled = false; updateI18n(); }
       if (result) result.style.display = 'none';
-      setTimeout(function () { if (msgEl) msgEl.focus(); }, 280);
+      setTimeout(function () { if (nameEl) nameEl.focus(); }, 280);
     }
     function closeModal() {
       modal.classList.remove('open');
@@ -618,9 +626,10 @@
 
     submitBtn.addEventListener('click', function () {
       var lang    = getLang();
-      var message = msgEl ? msgEl.value.trim() : '';
-      var contact = ctEl  ? ctEl.value.trim()  : '';
-      if (!message || !contact) return;
+      var name    = nameEl ? nameEl.value.trim() : '';
+      var lineId  = lineEl ? lineEl.value.trim() : '';
+      var message = msgEl  ? msgEl.value.trim()  : '';
+      if (!name || !lineId || !message) return;
 
       submitBtn.disabled = true;
       submitBtn.textContent = lang === 'tc' ? '發送中…' : 'Sending…';
@@ -629,7 +638,7 @@
       fetch(CONTACT_FORMSPREE, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ message: message, contact: contact }),
+        body: JSON.stringify({ name: name, line_id: lineId, message: message }),
       })
       .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
       .then(function (res) {
@@ -641,8 +650,9 @@
             ? '✓ 訊息已發送！我們會盡快回覆。'
             : '✓ Message sent! We\'ll get back to you soon.';
           submitBtn.style.display = 'none';
-          if (msgEl) msgEl.disabled = true;
-          if (ctEl)  ctEl.disabled  = true;
+          if (nameEl) nameEl.disabled = true;
+          if (lineEl) lineEl.disabled = true;
+          if (msgEl)  msgEl.disabled  = true;
         } else {
           throw new Error((res.data && res.data.error) || 'error');
         }
