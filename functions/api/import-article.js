@@ -25,6 +25,12 @@ export async function onRequestPost(context) {
 
 請分析以下文章內容，生成結構化資料供 CMS 使用。
 
+【重要語言規則】
+- 如果內容同時包含繁體中文和英文版本，請分別識別並放入對應欄位（_tc 放中文，_en 放英文）
+- 如果只有繁體中文，請將 _tc 欄位填入原文，_en 欄位翻譯成自然英文
+- 如果只有英文，請將 _en 欄位填入原文，_tc 欄位翻譯成自然繁體中文
+- 正文請完整保留原文內容，不要刪減
+
 可用分類（category_key 只能選以下之一）：
 - news   → 新聞・資訊
 - visa   → 簽證・在留資格
@@ -39,7 +45,7 @@ export async function onRequestPost(context) {
 
 文章內容：
 ---
-${content.slice(0, 8000)}
+${content.slice(0, 10000)}
 ---
 
 請只輸出以下 JSON，不要任何其他文字或說明：
