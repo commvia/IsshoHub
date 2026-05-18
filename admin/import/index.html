@@ -683,7 +683,7 @@
   window.generateCoverWithPrompt = function () {
     var custom = document.getElementById('imgPromptInput').value.trim();
     if (custom) _imagePrompt = custom;
-    generateCover();
+    window.generateCover();
   };
 
   window.onImgError = function () {
