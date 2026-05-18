@@ -392,7 +392,7 @@
             <div class="field-label" style="margin-bottom:5px;">修改圖片描述後重新生成</div>
             <div style="display:flex;gap:8px;">
               <input class="field-input" id="imgPromptInput" type="text" style="flex:1;font-size:13px;" placeholder="例：bright outdoor scene, no people, cherry blossom">
-              <button onclick="generateCoverWithPrompt()"
+              <button id="regenPromptBtn" onclick="generateCoverWithPrompt()"
                 style="padding:10px 14px;background:var(--navy,#0a1a31);color:#fff;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;">
                 重新生成
               </button>
@@ -679,22 +679,30 @@
     document.getElementById('imgPromptArea').style.display = 'block';
     document.getElementById('imgPromptInput').value        = _imagePrompt || '';
     document.getElementById('genImgBtn').disabled          = false;
+    var rb = document.getElementById('regenPromptBtn');
+    if (rb) { rb.disabled = false; rb.textContent = '重新生成'; }
   };
 
   window.generateCoverWithPrompt = function () {
     var custom = document.getElementById('imgPromptInput').value.trim();
     if (custom) _imagePrompt = custom;
+    var btn = document.getElementById('regenPromptBtn');
+    btn.disabled = true;
+    btn.textContent = '生成中…';
     window.generateCover();
+    document.getElementById('coverPreview').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   };
 
   window.onImgError = function () {
     var loading = document.getElementById('coverLoading');
     loading.innerHTML = '⚠️ 生成失敗，請再試一次';
     loading.style.display = 'flex';
-    document.getElementById('coverImg').style.display   = 'none';
+    document.getElementById('coverImg').style.display     = 'none';
     document.getElementById('coverActions').style.display = 'flex';
     document.getElementById('imgPromptArea').style.display = 'block';
     document.getElementById('genImgBtn').disabled = false;
+    var rb = document.getElementById('regenPromptBtn');
+    if (rb) { rb.disabled = false; rb.textContent = '重新生成'; }
   };
 
   window.useCoverImg = function () {
