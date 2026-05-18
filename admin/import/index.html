@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI 文章匯入 — IsshoHub Admin</title>
+  <link rel="stylesheet" href="/assets/css/styles.css?v=32">
+  <style>
+    body { background: #f5f1ea; min-height: 100vh; font-family: var(--sans-tc, sans-serif); }
+    .imp-header {
+      background: var(--navy, #0a1a31);
+      color: #fff;
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .imp-header a { color: #fff; text-decoration: none; font-size: 13px; opacity: .7; }
+    .imp-header a:hover { opacity: 1; }
+    .imp-header h1 { font-size: 17px; font-weight: 700; margin: 0; }
+    .imp-body { max-width: 860px; margin: 0 auto; padding: 36px 24px 80px; }
+    .imp-card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.07);
+      padding: 32px 36px;
+      margin-bottom: 24px;
+    }
+    .imp-card h2 { font-size: 17px; font-weight: 700; color: var(--navy, #0a1a31); margin: 0 0 6px; }
+    .imp-card .sub { font-size: 13px; color: #888; margin: 0 0 20px; }
+    .step-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--navy, #0a1a31); color: #fff;
+      font-size: 12px; font-weight: 700;
+      margin-right: 8px;
+    }
+    .inp-area {
+      width: 100%; min-height: 200px;
+      border: 1.5px solid #e0ddd6; border-radius: 10px;
+      padding: 14px 16px; font-size: 14px; line-height: 1.6;
+      font-family: inherit; resize: vertical; outline: none;
+      transition: border-color .18s;
+      box-sizing: border-box;
+    }
+    .inp-area:focus { border-color: var(--accent, #378add); }
+    .or-divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 14px 0; color: #aaa; font-size: 13px;
+    }
+    .or-divider::before, .or-divider::after {
+      content: ''; flex: 1; height: 1px; background: #e8e5de;
+    }
+    .upload-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 20px; border: 1.5px dashed #c0bdb5;
+      border-radius: 10px; cursor: pointer; font-size: 14px;
+      color: #555; transition: all .18s; background: #faf9f7;
+    }
+    .upload-btn:hover { border-color: var(--accent, #378add); color: var(--accent, #378add); background: #f0f6ff; }
+    .upload-btn input { display: none; }
+    .file-name { font-size: 13px; color: #666; margin-left: 8px; }
+    .btn-analyze {
+      margin-top: 20px; width: 100%;
+      padding: 15px; background: var(--navy, #0a1a31);
+      color: #fff; border-radius: 10px;
+      font-size: 15px; font-weight: 600;
+      transition: background .18s; cursor: pointer;
+    }
+    .btn-analyze:hover { background: var(--accent, #378add); }
+    .btn-analyze:disabled { opacity: .5; cursor: not-allowed; }
+    .analyzing-bar {
+      display: none; margin-top: 16px;
+      background: #f0f6ff; border-radius: 10px;
+      padding: 14px 18px; font-size: 14px; color: #1a56a8;
+      align-items: center; gap: 10px;
+    }
+    .spinner {
+      width: 18px; height: 18px; border: 2.5px solid #bbd3f5;
+      border-top-color: #1a56a8; border-radius: 50%;
+      animation: spin .7s linear infinite; flex-shrink: 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Review form */
+    #reviewSection { display: none; }
+    .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 640px) { .field-grid { grid-template-columns: 1fr; } }
+    .field-label {
+      font-size: 12px; font-weight: 600; color: #888;
+      letter-spacing: .04em; text-transform: uppercase; margin-bottom: 5px;
+    }
+    .field-input {
+      width: 100%; padding: 11px 14px;
+      border: 1.5px solid #e0ddd6; border-radius: 9px;
+      font: inherit; font-size: 14px; color: var(--navy, #0a1a31);
+      background: #faf9f7; outline: none;
+      transition: border-color .18s; box-sizing: border-box;
+    }
+    .field-input:focus { border-color: var(--accent, #378add); background: #fff; }
+    .field-textarea {
+      resize: vertical; min-height: 100px; line-height: 1.6;
+    }
+    .field-body-ta { min-height: 200px; font-family: monospace; font-size: 13px; }
+    .cat-select {
+      appearance: none; background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23888' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 12px center;
+      padding-right: 32px;
+    }
+    .ai-badge {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      background: #e8f0fb; color: #1a56a8; padding: 2px 7px;
+      border-radius: 4px; margin-left: 6px; vertical-align: middle;
+    }
+    .slug-row { display: flex; gap: 8px; align-items: flex-end; }
+    .slug-row .field-input { flex: 1; font-family: monospace; }
+    .btn-regen { padding: 11px 14px; background: #f0f0f0; border-radius: 9px; font-size: 13px; cursor: pointer; white-space: nowrap; }
+    .btn-regen:hover { background: #e0e0e0; }
+    .section-sep { border: none; border-top: 1px solid #ece9e3; margin: 24px 0; }
+    .body-tabs { display: flex; gap: 4px; margin-bottom: 10px; }
+    .body-tab {
+      padding: 6px 16px; border-radius: 6px; font-size: 13px;
+      font-weight: 600; cursor: pointer; color: #888;
+      transition: all .15s;
+    }
+    .body-tab.active { background: var(--navy, #0a1a31); color: #fff; }
+    .body-pane { display: none; }
+    .body-pane.active { display: block; }
+    .action-row { display: flex; gap: 12px; margin-top: 24px; }
+    .btn-save {
+      flex: 1; padding: 15px;
+      background: #1a6b2a; color: #fff;
+      border-radius: 10px; font-size: 15px; font-weight: 600;
+      transition: background .18s; cursor: pointer;
+    }
+    .btn-save:hover { background: #14521f; }
+    .btn-save:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-reset {
+      padding: 15px 24px; background: #f0ede8; color: #555;
+      border-radius: 10px; font-size: 14px; cursor: pointer;
+      transition: background .18s;
+    }
+    .btn-reset:hover { background: #e5e2dd; }
+    .result-box {
+      display: none; margin-top: 16px; padding: 16px 20px;
+      border-radius: 10px; font-size: 14px; line-height: 1.6;
+    }
+    .result-box.ok { background: #f0faf2; color: #1a6b2a; }
+    .result-box.err { background: #fff0f0; color: #c0392b; }
+    .result-box a { color: inherit; font-weight: 700; }
+    #authGuard {
+      text-align: center; padding: 80px 24px;
+      font-size: 15px; color: #888;
+    }
+    #authGuard a { color: var(--navy, #0a1a31); font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<div class="imp-header">
+  <div style="display:flex;align-items:center;gap:14px;">
+    <a href="/admin/">← 返回管理後台</a>
+    <span style="opacity:.3">|</span>
+    <h1>✨ AI 文章匯入</h1>
+  </div>
+  <span id="adminEmail" style="font-size:13px;opacity:.6"></span>
+</div>
+
+<div class="imp-body">
+
+  <!-- Auth guard -->
+  <div id="authGuard" style="display:none;">
+    請先 <a href="/admin/">登入管理後台</a> 再使用此功能。
+  </div>
+
+  <!-- Main content (shown when logged in as admin) -->
+  <div id="mainContent" style="display:none;">
+
+    <!-- Step 1: Input -->
+    <div class="imp-card" id="inputSection">
+      <h2><span class="step-badge">1</span>貼上文章內容 或 上傳 Word 檔</h2>
+      <p class="sub">AI 會自動填寫標題、摘要、分類、正文，你只需審閱後儲存草稿。</p>
+
+      <textarea class="inp-area" id="contentInput" placeholder="在此貼上文章內容…（支援繁中或英文）"></textarea>
+
+      <div class="or-divider">或</div>
+
+      <label class="upload-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        上傳 .docx 檔案
+        <input type="file" id="docxInput" accept=".docx,.doc">
+      </label>
+      <span class="file-name" id="fileName"></span>
+
+      <button class="btn-analyze" id="analyzeBtn" onclick="analyzeContent()">
+        ✨ AI 分析並填寫欄位
+      </button>
+
+      <div class="analyzing-bar" id="analyzingBar">
+        <div class="spinner"></div>
+        <span>Claude 正在分析文章，約需 5-10 秒…</span>
+      </div>
+    </div>
+
+    <!-- Step 2: Review -->
+    <div class="imp-card" id="reviewSection">
+      <h2><span class="step-badge">2</span>審閱 AI 填寫的內容 <span class="ai-badge">AI 生成</span></h2>
+      <p class="sub">所有欄位均可直接編輯，確認無誤後點「儲存草稿」。</p>
+
+      <div class="field-grid">
+        <div>
+          <div class="field-label">中文標題</div>
+          <input class="field-input" id="f_title_tc" type="text" placeholder="繁體中文標題">
+        </div>
+        <div>
+          <div class="field-label">英文標題</div>
+          <input class="field-input" id="f_title_en" type="text" placeholder="English Title">
+        </div>
+      </div>
+
+      <hr class="section-sep">
+
+      <div>
+        <div class="field-label">網址 Slug</div>
+        <div class="slug-row">
+          <input class="field-input" id="f_slug" type="text" placeholder="article-url-slug">
+          <button class="btn-regen" onclick="regenSlug()">↺ 重新生成</button>
+        </div>
+      </div>
+
+      <hr class="section-sep">
+
+      <div>
+        <div class="field-label">分類</div>
+        <select class="field-input cat-select" id="f_category">
+          <option value="news">新聞・資訊</option>
+          <option value="visa">簽證・在留資格</option>
+          <option value="biz">創業・工作</option>
+          <option value="house">住屋</option>
+          <option value="tax">稅務・保險・年金</option>
+          <option value="life">生活</option>
+          <option value="places">好去處</option>
+          <option value="pets">寵物</option>
+          <option value="story">人物故事</option>
+          <option value="culture">文化</option>
+        </select>
+      </div>
+
+      <hr class="section-sep">
+
+      <div class="field-grid">
+        <div>
+          <div class="field-label">中文摘要</div>
+          <textarea class="field-input field-textarea" id="f_excerpt_tc" placeholder="繁體中文摘要"></textarea>
+        </div>
+        <div>
+          <div class="field-label">英文摘要</div>
+          <textarea class="field-input field-textarea" id="f_excerpt_en" placeholder="English excerpt"></textarea>
+        </div>
+      </div>
+
+      <hr class="section-sep">
+
+      <div>
+        <div class="field-label" style="margin-bottom:10px;">正文</div>
+        <div class="body-tabs">
+          <div class="body-tab active" onclick="switchBody('tc')">繁體中文</div>
+          <div class="body-tab" onclick="switchBody('en')">English</div>
+        </div>
+        <div class="body-pane active" id="bodyPane_tc">
+          <textarea class="field-input field-body-ta" id="f_body_tc" placeholder="繁體中文正文（Markdown）"></textarea>
+        </div>
+        <div class="body-pane" id="bodyPane_en">
+          <textarea class="field-input field-body-ta" id="f_body_en" placeholder="English body (Markdown)"></textarea>
+        </div>
+      </div>
+
+      <hr class="section-sep">
+
+      <div>
+        <div class="field-label">作者</div>
+        <input class="field-input" id="f_author" type="text" placeholder="作者名稱（選填）" style="max-width:320px;">
+      </div>
+
+      <div class="action-row">
+        <button class="btn-save" id="saveBtn" onclick="saveDraft()">
+          💾 儲存草稿
+        </button>
+        <button class="btn-reset" onclick="resetAll()">重新開始</button>
+      </div>
+
+      <div class="result-box" id="saveResult"></div>
+    </div>
+
+  </div><!-- /mainContent -->
+</div>
+
+<!-- Mammoth.js for .docx parsing -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/assets/js/supabase-client.js?v=7"></script>
+
+<script>
+(function () {
+  /* ── Auth check ── */
+  async function checkAuth() {
+    if (!window.IsshoAuth) return setTimeout(checkAuth, 200);
+
+    const user = await window.IsshoAuth.getUser();
+    if (!user) {
+      document.getElementById('authGuard').style.display = 'block';
+      return;
+    }
+    const { data: profile } = await window.IsshoAuth.getProfile(user.id);
+    if (!profile || profile.role !== 'admin') {
+      document.getElementById('authGuard').style.display = 'block';
+      return;
+    }
+    document.getElementById('mainContent').style.display = 'block';
+    document.getElementById('adminEmail').textContent = user.email;
+  }
+  checkAuth();
+
+  /* ── .docx upload ── */
+  document.getElementById('docxInput').addEventListener('change', async function (e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    document.getElementById('fileName').textContent = file.name;
+    try {
+      const result = await mammoth.extractRawText({ arrayBuffer: await file.arrayBuffer() });
+      document.getElementById('contentInput').value = result.value;
+    } catch (err) {
+      alert('無法讀取 .docx 檔案：' + err.message);
+    }
+  });
+
+  /* ── Slugify ── */
+  window.slugify = function (text) {
+    return text.toLowerCase()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .trim()
+      .replace(/^-|-$/g, '');
+  };
+
+  window.regenSlug = function () {
+    const en = document.getElementById('f_title_en').value;
+    if (!en) return;
+    const base = slugify(en).slice(0, 50);
+    const suffix = Date.now().toString(36).slice(-4);
+    document.getElementById('f_slug').value = base + '-' + suffix;
+  };
+
+  /* ── Analyze ── */
+  window.analyzeContent = async function () {
+    const content = document.getElementById('contentInput').value.trim();
+    if (!content) { alert('請先貼上文章內容或上傳 Word 檔。'); return; }
+
+    const btn = document.getElementById('analyzeBtn');
+    const bar = document.getElementById('analyzingBar');
+    btn.disabled = true;
+    bar.style.display = 'flex';
+
+    try {
+      const resp = await fetch('/api/import-article', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content }),
+      });
+      const data = await resp.json();
+
+      if (!data.ok || !data.article) {
+        throw new Error(data.error || '分析失敗，請重試。');
+      }
+
+      fillForm(data.article);
+      document.getElementById('reviewSection').style.display = 'block';
+      document.getElementById('reviewSection').scrollIntoView({ behavior: 'smooth' });
+
+    } catch (err) {
+      alert('錯誤：' + err.message);
+    } finally {
+      btn.disabled = false;
+      bar.style.display = 'none';
+    }
+  };
+
+  /* ── Fill form ── */
+  function fillForm(a) {
+    document.getElementById('f_title_tc').value   = a.title_tc   || '';
+    document.getElementById('f_title_en').value   = a.title_en   || '';
+    document.getElementById('f_excerpt_tc').value = a.excerpt_tc || '';
+    document.getElementById('f_excerpt_en').value = a.excerpt_en || '';
+    document.getElementById('f_body_tc').value    = a.body_tc    || '';
+    document.getElementById('f_body_en').value    = a.body_en    || '';
+    document.getElementById('f_author').value     = a.author     || '';
+
+    if (a.category_key) {
+      document.getElementById('f_category').value = a.category_key;
+    }
+
+    /* Auto-generate slug from EN title */
+    if (a.title_en) {
+      const base   = slugify(a.title_en).slice(0, 50);
+      const suffix = Date.now().toString(36).slice(-4);
+      document.getElementById('f_slug').value = base + '-' + suffix;
+    }
+  }
+
+  /* ── Body tab switch ── */
+  window.switchBody = function (lang) {
+    document.querySelectorAll('.body-tab').forEach((t, i) => {
+      t.classList.toggle('active', (i === 0) === (lang === 'tc'));
+    });
+    document.getElementById('bodyPane_tc').classList.toggle('active', lang === 'tc');
+    document.getElementById('bodyPane_en').classList.toggle('active', lang === 'en');
+  };
+
+  /* ── Save draft ── */
+  window.saveDraft = async function () {
+    const slug    = document.getElementById('f_slug').value.trim();
+    const titleTc = document.getElementById('f_title_tc').value.trim();
+    const titleEn = document.getElementById('f_title_en').value.trim();
+
+    if (!slug)    { alert('請填寫網址 Slug。'); return; }
+    if (!titleTc && !titleEn) { alert('請填寫至少一個標題。'); return; }
+
+    const btn = document.getElementById('saveBtn');
+    const res = document.getElementById('saveResult');
+    btn.disabled = true;
+    btn.textContent = '儲存中…';
+    res.style.display = 'none';
+
+    const payload = {
+      slug,
+      title_tc:    titleTc  || null,
+      title_en:    titleEn  || null,
+      excerpt_tc:  document.getElementById('f_excerpt_tc').value.trim() || null,
+      excerpt_en:  document.getElementById('f_excerpt_en').value.trim() || null,
+      body_tc:     document.getElementById('f_body_tc').value.trim()    || null,
+      body_en:     document.getElementById('f_body_en').value.trim()    || null,
+      category_key:document.getElementById('f_category').value          || null,
+      author:      document.getElementById('f_author').value.trim()     || null,
+      published:   false,
+      published_at:null,
+      featured:    false,
+    };
+
+    try {
+      const client = window._supabaseClient;
+      if (!client) throw new Error('Supabase 未初始化');
+
+      const { data, error } = await client.from('articles').insert([payload]).select('id, slug').single();
+      if (error) throw error;
+
+      res.className = 'result-box ok';
+      res.style.display = 'block';
+      res.innerHTML = '✓ 草稿已儲存！<br><a href="/admin/#edit-' + data.id + '" style="margin-top:6px;display:inline-block;">→ 在後台編輯此文章</a>';
+      btn.textContent = '✓ 已儲存';
+
+    } catch (err) {
+      res.className = 'result-box err';
+      res.style.display = 'block';
+      res.textContent = '儲存失敗：' + (err.message || JSON.stringify(err));
+      btn.disabled = false;
+      btn.textContent = '💾 儲存草稿';
+    }
+  };
+
+  /* ── Reset ── */
+  window.resetAll = function () {
+    document.getElementById('contentInput').value = '';
+    document.getElementById('fileName').textContent = '';
+    document.getElementById('docxInput').value = '';
+    document.getElementById('reviewSection').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+})();
+</script>
+
+</body>
+</html>
