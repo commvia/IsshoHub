@@ -122,7 +122,7 @@ ${JSON_SCHEMA}`;
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-5',
-        max_tokens: 4096,
+        max_tokens: 8192,
         messages: [{ role: 'user', content: prompt }],
       }),
     });
@@ -135,13 +135,22 @@ ${JSON_SCHEMA}`;
     const aiData = await aiResp.json();
     const rawText = (aiData.content?.[0]?.text || '').trim();
 
-    /* Extract JSON block */
-    const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+    /* Extract JSON — handle plain JSON or ```json ... ``` code blocks */
+    let jsonStr = rawText;
+    const codeBlock = rawText.match(/```(?:json)?\s*([\s\S]*?)```/);
+    if (codeBlock) jsonStr = codeBlock[1];
+    const jsonMatch = jsonStr.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
-      return new Response(JSON.stringify({ error: 'Could not parse AI output', raw: rawText.slice(0, 500) }), { status: 500, headers: cors });
+      return new Response(JSON.stringify({ error: 'Could not parse AI output', raw: rawText.slice(0, 800) }), { status: 500, headers: cors });
     }
 
-    const article = JSON.parse(jsonMatch[0]);
+    let article;
+    try {
+      article = JSON.parse(jsonMatch[0]);
+    } catch (parseErr) {
+      /* Try to salvage partial JSON by trimming at last complete field */
+      return new Response(JSON.stringify({ error: 'JSON parse error: ' + parseErr.message, raw: jsonMatch[0].slice(0, 800) }), { status: 500, headers: cors });
+    }
     return new Response(JSON.stringify({ ok: true, article }), { headers: cors });
 
   } catch (err) {
