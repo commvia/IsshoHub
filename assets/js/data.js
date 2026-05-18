@@ -41,6 +41,7 @@ window.ISSHO_DATA = {
     { key: "places", url: "/places/", tc: "好去處",           en: "Leisure",                 short_tc: "好去處", short_en: "Leisure" },
     { key: "pets",   url: "/pets/",   tc: "寵物",             en: "Pets in Japan",           short_tc: "寵物",   short_en: "Pets" },
     { key: "story",  url: "/story/",  tc: "人物故事",         en: "Stories",                 short_tc: "故事",   short_en: "Stories" },
+    { key: "invest", url: "/invest/", tc: "投資",             en: "Investing",               short_tc: "投資",   short_en: "Invest" },
   ],
 
   ui: {
@@ -158,6 +159,7 @@ window.ISSHO_DATA = {
     { key: "places", count: 68, tc: "好去處",            en: "Leisure",                 icon: "torii",    url: "/places/" },
     { key: "pets",   count: 29, tc: "寵物",              en: "Pets in Japan",           icon: "paw",      url: "/pets/" },
     { key: "story",  count: 41, tc: "人物故事",          en: "Stories",                 icon: "quote",    url: "/story/" },
+    { key: "invest", count: 0,  tc: "投資",              en: "Investing",               icon: "invest",   url: "/invest/" },
   ],
 
   featured: {
@@ -566,6 +568,13 @@ window.ISSHO_DATA = {
       watermark: '文化',
       watermark_en: 'CULTURE',
       icon: '<path d="M2 9Q12 6 22 9M5 13h14M7 9v13M17 9v13"/>',
+    },
+    invest: {
+      desc_tc: '在日本的投資入門、股票、不動產、基金與資產管理——為在日生活者提供的財務增值指南。',
+      desc_en: 'Investing in Japan — stocks, real estate, funds and asset management guides for foreign residents.',
+      bg: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1400&q=80',
+      watermark: '投資',
+      icon: '<polyline points="3 17 9 11 13 15 21 7"/><polyline points="15 7 21 7 21 13"/>',
     },
   },
 

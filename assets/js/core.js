@@ -14,6 +14,7 @@
     quote: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7c-2 0-3 2-3 4v6h5v-6H5"/><path d="M17 7c-2 0-3 2-3 4v6h5v-6h-4"/></svg>`,
     news:  `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 9h16"/><path d="M8 4v5"/><path d="M8 14h8"/><path d="M8 17h5"/></svg>`,
     culture:`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9Q12 6 22 9"/><path d="M5 13h14"/><path d="M7 9v13"/><path d="M17 9v13"/></svg>`,
+    invest:`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="15 7 21 7 21 13"/></svg>`,
   };
 
   /* ── State ── */

@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>投資 — IsshoHub</title>
+<meta name="description" content="在日本的投資入門、股票、不動產、基金與資產管理——為在日生活者提供的財務增值指南。" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700&family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Zen+Old+Mincho:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/styles.css?v=32">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'><circle cx='40' cy='40' r='36' fill='%230d2444'/><path d='M 40 8 A 32 32 0 0 1 40 72' stroke='%23d9b683' stroke-width='4' fill='none' stroke-linecap='round'/><text x='40' y='48' text-anchor='middle' font-family='Zen Old Mincho, Shippori Mincho, serif' font-size='26' fill='%23f6f3ec' letter-spacing='-1'>%E4%B8%80</text></svg>">
+<style>
+  .brand .brand-mark,.footer-brand .brand-mark,.modal-brand .brand-mark,.mobile-menu-head .brand-mark{background:transparent!important;border:0!important;padding:0!important;color:inherit!important;font-size:0!important;line-height:0!important;width:auto!important;height:auto!important;box-shadow:none!important;border-radius:0!important;overflow:visible!important;display:inline-flex;align-items:center;justify-content:center;}
+  .brand .brand-mark svg,.footer-brand .brand-mark svg,.modal-brand .brand-mark svg,.mobile-menu-head .brand-mark svg{display:block;width:38px;height:38px;}
+  .modal-brand .brand-mark svg{width:44px;height:44px;}.footer-brand .brand-mark svg{width:42px;height:42px;}
+  .brand-name .hub{color:#a8762f;}.footer-brand .brand-name .hub{color:#d9b683;}
+  a.brand,a.brand:hover{text-decoration:none!important;}
+</style>
+
+  <!-- SEO: canonical + hreflang -->
+  <link rel="canonical" href="https://isshohub.pages.dev/invest/" />
+  <link rel="alternate" hreflang="zh-Hant" href="https://isshohub.pages.dev/invest/" />
+  <link rel="alternate" hreflang="en" href="https://isshohub.pages.dev/invest/" />
+  <link rel="alternate" hreflang="x-default" href="https://isshohub.pages.dev/invest/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="IsshoHub" />
+  <meta property="og:url" content="https://isshohub.pages.dev/invest/" />
+  <meta property="og:title" content="投資 — IsshoHub" />
+  <meta property="og:description" content="在日本的投資入門、股票、不動產、基金與資產管理——為在日生活者提供的財務增值指南。" />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200&q=80" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="zh_TW" />
+  <meta property="og:locale:alternate" content="en_US" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="投資 — IsshoHub" />
+  <meta name="twitter:description" content="在日本的投資入門、股票、不動產、基金與資產管理——為在日生活者提供的財務增值指南。" />
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200&q=80" />
+</head>
+<body data-lang="tc">
+
+<div class="admin-bar" data-admin-bar style="display:none">
+  <div class="admin-bar-inner">
+    <span class="admin-bar-label"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> 管理員模式</span>
+    <div class="admin-bar-actions"><a class="admin-btn" href="/admin/"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg> 文章管理</a><button class="admin-btn" id="adminNewArticle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg> 新增文章</button></div>
+  </div>
+</div>
+
+<div class="topbar">
+  <div class="container row">
+    <div class="ticker"><span data-i18n="ticker1"></span><span data-i18n="ticker2"></span></div>
+    <div class="meta"><span id="eqTopbar" style="display:none"></span><span class="eq-topbar-sep" style="display:none">·</span><span data-i18n="ticker-rate" id="tickerRate"></span></div>
+  </div>
+</div>
+
+<nav class="nav">
+  <div class="container row">
+    <a class="brand" href="/" style="text-decoration:none;outline:none;">
+      <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="36" fill="#0d2444"/><path d="M 40 8 A 32 32 0 0 1 40 72" stroke="#d9b683" stroke-width="2.5" fill="none" stroke-linecap="round"/><text x="40" y="46" text-anchor="middle" font-family="Zen Old Mincho, Shippori Mincho, serif" font-size="22" font-weight="500" fill="#f6f3ec" letter-spacing="-1">一緒</text></svg></div>
+      <div><div class="brand-name">Issho<span class="hub">Hub</span></div><div class="brand-tag">In Japan, together.</div></div>
+    </a>
+    <div class="nav-links" id="navLinks"></div>
+    <div class="nav-right">
+      <button class="search-btn" aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
+      <div class="lang-toggle" id="langToggle"><button data-lang-set="tc">繁中</button><button data-lang-set="en">EN</button></div>
+      <button class="btn-login" data-open-login><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg><span data-i18n="login_btn"></span></button>
+      <div class="user-menu" data-user-menu style="display:none">
+        <button class="user-menu-btn" id="userMenuBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg><span data-user-name></span><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="user-dropdown" id="userDropdown"><a href="/bookmarks/">我的收藏</a><a href="#">帳號設定</a><div class="user-dropdown-divider"></div><a href="#" data-sign-out>登出</a></div>
+      </div>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+  <div class="catstrip" id="catstrip"></div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+  <div class="mobile-menu-drawer">
+    <div class="mobile-menu-head">
+      <a class="brand" href="/" style="color:var(--navy-ink);">
+        <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="36" fill="#0d2444"/><path d="M 40 8 A 32 32 0 0 1 40 72" stroke="#d9b683" stroke-width="2.5" fill="none" stroke-linecap="round"/><text x="40" y="46" text-anchor="middle" font-family="Zen Old Mincho, Shippori Mincho, serif" font-size="22" font-weight="500" fill="#f6f3ec" letter-spacing="-1">一緒</text></svg></div>
+        <div class="brand-name">Issho<span class="hub">Hub</span></div>
+      </a>
+      <button class="mobile-close" id="mobileMenuClose"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <nav class="mobile-nav-list" id="mobileNavList"></nav>
+    <div class="mobile-menu-footer">
+      <button class="mobile-login-btn" id="mobileLoginBtn" data-open-login><span data-i18n="login_btn"></span></button>
+      <div class="lang-toggle" id="langToggleMobile" style="justify-content:center;"><button data-lang-set="tc">繁中</button><button data-lang-set="en">EN</button></div>
+    </div>
+  </div>
+</div>
+
+<section class="cat-hero">
+  <div class="cat-hero-bg" id="catHeroBg"></div>
+  <div class="cat-hero-overlay"></div>
+  <div class="cat-hero-accent"></div>
+  <div class="cat-hero-watermark" id="catHeroWatermark"></div>
+  <div class="stamp stamp-1" aria-hidden="true"><svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="92" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="100" cy="100" r="78" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 4"/><text x="100" y="78" text-anchor="middle" font-family="Zen Old Mincho, serif" font-size="14" fill="currentColor" letter-spacing="2">JAPAN</text><text x="100" y="116" text-anchor="middle" font-family="Zen Old Mincho, serif" font-size="34" fill="currentColor" font-weight="700">投資</text><text x="100" y="142" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="currentColor" letter-spacing="1">2026 · INVEST</text><line x1="40" y1="100" x2="60" y2="100" stroke="currentColor" stroke-width="2"/><line x1="140" y1="100" x2="160" y2="100" stroke="currentColor" stroke-width="2"/></svg></div>
+  <div class="stamp stamp-2" aria-hidden="true"><svg viewBox="0 0 200 200"><rect x="20" y="40" width="160" height="120" fill="none" stroke="currentColor" stroke-width="2.5"/><rect x="32" y="52" width="136" height="96" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2 3"/><text x="100" y="92" text-anchor="middle" font-family="Zen Old Mincho, serif" font-size="22" fill="currentColor" font-weight="700">資産</text><text x="100" y="120" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="currentColor" letter-spacing="2">ASSETS</text><text x="100" y="138" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="currentColor" letter-spacing="1">在日投資指南</text></svg></div>
+  <div class="container">
+    <div class="cat-hero-inner">
+      <div class="cat-hero-icon-wrap">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" id="catIconSvg"></svg>
+      </div>
+      <div class="cat-hero-body">
+        <div class="cat-hero-breadcrumb"><a href="/">首頁</a><span class="breadcrumb-sep">/</span><span class="current" id="heroBreadcrumbCurrent"></span></div>
+        <div class="cat-hero-eyebrow" id="catHeroEyebrow"></div>
+        <h1 class="cat-hero-title" id="catHeroTitle"></h1>
+        <div class="cat-hero-en" id="catHeroEn"></div>
+        <p class="cat-hero-desc" id="catHeroDesc"></p>
+        <div class="cat-hero-rule"></div>
+        <div class="cat-hero-stats">
+          <div class="cat-stat"><div class="cat-stat-num" id="catStatNum">—</div><div class="cat-stat-label" id="catStatLabel"></div></div>
+          <div class="cat-stat"><div class="cat-stat-num" id="catStatSubsNum">—</div><div class="cat-stat-label" id="catStatSubs"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<nav class="subcat-nav">
+  <div class="container"><div class="subcat-scroll" id="subcatScroll"></div></div>
+</nav>
+
+<section class="cat-featured-section">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">Featured</div>
+      <h2 class="featured-headline" id="featuredHeadline"></h2>
+      <p class="featured-sub" id="featuredSub"></p>
+    </div>
+    <div class="article-grid" id="catFeaturedGrid"></div>
+  </div>
+</section>
+
+<section class="cat-articles-section">
+  <div class="container">
+    <div class="cat-articles-header"><div class="cat-articles-title" id="articlesTitle"></div></div>
+    <div class="article-grid" id="catArticlesGrid"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="newsletter">
+      <div class="section-eyebrow" style="display:flex;justify-content:center;">— Weekly digest</div>
+      <h3 data-i18n="newsletter_title"></h3><p data-i18n="newsletter_sub"></p>
+      <form class="newsletter-form"><input type="email" data-i18n-placeholder="email_placeholder" placeholder="your@email.com" required /><button type="submit" data-i18n="newsletter_cta"></button></form>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="grid">
+      <div class="footer-brand">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="36" fill="#f6f3ec"/><path d="M 40 8 A 32 32 0 0 1 40 72" stroke="#a8762f" stroke-width="2.5" fill="none" stroke-linecap="round"/><text x="40" y="46" text-anchor="middle" font-family="Zen Old Mincho, Shippori Mincho, serif" font-size="22" font-weight="500" fill="#0d2444" letter-spacing="-1">一緒</text></svg></div>
+          <div><div class="brand-name" style="color:#fff;">Issho<span class="hub">Hub</span></div><div class="brand-tag" style="color:rgba(255,255,255,.45);">In Japan, together.</div></div>
+        </div>
+        <p data-i18n="footer_about"></p>
+        <div class="footer-socials">
+          <a href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.72 3.72 0 01-1.38-.9 3.72 3.72 0 01-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zm0 5.84a4 4 0 100 8 4 4 0 000-8zm5.2-.4a.96.96 0 110 1.92.96.96 0 010-1.92zM12 9.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8z"/></svg></a>
+          <a href="#" aria-label="Twitter/X"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 3h3.4l-7.4 8.4L23.5 21h-6.8l-5.3-6.9L5.3 21H1.9l7.9-9L1 3h7l4.8 6.4L18.9 3zm-1.2 16h1.9L7.4 5H5.4l12.3 14z"/></svg></a>
+          <a href="#" aria-label="LINE"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C5.37 2 0 6.36 0 11.74c0 4.82 4.24 8.86 9.97 9.63.39.08.92.26 1.05.6.12.3.08.79.04 1.08L11 24c-.05.32-.25 1.23 1.09.67 1.34-.57 7.22-4.26 9.85-7.28C23.73 15.4 24 13.6 24 11.74 24 6.36 18.63 2 12 2z"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col"><h5 data-i18n="footer_col1"></h5><div id="footerExplore"></div></div>
+      <div class="footer-col"><h5 data-i18n="footer_col2"></h5><a href="#" data-i18n="footer_r1"></a><a href="#" data-i18n="footer_r2"></a><a href="#" data-i18n="footer_r3"></a><a href="javascript:void(0)" onclick="var f=document.getElementById('fx');if(f)f.classList.toggle('open')" data-i18n="footer_r4"></a><a href="#" data-i18n="footer_r5"></a></div>
+      <div class="footer-col"><h5 data-i18n="footer_col3"></h5><a href="#" data-i18n="footer_a1"></a><a href="#" data-i18n="footer_a2"></a><a href="#" data-i18n="footer_a3"></a><a href="#" data-i18n="footer_a4"></a><a href="#" data-i18n="footer_a5"></a></div>
+    </div>
+    <div class="footer-bottom"><div>&#169; 2026 IsshoHub &#xB7; 一緒 &#xB7; Made with care in Japan</div><div><span data-i18n="footer_lang"></span> / English</div></div>
+  </div>
+</footer>
+
+<div class="fx" id="fx">
+  <button class="fx-trigger" id="fxTrigger"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 100 7h5a3.5 3.5 0 110 7H6"/></svg><span data-i18n="fx_trigger"></span><span class="badge">&#165;</span></button>
+  <div class="fx-panel" style="position:relative;">
+    <button class="fx-close" id="fxClose"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="fx-head"><h4 data-i18n="fx_title"></h4><span class="live"><i></i><span data-i18n="fx_live"></span></span></div>
+    <div class="fx-asof" data-i18n="fx_asof"></div>
+    <div class="fx-row"><label class="fx-ccy"><span id="fxFromFlag"></span><span id="fxFromLabel">HKD</span><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg><select id="fxFrom"><option value="HKD">HKD 港幣</option><option value="TWD">TWD 新台幣</option><option value="USD">USD 美元</option><option value="EUR">EUR 歐元</option><option value="GBP">GBP 英鎊</option><option value="CAD">CAD 加元</option><option value="AUD">AUD 澳元</option><option value="SGD">SGD 坡元</option></select></label><input type="number" class="fx-input" id="fxInput" value="1000" min="0" /></div>
+    <div class="fx-equals">&#8645;</div>
+    <div class="fx-row to"><div class="fx-ccy"><span>&#127471;&#127477;</span>JPY</div><input type="number" class="fx-input" id="fxOutput" /></div>
+    <div class="fx-rates" id="fxRates"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="loginModal" role="dialog" aria-modal="true">
+  <div class="modal">
+    <button class="modal-close" id="modalClose"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="modal-brand"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="36" fill="#0d2444"/><path d="M 40 8 A 32 32 0 0 1 40 72" stroke="#d9b683" stroke-width="2.5" fill="none" stroke-linecap="round"/><text x="40" y="46" text-anchor="middle" font-family="Zen Old Mincho, Shippori Mincho, serif" font-size="22" font-weight="500" fill="#f6f3ec" letter-spacing="-1">一緒</text></svg></div><div class="brand-name">Issho<span class="hub">Hub</span></div></div>
+    <div class="modal-tabs"><button class="modal-tab active" data-tab-btn="login" data-i18n="login_btn"></button><button class="modal-tab" data-tab-btn="register" data-i18n="login_register"></button></div>
+    <div class="modal-error" id="loginError" style="display:none"></div>
+    <div data-tab="login">
+      <div class="social-login"><button class="btn-social" id="googleSignIn"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg><span data-i18n="login_google"></span></button></div>
+      <div class="modal-divider"><span data-i18n="login_or"></span></div>
+      <form class="login-form" id="loginForm"><div class="form-group"><label data-i18n="login_email"></label><input type="email" name="email" placeholder="your@email.com" autocomplete="email" required /></div><div class="form-group"><label data-i18n="login_password"></label><input type="password" name="password" placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;" autocomplete="current-password" required /></div><button type="submit" class="btn-submit" data-i18n="login_submit"></button></form>
+      <div class="modal-footer"><a href="#" id="forgotPasswordLink" data-i18n="login_forgot"></a></div>
+    </div>
+    <div data-tab="register" style="display:none"><form class="login-form" id="registerForm"><div class="form-group"><label data-i18n="register_name"></label><input type="text" name="name" placeholder="Your name" autocomplete="name" required /></div><div class="form-group"><label data-i18n="login_email"></label><input type="email" name="email" placeholder="your@email.com" autocomplete="email" required /></div><div class="form-group"><label data-i18n="login_password"></label><input type="password" name="password" placeholder="At least 8 characters" autocomplete="new-password" required minlength="8" /></div><button type="submit" class="btn-submit" data-i18n="login_register"></button></form></div>
+    <div data-tab="forgot" style="display:none"><p class="modal-sub" data-i18n="forgot_sub"></p><form class="login-form" id="forgotForm"><div class="form-group"><label data-i18n="login_email"></label><input type="email" name="email" placeholder="your@email.com" autocomplete="email" required /></div><button type="submit" class="btn-submit" data-i18n="forgot_submit"></button></form><div class="modal-footer"><a href="#" data-tab-btn="login" data-i18n="back_to_login"></a></div></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/assets/js/data.js?v=4"></script>
+<script src="/assets/js/supabase-client.js?v=7"></script>
+<script src="/assets/js/article-editor.js?v=8"></script>
+<script src="/assets/js/search.js?v=5"></script>
+<script src="/assets/js/earthquake-alert.js" defer></script>
+<script src="/assets/js/core.js?v=11"></script>
+<script src="/assets/js/category-page.js?v=10"></script>
+<script>
+(function(){
+  var D=window.ISSHO_DATA,meta=(D.cat_meta||{})['invest']||{};
+  var iconEl=document.getElementById('catIconSvg');
+  if(iconEl&&meta.icon) iconEl.innerHTML=meta.icon;
+  window.IsshoCategory.init('invest');
+  (function(){
+    var C=['HKD','TWD','USD','EUR','GBP','CAD','AUD','SGD'];
+    var tEl=document.getElementById('tickerRate'),fi=document.getElementById('fxInput'),fo=document.getElementById('fxOutput'),ff=document.getElementById('fxFrom'),fr=document.getElementById('fxRates'),fRoot=document.getElementById('fx'),rates={},last='input';
+    document.getElementById('fxTrigger').addEventListener('click',function(){fRoot.classList.toggle('open');});
+    document.getElementById('fxClose').addEventListener('click',function(){fRoot.classList.remove('open');});
+    document.addEventListener('click',function(e){if(fRoot&&!fRoot.contains(e.target))fRoot.classList.remove('open');});
+    var fmt=function(v){return v>=10?v.toFixed(2):v.toFixed(3);},fmtJ=function(v){return String(Math.round(v));};
+    function cFF(){var a=parseFloat(fi.value),c=ff.value;if(!isNaN(a)&&rates[c])fo.value=fmtJ(a*rates[c]);}
+    function cFJ(){var j=parseFloat(fo.value),c=ff.value;if(!isNaN(j)&&rates[c])fi.value=fmt(j/rates[c]);}
+    fi.addEventListener('input',function(){last='input';cFF();});
+    fo.addEventListener('input',function(){last='output';cFJ();});
+    ff.addEventListener('change',function(){document.getElementById('fxFromLabel').textContent=ff.value;last==='output'?cFJ():cFF();});
+    fetch('https://open.er-api.com/v6/latest/JPY').then(function(r){return r.json();}).then(function(j){
+      if(j.result!=='success'||!j.rates)return;
+      C.filter(function(c){return j.rates[c];}).forEach(function(c){rates[c]=1/j.rates[c];});
+      if(tEl){var p=C.filter(function(c){return rates[c];}).map(function(c){return c+' <b>&#165;'+fmt(rates[c])+'</b>';});var i=0;var s=function(){tEl.innerHTML=p.slice(i,i+2).join('&nbsp;&nbsp;');i=(i+2)%p.length;};s();setInterval(s,3000);}
+      if(fr)fr.innerHTML=C.filter(function(c){return rates[c];}).map(function(c){return '<div class="fx-rate-item"><div class="k">'+c+'/JPY</div><div class="v">'+fmt(rates[c])+'</div></div>';}).join('');
+      if(fi&&fi.value)cFF();
+    }).catch(function(){});
+  })();
+})();
+</script>
+</body>
+</html>

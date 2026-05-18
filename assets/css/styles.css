@@ -1056,8 +1056,8 @@ body[data-lang="en"] .section-title { font-family: var(--sans-en); letter-spacin
   margin-top: 36px;
 }
 @media (min-width: 640px) { .cats { grid-template-columns: repeat(4, 1fr); } }
-@media (min-width: 800px)  { .cats { grid-template-columns: repeat(5, 1fr); } }
-@media (min-width: 1080px) { .cats { grid-template-columns: repeat(10, 1fr); } }
+@media (min-width: 800px)  { .cats { grid-template-columns: repeat(6, 1fr); } }
+@media (min-width: 1100px) { .cats { grid-template-columns: repeat(11, 1fr); } }
 .cat {
   background: rgba(255,255,255,.03);
   padding: 18px 6px 16px;
@@ -1128,15 +1128,15 @@ body[data-lang="en"] .section-title { font-family: var(--sans-en); letter-spacin
 }
 .cat-pop-list a:hover { background: var(--paper-2); color: var(--navy-ink); }
 .cat-icon {
-  width: 38px; height: 38px;
-  border-radius: 10px;
+  width: 32px; height: 32px;
+  border-radius: 8px;
   background: rgba(255,255,255,.08);
   border: 1px solid rgba(255,255,255,.1);
   display: grid; place-items: center;
   transition: transform .25s, background .2s;
   color: #d9b683;
 }
-.cat-icon svg { width: 18px; height: 18px; }
+.cat-icon svg { width: 15px; height: 15px; }
 .cat:hover .cat-icon { background: rgba(217,182,131,.2); border-color: rgba(217,182,131,.4); color: #d9b683; }
 .cat-labels { display: flex; flex-direction: column; gap: 1px; }
 .cat-label-tc {
