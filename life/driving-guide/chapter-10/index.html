@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TSE650LL7P"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-TSE650LL7P');</script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>第十章 讓路與超車規則｜日本駕照天書 — IsshoHub</title>
+<meta name="description" content="讓路優先順序及合法超車條件詳解。" />
+<link rel="canonical" href="https://isshohub.com/life/driving-guide/chapter-10/" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700&family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Zen+Old+Mincho:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/styles.css?v=32">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'><circle cx='40' cy='40' r='36' fill='%230d2444'/><path d='M 40 8 A 32 32 0 0 1 40 72' stroke='%23d9b683' stroke-width='4' fill='none' stroke-linecap='round'/><text x='40' y='48' text-anchor='middle' font-family='Zen Old Mincho, Shippori Mincho, serif' font-size='26' fill='%23f6f3ec' letter-spacing='-1'>%E4%B8%80</text></svg>">
+<style>
+  .brand .brand-mark, .footer-brand .brand-mark, .modal-brand .brand-mark, .mobile-menu-head .brand-mark {
+    background:transparent!important;border:0!important;padding:0!important;color:inherit!important;
+    font-size:0!important;line-height:0!important;width:auto!important;height:auto!important;
+    box-shadow:none!important;border-radius:0!important;overflow:visible!important;
+    display:inline-flex;align-items:center;justify-content:center;
+  }
+  .brand .brand-mark svg, .footer-brand .brand-mark svg, .modal-brand .brand-mark svg, .mobile-menu-head .brand-mark svg { display:block;width:38px;height:38px; }
+  .modal-brand .brand-mark svg { width:44px;height:44px; }
+  .footer-brand .brand-mark svg { width:42px;height:42px; }
+  .brand-name .hub { color:#a8762f; }
+  a.brand, a.brand:hover { text-decoration:none!important; }
+  .footer-brand .brand-name .hub { color:#d9b683; }
+</style>
+</head>
+<body>
+
+<!-- ADMIN BAR -->
+<div class="admin-bar" id="adminBar" style="display:none">
+  <span class="admin-bar-user" id="adminBarUser"></span>
+  <div class="admin-bar-actions">
+    <a class="admin-btn" href="/admin/"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg> 文章管理</a>
+  </div>
+</div>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="container row">
+    <div class="ticker"><span data-i18n="ticker1"></span><span data-i18n="ticker2"></span></div>
+    <div class="meta"><span id="eqTopbar" style="display:none"></span><span class="eq-topbar-sep" style="display:none">·</span><span data-i18n="ticker-rate" id="tickerRate"></span></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="container row">
+    <a class="brand" href="/" style="text-decoration:none;outline:none;">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="36" fill="#0d2444"/><path d="M 40 8 A 32 32 0 0 1 40 72" stroke="#d9b683" stroke-width="2.5" fill="none" stroke-linecap="round"/><text x="40" y="46" text-anchor="middle" font-family="Zen Old Mincho, Shippori Mincho, serif" font-size="22" font-weight="500" fill="#f6f3ec" letter-spacing="-1">一緒</text></svg>
+      </div>
+      <div><div class="brand-name">Issho<span class="hub">Hub</span></div><div class="brand-tag">In Japan, together.</div></div>
+    </a>
+    <div class="nav-links" id="navLinks"></div>
+    <div class="nav-right">
+      <button class="search-btn" aria-label="Search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      </button>
+      <div class="lang-toggle" id="langToggle">
+        <button data-lang-set="tc">繁中</button>
+        <button data-lang-set="en">EN</button>
+      </div>
+      <button class="auth-btn" id="authBtn" data-i18n="login_btn"></button>
+    </div>
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+    </button>
+  </div>
+</nav>
+<!-- BREADCRUMB -->
+<div class="container" style="padding-top:16px;padding-bottom:0;">
+  <div class="cat-hero-breadcrumb">
+    <a href="/">首頁</a><span class="breadcrumb-sep">/</span>
+    <a href="/life/">生活</a><span class="breadcrumb-sep">/</span>
+    <a href="/life/driving-guide/">駕照天書</a><span class="breadcrumb-sep">/</span>
+    <span class="current">第十章</span>
+  </div>
+</div>
+
+<div class="guide-layout">
+
+  <!-- 側邊目錄 -->
+  <aside class="guide-sidebar">
+    <h3>目錄</h3>
+    <select class="guide-mobile-select" onchange="if(this.value)location=this.value">
+      <option value="/life/driving-guide/chapter-1/">第一章 容易混淆的標識與標線</option>
+      <option value="/life/driving-guide/chapter-2/">第二章 道路標識速查表</option>
+      <option value="" disabled>🔒 第三章 道路標線速查表</option>
+      <option value="" disabled>🔒 第四章 號誌、信號機與警察手勢</option>
+      <option value="" disabled>🔒 第五章 交差點通行與行人保護</option>
+      <option value="" disabled>🔒 第六章 車種分類及載重規則</option>
+      <option value="" disabled>🔒 第七章 駕照種類與可駕駛車輛</option>
+      <option value="" disabled>🔒 第八章 速度限制</option>
+      <option value="" disabled>🔒 第九章 方向燈、手勢、開燈規則</option>
+      <option value="" selected>🔒 第十章 讓路與超車規則</option>
+      <option value="" disabled>🔒 第十一章 駐車與停車規則</option>
+      <option value="" disabled>🔒 第十二章 高速公路特殊規則</option>
+      <option value="" disabled>🔒 第十三章 駕駛情境規則</option>
+      <option value="" disabled>🔒 第十四章 駕駛人責任與運転禁止</option>
+      <option value="/life/driving-guide/chapter-15/">第十五章 免責聲明</option>
+    </select>
+    <ul>
+      <li><a href="/life/driving-guide/chapter-1/">第一章　容易混淆的標識與標線</a></li>
+      <li><a href="/life/driving-guide/chapter-2/">第二章　道路標識速查表</a></li>
+      <li><a style="pointer-events:none;opacity:.45;" href="#">🔒 第三章　道路標線速查表</a></li>
+      <li><a style="pointer-events:none;opacity:.45;" href="#">🔒 第四章　號誌、信號機與警察手勢</a></li>
+      <li><a style="pointer-events:none;opacity:.45;" href="#">🔒 第五章　交差點通行與行人保護</a></li>
+      <li><a style="pointer-events:none;opacity:.45;" href="#">🔒 第六章　車種分類及載重規則</a></li>
+      <li><a style="pointer-events:none;opacity:.45;" href="#">🔒 第七章　駕照種類與可駕駛車輛</a></li>
+      <li><a style="pointer-events:none;opacity:.45;" href="#">🔒 第八章　速度限制</a></li>
+      <li><a style="pointer-events:none;opacity:.45;" href="#">🔒 第九章　方向燈、手勢、開燈規則</a></li>
+      <li><a style="pointer-events:none;opacity:.45;" href="#" class="active">🔒 第十章　讓路與超車規則</a></li>
+      <li><a style="pointer-events:none;opacity:.45;" href="#">🔒 第十一章　駐車與停車規則</a></li>
+      <li><a style="pointer-events:none;opacity:.45;" href="#">🔒 第十二章　高速公路特殊規則</a></li>
+      <li><a style="pointer-events:none;opacity:.45;" href="#">🔒 第十三章　駕駛情境規則</a></li>
+      <li><a style="pointer-events:none;opacity:.45;" href="#">🔒 第十四章　駕駛人責任與運転禁止</a></li>
+      <li><a href="/life/driving-guide/chapter-15/">第十五章　免責聲明</a></li>
+    </ul>
+  </aside>
+
+  <!-- 正文 -->
+  <div class="guide-content">
+    <h1>第十章　讓路與超車規則</h1>
+    <p style="color:#666;margin-bottom:24px;">讓路優先順序及合法超車條件詳解。</p>
+
+    <div class="guide-lock-banner">
+      <h3>🔒 此章節為付費內容</h3>
+      <p>購買天書完整版（¥500，有效期 90 天）即可解鎖第 3–14 章全部內容。</p>
+      <p style="font-size:13px;color:#aaa;">付費功能即將開放，敬請期待。</p>
+    </div>
+
+    <div class="guide-nav-bar">
+      <a href="/life/driving-guide/chapter-9/">← 第九章</a>
+      <a href="/life/driving-guide/chapter-11/">第十一章 →</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="grid">
+      <div class="footer-brand">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="36" fill="#f6f3ec"/><path d="M 40 8 A 32 32 0 0 1 40 72" stroke="#a8762f" stroke-width="2.5" fill="none" stroke-linecap="round"/><text x="40" y="46" text-anchor="middle" font-family="Zen Old Mincho, Shippori Mincho, serif" font-size="22" font-weight="500" fill="#0d2444" letter-spacing="-1">一緒</text></svg>
+          </div>
+          <div>
+            <div class="brand-name" style="color:#fff;">Issho<span class="hub">Hub</span></div>
+            <div class="brand-tag" style="color:rgba(255,255,255,0.45);">In Japan, together.</div>
+          </div>
+        </div>
+        <p data-i18n="footer_about"></p>
+        <div class="footer-socials">
+          <a href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.72 3.72 0 01-1.38-.9 3.72 3.72 0 01-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zm0 5.84a4 4 0 100 8 4 4 0 000-8zm5.2-.4a.96.96 0 110 1.92.96.96 0 010-1.92zM12 9.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8z"/></svg></a>
+          <a href="#" aria-label="Twitter / X"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 3h3.4l-7.4 8.4L23.5 21h-6.8l-5.3-6.9L5.3 21H1.9l7.9-9L1 3h7l4.8 6.4L18.9 3zm-1.2 16h1.9L7.4 5H5.4l12.3 14z"/></svg></a>
+          <a href="#" aria-label="YouTube"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.3c-.3-1-1-1.8-2-2.1C19.1 4.7 12 4.7 12 4.7s-7.1 0-9 .5c-1 .3-1.8 1-2.1 2.1C.4 9.2.4 12 .4 12s0 2.8.5 4.7c.3 1 1 1.8 2.1 2.1 1.9.5 9 .5 9 .5s7.1 0 9-.5c1-.3 1.8-1 2.1-2.1.5-1.9.5-4.7.5-4.7s0-2.8-.6-4.7zM9.7 15.5V8.5l6 3.5-6 3.5z"/></svg></a>
+          <a href="#" aria-label="LINE"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C5.37 2 0 6.36 0 11.74c0 4.82 4.24 8.86 9.97 9.63.39.08.92.26 1.05.6.12.3.08.79.04 1.08L11 24c-.05.32-.25 1.23 1.09.67 1.34-.57 7.22-4.26 9.85-7.28C23.73 15.4 24 13.6 24 11.74 24 6.36 18.63 2 12 2z"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5 data-i18n="footer_col1"></h5>
+        <div id="footerExplore"></div>
+      </div>
+      <div class="footer-col">
+        <h5 data-i18n="footer_col2"></h5>
+        <a href="#" data-i18n="footer_r1"></a>
+        <a href="#" data-i18n="footer_r2"></a>
+        <a href="#" data-i18n="footer_r3"></a>
+        <a href="#" data-i18n="footer_r4"></a>
+        <a href="#" data-i18n="footer_r5"></a>
+      </div>
+      <div class="footer-col">
+        <h5 data-i18n="footer_col3"></h5>
+        <a href="#" data-i18n="footer_a1"></a>
+        <a href="#" data-i18n="footer_a2"></a>
+        <a href="#" data-i18n="footer_a3"></a>
+        <a href="#" data-i18n="footer_a4"></a>
+        <a href="#" data-i18n="footer_a5"></a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 IsshoHub · 一緒 · Made with care in Japan</div>
+      <div><span data-i18n="footer_lang"></span> / English</div>
+    </div>
+  </div>
+</footer>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="loginModal" style="display:none" aria-hidden="true">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-close" id="modalClose" aria-label="Close">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="modal-brand">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="36" fill="#0d2444"/><path d="M 40 8 A 32 32 0 0 1 40 72" stroke="#d9b683" stroke-width="2.5" fill="none" stroke-linecap="round"/><text x="40" y="46" text-anchor="middle" font-family="Zen Old Mincho, Shippori Mincho, serif" font-size="22" font-weight="500" fill="#f6f3ec" letter-spacing="-1">一緒</text></svg>
+      </div>
+      <div class="brand-name">Issho<span class="hub">Hub</span></div>
+    </div>
+    <div class="modal-tabs">
+      <button class="modal-tab active" data-tab-btn="login" data-i18n="tab_login"></button>
+      <button class="modal-tab" data-tab-btn="signup" data-i18n="tab_signup"></button>
+    </div>
+    <h2 class="modal-title" id="modalTitle" data-i18n="login_title"></h2>
+    <div data-tab="login">
+      <form class="login-form" id="loginForm">
+        <div class="form-group"><label data-i18n="login_email"></label><input type="email" name="email" placeholder="your@email.com" autocomplete="email" required /></div>
+        <div class="form-group"><label data-i18n="login_password"></label><input type="password" name="password" placeholder="••••••••" autocomplete="current-password" required /></div>
+        <div class="form-row"><label class="checkbox-label"><input type="checkbox" name="remember"> <span data-i18n="remember_me"></span></label><a href="#" data-tab-btn="forgot" data-i18n="forgot_link"></a></div>
+        <button type="submit" class="btn-submit" data-i18n="login_submit"></button>
+      </form>
+      <div class="modal-footer"><span data-i18n="no_account"></span> <a href="#" data-tab-btn="signup" data-i18n="signup_link"></a></div>
+    </div>
+    <div data-tab="signup" style="display:none">
+      <form class="login-form" id="signupForm">
+        <div class="form-group"><label data-i18n="signup_name"></label><input type="text" name="name" placeholder="Your name" autocomplete="name" required /></div>
+        <div class="form-group"><label data-i18n="login_email"></label><input type="email" name="email" placeholder="your@email.com" autocomplete="email" required /></div>
+        <div class="form-group"><label data-i18n="login_password"></label><input type="password" name="password" placeholder="••••••••" autocomplete="new-password" required /></div>
+        <button type="submit" class="btn-submit" data-i18n="signup_submit"></button>
+      </form>
+    </div>
+    <div data-tab="forgot" style="display:none">
+      <p class="modal-sub" data-i18n="forgot_sub"></p>
+      <form class="login-form" id="forgotForm">
+        <div class="form-group"><label data-i18n="login_email"></label><input type="email" name="email" placeholder="your@email.com" autocomplete="email" required /></div>
+        <button type="submit" class="btn-submit" data-i18n="forgot_submit"></button>
+      </form>
+      <div class="modal-footer"><a href="#" data-tab-btn="login" data-i18n="back_to_login"></a></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/assets/js/data.js?v=4"></script>
+<script src="/assets/js/supabase-client.js?v=7"></script>
+<script src="/assets/js/core.js?v=11"></script>
+<script>
+(function () {
+  window.IsshoCore.init('life');
+})();
+</script>
+<script src="/assets/js/preview-guard.js"></script>
+</body>
+</html>
