@@ -21,38 +21,10 @@
   /* Already unlocked via cookie */
   if (getCookie(COOKIE) === 'ok') return;
 
-  /* Hide page immediately to prevent flash */
+  /* Hide page immediately to prevent content flash */
   document.documentElement.style.visibility = 'hidden';
 
-  /* Check if logged-in admin → auto-unlock */
-  function checkAdmin() {
-    var auth = window.IsshoAuth;
-    if (!auth) return false;
-    auth.getUser().then(function (user) {
-      if (!user) return showOverlay();
-      auth.getProfile(user.id).then(function (res) {
-        if (res && res.data && res.data.role === 'admin') {
-          unlock();
-        } else {
-          showOverlay();
-        }
-      }).catch(showOverlay);
-    }).catch(showOverlay);
-    return true;
-  }
-
-  /* Wait for IsshoAuth to load (loaded via supabase-client.js) */
-  var _attempts = 0;
-  function waitForAuth() {
-    if (checkAdmin()) return;
-    _attempts++;
-    if (_attempts < 20) {
-      setTimeout(waitForAuth, 150);
-    } else {
-      showOverlay();
-    }
-  }
-
+  /* Show password overlay */
   function showOverlay() {
     document.documentElement.style.visibility = '';
     if (document.getElementById('_preview_guard')) return;
@@ -102,10 +74,14 @@
     document.getElementById('_pg_input').focus();
   }
 
-  /* Start auth check after DOM ready */
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', waitForAuth);
+  /* Check if logged-in admin → auto-unlock without password */
+  var auth = window.IsshoAuth;
+  if (auth && typeof auth.isAdmin === 'function') {
+    auth.isAdmin().then(function (yes) {
+      if (yes) { unlock(); } else { showOverlay(); }
+    }).catch(showOverlay);
   } else {
-    waitForAuth();
+    /* supabase not loaded or not available — show overlay */
+    showOverlay();
   }
 })();
