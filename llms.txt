@@ -7,22 +7,22 @@ Tagline: In Japan, together.
 
 ## Categories
 
-- [首頁 / Home](https://isshohub.pages.dev/): 各類別總覽 / Overview of all categories
-- [簽證 / Visa](https://isshohub.pages.dev/visa/): 簽證種類、申請指南、高度専門職資格 / Visa types, application guides, Highly Skilled Professional visa
-- [創業 / Business](https://isshohub.pages.dev/biz/): 在日本設立公司與自僱指南 / Starting a business or going freelance in Japan
-- [住屋 / Housing](https://isshohub.pages.dev/house/): 租屋、買房、房東須知 / Renting and buying property in Japan
-- [稅務 / Tax](https://isshohub.pages.dev/tax/): 外國人在日本的稅務指南 / Japanese tax system for foreign residents
-- [生活 / Life](https://isshohub.pages.dev/life/): 日常生活實用資訊 / Daily life tips for residents in Japan
-- [新聞 / News](https://isshohub.pages.dev/news/): 與旅日人士相關的最新資訊 / Latest news relevant to people living in Japan
-- [好去處 / Places](https://isshohub.pages.dev/places/): 日本各地推薦景點與生活地點 / Recommended places across Japan
-- [寵物 / Pets](https://isshohub.pages.dev/pets/): 攜帶寵物赴日、在日養寵物指南 / Bringing pets to Japan and pet ownership
-- [文化 / Culture](https://isshohub.pages.dev/culture/): 日本文化、藝術、音樂、傳統 / Japanese culture, arts, music, and traditions
-- [故事 / Stories](https://isshohub.pages.dev/story/): 旅日人士的真實生活故事 / Real stories from people living in Japan
+- [首頁 / Home](https://isshohub.com/): 各類別總覽 / Overview of all categories
+- [簽證 / Visa](https://isshohub.com/visa/): 簽證種類、申請指南、高度専門職資格 / Visa types, application guides, Highly Skilled Professional visa
+- [創業 / Business](https://isshohub.com/biz/): 在日本設立公司與自僱指南 / Starting a business or going freelance in Japan
+- [住屋 / Housing](https://isshohub.com/house/): 租屋、買房、房東須知 / Renting and buying property in Japan
+- [稅務 / Tax](https://isshohub.com/tax/): 外國人在日本的稅務指南 / Japanese tax system for foreign residents
+- [生活 / Life](https://isshohub.com/life/): 日常生活實用資訊 / Daily life tips for residents in Japan
+- [新聞 / News](https://isshohub.com/news/): 與旅日人士相關的最新資訊 / Latest news relevant to people living in Japan
+- [好去處 / Places](https://isshohub.com/places/): 日本各地推薦景點與生活地點 / Recommended places across Japan
+- [寵物 / Pets](https://isshohub.com/pets/): 攜帶寵物赴日、在日養寵物指南 / Bringing pets to Japan and pet ownership
+- [文化 / Culture](https://isshohub.com/culture/): 日本文化、藝術、音樂、傳統 / Japanese culture, arts, music, and traditions
+- [故事 / Stories](https://isshohub.com/story/): 旅日人士的真實生活故事 / Real stories from people living in Japan
 
 ## Tools
 
-- [高度専門職積分試算 / HSP Points Calculator](https://isshohub.pages.dev/visa/hsp-calculator/): 根據官方積分表計算高度専門職簽證資格分數 / Calculate your Highly Skilled Professional (高度専門職) visa score based on the official MOJI point table
-- [外免切替模擬試題 / Driving Licence Conversion Quiz](https://isshohub.pages.dev/life/driving-quiz/): 外國駕照換日本駕照（外免切替）筆試練習，100 道是非題 / Practice test for converting a foreign driving licence to a Japanese licence (外免切替), 100 true/false questions
+- [高度専門職積分試算 / HSP Points Calculator](https://isshohub.com/visa/hsp-calculator/): 根據官方積分表計算高度専門職簽證資格分數 / Calculate your Highly Skilled Professional (高度専門職) visa score based on the official MOJI point table
+- [外免切替模擬試題 / Driving Licence Conversion Quiz](https://isshohub.com/life/driving-quiz/): 外國駕照換日本駕照（外免切替）筆試練習，100 道是非題 / Practice test for converting a foreign driving licence to a Japanese licence (外免切替), 100 true/false questions
 
 ## Languages
 
