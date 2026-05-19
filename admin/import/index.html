@@ -826,7 +826,12 @@
       body_en:     document.getElementById('f_body_en').value.trim()    || null,
       category_key:    document.getElementById('f_category').value          || null,
       author:          document.getElementById('f_author').value.trim()     || null,
-      cover_image_url: document.getElementById('f_cover_url').value.trim()  || null,
+      cover_image_url: (function(){
+        var url = document.getElementById('f_cover_url').value.trim();
+        if (url) return url;
+        var img = document.getElementById('coverImg');
+        return (img && img.src && img.style.display !== 'none') ? img.src : null;
+      })(),
       status:      'draft',
       featured:    false,
     };
