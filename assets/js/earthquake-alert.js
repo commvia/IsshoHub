@@ -239,7 +239,7 @@
       var candidates = entries.filter(function (e) {
         var title   = (e.querySelector('title') || {}).textContent || '';
         var updated = (e.querySelector('updated') || {}).textContent || '';
-        return (title === '震度速報' || title === '震源・震度情報') &&
+        return (title === '震度速報' || title === '震源・震度に関する情報') &&
                (now - new Date(updated).getTime()) < LOOK_BACK_MS;
       }).slice(0, 5);
 
