@@ -32,11 +32,13 @@ window.ISSHO_DATA = {
     { key: "tax",    url: "/tax/",    tc: "稅務・保險・年金", en: "Tax, Insurance & Pension", short_tc: "稅務",   short_en: "Tax" },
     { key: "life",   url: "/life/",   tc: "生活",         en: "Life",              short_tc: "生活",   short_en: "Life",
       sub: [
-        { tc: "外免切替",   en: "Driver's Licence Conversion", url: "/life/#licence" },
-        { tc: "交通規則",   en: "Traffic Rules",               url: "/life/#traffic" },
-        { tc: "銀行戶口",   en: "Bank Accounts",               url: "/life/#bank" },
-        { tc: "電話卡",     en: "SIM & Phone Plans",           url: "/life/#sim" },
-        { tc: "其他",       en: "Other",                       url: "/life/#other" },
+        { tc: "外免切替",           en: "Driver's Licence Conversion", url: "/life/#licence" },
+        { tc: "交通規則",           en: "Traffic Rules",               url: "/life/#traffic" },
+        { tc: "銀行戶口",           en: "Bank Accounts",               url: "/life/#bank" },
+        { tc: "電話卡",             en: "SIM & Phone Plans",           url: "/life/#sim" },
+        { tc: "其他",               en: "Other",                       url: "/life/#other" },
+        { tc: "外免切替模擬試題",   en: "Driving Practice Quiz",       url: "/life/driving-quiz/" },
+        { tc: "日本駕照天書",       en: "Driving Guide",               url: "/life/driving-guide/" },
       ]
     },
     { key: "places", url: "/places/", tc: "好去處",           en: "Leisure",                 short_tc: "好去處", short_en: "Leisure" },
