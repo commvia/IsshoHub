@@ -5,9 +5,11 @@ docx-to-html.py
 輸出: 每章 HTML 片段到 scripts/output/chapter-X.html
       圖片到 assets/img/driving-guide/chXX/
 """
-import os, re
+import os
 from docx import Document
 from docx.oxml.ns import qn
+from docx.text.paragraph import Paragraph as DocxParagraph
+from docx.table import Table as DocxTable
 
 DOCX_DIR = os.path.expanduser('~/Downloads/外免天書_extracted')
 OUT_DIR   = 'scripts/output'
@@ -31,9 +33,6 @@ CHAPTERS = [
     (15, '15_免責聲明.docx'),
 ]
 
-os.makedirs(OUT_DIR, exist_ok=True)
-
-
 def extract_images(doc, ch_num):
     img_dir = f'{IMG_BASE}/ch{ch_num:02d}'
     os.makedirs(img_dir, exist_ok=True)
@@ -43,9 +42,8 @@ def extract_images(doc, ch_num):
         if 'image' in rel.reltype:
             img_part = rel.target_part
             content_type = img_part.content_type
-            ext = content_type.split('/')[-1]
-            if ext == 'jpeg': ext = 'jpg'
-            if ext == 'png': ext = 'png'
+            EXT_MAP = {'jpeg': 'jpg', 'png': 'png', 'gif': 'gif', 'bmp': 'bmp', 'tiff': 'tif'}
+            ext = EXT_MAP.get(content_type.split('/')[-1], 'bin')
             idx = len(mapping) + 1
             fname = f'ch{ch_num:02d}_img{idx:03d}.{ext}'
             fpath = f'{img_dir}/{fname}'
@@ -102,7 +100,8 @@ def table_to_html(table, img_mapping):
             for para in cell.paragraphs:
                 t = para.text.strip()
                 if t:
-                    cell_html += f'<p>{t}</p>\n'
+                    t_escaped = t.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+                    cell_html += f'<p>{t_escaped}</p>\n'
             html += f'    <td>{cell_html}</td>\n'
         html += '  </tr>\n'
     html += '</table>\n'
@@ -124,17 +123,13 @@ def convert_chapter(ch_num, fname):
     for child in body:
         tag = child.tag.split('}')[-1]
         if tag == 'p':
-            for para in doc.paragraphs:
-                if para._element is child:
-                    h = para_to_html(para)
-                    if h:
-                        html_parts.append(h)
-                    break
+            para = DocxParagraph(child, doc)
+            h = para_to_html(para)
+            if h:
+                html_parts.append(h)
         elif tag == 'tbl':
-            for table in doc.tables:
-                if table._element is child:
-                    html_parts.append(table_to_html(table, img_mapping))
-                    break
+            table = DocxTable(child, doc)
+            html_parts.append(table_to_html(table, img_mapping))
 
     out_path = f'{OUT_DIR}/chapter-{ch_num}.html'
     with open(out_path, 'w', encoding='utf-8') as f:
@@ -142,7 +137,8 @@ def convert_chapter(ch_num, fname):
     print(f'✓ Chapter {ch_num}: {len(img_mapping)} 張圖片, {len(html_parts)} 個區塊 → {out_path}')
 
 
-for ch_num, fname in CHAPTERS:
-    convert_chapter(ch_num, fname)
-
-print('完成！')
+if __name__ == '__main__':
+    os.makedirs(OUT_DIR, exist_ok=True)
+    for ch_num, fname in CHAPTERS:
+        convert_chapter(ch_num, fname)
+    print('完成！')
