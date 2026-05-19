@@ -42,7 +42,7 @@ export async function onRequestPost(context) {
   "image_prompt": "English image generation prompt for cover photo (real-life scene, photography style, mood, lighting. Max 20 words. No text, no logos, no close-up faces.)"
 }`;
 
-    /* Schema for import mode (metadata only — body filled from original) */
+    /* Schema for import mode (metadata + markdown body conversion) */
     const JSON_SCHEMA_IMPORT = `{
   "title_tc": "繁體中文標題（吸引人，20字以內）",
   "title_en": "English title (catchy, under 12 words)",
@@ -51,6 +51,8 @@ export async function onRequestPost(context) {
   "category_key": "最合適的分類key",
   "author": "如文章有提及作者名稱就填入，否則空字串",
   "original_language": "原文主要語言：'tc'（繁體中文）、'en'（英文）、'both'（中英雙語）",
+  "body_tc": "將原文繁體中文內容整理為 Markdown 格式：段落標題用 ##，子標題用 ###，重點用 **粗體**，列表用 -，保留原文內容不刪減。如原文為英文則留空字串。",
+  "body_en": "If original is in English, convert to clean Markdown (## headings, ### subheadings, **bold** for emphasis, - for lists). If original is Chinese only, leave empty string.",
   "image_prompt": "English image generation prompt for cover photo (real-life scene, photography style, mood, lighting. Max 20 words. No text, no logos, no close-up faces.)"
 }`;
 
@@ -106,20 +108,26 @@ ${CATEGORIES}
 ${JSON_SCHEMA_WRITE}`;
 
     } else {
-      /* Import mode: only extract metadata, body is passed through from original */
+      /* Import mode: extract metadata AND convert body to Markdown */
       prompt = `你是 IsshoHub 的文章編輯助手。IsshoHub 是繁體中文與英文雙語的在日外國人資訊平台，讀者主要是移居日本的香港、台灣人。
 
-請分析以下文章內容，只需提取元資料（標題、摘要、分類、作者），不需要重寫正文。
+請分析以下文章全文，提取元資料並將正文整理為 Markdown 格式。
 
 【語言規則】
 - 標題和摘要：如果原文是繁中，tc填原文，en翻譯；如果是英文，en填原文，tc翻譯；兩語都有則各自填入
-- 請只分析文章開頭 3000 字就足夠
+- 正文：原文是繁中則填 body_tc（整理成 Markdown），body_en 留空；原文是英文則填 body_en，body_tc 留空；中英雙語則各自整理
+
+【正文整理規則】
+- 段落標題用 ##，子標題用 ###
+- 重點詞語用 **粗體**
+- 列表用 -
+- 保留原文所有內容，不刪減、不改寫，只整理格式
 
 ${CATEGORIES}
 
-文章內容（只需看前段）：
+文章全文：
 ---
-${content.slice(0, 3000)}
+${content}
 ---
 
 請只輸出以下 JSON，不要任何其他文字：
@@ -135,7 +143,7 @@ ${JSON_SCHEMA_IMPORT}`;
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-5',
-        max_tokens: 8192,
+        max_tokens: 16000,
         messages: [{ role: 'user', content: prompt }],
       }),
     });
