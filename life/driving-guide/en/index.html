@@ -279,6 +279,13 @@
   </div>
 </div>
 
+<script>
+// Lang redirect: if user has switched to 繁中, go to Chinese version
+(function() {
+  var lang = localStorage.getItem('issho.lang');
+  if (lang === 'tc') { window.location.replace('/life/driving-guide/'); }
+})();
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/data.js?v=4"></script>
 <script src="/assets/js/supabase-client.js?v=7"></script>

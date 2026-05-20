@@ -283,6 +283,13 @@
   </div>
 </div>
 
+<script>
+// 語言跳轉：若使用者選了 EN，自動跳英文版目錄
+(function() {
+  var lang = localStorage.getItem('issho.lang');
+  if (lang === 'en') { window.location.replace('/life/driving-guide/en/'); }
+})();
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/data.js?v=4"></script>
 <script src="/assets/js/supabase-client.js?v=7"></script>

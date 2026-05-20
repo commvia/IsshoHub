@@ -323,6 +323,12 @@
   </div>
 </div>
 
+<script>
+(function() {
+  var lang = localStorage.getItem('issho.lang');
+  if (lang === 'en') { window.location.replace('/life/driving-guide/en/chapter-13/'); }
+})();
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/data.js?v=4"></script>
 <script src="/assets/js/supabase-client.js?v=7"></script>
