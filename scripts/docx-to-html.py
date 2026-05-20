@@ -260,9 +260,30 @@ def get_rowspan(table, ri, ci):
     return span
 
 
+def get_col_widths(table):
+    """讀取 w:tblGrid 欄寬（twips），回傳百分比列表"""
+    tblGrid = table._tbl.find(qn('w:tblGrid'))
+    if tblGrid is None:
+        return []
+    widths = [round(float(gc.get(qn('w:w'), '0'))) for gc in tblGrid.findall(qn('w:gridCol'))]
+    total = sum(widths)
+    if total == 0:
+        return []
+    return [round(w / total * 100, 1) for w in widths]
+
+
 def table_to_html(table, doc, ch_num, img_counter, img_dir):
     """完整保留格式的表格轉換"""
     html = '<table class="guide-table">\n'
+
+    # 欄寬
+    col_pcts = get_col_widths(table)
+    if col_pcts:
+        html += '<colgroup>\n'
+        for pct in col_pcts:
+            html += f'  <col style="width:{pct}%">\n'
+        html += '</colgroup>\n'
+
     skipped = set()
 
     for ri, row in enumerate(table.rows):
