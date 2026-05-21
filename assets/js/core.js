@@ -214,7 +214,7 @@
       footer_r2: '/life/driving-guide/',
       footer_r3: '/visa/#hsp',
       footer_r4: '/#newsletter',
-      footer_a1: '/#about',
+      footer_a1: '/about/',
       footer_a2: '/#about',
       footer_a3: 'javascript:void(0)',
       footer_a4: 'javascript:void(0)',
