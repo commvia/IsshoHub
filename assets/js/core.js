@@ -80,7 +80,7 @@
     'news_sub':      { tc: '最新日本時事、政策與生活相關新聞。', en: 'Latest news on Japan policy, society and daily life.' },
     'news_more':     { tc: '查看全部新聞', en: 'All news' },
     'latest':        { tc: '最新文章', en: 'Latest articles' },
-    'latest_sub':    { tc: '本週更新。來自編輯團隊與在地撰稿人。', en: 'Fresh this week — from the editors and our local contributors.' },
+    'latest_sub':    { tc: '集合所有類別的文章更新。', en: 'The latest from every category, all in one place.' },
     'stories_title': { tc: '人物故事', en: 'Stories' },
     'stories_sub':   { tc: '他們為什麼選擇日本？在這裡如何生活、工作、扎根？', en: 'Why did they choose Japan? How do they live, work, and belong here?' },
     'checklist_title':{ tc: '抵日首 30 天：必辦清單', en: 'Your first 30 days in Japan' },
