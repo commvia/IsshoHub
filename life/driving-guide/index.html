@@ -100,13 +100,8 @@
 
 <!-- HERO -->
 <div class="container" style="padding-top:32px;padding-bottom:8px;">
-  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:12px;">
+  <div style="margin-bottom:12px;">
     <h1 style="font-size:2rem;margin:0;color:#0d2444;">日本駕照完全攻略</h1>
-    <!-- Language switcher -->
-    <div style="display:flex;gap:8px;flex-shrink:0;margin-top:4px;">
-      <span style="display:inline-flex;align-items:center;padding:5px 14px;border-radius:99px;font-size:13px;font-weight:700;background:#0d2444;color:#fff;border:1.5px solid #0d2444;">繁中</span>
-      <a href="/life/driving-guide/en/" style="display:inline-flex;align-items:center;padding:5px 14px;border-radius:99px;font-size:13px;font-weight:600;background:transparent;color:#0d2444;border:1.5px solid #d0cdc6;text-decoration:none;transition:border-color .2s;" onmouseover="this.style.borderColor='#0d2444'" onmouseout="this.style.borderColor='#d0cdc6'">EN</a>
-    </div>
   </div>
   <p style="color:#555;font-size:1rem;max-width:640px;line-height:1.7;margin:0 0 8px;">
     無論你是換牌（外免切替）還是重新考試（學科試），這本天書把日本駕照考試所有重點整理成 15 章圖文並茂的學習指南。
@@ -314,6 +309,10 @@
 (function () {
   window.IsshoCore.init('life');
 })();
+// 即時語言切換跳轉
+window.onLangChange = function(lang) {
+  if (lang === 'en') { window.location.replace('/life/driving-guide/en/'); }
+};
 </script>
 <script>
 // Admin unlock for index page locked chapters
