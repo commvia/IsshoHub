@@ -89,7 +89,7 @@
     'newsletter_title': { tc: '每週一封，剛剛好。', en: 'One email a week. That\'s it.' },
     'newsletter_sub': { tc: '在日新政策、最新文章、社群活動——整理好，送到你的信箱。', en: 'New policies, fresh articles, community events — curated for your inbox.' },
     'newsletter_cta': { tc: '訂閱電子報', en: 'Subscribe' },
-    'footer_about':  { tc: 'IsshoHub 是一個繁中與英文雙語資訊平台，為移居日本的香港、台灣朋友與希望在日創業的團隊整理最實用的資源。外國人與日本人，一起生活、共同成長。', en: 'IsshoHub is a bilingual (Traditional Chinese + English) resource hub for foreigners living in or moving to Japan — and for startups making Japan home.' },
+    'footer_about':  { tc: 'IsshoHub 是面向國際讀者的繁體中文與英文雙語平台，專注於日本生活、文化資訊、簽證、投資與創業。編輯團隊來自傳媒、文化與學術領域，結合在地觀察與國際視野，為移居日本的外國人、關心日本的讀者，提供深入且實用的內容。', en: 'IsshoHub is a bilingual Traditional Chinese and English platform for international readers, focusing on life in Japan, culture, visas, investment and entrepreneurship. Our editorial team brings together expertise in media, culture and academia — combining on-the-ground insight with a global perspective to deliver in-depth, practical content for foreigners in Japan.' },
     'footer_col1':   { tc: '瀏覽分類', en: 'Explore' },
     'footer_col2':   { tc: '資源', en: 'Resources' },
     'footer_col3':   { tc: '關於', en: 'About' },
