@@ -279,7 +279,7 @@
       }
 
       C.init(categoryKey);
-      C.onLangChange(function () { activeSub = ''; renderAll(); });
+      C.onLangChange(function () { renderAll(); });
       if (global.IsshoEditor) global.IsshoEditor.init();
       if (global.IsshoSearch) global.IsshoSearch.init();
 
