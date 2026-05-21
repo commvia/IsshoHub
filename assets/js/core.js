@@ -168,6 +168,25 @@
   /* ── Nav ── */
   function renderNav(activeKey) {
     const D = window.ISSHO_DATA;
+
+    /* footer resource + about links — run on every page regardless of nav */
+    const FOOTER_HREFS = {
+      footer_r1: '/life/',
+      footer_r2: '/life/driving-guide/',
+      footer_r3: '/visa/#hsp',
+      footer_r4: '/#newsletter',
+      footer_a1: '/about/',
+      footer_a2: '/#about',
+      footer_a3: 'javascript:void(0)',
+      footer_a4: 'javascript:void(0)',
+      footer_a5: '/#privacy',
+    };
+    Object.keys(FOOTER_HREFS).forEach(key => {
+      document.querySelectorAll(`a[data-i18n="${key}"]`).forEach(el => {
+        el.href = FOOTER_HREFS[key];
+      });
+    });
+
     const el = document.getElementById('navLinks');
     if (!el) return;
     el.innerHTML = D.nav.map(c => {
@@ -208,23 +227,6 @@
       }).join('');
     }
 
-    /* footer resource + about links */
-    const FOOTER_HREFS = {
-      footer_r1: '/life/',
-      footer_r2: '/life/driving-guide/',
-      footer_r3: '/visa/#hsp',
-      footer_r4: '/#newsletter',
-      footer_a1: '/about/',
-      footer_a2: '/#about',
-      footer_a3: 'javascript:void(0)',
-      footer_a4: 'javascript:void(0)',
-      footer_a5: '/#privacy',
-    };
-    Object.keys(FOOTER_HREFS).forEach(key => {
-      document.querySelectorAll(`a[data-i18n="${key}"]`).forEach(el => {
-        el.href = FOOTER_HREFS[key];
-      });
-    });
   }
 
   /* ── Mobile menu ── */
