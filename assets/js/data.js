@@ -557,8 +557,8 @@ window.ISSHO_DATA = {
       icon: '<path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>',
     },
     story: {
-      desc_tc: '他們為什麼選擇日本？從香港到東京、台北到大阪，真實在日生活者的第一手故事。',
-      desc_en: 'Why did they choose Japan? From Hong Kong to Tokyo, Taipei to Osaka — first-hand stories from real residents.',
+      desc_tc: '他們如何在日本生活、工作、創作，並建立屬於自己的故事？',
+      desc_en: 'How do they live, work and create in Japan — and build a life that is truly their own?',
       bg: 'https://images.unsplash.com/photo-1528164344705-47542687000d?w=1400&q=80',
       watermark: '故事',
       icon: '<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>',
