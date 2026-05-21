@@ -94,10 +94,9 @@
     'footer_col2':   { tc: '資源', en: 'Resources' },
     'footer_col3':   { tc: '關於', en: 'About' },
     'footer_r1':     { tc: '新手必讀', en: 'Start here' },
-    'footer_r2':     { tc: '實用連結', en: 'Useful links' },
-    'footer_r3':     { tc: '社群活動', en: 'Community events' },
-    'footer_r4':     { tc: '匯率換算', en: 'Currency calculator' },
-    'footer_r5':     { tc: '電子報', en: 'Newsletter' },
+    'footer_r2':     { tc: '外免切替應試教材', en: 'Japan Driving Licence Guide' },
+    'footer_r3':     { tc: '高度專門職積分計算機', en: 'HSP Points Calculator' },
+    'footer_r4':     { tc: '電子報', en: 'Newsletter' },
     'footer_a1':     { tc: '關於我們', en: 'About us' },
     'footer_a2':     { tc: '編輯團隊', en: 'Editorial team' },
     'footer_a3':     { tc: '投稿合作', en: 'Contribute' },
@@ -106,11 +105,27 @@
     'contact_sub':               { tc: '有任何問題或意見？留下訊息，我們會盡快回覆。', en: 'Have a question or feedback? Leave us a message and we\'ll get back to you.' },
     'contact_name_label':        { tc: '您的姓名', en: 'Your name' },
     'contact_name_placeholder':  { tc: '請輸入姓名', en: 'Your name' },
-    'contact_line_label':        { tc: 'LINE ID', en: 'LINE ID' },
+    'contact_email_label':       { tc: '電郵地址', en: 'Email address' },
+    'contact_email_placeholder': { tc: 'your@email.com', en: 'your@email.com' },
+    'contact_line_label':        { tc: 'LINE ID（選填）', en: 'LINE ID (optional)' },
     'contact_line_placeholder':  { tc: '例：@yourlineid', en: 'e.g. @yourlineid' },
     'contact_msg_label':         { tc: '訊息內容', en: 'Message' },
     'contact_msg_placeholder':   { tc: '請輸入您的訊息…', en: 'Your message…' },
     'contact_submit':            { tc: '發送訊息', en: 'Send message' },
+    'contrib_title':             { tc: '投稿合作', en: 'Contribute' },
+    'contrib_sub':               { tc: '歡迎投稿、翻譯合作或商業洽談，留下資料，我們會盡快聯絡。', en: 'We welcome article submissions, translation partnerships and business enquiries. Leave your details and we\'ll be in touch.' },
+    'contrib_name_label':        { tc: '您的姓名', en: 'Your name' },
+    'contrib_name_placeholder':  { tc: '請輸入姓名', en: 'Your name' },
+    'contrib_email_label':       { tc: '電郵地址', en: 'Email address' },
+    'contrib_email_placeholder': { tc: 'your@email.com', en: 'your@email.com' },
+    'contrib_type_label':        { tc: '合作類型', en: 'Type' },
+    'contrib_type_article':      { tc: '投稿文章', en: 'Article submission' },
+    'contrib_type_translate':    { tc: '翻譯合作', en: 'Translation partnership' },
+    'contrib_type_sponsor':      { tc: '商業合作 / 贊助', en: 'Business / Sponsorship' },
+    'contrib_type_other':        { tc: '其他', en: 'Other' },
+    'contrib_msg_label':         { tc: '簡短說明', en: 'Brief description' },
+    'contrib_msg_placeholder':   { tc: '請簡單說明合作內容或投稿主題…', en: 'Please briefly describe your proposal or article topic…' },
+    'contrib_submit':            { tc: '發送', en: 'Send' },
     'footer_a5':     { tc: '隱私政策', en: 'Privacy' },
     'footer_lang':   { tc: '繁體中文', en: 'Traditional Chinese' },
     'fx_title':      { tc: '匯率換算', en: 'Currency Calculator' },
@@ -196,13 +211,12 @@
     /* footer resource + about links */
     const FOOTER_HREFS = {
       footer_r1: '/life/',
-      footer_r2: '/visa/',
-      footer_r3: '/news/#events',
-      footer_r4: 'javascript:void(0)',
-      footer_r5: '/#newsletter',
+      footer_r2: '/life/driving-guide/',
+      footer_r3: '/visa/#hsp',
+      footer_r4: '/#newsletter',
       footer_a1: '/#about',
       footer_a2: '/#about',
-      footer_a3: 'mailto:hello@isshohub.com',
+      footer_a3: 'javascript:void(0)',
       footer_a4: 'javascript:void(0)',
       footer_a5: '/#privacy',
     };
@@ -576,8 +590,12 @@
                 '<input type="text" name="name" required data-i18n-placeholder="contact_name_placeholder">' +
               '</div>' +
               '<div class="form-group">' +
+                '<label data-i18n="contact_email_label"></label>' +
+                '<input type="email" name="email" required data-i18n-placeholder="contact_email_placeholder">' +
+              '</div>' +
+              '<div class="form-group">' +
                 '<label data-i18n="contact_line_label"></label>' +
-                '<input type="text" name="line_id" required data-i18n-placeholder="contact_line_placeholder">' +
+                '<input type="text" name="line_id" data-i18n-placeholder="contact_line_placeholder">' +
               '</div>' +
               '<div class="form-group">' +
                 '<label data-i18n="contact_msg_label"></label>' +
@@ -594,6 +612,7 @@
 
     var modal     = document.getElementById('contactModal');
     var nameEl    = modal.querySelector('[name="name"]');
+    var emailEl   = modal.querySelector('[name="email"]');
     var lineEl    = modal.querySelector('[name="line_id"]');
     var msgEl     = modal.querySelector('[name="message"]');
     var submitBtn = document.getElementById('contactSubmitBtn');
@@ -602,8 +621,9 @@
     function openModal() {
       modal.classList.add('open');
       document.body.style.overflow = 'hidden';
-      if (nameEl) { nameEl.value = ''; nameEl.disabled = false; }
-      if (lineEl) { lineEl.value = ''; lineEl.disabled = false; }
+      if (nameEl)  { nameEl.value  = ''; nameEl.disabled  = false; }
+      if (emailEl) { emailEl.value = ''; emailEl.disabled = false; }
+      if (lineEl)  { lineEl.value  = ''; lineEl.disabled  = false; }
       if (msgEl)  { msgEl.value  = ''; msgEl.disabled  = false; }
       if (submitBtn) { submitBtn.style.display = ''; submitBtn.disabled = false; updateI18n(); }
       if (result) result.style.display = 'none';
@@ -627,10 +647,11 @@
 
     submitBtn.addEventListener('click', function () {
       var lang    = getLang();
-      var name    = nameEl ? nameEl.value.trim() : '';
-      var lineId  = lineEl ? lineEl.value.trim() : '';
-      var message = msgEl  ? msgEl.value.trim()  : '';
-      if (!name || !lineId || !message) return;
+      var name    = nameEl  ? nameEl.value.trim()  : '';
+      var email   = emailEl ? emailEl.value.trim() : '';
+      var lineId  = lineEl  ? lineEl.value.trim()  : '';
+      var message = msgEl   ? msgEl.value.trim()   : '';
+      if (!name || !email || !message) return;
 
       submitBtn.disabled = true;
       submitBtn.textContent = lang === 'tc' ? '發送中…' : 'Sending…';
@@ -639,7 +660,7 @@
       fetch(CONTACT_FORMSPREE, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ name: name, line_id: lineId, message: message }),
+        body: JSON.stringify({ name: name, email: email, line_id: lineId, message: message }),
       })
       .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
       .then(function (res) {
@@ -651,9 +672,10 @@
             ? '✓ 訊息已發送！我們會盡快回覆。'
             : '✓ Message sent! We\'ll get back to you soon.';
           submitBtn.style.display = 'none';
-          if (nameEl) nameEl.disabled = true;
-          if (lineEl) lineEl.disabled = true;
-          if (msgEl)  msgEl.disabled  = true;
+          if (nameEl)  nameEl.disabled  = true;
+          if (emailEl) emailEl.disabled = true;
+          if (lineEl)  lineEl.disabled  = true;
+          if (msgEl)   msgEl.disabled   = true;
         } else {
           throw new Error((res.data && res.data.error) || 'error');
         }
@@ -665,6 +687,131 @@
         result.textContent = lang === 'tc'
           ? '發送失敗，請直接電郵至 admin@isshohub.com'
           : 'Failed to send. Please email admin@isshohub.com directly.';
+        submitBtn.disabled = false;
+        submitBtn.textContent = lang === 'tc' ? '重試' : 'Retry';
+      });
+    });
+  }
+
+  /* ── Contribute modal ── */
+  var CONTRIB_FORMSPREE = 'https://formspree.io/f/xjgzvozy';
+
+  function wireContributeModal() {
+    if (!document.getElementById('contributeModal')) {
+      var wrap = document.createElement('div');
+      wrap.innerHTML =
+        '<div id="contributeModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contributeModalTitle">' +
+          '<div class="modal">' +
+            '<button class="modal-close" id="contributeModalClose" aria-label="Close">✕</button>' +
+            '<h2 id="contributeModalTitle" class="modal-title" data-i18n="contrib_title"></h2>' +
+            '<p class="modal-sub" data-i18n="contrib_sub"></p>' +
+            '<div class="contact-form-fields">' +
+              '<div class="form-group">' +
+                '<label data-i18n="contrib_name_label"></label>' +
+                '<input type="text" name="name" required data-i18n-placeholder="contrib_name_placeholder">' +
+              '</div>' +
+              '<div class="form-group">' +
+                '<label data-i18n="contrib_email_label"></label>' +
+                '<input type="email" name="email" required data-i18n-placeholder="contrib_email_placeholder">' +
+              '</div>' +
+              '<div class="form-group">' +
+                '<label data-i18n="contrib_type_label"></label>' +
+                '<select name="type" style="width:100%;padding:11px 14px;border:1.5px solid #e0ddd6;border-radius:10px;font-size:15px;background:#fff;color:#333;outline:none;">' +
+                  '<option value="article" data-i18n="contrib_type_article"></option>' +
+                  '<option value="translate" data-i18n="contrib_type_translate"></option>' +
+                  '<option value="sponsor" data-i18n="contrib_type_sponsor"></option>' +
+                  '<option value="other" data-i18n="contrib_type_other"></option>' +
+                '</select>' +
+              '</div>' +
+              '<div class="form-group">' +
+                '<label data-i18n="contrib_msg_label"></label>' +
+                '<textarea class="contact-textarea" name="message" rows="4" required data-i18n-placeholder="contrib_msg_placeholder"></textarea>' +
+              '</div>' +
+              '<button type="button" id="contributeSubmitBtn" class="btn-submit" data-i18n="contrib_submit"></button>' +
+              '<div id="contributeResult" style="display:none;margin-top:14px;padding:12px 16px;border-radius:8px;font-size:14px;line-height:1.5;"></div>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      document.body.appendChild(wrap.firstChild);
+      updateI18n();
+    }
+
+    var modal     = document.getElementById('contributeModal');
+    var nameEl    = modal.querySelector('[name="name"]');
+    var emailEl   = modal.querySelector('[name="email"]');
+    var typeEl    = modal.querySelector('[name="type"]');
+    var msgEl     = modal.querySelector('[name="message"]');
+    var submitBtn = document.getElementById('contributeSubmitBtn');
+    var result    = document.getElementById('contributeResult');
+
+    function openModal() {
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      if (nameEl)  { nameEl.value  = ''; nameEl.disabled  = false; }
+      if (emailEl) { emailEl.value = ''; emailEl.disabled = false; }
+      if (typeEl)  { typeEl.value  = 'article'; typeEl.disabled = false; }
+      if (msgEl)   { msgEl.value   = ''; msgEl.disabled   = false; }
+      if (submitBtn) { submitBtn.style.display = ''; submitBtn.disabled = false; updateI18n(); }
+      if (result) result.style.display = 'none';
+      setTimeout(function () { if (nameEl) nameEl.focus(); }, 280);
+    }
+    function closeModal() {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('a[data-i18n="footer_a3"]').forEach(function (a) {
+      a.addEventListener('click', function (e) { e.preventDefault(); openModal(); });
+    });
+
+    document.getElementById('contributeModalClose').addEventListener('click', closeModal);
+    modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+    });
+
+    submitBtn.addEventListener('click', function () {
+      var lang    = getLang();
+      var name    = nameEl  ? nameEl.value.trim()  : '';
+      var email   = emailEl ? emailEl.value.trim() : '';
+      var type    = typeEl  ? typeEl.value         : '';
+      var message = msgEl   ? msgEl.value.trim()   : '';
+      if (!name || !email || !message) return;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = lang === 'tc' ? '發送中…' : 'Sending…';
+      result.style.display = 'none';
+
+      fetch(CONTRIB_FORMSPREE, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ name: name, email: email, type: type, message: message, _subject: 'IsshoHub 投稿合作' }),
+      })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
+      .then(function (res) {
+        if (res.ok) {
+          result.style.display = 'block';
+          result.style.background = '#f0faf2';
+          result.style.color = '#1a6b2a';
+          result.textContent = lang === 'tc'
+            ? '✓ 已收到，我們會盡快透過電郵聯絡你。'
+            : '✓ Received! We\'ll be in touch via email soon.';
+          submitBtn.style.display = 'none';
+          if (nameEl)  nameEl.disabled  = true;
+          if (emailEl) emailEl.disabled = true;
+          if (typeEl)  typeEl.disabled  = true;
+          if (msgEl)   msgEl.disabled   = true;
+        } else {
+          throw new Error((res.data && res.data.error) || 'error');
+        }
+      })
+      .catch(function () {
+        result.style.display = 'block';
+        result.style.background = '#fff0f0';
+        result.style.color = '#c0392b';
+        result.textContent = lang === 'tc'
+          ? '發送失敗，請直接電郵至 hello@isshohub.com'
+          : 'Failed to send. Please email hello@isshohub.com directly.';
         submitBtn.disabled = false;
         submitBtn.textContent = lang === 'tc' ? '重試' : 'Retry';
       });
@@ -738,6 +885,7 @@
     wireFX();
     wireLoginModal();
     wireContactModal();
+    wireContributeModal();
     wireNewsletter();
     loadTicker();
     wireCopyAttribution();
