@@ -32,7 +32,7 @@
 <body>
 
 <!-- ADMIN BAR -->
-<div class="admin-bar" id="adminBar" style="display:none">
+<div class="admin-bar" id="adminBar" data-admin-bar style="display:none">
   <span class="admin-bar-user" id="adminBarUser"></span>
   <div class="admin-bar-actions">
     <a class="admin-btn" href="/admin/"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg> 文章管理</a>
@@ -65,7 +65,23 @@
         <button data-lang-set="tc">繁中</button>
         <button data-lang-set="en">EN</button>
       </div>
-      <button class="auth-btn" id="authBtn" data-i18n="login_btn"></button>
+      <button class="btn-login" data-open-login>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <span data-i18n="login_btn"></span>
+      </button>
+      <div class="user-menu" data-user-menu style="display:none">
+        <button class="user-menu-btn" id="userMenuBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          <span data-user-name></span>
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="user-dropdown" id="userDropdown">
+          <a href="/bookmarks/" data-i18n="nav_bookmarks">我的收藏</a>
+          <a href="#" data-i18n="nav_settings">帳號設定</a>
+          <div class="user-dropdown-divider"></div>
+          <a href="#" data-sign-out data-i18n="nav_signout">登出</a>
+        </div>
+      </div>
     </div>
     <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
