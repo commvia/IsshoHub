@@ -449,6 +449,10 @@
 (function () {
   window.IsshoCore.init('life');
 })();
+// 即時語言切換跳轉
+window.onLangChange = function(lang) {
+  if (lang === 'en') { window.location.replace('/life/driving-guide/en/chapter-4/'); }
+};
 </script>
 <script>
 // Admin 解鎖付費章節

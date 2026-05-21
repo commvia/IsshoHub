@@ -92,16 +92,12 @@
 </nav>
 
 <!-- BREADCRUMB -->
-<div class="container" style="padding-top:16px;padding-bottom:0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+<div class="container" style="padding-top:16px;padding-bottom:0;">
   <div class="cat-hero-breadcrumb">
     <a href="/">Home</a><span class="breadcrumb-sep">/</span>
     <a href="/life/">Life</a><span class="breadcrumb-sep">/</span>
     <a href="/life/driving-guide/en/">Driving Guide</a><span class="breadcrumb-sep">/</span>
     <span class="current">Chapter 1</span>
-  </div>
-  <div style="display:flex;gap:8px;flex-shrink:0;">
-    <a href="/life/driving-guide/chapter-1/" style="display:inline-flex;align-items:center;padding:4px 12px;border-radius:99px;font-size:12px;font-weight:600;background:transparent;color:#0d2444;border:1.5px solid #d0cdc6;text-decoration:none;">繁中</a>
-    <span style="display:inline-flex;align-items:center;padding:4px 12px;border-radius:99px;font-size:12px;font-weight:700;background:#0d2444;color:#fff;border:1.5px solid #0d2444;">EN</span>
   </div>
 </div>
 
@@ -611,6 +607,10 @@
 (function () {
   window.IsshoCore.init('life');
 })();
+// Immediate language switch redirect
+window.onLangChange = function(lang) {
+  if (lang === 'tc') { window.location.replace('/life/driving-guide/chapter-1/'); }
+};
 </script>
 <script>
 // Admin unlock for paid chapters
