@@ -273,30 +273,67 @@
 <script>
 function buildDrivingQuizToolCard(lang) {
   var L = lang === 'tc';
-  // Traffic sign SVGs (arrow, warning, prohibition, traffic light)
-  var svgArrow = '<svg width="44" height="32" viewBox="0 0 44 32"><rect x="1" y="1" width="42" height="30" rx="4" fill="#1a4fa8" stroke="#0d2f6e" stroke-width="1.5"/><path d="M9 16 L29 16 M23 10 L31 16 L23 22" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  var svgWarn  = '<svg width="40" height="36" viewBox="0 0 40 36"><path d="M20 3 L37 33 H3 Z" fill="white" stroke="#d42020" stroke-width="2.5" stroke-linejoin="round"/><text x="20" y="29" text-anchor="middle" font-size="19" font-weight="900" fill="#d42020">!</text></svg>';
-  var svgProhib = '<svg width="36" height="36" viewBox="0 0 36 36"><circle cx="18" cy="18" r="16" fill="white" stroke="#d42020" stroke-width="2.5"/><rect x="4" y="16" width="28" height="4.5" rx="2.2" fill="#d42020"/></svg>';
-  var svgLight = '<svg width="24" height="42" viewBox="0 0 24 42"><rect x="1" y="1" width="22" height="40" rx="5.5" fill="#2a2a2a"/><circle cx="12" cy="10" r="5" fill="#e03030"/><circle cx="12" cy="21" r="5" fill="#e0a820"/><circle cx="12" cy="32" r="5" fill="#32b832"/></svg>';
-  var feats_tc = ['100 道是非題，附即時解說', '3 種答題模式覆蓋常見考點', '登入後自動追蹤錯題', '訪客免費體驗 20 題'];
-  var feats_en = ['100 true/false questions with explanations', 'Covers common exam scenarios', 'Wrong-answer tracking for members', 'Guests get 20 free questions'];
-  var feats = (L ? feats_tc : feats_en).map(function(f){ return '<li>' + f + '</li>'; }).join('');
-  return '<div class="dq-card">' +
-    '<span class="dq-sakura dq-sakura-tl">🌸</span>' +
-    '<span class="dq-sakura dq-sakura-tr">🌸</span>' +
-    '<div class="dq-banner">— TOOL \xB7 ' + (L ? '實用工具' : 'Practical Tool') + ' —</div>' +
-    '<div class="dq-body">' +
-      '<div class="dq-bubble">' +
-        '<div class="dq-bubble-title">' + (L ? '外國駕照換領<br>模擬試題' : 'Licence Conversion<br>Practice Test') + '</div>' +
-        '<div class="dq-bubble-sub">' + (L ? 'Driving Licence Conversion' : '外免切替') + '</div>' +
-      '</div>' +
-      '<div class="dq-signs">' +
-        svgArrow + svgWarn + svgProhib + svgLight +
-      '</div>' +
-    '</div>' +
-    '<ul class="dq-features">' + feats + '</ul>' +
-    '<a href="/life/driving-quiz/" class="dq-btn">' + (L ? '開始練習 →' : 'Start Practice →') + '</a>' +
-    '</div>';
+  var title  = L ? '外國駕照換領<br/><span style="color:#E8C56B;">模擬試題</span>'
+                 : 'Licence Conversion<br/><span style="color:#E8C56B;">Practice Test</span>';
+  var tool   = L ? 'TOOL · 實用工具' : 'TOOL · Practical Tool';
+  var sub    = 'DRIVING LICENCE CONVERSION';
+  var f1 = L ? '登入後解鎖 <b style="color:#0d2444;font-weight:700;">完整 100 道是非題</b>，附即時解說'
+             : 'Unlock <b style="color:#0d2444;font-weight:700;">100 true/false questions</b> with explanations';
+  var f2 = L ? '<b style="color:#0d2444;font-weight:700;">答題模式</b>覆蓋常見考點'
+             : '<b style="color:#0d2444;font-weight:700;">Practice modes</b> cover all common exam topics';
+  var f3 = L ? '訪客 <b style="color:#bc002d;font-weight:700;">免費體驗 20 題</b>'
+             : 'Guests get <b style="color:#bc002d;font-weight:700;">20 free questions</b>';
+  var cta = L ? '開始練習' : 'Start Practice';
+
+  return '<a href="/life/driving-quiz/" style="text-decoration:none;display:block;position:relative;overflow:hidden;background:#FBFAF7;border:1px solid #e8e0cf;border-radius:18px;box-shadow:0 1px 0 rgba(255,255,255,.6) inset,0 12px 32px -16px rgba(13,36,68,.18),0 4px 12px -6px rgba(13,36,68,.1);">'
+
+    /* eyebrow */
+    + '<div style="position:relative;padding:18px 22px 0;display:flex;align-items:center;justify-content:space-between;gap:8px;">'
+      + '<span style="font-family:\'Inter\',\'Noto Sans TC\',sans-serif;font-size:10.5px;font-weight:800;color:#c8a02e;letter-spacing:.28em;text-transform:uppercase;display:inline-flex;align-items:center;gap:8px;"><span style="width:18px;height:1px;background:#c8a02e;display:inline-block;"></span>' + tool + '</span>'
+      + '<span style="display:inline-flex;align-items:center;gap:5px;font-family:\'Inter\',sans-serif;font-size:9.5px;font-weight:800;color:#0d2444;background:#E8C56B;padding:3px 8px;border-radius:99px;letter-spacing:.14em;"><span style="width:5px;height:5px;border-radius:50%;background:#bc002d;"></span>FREE</span>'
+    + '</div>'
+
+    /* hero navy panel */
+    + '<div style="position:relative;margin:14px 18px 0;background:linear-gradient(135deg,#0d2444 0%,#143268 50%,#0a1d3a 100%);border-radius:14px;padding:18px 18px 14px;overflow:hidden;min-height:158px;">'
+      /* glows + watermark */
+      + '<span aria-hidden="true" style="position:absolute;top:-60px;right:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(232,197,107,.22) 0%,rgba(232,197,107,0) 60%);pointer-events:none;"></span>'
+      + '<span aria-hidden="true" style="position:absolute;bottom:-50px;left:-40px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(55,138,221,.18) 0%,rgba(55,138,221,0) 60%);pointer-events:none;"></span>'
+      + '<span aria-hidden="true" style="position:absolute;left:-20px;right:-20px;top:60%;height:24px;transform:translateY(-50%) rotate(-4deg);background:repeating-linear-gradient(90deg,rgba(232,197,107,.08) 0 24px,transparent 24px 48px);pointer-events:none;"></span>'
+      + '<span aria-hidden="true" style="position:absolute;right:8px;bottom:-22px;font-family:\'Shippori Mincho\',serif;font-size:120px;font-weight:700;color:rgba(232,197,107,.07);line-height:1;letter-spacing:-8px;pointer-events:none;user-select:none;">試</span>'
+      + '<div style="position:relative;z-index:2;display:flex;align-items:center;gap:14px;">'
+        /* Ichirō + clipboard */
+        + '<div style="flex-shrink:0;position:relative;width:104px;height:122px;">'
+          + '<svg aria-hidden="true" width="52" height="62" viewBox="0 0 60 72" style="position:absolute;top:0;right:-8px;transform:rotate(10deg);filter:drop-shadow(0 3px 6px rgba(0,0,0,.3));z-index:1;"><rect x="2" y="8" width="56" height="60" rx="4" fill="#FBFAF7" stroke="#0d2444" stroke-width="2"/><rect x="20" y="2" width="20" height="10" rx="2" fill="#E8C56B" stroke="#0d2444" stroke-width="2"/><circle cx="11" cy="22" r="3" fill="none" stroke="#3a8e5c" stroke-width="1.5"/><path d="M9 22 L11 24 L14 20" stroke="#3a8e5c" stroke-width="1.5" fill="none" stroke-linecap="round"/><rect x="18" y="20" width="34" height="4" rx="1" fill="#0d2444" opacity=".5"/><circle cx="11" cy="34" r="3" fill="none" stroke="#3a8e5c" stroke-width="1.5"/><path d="M9 34 L11 36 L14 32" stroke="#3a8e5c" stroke-width="1.5" fill="none" stroke-linecap="round"/><rect x="18" y="32" width="28" height="4" rx="1" fill="#0d2444" opacity=".5"/><circle cx="11" cy="46" r="3" fill="none" stroke="#bc002d" stroke-width="1.5"/><path d="M9 44 L13 48 M13 44 L9 48" stroke="#bc002d" stroke-width="1.5" stroke-linecap="round"/><rect x="18" y="44" width="32" height="4" rx="1" fill="#0d2444" opacity=".5"/><circle cx="11" cy="58" r="3" fill="none" stroke="#3a8e5c" stroke-width="1.5"/><path d="M9 58 L11 60 L14 56" stroke="#3a8e5c" stroke-width="1.5" fill="none" stroke-linecap="round"/><rect x="18" y="56" width="26" height="4" rx="1" fill="#0d2444" opacity=".5"/></svg>'
+          + '<svg aria-hidden="true" width="50" height="14" viewBox="0 0 60 16" style="position:absolute;bottom:18px;right:-12px;transform:rotate(-22deg);z-index:4;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3));"><rect x="14" y="3" width="36" height="10" rx="1" fill="#E8C56B" stroke="#0d2444" stroke-width="1.5"/><rect x="46" y="3" width="8" height="10" rx="1" fill="#bc002d" stroke="#0d2444" stroke-width="1.5"/><path d="M2 8 L14 3 L14 13 Z" fill="#FBFAF7" stroke="#0d2444" stroke-width="1.5" stroke-linejoin="round"/><path d="M2 8 L8 8" stroke="#1a1714" stroke-width="2" stroke-linecap="round"/></svg>'
+          + '<svg width="104" height="104" viewBox="0 0 200 200" style="position:absolute;bottom:0;left:0;z-index:2;filter:drop-shadow(0 5px 12px rgba(0,0,0,.3));"><defs><linearGradient id="qFur" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8c79c"/><stop offset="100%" stop-color="#d4a979"/></linearGradient><linearGradient id="qBel" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fdfaf2"/><stop offset="100%" stop-color="#f3ecd7"/></linearGradient><radialGradient id="qBlsh" cx=".5" cy=".5"><stop offset="0%" stop-color="#ff8aa3" stop-opacity=".8"/><stop offset="100%" stop-color="#ff8aa3" stop-opacity="0"/></radialGradient></defs><ellipse cx="100" cy="184" rx="52" ry="5" fill="#000" opacity=".22"/><path d="M48 60 Q40 28 60 24 Q78 30 82 58 Z" fill="url(#qFur)" stroke="#5a3d18" stroke-width="3" stroke-linejoin="round"/><path d="M152 60 Q160 28 140 24 Q122 30 118 58 Z" fill="url(#qFur)" stroke="#5a3d18" stroke-width="3" stroke-linejoin="round"/><path d="M55 52 Q55 38 65 36 Q73 40 73 56 Z" fill="#ffd5d8"/><path d="M145 52 Q145 38 135 36 Q127 40 127 56 Z" fill="#ffd5d8"/><ellipse cx="100" cy="100" rx="64" ry="58" fill="url(#qFur)" stroke="#5a3d18" stroke-width="3.5"/><ellipse cx="100" cy="124" rx="36" ry="26" fill="url(#qBel)" stroke="#a37841" stroke-width="1.8"/><path d="M48 60 Q48 32 100 30 Q152 32 152 60 L160 64 L40 64 Z" fill="#0d2444" stroke="#06122a" stroke-width="2.5" stroke-linejoin="round"/><rect x="40" y="60" width="120" height="8" fill="#E8C56B" stroke="#c8a02e" stroke-width="1.5"/><circle cx="100" cy="48" r="9" fill="#bc002d" stroke="#E8C56B" stroke-width="1.5"/><text x="100" y="52" text-anchor="middle" font-family="Shippori Mincho, serif" font-size="11" font-weight="700" fill="#FBFAF7">一</text><ellipse cx="78" cy="110" rx="10" ry="13" fill="#1a1714"/><ellipse cx="78" cy="108" rx="7" ry="10" fill="#3a2510"/><circle cx="81" cy="105" r="4" fill="#fff"/><circle cx="75" cy="115" r="2" fill="#fff"/><ellipse cx="122" cy="110" rx="10" ry="13" fill="#1a1714"/><ellipse cx="122" cy="108" rx="7" ry="10" fill="#3a2510"/><circle cx="125" cy="105" r="4" fill="#fff"/><circle cx="119" cy="115" r="2" fill="#fff"/><circle cx="60" cy="124" r="11" fill="url(#qBlsh)"/><circle cx="140" cy="124" r="11" fill="url(#qBlsh)"/><path d="M94 124 Q100 130 106 124 Q106 132 100 132 Q94 132 94 124 Z" fill="#1a1714"/><path d="M92 144 Q100 150 108 144" fill="none" stroke="#1a1714" stroke-width="2.5" stroke-linecap="round"/><rect x="62" y="158" width="76" height="11" rx="2" fill="#0d2444" stroke="#06122a" stroke-width="2"/><circle cx="100" cy="163.5" r="8" fill="#0d2444" stroke="#d9b683" stroke-width="1.4"/><text x="100" y="167" text-anchor="middle" font-family="Shippori Mincho, serif" font-size="9" font-weight="500" fill="#f6f3ec">一</text></svg>'
+          + '<span aria-hidden="true" style="position:absolute;top:6px;left:0;color:#E8C56B;font-size:10px;opacity:.7;">✦</span>'
+        + '</div>'
+        /* title block */
+        + '<div style="flex:1;min-width:0;">'
+          + '<h3 style="margin:0 0 4px;font-family:\'Zen Maru Gothic\',\'Shippori Mincho\',\'Noto Sans TC\',sans-serif;font-size:1.18rem;font-weight:900;color:#fff;line-height:1.25;letter-spacing:-.3px;">' + title + '</h3>'
+          + '<div style="font-family:\'Inter\',sans-serif;font-size:10px;font-weight:600;color:rgba(232,197,107,.7);letter-spacing:.12em;margin-top:4px;">' + sub + '</div>'
+          + '<div style="display:flex;gap:5px;margin-top:10px;">'
+            + '<span style="display:inline-flex;width:22px;height:22px;border-radius:4px;background:#378ADD;align-items:center;justify-content:center;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>'
+            + '<span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#bc002d;align-items:center;justify-content:center;"><span style="display:block;width:10px;height:2.5px;background:#fff;border-radius:1px;"></span></span>'
+            + '<span style="display:inline-flex;width:22px;height:22px;border-radius:3px;background:#E8C56B;align-items:center;justify-content:center;color:#0d2444;font-weight:900;font-size:14px;font-family:\'Inter\',sans-serif;">!</span>'
+          + '</div>'
+        + '</div>'
+      + '</div>'
+    + '</div>'
+
+    /* feature list */
+    + '<ul style="list-style:none;padding:18px 26px 4px;margin:0;font-family:\'Noto Sans TC\',sans-serif;font-size:13px;color:#1a1714;">'
+      + '<li style="display:flex;align-items:flex-start;gap:10px;padding:6px 0;border-bottom:1px dashed #ece3cf;"><span style="flex-shrink:0;width:20px;height:20px;border-radius:50%;background:linear-gradient(180deg,#E8C56B 0%,#c8a02e 100%);color:#0d2444;font-weight:900;font-size:11px;display:inline-flex;align-items:center;justify-content:center;font-family:\'Inter\',sans-serif;">1</span><span>' + f1 + '</span></li>'
+      + '<li style="display:flex;align-items:flex-start;gap:10px;padding:6px 0;border-bottom:1px dashed #ece3cf;"><span style="flex-shrink:0;width:20px;height:20px;border-radius:50%;background:linear-gradient(180deg,#E8C56B 0%,#c8a02e 100%);color:#0d2444;font-weight:900;font-size:11px;display:inline-flex;align-items:center;justify-content:center;font-family:\'Inter\',sans-serif;">2</span><span>' + f2 + '</span></li>'
+      + '<li style="display:flex;align-items:flex-start;gap:10px;padding:6px 0;"><span style="flex-shrink:0;width:20px;height:20px;border-radius:50%;background:linear-gradient(180deg,#E8C56B 0%,#c8a02e 100%);color:#0d2444;font-weight:900;font-size:11px;display:inline-flex;align-items:center;justify-content:center;font-family:\'Inter\',sans-serif;">3</span><span>' + f3 + '</span></li>'
+    + '</ul>'
+
+    /* CTA */
+    + '<div style="padding:14px 22px 22px;">'
+      + '<div style="display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(180deg,#0d2444 0%,#0a1d3a 100%);color:#fff;font-family:\'Zen Maru Gothic\',\'Noto Sans TC\',sans-serif;font-weight:900;font-size:15px;padding:14px 18px;border-radius:12px;box-shadow:0 8px 18px -8px rgba(13,36,68,.55),inset 0 1px 0 rgba(255,255,255,.08);letter-spacing:.06em;border:1px solid rgba(232,197,107,.35);"><span style="color:#E8C56B;">▸</span>' + cta + '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E8C56B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>'
+    + '</div>'
+
+  + '</a>';
 }
 (function(){
   var D=window.ISSHO_DATA,meta=(D.cat_meta||{})['life']||{};
