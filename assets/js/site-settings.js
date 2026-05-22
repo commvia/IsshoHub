@@ -172,6 +172,17 @@
             </div>
           </div>
 
+          <div class="ss-section">
+            <div class="ss-section-title">🔍 熱門搜尋 Hot Search</div>
+            <div class="ss-row">
+              <div style="font-size:12px;color:var(--ink-3);margin-bottom:10px">管理首頁熱門搜尋關鍵字、排序及顯示狀態。</div>
+              <button class="editor-btn editor-btn-primary" id="ssOpenHotSearch" style="width:100%;justify-content:center">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+                管理熱門搜尋
+              </button>
+            </div>
+          </div>
+
           <div id="ssError" class="editor-error" style="display:none"></div>
         </div>
       </div>
@@ -312,6 +323,14 @@
     document.getElementById('ssSaveAll').addEventListener('click', saveAll);
     const imgInput = document.getElementById('ss_hero_img');
     if (imgInput) imgInput.addEventListener('input', e => updateHeroPreview(e.target.value));
+    /* Hot search shortcut — close this panel and open hot search manager */
+    const hsBtn = document.getElementById('ssOpenHotSearch');
+    if (hsBtn) {
+      hsBtn.addEventListener('click', function () {
+        close();
+        if (window.IsshoHotSearch) window.IsshoHotSearch.open();
+      });
+    }
   }
 
   /* ── Wire admin button ── */
