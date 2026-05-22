@@ -1717,7 +1717,8 @@ body[data-lang="en"] .fx-head h4 { font-family: var(--sans-en); }
   opacity: 1;
   pointer-events: auto;
 }
-.modal {
+.modal,
+.modal-box {
   background: #fff;
   border-radius: var(--r-xl);
   padding: 40px 36px;
@@ -1727,7 +1728,8 @@ body[data-lang="en"] .fx-head h4 { font-family: var(--sans-en); }
   transition: transform .28s cubic-bezier(.32,.72,0,1);
   box-shadow: 0 40px 100px -20px rgba(13,36,68,0.45);
 }
-.modal-overlay.open .modal {
+.modal-overlay.open .modal,
+.modal-overlay.open .modal-box {
   transform: translateY(0) scale(1);
 }
 .modal-close {
