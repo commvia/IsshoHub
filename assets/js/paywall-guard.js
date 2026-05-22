@@ -60,6 +60,24 @@
         applyPaywall(result.reason, null);
       }
     }).catch(function () { /* fail silently */ });
+
+    /* After login, auto-show payment modal if user still has no access */
+    window.IsshoAuth.onAuthChange(function (event) {
+      if (event !== 'SIGNED_IN') return;
+      window.IsshoAPI.hasDrivingGuideAccess().then(function (result) {
+        if (!result.access) {
+          /* Close login modal first, then show payment modal */
+          var loginModal = document.getElementById('loginModal');
+          if (loginModal) {
+            loginModal.classList.remove('open');
+            document.body.style.overflow = '';
+          }
+          setTimeout(showModal, 300);
+        }
+        /* If result.access === true, page will reload on next nav
+           or user can scroll up to see unlocked content */
+      }).catch(function () {});
+    });
   }
 
   /* ── Apply paywall to .guide-content ── */
