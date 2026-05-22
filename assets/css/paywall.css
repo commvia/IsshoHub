@@ -81,6 +81,7 @@
 .paywall-modal__buy-btn:disabled { background: #aaa; cursor: wait; }
 .paywall-modal__secondary { font-size: 12px; color: #999; }
 .paywall-modal__secondary a { color: #378add; text-decoration: underline; cursor: pointer; }
+.paywall-modal__login-note { font-size: 12px; color: #888; margin-bottom: 10px; }
 
 /* ── Payment processing overlay ── */
 .paywall-processing {

@@ -148,40 +148,59 @@
   /* ── Payment modal ── */
   function showModal() {
     if (document.getElementById('_pw_modal_overlay')) return;
-    var overlay = document.createElement('div');
-    overlay.className = 'paywall-modal-overlay';
-    overlay.id = '_pw_modal_overlay';
-    overlay.innerHTML = '<div class="paywall-modal">'
-      + '<button class="paywall-modal__close" id="_pw_modal_close">✕</button>'
-      + '<div class="paywall-modal__icon">📖</div>'
-      + '<h2 class="paywall-modal__title">' + TEXT.modalTitle + '</h2>'
-      + '<p class="paywall-modal__desc">' + TEXT.modalDesc + '</p>'
-      + '<ul class="paywall-modal__features">'
-      + TEXT.features.map(function (f) { return '<li>' + f + '</li>'; }).join('')
-      + '</ul>'
-      + '<div class="paywall-modal__price">' + TEXT.price + '</div>'
-      + '<div class="paywall-modal__price-sub">' + TEXT.priceSub + '</div>'
-      + '<button class="paywall-modal__buy-btn" id="_pw_buy_btn">' + TEXT.buyBtn + '</button>'
-      + '<div class="paywall-modal__secondary">' + TEXT.alreadyPurchased + '</div>'
-      + '</div>';
-    document.body.appendChild(overlay);
 
-    document.getElementById('_pw_modal_close').addEventListener('click', closeModal);
-    overlay.addEventListener('click', function (e) { if (e.target === overlay) closeModal(); });
+    /* Check login state to show the right CTA */
+    window.IsshoAuth.getUser().then(function (user) {
+      var isLoggedIn = !!user;
+      var loginNoteHtml = !isLoggedIn
+        ? '<p class="paywall-modal__login-note">'
+          + (isEN ? 'You\'ll be asked to sign in before payment.' : '付款前需先登入帳號。')
+          + '</p>'
+        : '';
+      var btnLabel = isLoggedIn ? TEXT.buyBtn
+        : (isEN ? 'Sign in to Purchase' : '登入後購買');
 
-    var buyBtn = document.getElementById('_pw_buy_btn');
-    buyBtn.addEventListener('click', function () {
-      buyBtn.disabled = true;
-      buyBtn.textContent = TEXT.buying;
-      startCheckout();
-    });
+      var overlay = document.createElement('div');
+      overlay.className = 'paywall-modal-overlay';
+      overlay.id = '_pw_modal_overlay';
+      overlay.innerHTML = '<div class="paywall-modal">'
+        + '<button class="paywall-modal__close" id="_pw_modal_close">✕</button>'
+        + '<div class="paywall-modal__icon">📖</div>'
+        + '<h2 class="paywall-modal__title">' + TEXT.modalTitle + '</h2>'
+        + '<p class="paywall-modal__desc">' + TEXT.modalDesc + '</p>'
+        + '<ul class="paywall-modal__features">'
+        + TEXT.features.map(function (f) { return '<li>' + f + '</li>'; }).join('')
+        + '</ul>'
+        + '<div class="paywall-modal__price">' + TEXT.price + '</div>'
+        + '<div class="paywall-modal__price-sub">' + TEXT.priceSub + '</div>'
+        + loginNoteHtml
+        + '<button class="paywall-modal__buy-btn" id="_pw_buy_btn">' + btnLabel + '</button>'
+        + (isLoggedIn ? '<div class="paywall-modal__secondary">' + TEXT.alreadyPurchased + '</div>' : '')
+        + '</div>';
+      document.body.appendChild(overlay);
 
-    var loginLink2 = document.getElementById('_pw_login2');
-    if (loginLink2) {
-      loginLink2.addEventListener('click', function (e) {
-        e.preventDefault(); closeModal(); triggerLogin();
+      document.getElementById('_pw_modal_close').addEventListener('click', closeModal);
+      overlay.addEventListener('click', function (e) { if (e.target === overlay) closeModal(); });
+
+      var buyBtn = document.getElementById('_pw_buy_btn');
+      buyBtn.addEventListener('click', function () {
+        if (!isLoggedIn) {
+          closeModal();
+          triggerLogin();
+          return;
+        }
+        buyBtn.disabled = true;
+        buyBtn.textContent = TEXT.buying;
+        startCheckout();
       });
-    }
+
+      var loginLink2 = document.getElementById('_pw_login2');
+      if (loginLink2) {
+        loginLink2.addEventListener('click', function (e) {
+          e.preventDefault(); closeModal(); triggerLogin();
+        });
+      }
+    }); /* end getUser().then */
   }
 
   function closeModal() {
