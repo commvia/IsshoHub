@@ -214,11 +214,19 @@
 
   /* ── Login trigger ── */
   function triggerLogin() {
-    var loginBtn = document.getElementById('loginBtn')
-      || document.querySelector('[data-open-login]')
-      || document.querySelector('[data-action="login"]')
-      || document.querySelector('.btn-login');
+    /* 1. Click the nav login button (core.js listens on [data-open-login]) */
+    var loginBtn = document.querySelector('[data-open-login]')
+      || document.querySelector('.btn-login')
+      || document.getElementById('loginBtn');
     if (loginBtn) { loginBtn.click(); return; }
+    /* 2. Directly open #loginModal (mirrors core.js openModal logic) */
+    var modal = document.getElementById('loginModal');
+    if (modal) {
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      return;
+    }
+    /* 3. Last resort custom event */
     document.dispatchEvent(new CustomEvent('issho:require-login'));
   }
 
