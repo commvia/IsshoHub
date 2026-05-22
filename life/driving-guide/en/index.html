@@ -130,65 +130,65 @@
 
     <h2 style="font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#888;margin:32px 0 12px;">Full Guide (Paid unlock coming soon)</h2>
 
-    <a href="/life/driving-guide/en/chapter-3/" class="guide-chapter-row locked" style="pointer-events:none;text-decoration:none;">
+    <a href="/life/driving-guide/en/chapter-3/" class="guide-chapter-row">
       <span class="ch-num">Chapter 3</span>
       <span class="ch-title">Road Marking Quick Reference</span>
-      <span class="lock-icon">🔒</span>
+      <span class="ch-arrow">→</span>
     </a>
-    <a href="/life/driving-guide/en/chapter-4/" class="guide-chapter-row locked" style="pointer-events:none;text-decoration:none;">
+    <a href="/life/driving-guide/en/chapter-4/" class="guide-chapter-row">
       <span class="ch-num">Chapter 4</span>
       <span class="ch-title">Traffic Signals, Signal Machines & Police Hand Signals</span>
-      <span class="lock-icon">🔒</span>
+      <span class="ch-arrow">→</span>
     </a>
-    <a href="/life/driving-guide/en/chapter-5/" class="guide-chapter-row locked" style="pointer-events:none;text-decoration:none;">
+    <a href="/life/driving-guide/en/chapter-5/" class="guide-chapter-row">
       <span class="ch-num">Chapter 5</span>
       <span class="ch-title">Intersections & Pedestrian Protection</span>
-      <span class="lock-icon">🔒</span>
+      <span class="ch-arrow">→</span>
     </a>
-    <a href="/life/driving-guide/en/chapter-6/" class="guide-chapter-row locked" style="pointer-events:none;text-decoration:none;">
+    <a href="/life/driving-guide/en/chapter-6/" class="guide-chapter-row">
       <span class="ch-num">Chapter 6</span>
       <span class="ch-title">Vehicle Categories & Weight Rules</span>
-      <span class="lock-icon">🔒</span>
+      <span class="ch-arrow">→</span>
     </a>
-    <a href="/life/driving-guide/en/chapter-7/" class="guide-chapter-row locked" style="pointer-events:none;text-decoration:none;">
+    <a href="/life/driving-guide/en/chapter-7/" class="guide-chapter-row">
       <span class="ch-num">Chapter 7</span>
       <span class="ch-title">Licence Types & Eligible Vehicles</span>
-      <span class="lock-icon">🔒</span>
+      <span class="ch-arrow">→</span>
     </a>
-    <a href="/life/driving-guide/en/chapter-8/" class="guide-chapter-row locked" style="pointer-events:none;text-decoration:none;">
+    <a href="/life/driving-guide/en/chapter-8/" class="guide-chapter-row">
       <span class="ch-num">Chapter 8</span>
       <span class="ch-title">Speed Limits</span>
-      <span class="lock-icon">🔒</span>
+      <span class="ch-arrow">→</span>
     </a>
-    <a href="/life/driving-guide/en/chapter-9/" class="guide-chapter-row locked" style="pointer-events:none;text-decoration:none;">
+    <a href="/life/driving-guide/en/chapter-9/" class="guide-chapter-row">
       <span class="ch-num">Chapter 9</span>
       <span class="ch-title">Turn Signals, Hand Signals & Lighting Rules</span>
-      <span class="lock-icon">🔒</span>
+      <span class="ch-arrow">→</span>
     </a>
-    <a href="/life/driving-guide/en/chapter-10/" class="guide-chapter-row locked" style="pointer-events:none;text-decoration:none;">
+    <a href="/life/driving-guide/en/chapter-10/" class="guide-chapter-row">
       <span class="ch-num">Chapter 10</span>
       <span class="ch-title">Right-of-Way & Overtaking</span>
-      <span class="lock-icon">🔒</span>
+      <span class="ch-arrow">→</span>
     </a>
-    <a href="/life/driving-guide/en/chapter-11/" class="guide-chapter-row locked" style="pointer-events:none;text-decoration:none;">
+    <a href="/life/driving-guide/en/chapter-11/" class="guide-chapter-row">
       <span class="ch-num">Chapter 11</span>
       <span class="ch-title">Parking & Stopping Rules</span>
-      <span class="lock-icon">🔒</span>
+      <span class="ch-arrow">→</span>
     </a>
-    <a href="/life/driving-guide/en/chapter-12/" class="guide-chapter-row locked" style="pointer-events:none;text-decoration:none;">
+    <a href="/life/driving-guide/en/chapter-12/" class="guide-chapter-row">
       <span class="ch-num">Chapter 12</span>
       <span class="ch-title">Expressway Special Rules</span>
-      <span class="lock-icon">🔒</span>
+      <span class="ch-arrow">→</span>
     </a>
-    <a href="/life/driving-guide/en/chapter-13/" class="guide-chapter-row locked" style="pointer-events:none;text-decoration:none;">
+    <a href="/life/driving-guide/en/chapter-13/" class="guide-chapter-row">
       <span class="ch-num">Chapter 13</span>
       <span class="ch-title">Driving Situation Rules</span>
-      <span class="lock-icon">🔒</span>
+      <span class="ch-arrow">→</span>
     </a>
-    <a href="/life/driving-guide/en/chapter-14/" class="guide-chapter-row locked" style="pointer-events:none;text-decoration:none;">
+    <a href="/life/driving-guide/en/chapter-14/" class="guide-chapter-row">
       <span class="ch-num">Chapter 14</span>
       <span class="ch-title">Driver Responsibilities & Prohibited Driving</span>
-      <span class="lock-icon">🔒</span>
+      <span class="ch-arrow">→</span>
     </a>
 
     <h2 style="font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#888;margin:32px 0 12px;">Other</h2>
@@ -308,22 +308,6 @@
 window.onLangChange = function(lang) {
   if (lang === 'tc') { window.location.replace('/life/driving-guide/'); }
 };
-</script>
-<script>
-// Unlock locked chapters for admin OR paid users
-(async function() {
-  try {
-    if (!window.IsshoAuth || !window.IsshoAPI) return;
-    const result = await window.IsshoAPI.hasDrivingGuideAccess().catch(() => ({ access: false }));
-    if (!result.access) return;
-    document.querySelectorAll('.guide-chapter-row.locked').forEach(function(el) {
-      el.style.pointerEvents = '';
-      el.classList.remove('locked');
-      var lock = el.querySelector('.lock-icon');
-      if (lock) { lock.textContent = '→'; lock.className = 'ch-arrow'; }
-    });
-  } catch(e) {}
-})();
 </script>
 <script src="/assets/js/preview-guard.js"></script>
 </body>
