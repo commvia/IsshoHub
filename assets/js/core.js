@@ -915,15 +915,26 @@
 })(window);
 
 /* ── Anti-bfcache flash ──────────────────────────────────────────────────
-   When the browser restores a page from the back/forward cache (bfcache),
-   it replays the exact DOM state — including body.js-ready — bypassing the
-   opacity:0 FOUC guard. Force a reload so the page is always fresh.
+   Problem: _headers Cache-Control only covers /*.html URLs, not / or other
+   directory index pages. So the homepage can be bfcached even with no-store.
+   On bfcache restore, body.js-ready is already set → page is instantly
+   visible at opacity:1 → flash of stale content before reload.
+
+   Fix (two-part):
+   1. pagehide: hide body BEFORE navigation. bfcache stores the page in this
+      invisible state, so when restored it's already opacity:0 — no flash.
+   2. pageshow (persisted): fire a reload to get fresh content.
 ──────────────────────────────────────────────────────────────────────── */
+window.addEventListener('pagehide', function () {
+  /* Set inline opacity so bfcache captures an invisible page.
+     This runs synchronously before the browser snapshots the DOM. */
+  document.body.style.opacity = '0';
+});
+
 window.addEventListener('pageshow', function (e) {
   if (e.persisted) {
-    /* Hide instantly before reload — prevents the half-second flash
-       of stale bfcache content while the reload is queued. */
-    document.body.style.opacity = '0';
+    /* Page was restored from bfcache — already invisible (from pagehide).
+       Reload to get fresh content; anti-FOUC will fade it back in. */
     window.location.reload();
   }
 });
