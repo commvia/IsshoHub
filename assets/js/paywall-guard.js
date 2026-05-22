@@ -214,7 +214,10 @@
 
   /* ── Login trigger ── */
   function triggerLogin() {
-    var loginBtn = document.getElementById('loginBtn') || document.querySelector('[data-action="login"]');
+    var loginBtn = document.getElementById('loginBtn')
+      || document.querySelector('[data-open-login]')
+      || document.querySelector('[data-action="login"]')
+      || document.querySelector('.btn-login');
     if (loginBtn) { loginBtn.click(); return; }
     document.dispatchEvent(new CustomEvent('issho:require-login'));
   }
