@@ -97,8 +97,7 @@
       if (t.id === '_pw_unlock_btn') {
         e.preventDefault();
         e.stopPropagation();
-        if (reason === 'not_logged_in') { triggerLogin(); }
-        else { showModal(); }
+        showModal(); /* always show product info modal first */
         return;
       }
       if (t.id === '_pw_login' || t.id === '_pw_login2') {
