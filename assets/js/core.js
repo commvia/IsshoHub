@@ -913,3 +913,12 @@
   };
 
 })(window);
+
+/* ── Anti-bfcache flash ──────────────────────────────────────────────────
+   When the browser restores a page from the back/forward cache (bfcache),
+   it replays the exact DOM state — including body.js-ready — bypassing the
+   opacity:0 FOUC guard. Force a reload so the page is always fresh.
+──────────────────────────────────────────────────────────────────────── */
+window.addEventListener('pageshow', function (e) {
+  if (e.persisted) window.location.reload();
+});
