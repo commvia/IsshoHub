@@ -90,17 +90,21 @@
     banner.innerHTML = buildBanner(reason, expiredDate);
     content.appendChild(banner);
 
-    var btn = banner.querySelector('#_pw_unlock_btn');
-    if (btn) {
-      btn.addEventListener('click', function () {
+    /* Use event delegation on document — more robust than direct listeners */
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      if (!t) return;
+      /* Unlock button */
+      if (t.id === '_pw_unlock_btn' || t.closest && t.closest('#_pw_unlock_btn')) {
         if (reason === 'not_logged_in') { triggerLogin(); }
         else { showModal(); }
-      });
-    }
-    var loginLink = banner.querySelector('#_pw_login');
-    if (loginLink) {
-      loginLink.addEventListener('click', function (e) { e.preventDefault(); triggerLogin(); });
-    }
+      }
+      /* "Already purchased? Sign in" link */
+      if (t.id === '_pw_login' || t.id === '_pw_login2') {
+        e.preventDefault();
+        triggerLogin();
+      }
+    });
   }
 
   /* ── Banner HTML ── */
