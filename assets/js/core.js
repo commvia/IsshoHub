@@ -920,5 +920,10 @@
    opacity:0 FOUC guard. Force a reload so the page is always fresh.
 ──────────────────────────────────────────────────────────────────────── */
 window.addEventListener('pageshow', function (e) {
-  if (e.persisted) window.location.reload();
+  if (e.persisted) {
+    /* Hide instantly before reload — prevents the half-second flash
+       of stale bfcache content while the reload is queued. */
+    document.body.style.opacity = '0';
+    window.location.reload();
+  }
 });
