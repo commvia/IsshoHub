@@ -218,16 +218,27 @@
     });
   }
 
-  /* ── Login trigger — opens #loginModal directly, no .click() ── */
+  /* ── Login trigger — opens #loginModal on the login tab ── */
   function triggerLogin() {
     var modal = document.getElementById('loginModal');
-    if (modal) {
-      /* Remove inline display:none so the CSS class can take effect */
-      modal.style.removeProperty('display');
-      modal.classList.add('open');
-      modal.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-    }
+    if (!modal) return;
+    /* Remove inline display:none so CSS .open class can take effect */
+    modal.style.removeProperty('display');
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    /* Switch to login tab — mirrors core.js showTab('login') */
+    modal.querySelectorAll('[data-tab]').forEach(function (el) {
+      el.style.display = el.getAttribute('data-tab') === 'login' ? '' : 'none';
+    });
+    modal.querySelectorAll('[data-tab-btn]').forEach(function (btn) {
+      btn.classList.toggle('active', btn.getAttribute('data-tab-btn') === 'login');
+    });
+    /* Focus first input */
+    setTimeout(function () {
+      var first = modal.querySelector('input');
+      if (first) first.focus();
+    }, 100);
   }
 
   /* ── Payment processing overlay ── */
