@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700&family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Zen+Old+Mincho:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/styles.css?v=33">
+<link rel="stylesheet" href="/assets/css/styles.css?v=34">
 
 <!-- Favicon (inline SVG seal) -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'><circle cx='40' cy='40' r='36' fill='%230d2444'/><path d='M 40 8 A 32 32 0 0 1 40 72' stroke='%23d9b683' stroke-width='4' fill='none' stroke-linecap='round'/><text x='40' y='48' text-anchor='middle' font-family='Zen Old Mincho, Shippori Mincho, serif' font-size='26' fill='%23f6f3ec' letter-spacing='-1'>%E4%B8%80</text></svg>">
@@ -117,6 +117,10 @@
       <button class="admin-btn" id="adminNewArticle">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
         新增文章
+      </button>
+      <button class="admin-btn" id="adminMembers">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        會員管理
       </button>
       <button class="admin-btn" id="adminManageHotSearch">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
@@ -522,6 +526,7 @@
 <script src="/assets/js/data.js?v=4"></script>
 <script src="/assets/js/supabase-client.js?v=8"></script>
 <script src="/assets/js/article-editor.js?v=8"></script>
+<script src="/assets/js/members-manager.js?v=1"></script>
 <script src="/assets/js/hot-search-manager.js"></script>
 <script src="/assets/js/site-settings.js?v=7"></script>
 <script src="/assets/js/search.js?v=5"></script>
@@ -1065,6 +1070,7 @@
   C.onLangChange(renderAll);
   renderAll();
   if (window.IsshoEditor) window.IsshoEditor.init();
+  if (window.IsshoMembers)   window.IsshoMembers.init();
   if (window.IsshoHotSearch) window.IsshoHotSearch.init();
   if (window.IsshoSettings) window.IsshoSettings.init();
   if (window.IsshoSearch) window.IsshoSearch.init();
