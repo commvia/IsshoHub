@@ -239,6 +239,38 @@
     return { error };
   }
 
+  /* ── Driving Guide Access ── */
+  async function hasDrivingGuideAccess() {
+    const user = await getUser();
+    if (!user) return { access: false, reason: 'not_logged_in' };
+    if (await isAdmin()) return { access: true, reason: 'admin' };
+
+    const { data, error } = await getClient()
+      .from('purchases')
+      .select('expires_at')
+      .eq('user_id', user.id)
+      .eq('product', 'driving-guide')
+      .eq('status', 'active')
+      .gt('expires_at', new Date().toISOString())
+      .maybeSingle();
+
+    if (error) return { access: false, reason: 'error' };
+    if (data) return { access: true, reason: 'purchased', expires_at: data.expires_at };
+
+    /* Check if expired */
+    const { data: expired } = await getClient()
+      .from('purchases')
+      .select('expires_at')
+      .eq('user_id', user.id)
+      .eq('product', 'driving-guide')
+      .order('expires_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (expired) return { access: false, reason: 'expired', expires_at: expired.expires_at };
+    return { access: false, reason: 'not_purchased' };
+  }
+
   /* ── Exports ── */
   global.IsshoAuth = {
     getClient,
@@ -270,6 +302,7 @@
     updateSiteSettings,
     upsertHotSearch,
     deleteHotSearch,
+    hasDrivingGuideAccess,
   };
 
 })(window);

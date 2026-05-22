@@ -314,12 +314,12 @@ window.onLangChange = function(lang) {
 };
 </script>
 <script>
-// Admin unlock for index page locked chapters
+// Unlock locked chapters for admin OR paid users
 (async function() {
   try {
-    if (!window.IsshoAuth) return;
-    const admin = await window.IsshoAuth.isAdmin().catch(() => false);
-    if (!admin) return;
+    if (!window.IsshoAuth || !window.IsshoAPI) return;
+    const result = await window.IsshoAPI.hasDrivingGuideAccess().catch(() => ({ access: false }));
+    if (!result.access) return;
     document.querySelectorAll('.guide-chapter-row.locked').forEach(function(el) {
       el.style.pointerEvents = '';
       el.classList.remove('locked');
