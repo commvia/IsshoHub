@@ -931,6 +931,9 @@
       hero_sub_en:    map.hero_sub?.value_en    || '',
     };
     renderHero(_sbHero);
+    /* Hero is now ready — reveal page. The 0.6s CSS animation fires as fallback
+       if Supabase is slow (network timeout / cold start); this covers that race. */
+    document.body.classList.add('js-ready');
 
     /* Featured order */
     if (map.featured_order && map.featured_order.value_tc) {
@@ -1065,7 +1068,10 @@
   if (window.IsshoHotSearch) window.IsshoHotSearch.init();
   if (window.IsshoSettings) window.IsshoSettings.init();
   if (window.IsshoSearch) window.IsshoSearch.init();
-  document.body.classList.add('js-ready');
+  /* js-ready is added inside fetchSiteSettings callback so the hero is
+     rendered with Supabase data before the page becomes visible.
+     The CSS animation (opacity:0 → 1 at 0.6s delay) is the fallback
+     if Supabase doesn't respond in time. */
 })();
 </script>
 <script src="/assets/js/preview-guard.js"></script>
