@@ -90,18 +90,20 @@
     banner.innerHTML = buildBanner(reason, expiredDate);
     content.appendChild(banner);
 
-    /* Use event delegation on document — more robust than direct listeners */
+    /* Event delegation — catches clicks on the dynamically-created banner */
     document.addEventListener('click', function (e) {
       var t = e.target;
       if (!t) return;
-      /* Unlock button */
-      if (t.id === '_pw_unlock_btn' || t.closest && t.closest('#_pw_unlock_btn')) {
+      if (t.id === '_pw_unlock_btn') {
+        e.preventDefault();
+        e.stopPropagation();
         if (reason === 'not_logged_in') { triggerLogin(); }
         else { showModal(); }
+        return;
       }
-      /* "Already purchased? Sign in" link */
       if (t.id === '_pw_login' || t.id === '_pw_login2') {
         e.preventDefault();
+        e.stopPropagation();
         triggerLogin();
       }
     });
@@ -216,22 +218,16 @@
     });
   }
 
-  /* ── Login trigger ── */
+  /* ── Login trigger — opens #loginModal directly, no .click() ── */
   function triggerLogin() {
-    /* 1. Click the nav login button (core.js listens on [data-open-login]) */
-    var loginBtn = document.querySelector('[data-open-login]')
-      || document.querySelector('.btn-login')
-      || document.getElementById('loginBtn');
-    if (loginBtn) { loginBtn.click(); return; }
-    /* 2. Directly open #loginModal (mirrors core.js openModal logic) */
     var modal = document.getElementById('loginModal');
     if (modal) {
+      /* Remove inline display:none so the CSS class can take effect */
+      modal.style.removeProperty('display');
       modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
-      return;
     }
-    /* 3. Last resort custom event */
-    document.dispatchEvent(new CustomEvent('issho:require-login'));
   }
 
   /* ── Payment processing overlay ── */
