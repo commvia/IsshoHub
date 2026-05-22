@@ -67,24 +67,28 @@
     var content = document.querySelector('.guide-content');
     if (!content) return;
 
+    /* Measure full height BEFORE moving nodes */
     var fullHeight = content.scrollHeight;
     var previewH   = Math.max(300, Math.floor(fullHeight * 0.10));
 
-    content.style.maxHeight = previewH + 'px';
-    content.style.overflow  = 'hidden';
-    content.style.position  = 'relative';
+    /* Wrap ALL existing children in a preview div with overflow:hidden.
+       The banner is then appended as a sibling inside .guide-content —
+       no DOM-tree navigation needed, works in any layout (flex/grid/block). */
+    var preview = document.createElement('div');
+    preview.style.cssText = 'max-height:' + previewH + 'px;overflow:hidden;position:relative;';
+    while (content.firstChild) {
+      preview.appendChild(content.firstChild);
+    }
+    content.appendChild(preview);
 
     var fade = document.createElement('div');
     fade.className = 'paywall-fade';
-    content.appendChild(fade);
+    preview.appendChild(fade);
 
     var banner = document.createElement('div');
     banner.className = 'paywall-banner';
     banner.innerHTML = buildBanner(reason, expiredDate);
-    /* Insert banner AFTER .guide-layout (the flex row container),
-       not inside it — otherwise it becomes a third flex column. */
-    var layout = content.closest('.guide-layout') || content.parentNode;
-    layout.parentNode.insertBefore(banner, layout.nextSibling);
+    content.appendChild(banner);
 
     var btn = banner.querySelector('#_pw_unlock_btn');
     if (btn) {
