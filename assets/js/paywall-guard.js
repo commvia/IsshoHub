@@ -81,7 +81,10 @@
     var banner = document.createElement('div');
     banner.className = 'paywall-banner';
     banner.innerHTML = buildBanner(reason, expiredDate);
-    content.parentNode.insertBefore(banner, content.nextSibling);
+    /* Insert banner AFTER .guide-layout (the flex row container),
+       not inside it — otherwise it becomes a third flex column. */
+    var layout = content.closest('.guide-layout') || content.parentNode;
+    layout.parentNode.insertBefore(banner, layout.nextSibling);
 
     var btn = banner.querySelector('#_pw_unlock_btn');
     if (btn) {
