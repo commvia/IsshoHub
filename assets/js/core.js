@@ -831,11 +831,43 @@
   /* ── Newsletter ── */
   function wireNewsletter() {
     const forms = document.querySelectorAll('.newsletter-form');
-    forms.forEach(form => {
-      form.addEventListener('submit', e => {
+    forms.forEach(function (form) {
+      form.addEventListener('submit', async function (e) {
         e.preventDefault();
-        const btn = form.querySelector('button[type="submit"]');
-        if (btn) btn.textContent = '✓';
+        const input = form.querySelector('input[type="email"]');
+        const btn   = form.querySelector('button[type="submit"]');
+        if (!input || !btn) return;
+
+        const email = input.value.trim();
+        if (!email) return;
+
+        /* Loading state */
+        btn.disabled    = true;
+        btn.textContent = state.lang === 'tc' ? '訂閱中…' : 'Subscribing…';
+
+        try {
+          const res  = await fetch('/api/subscribe', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ email }),
+          });
+          const json = await res.json();
+
+          if (json.ok) {
+            /* Success */
+            input.style.display = 'none';
+            btn.style.background = '#2e7d32';
+            btn.textContent = state.lang === 'tc' ? '✓ 已訂閱！' : '✓ Subscribed!';
+            btn.disabled = false;
+          } else {
+            btn.textContent = state.lang === 'tc' ? '訂閱電子報' : 'Subscribe';
+            btn.disabled = false;
+            alert(json.error || (state.lang === 'tc' ? '訂閱失敗，請重試。' : 'Failed, please try again.'));
+          }
+        } catch (_) {
+          btn.textContent = state.lang === 'tc' ? '訂閱電子報' : 'Subscribe';
+          btn.disabled = false;
+        }
       });
     });
   }
