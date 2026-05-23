@@ -913,9 +913,13 @@
     });
   }
 
-  /* ── Load site settings from Supabase ── */
-  window.IsshoAPI.fetchSiteSettings().then(({ data }) => {
-    if (!data) return;
+  /* ── Load site settings (stale-while-revalidate) ─────────────────────────
+     1. Apply cached settings instantly (from sessionStorage) → no flash on refresh
+     2. Always fetch fresh from Supabase → save to cache → silently re-apply
+     sessionStorage scope: same tab session. Cleared when tab closes. */
+  const _SC_KEY = '_iss_sc';
+
+  function applySettings(data) {
     const map = Object.fromEntries(data.map(s => [s.key, s]));
     const lang = getLang();
 
@@ -936,8 +940,6 @@
       hero_sub_en:    map.hero_sub?.value_en    || '',
     };
     renderHero(_sbHero);
-    /* Hero is now ready — reveal page. The 0.6s CSS animation fires as fallback
-       if Supabase is slow (network timeout / cold start); this covers that race. */
     document.body.classList.add('js-ready');
 
     /* Featured order */
@@ -945,24 +947,20 @@
       _sbFeaturedOrder = map.featured_order.value_tc.split(',').map(s => s.trim()).filter(Boolean);
     }
 
-    /* Homepage Editor Picks — re-render if admin has configured specific slugs */
+    /* Homepage Editor Picks */
     if (map.homepage_picks_slugs && map.homepage_picks_slugs.value_tc) {
       const slugs = map.homepage_picks_slugs.value_tc.split(',').map(s => s.trim()).filter(Boolean);
-      if (slugs.length) {
-        _sbPicksSlugs = slugs;
-        renderEditor();
-      }
+      if (slugs.length) { _sbPicksSlugs = slugs; renderEditor(); }
     } else {
       renderEditor();
     }
 
-    /* Story articles from site_settings slugs */
+    /* Story articles */
     if (map.homepage_story_slugs && map.homepage_story_slugs.value_tc) {
       const storySlugs = map.homepage_story_slugs.value_tc.split(',').map(s => s.trim()).filter(Boolean).slice(0, 3);
       if (storySlugs.length) {
         window.IsshoAPI.fetchArticlesBySlug(storySlugs).then(({ data }) => {
           if (data && data.length) {
-            /* Preserve the order specified in settings */
             const bySlug = Object.fromEntries(data.map(a => [a.slug, a]));
             _sbStoryArticles = storySlugs.map(slug => bySlug[slug]).filter(Boolean);
             renderStories();
@@ -971,24 +969,32 @@
       }
     }
 
-    /* Hero article + side articles from site_settings slugs */
+    /* Hero article + side articles */
     const heroSlug = map.hero_article_slug && map.hero_article_slug.value_tc && map.hero_article_slug.value_tc.trim();
     const sideRaw  = map.homepage_side_slugs && map.homepage_side_slugs.value_tc;
     const sideSlugs = sideRaw ? sideRaw.split(',').map(s => s.trim()).filter(Boolean).slice(0, 3) : [];
     const allSlugs  = [...new Set([heroSlug, ...sideSlugs].filter(Boolean))];
-
     if (allSlugs.length) {
       window.IsshoAPI.fetchArticlesBySlug(allSlugs).then(({ data }) => {
         const bySlug = Object.fromEntries((data || []).map(a => [a.slug, a]));
-        if (heroSlug && bySlug[heroSlug]) {
-          _sbHeroArticle  = bySlug[heroSlug];
-        }
-        if (sideSlugs.length) {
-          _sbSideArticles = sideSlugs.map(s => bySlug[s]).filter(Boolean);
-        }
+        if (heroSlug && bySlug[heroSlug]) _sbHeroArticle  = bySlug[heroSlug];
+        if (sideSlugs.length) _sbSideArticles = sideSlugs.map(s => bySlug[s]).filter(Boolean);
         renderHero(_sbHero);
       });
     }
+  }
+
+  /* Step 1: instant render from cache (eliminates flash on refresh) */
+  try {
+    const cached = sessionStorage.getItem(_SC_KEY);
+    if (cached) applySettings(JSON.parse(cached));
+  } catch (_) {}
+
+  /* Step 2: always fetch fresh, save, re-apply */
+  window.IsshoAPI.fetchSiteSettings().then(({ data }) => {
+    if (!data) return;
+    try { sessionStorage.setItem(_SC_KEY, JSON.stringify(data)); } catch (_) {}
+    applySettings(data);
   });
 
   /* ── Live exchange rates + FX calculator ── */
