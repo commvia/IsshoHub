@@ -3496,3 +3496,44 @@ body[data-lang="en"] .cat-articles-title { font-family: var(--sans-en); }
   .guide-mobile-select { display: block; }
   .guide-sidebar ul { display: none; }
 }
+
+/* ============================================================ */
+/* MOBILE FIXES — 2026-05-23                                   */
+/* ============================================================ */
+
+/* ── 1. Nav right side: compact on small phones ──────────────
+   When logged in, username text is hidden below 640px so the
+   nav doesn't overflow on iPhone SE (375px) or narrow screens. */
+@media (max-width: 639px) {
+  .nav-right { gap: 6px; }
+
+  /* Shrink lang toggle pill padding */
+  .lang-toggle button { padding: 5px 8px; font-size: 11px; }
+
+  /* Hide username text — keep icon + chevron only */
+  .user-menu-btn [data-user-name] { display: none; }
+  .user-menu-btn { padding: 7px 10px; gap: 4px; }
+
+  /* Smaller brand name to free up space */
+  .brand-name { font-size: 17px; }
+  .brand-tag  { display: none; }
+}
+
+/* ── 2. Members Manager: horizontal scroll on mobile ─────────
+   The table has 9 columns — must scroll, not squish. */
+@media (max-width: 760px) {
+  .mm-overlay { padding: 12px 8px 8px; }
+  .mm-panel   { border-radius: 12px; max-height: calc(100vh - 24px); }
+  .mm-body    { overflow-x: auto; }
+  .mm-table   { min-width: 720px; }
+  .mm-toolbar { padding: 10px 14px; gap: 8px; }
+  .mm-summary { gap: 16px; padding: 10px 14px; }
+  .mm-summary-num { font-size: 18px; }
+}
+
+/* ── 3. Profile setup modal: tighter on very small phones ────*/
+@media (max-width: 400px) {
+  .ps-modal { padding: 24px 18px 18px; border-radius: 16px; }
+  .ps-title { font-size: 16px; }
+  .ps-radio { font-size: 12px; padding: 5px 10px; }
+}
