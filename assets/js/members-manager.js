@@ -93,7 +93,9 @@
 
     body.innerHTML = '<table class="mm-table">'
       + '<thead><tr>'
-      + '<th>Email</th><th>姓名</th><th>角色</th><th>加入日期</th><th>天書狀態</th>'
+      + '<th>Email</th><th>姓名</th><th>角色</th><th>加入日期</th>'
+      + '<th>性別</th><th>國籍</th><th>年齡</th><th>現居地</th>'
+      + '<th>天書狀態</th>'
       + '</tr></thead><tbody>'
       + filtered.map(function (m) {
           var joined = m.joined
@@ -115,11 +117,20 @@
             ? '<span class="mm-badge mm-badge-admin">管理員</span>'
             : '<span style="color:var(--ink-3);font-size:12px">一般</span>';
 
+          var genderMap = { male: '男', female: '女', other: '其他' };
+          var genderLabel = m.gender ? (genderMap[m.gender] || m.gender) : '<span style="color:var(--ink-3)">—</span>';
+
+          var dim = 'style="font-size:12px;color:var(--ink-2)"';
+
           return '<tr>'
             + '<td class="mm-email">' + (m.email || '—') + '</td>'
             + '<td>' + (m.name || '<span style="color:var(--ink-3)">—</span>') + '</td>'
             + '<td>' + roleBadge + '</td>'
             + '<td style="white-space:nowrap;font-size:12px;color:var(--ink-2)">' + joined + '</td>'
+            + '<td ' + dim + '>' + genderLabel + '</td>'
+            + '<td ' + dim + '>' + (m.nationality || '<span style="color:var(--ink-3)">—</span>') + '</td>'
+            + '<td ' + dim + '>' + (m.age_range   || '<span style="color:var(--ink-3)">—</span>') + '</td>'
+            + '<td ' + dim + '>' + (m.ip_country  || '<span style="color:var(--ink-3)">—</span>') + '</td>'
             + '<td>' + dgBadge + '</td>'
             + '</tr>';
         }).join('')

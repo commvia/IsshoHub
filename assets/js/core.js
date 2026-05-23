@@ -493,6 +493,14 @@
           setTimeout(async () => {
             const { data: profile } = await window.IsshoAuth.getProfile(user.id);
             updateAuthUI(user, profile);
+            /* Show profile-setup modal on first sign-in if demographics missing.
+               Skip on driving-guide chapter pages — paywall modal takes priority. */
+            const isChapterPage = /\/driving-guide\/chapter-/.test(window.location.pathname);
+            if (event === 'SIGNED_IN' && !isChapterPage && (!profile || !profile.gender)) {
+              if (!localStorage.getItem('_ps_done')) {
+                setTimeout(showProfileSetup, 500);
+              }
+            }
           }, 300);
         } else {
           updateAuthUI(null, null);
@@ -899,6 +907,94 @@
       updateI18n();
       applyTickerFromMap(_tickerMap);
     });
+  }
+
+  /* ── Profile Setup Modal ── */
+  function showProfileSetup() {
+    if (document.getElementById('_ps_overlay')) return;
+
+    const html = `
+    <div class="ps-overlay" id="_ps_overlay">
+      <div class="ps-modal">
+        <div class="ps-icon">👋</div>
+        <h2 class="ps-title">快速認識你</h2>
+        <p class="ps-sub">填寫以下資料幫助我們改善 IsshoHub（可略過）</p>
+        <div class="ps-field">
+          <label>性別</label>
+          <div class="ps-radios" id="_ps_genders">
+            <label class="ps-radio"><input type="radio" name="ps_gender" value="male">男</label>
+            <label class="ps-radio"><input type="radio" name="ps_gender" value="female">女</label>
+            <label class="ps-radio"><input type="radio" name="ps_gender" value="other">其他</label>
+            <label class="ps-radio"><input type="radio" name="ps_gender" value="prefer_not">不願透露</label>
+          </div>
+        </div>
+        <div class="ps-field">
+          <label>國籍</label>
+          <input type="text" id="_ps_nationality" placeholder="例：香港、台灣、澳門、中國…" maxlength="50" />
+        </div>
+        <div class="ps-field">
+          <label>年齡</label>
+          <select id="_ps_age">
+            <option value="">請選擇</option>
+            <option value="under_18">18 歲以下</option>
+            <option value="18-24">18–24</option>
+            <option value="25-34">25–34</option>
+            <option value="35-44">35–44</option>
+            <option value="45-54">45–54</option>
+            <option value="55+">55 歲以上</option>
+            <option value="prefer_not">不願透露</option>
+          </select>
+        </div>
+        <div class="ps-actions">
+          <button class="ps-btn-save" id="_ps_save">儲存</button>
+          <button class="ps-btn-skip" id="_ps_skip">略過</button>
+        </div>
+      </div>
+    </div>`;
+
+    document.body.insertAdjacentHTML('beforeend', html);
+
+    const overlay = document.getElementById('_ps_overlay');
+
+    /* Radio button visual toggle */
+    overlay.querySelectorAll('.ps-radio').forEach(label => {
+      label.addEventListener('click', () => {
+        overlay.querySelectorAll('.ps-radio').forEach(l => l.classList.remove('checked'));
+        label.classList.add('checked');
+      });
+    });
+
+    /* Open with animation */
+    requestAnimationFrame(() => overlay.classList.add('open'));
+
+    async function saveAndClose(gender, nationality, age_range) {
+      try {
+        const sessionData = await window.IsshoAuth.getClient().auth.getSession();
+        const token = sessionData?.data?.session?.access_token;
+        if (token) {
+          await fetch('/api/save-profile', {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ gender, nationality, age_range }),
+          });
+        }
+      } catch (_) { /* fail silently */ }
+      localStorage.setItem('_ps_done', '1');
+      overlay.classList.remove('open');
+      setTimeout(() => overlay.remove(), 300);
+    }
+
+    document.getElementById('_ps_save').addEventListener('click', async function () {
+      this.disabled = true;
+      this.textContent = '儲存中…';
+      const checked = overlay.querySelector('.ps-radio.checked input');
+      const gender      = checked ? checked.value : null;
+      const nationality = document.getElementById('_ps_nationality').value.trim() || null;
+      const age_range   = document.getElementById('_ps_age').value || null;
+      await saveAndClose(gender, nationality, age_range);
+    });
+
+    document.getElementById('_ps_skip').addEventListener('click', () => saveAndClose(null, null, null));
   }
 
   /* ── Exports ── */

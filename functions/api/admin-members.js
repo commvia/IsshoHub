@@ -66,9 +66,9 @@ export async function onRequestGet(context) {
     const usersData = await usersRes.json();
     const authUsers = usersData.users || [];
 
-    /* ── 5. Fetch all profiles (name, role) ── */
+    /* ── 5. Fetch all profiles (name, role, demographics) ── */
     const allProfilesRes = await fetch(
-      `${env.SUPABASE_URL}/rest/v1/profiles?select=id,name,role`,
+      `${env.SUPABASE_URL}/rest/v1/profiles?select=id,name,role,gender,nationality,age_range,ip_country`,
       {
         headers: {
           'apikey':        env.SUPABASE_SERVICE_ROLE_KEY,
@@ -113,6 +113,10 @@ export async function onRequestGet(context) {
           joined:       u.created_at,
           last_sign_in: u.last_sign_in_at,
           confirmed:    !!(u.email_confirmed_at || u.confirmed_at),
+          gender:       profile.gender       || null,
+          nationality:  profile.nationality  || null,
+          age_range:    profile.age_range    || null,
+          ip_country:   profile.ip_country   || null,
           driving_guide: drivingGuide
             ? { status: drivingGuide.status, expires_at: drivingGuide.expires_at }
             : null,

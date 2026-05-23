@@ -382,6 +382,59 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 }
 .admin-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
 
+/* ============ PROFILE SETUP MODAL ============ */
+.ps-overlay {
+  position: fixed; inset: 0; z-index: 8500;
+  background: rgba(10,20,40,.55);
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px;
+  backdrop-filter: blur(3px);
+  opacity: 0; pointer-events: none;
+  transition: opacity .2s;
+}
+.ps-overlay.open { opacity: 1; pointer-events: auto; }
+.ps-modal {
+  background: #fff; border-radius: 20px;
+  padding: 32px 28px 24px;
+  max-width: 400px; width: 100%;
+  box-shadow: 0 16px 60px rgba(0,0,0,.2);
+}
+.ps-icon  { font-size: 32px; text-align: center; margin-bottom: 8px; }
+.ps-title { font-size: 18px; font-weight: 800; color: var(--ink); text-align: center; margin: 0 0 4px; }
+.ps-sub   { font-size: 12px; color: var(--ink-3); text-align: center; margin: 0 0 20px; }
+.ps-field { margin-bottom: 14px; }
+.ps-field label { display: block; font-size: 12px; font-weight: 600; color: var(--ink-2); margin-bottom: 6px; }
+.ps-field input, .ps-field select {
+  width: 100%; padding: 9px 12px;
+  border: 1px solid var(--line); border-radius: 8px;
+  font-size: 13px; outline: none; box-sizing: border-box;
+  background: #fff;
+}
+.ps-field input:focus, .ps-field select:focus { border-color: var(--blue); }
+.ps-radios { display: flex; gap: 8px; flex-wrap: wrap; }
+.ps-radio  {
+  display: flex; align-items: center; gap: 5px;
+  padding: 6px 12px; border: 1px solid var(--line);
+  border-radius: 20px; cursor: pointer; font-size: 13px;
+  color: var(--ink-2); transition: all .15s;
+}
+.ps-radio input { display: none; }
+.ps-radio.checked { background: var(--ink); color: #fff; border-color: var(--ink); }
+.ps-actions { display: flex; gap: 10px; margin-top: 20px; }
+.ps-btn-save {
+  flex: 1; padding: 11px; background: var(--ink); color: #fff;
+  border: none; border-radius: 10px; font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: background .15s;
+}
+.ps-btn-save:hover { background: #1a3a6e; }
+.ps-btn-save:disabled { background: #aaa; cursor: wait; }
+.ps-btn-skip {
+  padding: 11px 16px; background: none; border: 1px solid var(--line);
+  border-radius: 10px; font-size: 13px; color: var(--ink-3);
+  cursor: pointer; transition: all .15s;
+}
+.ps-btn-skip:hover { border-color: var(--ink-2); color: var(--ink-2); }
+
 /* ============ MEMBERS MANAGER ============ */
 .mm-overlay {
   position: fixed; inset: 0; z-index: 9000;
