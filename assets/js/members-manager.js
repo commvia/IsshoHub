@@ -94,7 +94,7 @@
     body.innerHTML = '<table class="mm-table">'
       + '<thead><tr>'
       + '<th>Email</th><th>姓名</th><th>角色</th><th>加入日期</th>'
-      + '<th>性別</th><th>國籍</th><th>年齡</th><th>現居地</th>'
+      + '<th>性別</th><th>國籍/地區</th><th>年齡</th><th>現居地</th>'
       + '<th>天書狀態</th>'
       + '</tr></thead><tbody>'
       + filtered.map(function (m) {

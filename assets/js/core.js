@@ -929,7 +929,7 @@
           </div>
         </div>
         <div class="ps-field">
-          <label>國籍</label>
+          <label>國籍／地區</label>
           <input type="text" id="_ps_nationality" placeholder="例：香港、台灣、澳門、中國…" maxlength="50" />
         </div>
         <div class="ps-field">
