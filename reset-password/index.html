@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>設定新密碼 — IsshoHub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700&family=Zen+Old+Mincho:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'><circle cx='40' cy='40' r='36' fill='%230d2444'/><path d='M 40 8 A 32 32 0 0 1 40 72' stroke='%23d9b683' stroke-width='4' fill='none' stroke-linecap='round'/><text x='40' y='48' text-anchor='middle' font-family='Zen Old Mincho, serif' font-size='26' fill='%23f6f3ec' letter-spacing='-1'>%E4%B8%80</text></svg>">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #1a3a6e;
+    --navy-ink: #0d2444;
+    --accent: #a8762f;
+    --gold: #d9b683;
+    --paper: #fbf9f3;
+    --line: #e4dfd4;
+    --ink: #1a1a0e;
+    --ink-2: #5a5a4a;
+    --ink-3: #9a9a8a;
+    --sans: 'Inter', 'Noto Sans TC', sans-serif;
+    --serif-jp: 'Zen Old Mincho', serif;
+  }
+  body {
+    font-family: var(--sans);
+    background: var(--paper);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    color: var(--ink);
+  }
+
+  /* Brand */
+  .rp-brand {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none; margin-bottom: 32px;
+  }
+  .rp-seal {
+    width: 44px; height: 44px;
+  }
+  .rp-brand-name {
+    font-size: 22px; font-weight: 700; color: var(--navy-ink);
+    letter-spacing: -0.01em;
+  }
+  .rp-brand-name span { color: var(--accent); }
+
+  /* Card */
+  .rp-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 36px 32px 28px;
+    width: 100%; max-width: 400px;
+    box-shadow: 0 8px 40px rgba(13,36,68,.1);
+    border: 1px solid var(--line);
+  }
+  .rp-title {
+    font-size: 20px; font-weight: 800; color: var(--navy-ink);
+    margin-bottom: 6px;
+  }
+  .rp-sub {
+    font-size: 13px; color: var(--ink-3);
+    margin-bottom: 24px; line-height: 1.5;
+  }
+
+  /* Form */
+  .rp-form { display: flex; flex-direction: column; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group label {
+    font-size: 12px; font-weight: 600; color: var(--ink-2);
+  }
+  .form-group input {
+    padding: 10px 14px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    font-size: 14px; font-family: var(--sans);
+    outline: none; transition: border-color .15s;
+    background: #fff;
+  }
+  .form-group input:focus { border-color: var(--navy); }
+
+  .rp-btn {
+    width: 100%; padding: 12px;
+    background: var(--navy-ink); color: #fff;
+    border: none; border-radius: 10px;
+    font-size: 15px; font-weight: 700; font-family: var(--sans);
+    cursor: pointer; transition: background .15s;
+    margin-top: 4px;
+  }
+  .rp-btn:hover { background: var(--navy); }
+  .rp-btn:disabled { background: #aaa; cursor: wait; }
+
+  /* Messages */
+  .rp-error {
+    display: none;
+    background: #fce8e6; color: #c5221f;
+    border-radius: 8px; padding: 10px 14px;
+    font-size: 13px; line-height: 1.4;
+  }
+  .rp-success {
+    display: none;
+    text-align: center; padding: 24px 0 8px;
+  }
+  .rp-success-icon { font-size: 40px; margin-bottom: 12px; }
+  .rp-success-title {
+    font-size: 18px; font-weight: 800; color: var(--navy-ink);
+    margin-bottom: 8px;
+  }
+  .rp-success-sub { font-size: 13px; color: var(--ink-3); }
+
+  /* Invalid token state */
+  .rp-invalid {
+    display: none; text-align: center; padding: 8px 0;
+  }
+  .rp-invalid-icon { font-size: 36px; margin-bottom: 12px; }
+  .rp-invalid-title {
+    font-size: 16px; font-weight: 700; color: var(--navy-ink);
+    margin-bottom: 8px;
+  }
+  .rp-invalid-sub { font-size: 13px; color: var(--ink-3); margin-bottom: 20px; }
+  .rp-back {
+    display: inline-block;
+    padding: 10px 24px;
+    background: var(--navy-ink); color: #fff;
+    border-radius: 8px; font-size: 13px; font-weight: 600;
+    text-decoration: none;
+  }
+  .rp-back:hover { background: var(--navy); }
+
+  /* Footer */
+  .rp-footer {
+    margin-top: 24px;
+    font-size: 12px; color: var(--ink-3); text-align: center;
+  }
+  .rp-footer a { color: var(--ink-2); }
+
+  @media (max-width: 440px) {
+    .rp-card { padding: 28px 20px 22px; border-radius: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<a class="rp-brand" href="/">
+  <svg class="rp-seal" viewBox="0 0 80 80" fill="none">
+    <circle cx="40" cy="40" r="36" fill="#0d2444"/>
+    <path d="M 40 8 A 32 32 0 0 1 40 72" stroke="#d9b683" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <text x="40" y="46" text-anchor="middle" font-family="Zen Old Mincho, serif" font-size="22" font-weight="500" fill="#f6f3ec" letter-spacing="-1">一緒</text>
+  </svg>
+  <span class="rp-brand-name">Issho<span>Hub</span></span>
+</a>
+
+<div class="rp-card">
+
+  <!-- Invalid / expired token -->
+  <div class="rp-invalid" id="rpInvalid">
+    <div class="rp-invalid-icon">🔗</div>
+    <div class="rp-invalid-title">連結已失效</div>
+    <div class="rp-invalid-sub">重設密碼連結已過期或已使用，請重新申請。</div>
+    <a class="rp-back" href="/">返回首頁</a>
+  </div>
+
+  <!-- Password form -->
+  <div id="rpForm">
+    <div class="rp-title">設定新密碼</div>
+    <div class="rp-sub">請輸入你的新密碼，最少 8 個字元。</div>
+    <div class="rp-error" id="rpError"></div>
+    <form class="rp-form" id="resetForm">
+      <div class="form-group">
+        <label>新密碼</label>
+        <input type="password" id="newPassword" placeholder="至少 8 個字元" minlength="8" autocomplete="new-password" required />
+      </div>
+      <div class="form-group">
+        <label>確認新密碼</label>
+        <input type="password" id="confirmPassword" placeholder="再輸入一次" minlength="8" autocomplete="new-password" required />
+      </div>
+      <button type="submit" class="rp-btn" id="rpBtn">確認更改密碼</button>
+    </form>
+  </div>
+
+  <!-- Success state -->
+  <div class="rp-success" id="rpSuccess">
+    <div class="rp-success-icon">✅</div>
+    <div class="rp-success-title">密碼已更新！</div>
+    <div class="rp-success-sub">正在跳轉至首頁…</div>
+  </div>
+
+</div>
+
+<div class="rp-footer">
+  <a href="/">返回 IsshoHub 首頁</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+(function () {
+  const SUPABASE_URL = 'https://eupqbbfbucdkhtpsuvry.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV1cHFiYmZidWNka2h0cHN1dnJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNzYyNTUsImV4cCI6MjA5Mjc1MjI1NX0.Ax6QGerRyM4dUTJQT6dleOQfnwYJIPwqw4zLHdTfOhk';
+  const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const formEl    = document.getElementById('rpForm');
+  const successEl = document.getElementById('rpSuccess');
+  const invalidEl = document.getElementById('rpInvalid');
+  const errorEl   = document.getElementById('rpError');
+  const btn       = document.getElementById('rpBtn');
+  const form      = document.getElementById('resetForm');
+
+  function showError(msg) {
+    errorEl.textContent = msg;
+    errorEl.style.display = 'block';
+  }
+  function hideError() { errorEl.style.display = 'none'; }
+
+  /* Supabase fires PASSWORD_RECOVERY when user arrives via reset link */
+  client.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'PASSWORD_RECOVERY') {
+      /* Valid token — show form */
+      formEl.style.display = 'block';
+      invalidEl.style.display = 'none';
+    }
+  });
+
+  /* If no token in URL hash, show invalid message after short wait */
+  setTimeout(() => {
+    const hash = window.location.hash;
+    const params = new URLSearchParams(window.location.search);
+    const hasToken = hash.includes('access_token') || params.has('token') || params.has('code');
+    if (!hasToken) {
+      formEl.style.display = 'none';
+      invalidEl.style.display = 'block';
+    }
+  }, 800);
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    hideError();
+
+    const pw  = document.getElementById('newPassword').value;
+    const pw2 = document.getElementById('confirmPassword').value;
+
+    if (pw !== pw2) {
+      showError('兩次輸入的密碼不一致，請重新確認。');
+      return;
+    }
+    if (pw.length < 8) {
+      showError('密碼至少需要 8 個字元。');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = '更新中…';
+
+    const { error } = await client.auth.updateUser({ password: pw });
+
+    if (error) {
+      showError('更新失敗：' + error.message);
+      btn.disabled = false;
+      btn.textContent = '確認更改密碼';
+      return;
+    }
+
+    /* Success */
+    formEl.style.display = 'none';
+    successEl.style.display = 'block';
+    setTimeout(() => { window.location.href = '/'; }, 2000);
+  });
+})();
+</script>
+</body>
+</html>
