@@ -45,13 +45,51 @@
     </div>`;
   }
 
+  /* ── Extract a ~120-char snippet around the matched keyword ── */
+  function extractSnippet(text, query, radius) {
+    if (!text) return '';
+    radius = radius || 80;
+    /* Strip Markdown syntax so snippet reads naturally */
+    var plain = text
+      .replace(/!\[.*?\]\(.*?\)/g, '')   /* images */
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') /* links → label */
+      .replace(/#{1,6}\s+/g, '')         /* headings */
+      .replace(/[*_`~>]/g, '')           /* emphasis / code / blockquote */
+      .replace(/\s+/g, ' ').trim();
+    var idx = plain.toLowerCase().indexOf(query.toLowerCase());
+    if (idx === -1) return plain.slice(0, 120) + (plain.length > 120 ? '…' : '');
+    var start = Math.max(0, idx - radius);
+    var end   = Math.min(plain.length, idx + query.length + radius);
+    return (start > 0 ? '…' : '') + plain.slice(start, end) + (end < plain.length ? '…' : '');
+  }
+
   /* ── Article card for results ── */
-  function resultCard(a, lang) {
-    const title   = lang === 'tc' ? (a.title_tc || a.title_en) : (a.title_en || a.title_tc);
-    const excerpt = lang === 'tc' ? (a.excerpt_tc || '') : (a.excerpt_en || '');
-    const img     = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400&q=70';
-    const cat     = a.category_key || '';
-    const date    = a.published_at ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', { year: 'numeric', month: 'short', day: 'numeric' }) : '';
+  function resultCard(a, lang, query) {
+    const title = lang === 'tc' ? (a.title_tc || a.title_en) : (a.title_en || a.title_tc);
+    const img   = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400&q=70';
+    const cat   = a.category_key || '';
+    const date  = a.published_at ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', { year: 'numeric', month: 'short', day: 'numeric' }) : '';
+
+    /* Decide what to show in excerpt area:
+       1. If title/excerpt already contains the keyword → show the regular excerpt
+       2. Otherwise → extract a snippet from body near the keyword */
+    const q         = (query || '').toLowerCase();
+    const excerptTc = a.excerpt_tc || '';
+    const excerptEn = a.excerpt_en || '';
+    const excerpt   = lang === 'tc' ? excerptTc : excerptEn;
+
+    const titleHit   = title.toLowerCase().includes(q);
+    const excerptHit = excerpt.toLowerCase().includes(q);
+
+    let snippetText;
+    if (titleHit || excerptHit || !q) {
+      snippetText = excerpt;
+    } else {
+      /* Match is in body — extract a readable snippet */
+      const body = lang === 'tc' ? (a.body_tc || a.body_en || '') : (a.body_en || a.body_tc || '');
+      snippetText = extractSnippet(body, query);
+    }
+
     return `
       <a class="sr-card" href="/article/?slug=${a.slug}">
         <div class="sr-thumb" style="background-image:url('${img}')">
@@ -59,7 +97,7 @@
         </div>
         <div class="sr-body">
           <div class="sr-title">${title}</div>
-          <div class="sr-excerpt">${excerpt}</div>
+          <div class="sr-excerpt">${snippetText}</div>
           <div class="sr-meta">${date}</div>
         </div>
       </a>`;
@@ -108,7 +146,7 @@
     }
 
     const lang = getLang();
-    results.innerHTML = data.map(a => resultCard(a, lang)).join('');
+    results.innerHTML = data.map(a => resultCard(a, lang, q)).join('');
     results.style.display = 'grid';
     empty.style.display   = 'none';
 
