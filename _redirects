@@ -13,6 +13,7 @@
 /culture  /culture/ 301
 /invest   /invest/  301
 /about    /about/   301
+/privacy  /privacy/ 301
 
 # Fallback — serve homepage for unknown paths (optional SPA-style)
 # /* /index.html 200

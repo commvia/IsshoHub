@@ -179,7 +179,7 @@
       footer_a2: '/about/',
       footer_a3: 'javascript:void(0)',
       footer_a4: 'javascript:void(0)',
-      footer_a5: '/about/',
+      footer_a5: '/privacy/',
     };
     Object.keys(FOOTER_HREFS).forEach(key => {
       document.querySelectorAll(`a[data-i18n="${key}"]`).forEach(el => {

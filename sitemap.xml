@@ -107,6 +107,14 @@
   </url>
 
   <url>
+    <loc>https://isshohub.com/privacy/</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://isshohub.com/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://isshohub.com/privacy/"/>
+  </url>
+
+  <url>
     <loc>https://isshohub.com/visa/hsp-calculator/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
