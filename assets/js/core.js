@@ -1051,16 +1051,40 @@
 
 })(window);
 
-/* ── Anti-bfcache flash ──────────────────────────────────────────────────
-   Problem: _headers Cache-Control only covers /*.html URLs, not / or other
-   directory index pages. So the homepage can be bfcached even with no-store.
-   On bfcache restore, body.js-ready is already set → page is instantly
-   visible at opacity:1 → flash of stale content before reload.
+/* ── JS safety net: guarantee js-ready within 1500ms ────────────────────
+   Every page adds js-ready after its own init (fast path).
+   This timer is the backstop for any page whose Supabase call is slow.
+   Layers of protection:
+     1. Page-specific code adds js-ready after nav/init (fastest, ~50ms)
+     2. This safety net fires at 1500ms if page code hasn't done it yet
+     3. CSS animation fallback fires at 3s if core.js itself failed to load
+──────────────────────────────────────────────────────────────────────── */
+(function () {
+  var _safetyTimer = setTimeout(function () {
+    if (!document.body.classList.contains('js-ready')) {
+      document.body.classList.add('js-ready');
+    }
+  }, 1500);
 
+  /* Cancel timer once js-ready is added normally (avoid redundant work) */
+  var _observer = new MutationObserver(function (mutations) {
+    mutations.forEach(function (m) {
+      if (m.type === 'attributes' && document.body.classList.contains('js-ready')) {
+        clearTimeout(_safetyTimer);
+        _observer.disconnect();
+      }
+    });
+  });
+  _observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+})();
+
+/* ── Anti-bfcache flash ──────────────────────────────────────────────────
    Fix (two-part):
    1. pagehide: hide body BEFORE navigation. bfcache stores the page in this
       invisible state, so when restored it's already opacity:0 — no flash.
    2. pageshow (persisted): fire a reload to get fresh content.
+   _headers now covers all subpaths (/*/,/*/*/,/*/*/*/) with no-store so
+   Cloudflare CDN won't cache any HTML pages either.
 ──────────────────────────────────────────────────────────────────────── */
 window.addEventListener('pagehide', function () {
   /* Set inline opacity so bfcache captures an invisible page.

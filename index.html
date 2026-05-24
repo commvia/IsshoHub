@@ -531,7 +531,7 @@
 <script src="/assets/js/site-settings.js?v=7"></script>
 <script src="/assets/js/search.js?v=7"></script>
 <script src="/assets/js/earthquake-alert.js" defer></script>
-<script src="/assets/js/core.js?v=1314"></script>
+<script src="/assets/js/core.js?v=1315"></script>
 <script>
 (function () {
   const D = window.ISSHO_DATA;
@@ -1080,10 +1080,9 @@
   if (window.IsshoHotSearch) window.IsshoHotSearch.init();
   if (window.IsshoSettings) window.IsshoSettings.init();
   if (window.IsshoSearch) window.IsshoSearch.init();
-  /* js-ready is added inside fetchSiteSettings callback so the hero is
-     rendered with Supabase data before the page becomes visible.
-     The CSS animation (opacity:0 → 1 at 0.6s delay) is the fallback
-     if Supabase doesn't respond in time. */
+  /* Show page as soon as nav/i18n are ready — static D.hero fills the hero
+     section until Supabase settings arrive and silently update it. */
+  document.body.classList.add('js-ready');
 })();
 </script>
 <script src="/assets/js/preview-guard.js"></script>
