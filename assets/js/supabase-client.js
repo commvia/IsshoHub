@@ -126,14 +126,38 @@
   async function searchArticles(query, options = {}) {
     const q = (query || '').trim();
     if (!q) return { data: [], error: null };
-    const { data, error } = await getClient()
-      .from('articles')
-      .select('id, slug, title_tc, title_en, excerpt_tc, excerpt_en, body_tc, body_en, cover_image_url, category_key, published_at, read_time, author')
-      .eq('status', 'published')
-      .or(`title_tc.ilike.%${q}%,title_en.ilike.%${q}%,excerpt_tc.ilike.%${q}%,excerpt_en.ilike.%${q}%,body_tc.ilike.%${q}%,body_en.ilike.%${q}%`)
-      .order('published_at', { ascending: false })
-      .limit(options.limit || 20);
-    return { data: data || [], error };
+
+    const COLS = 'id, slug, title_tc, title_en, excerpt_tc, excerpt_en, body_tc, body_en, cover_image_url, category_key, published_at, read_time, author, tags';
+    const client = getClient();
+
+    /* Run text search and tag search in parallel */
+    const [textRes, tagRes] = await Promise.all([
+      client
+        .from('articles')
+        .select(COLS)
+        .eq('status', 'published')
+        .or(`title_tc.ilike.%${q}%,title_en.ilike.%${q}%,excerpt_tc.ilike.%${q}%,excerpt_en.ilike.%${q}%,body_tc.ilike.%${q}%,body_en.ilike.%${q}%`)
+        .order('published_at', { ascending: false })
+        .limit(options.limit || 20),
+      client
+        .from('articles')
+        .select(COLS)
+        .eq('status', 'published')
+        .contains('tags', [q])
+        .order('published_at', { ascending: false })
+        .limit(10),
+    ]);
+
+    const error = textRes.error || tagRes.error || null;
+
+    /* Merge: tag matches first, then text matches; deduplicate by id */
+    const seen = new Set();
+    const merged = [];
+    for (const row of [...(tagRes.data || []), ...(textRes.data || [])]) {
+      if (!seen.has(row.id)) { seen.add(row.id); merged.push(row); }
+    }
+
+    return { data: merged, error };
   }
 
   async function fetchArticle(slug) {

@@ -69,10 +69,12 @@
     const img   = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400&q=70';
     const cat   = a.category_key || '';
     const date  = a.published_at ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', { year: 'numeric', month: 'short', day: 'numeric' }) : '';
+    const tags  = Array.isArray(a.tags) ? a.tags : [];
 
     /* Decide what to show in excerpt area:
        1. If title/excerpt already contains the keyword → show the regular excerpt
-       2. Otherwise → extract a snippet from body near the keyword */
+       2. If matched via tag → show excerpt with a tag indicator
+       3. Otherwise → extract a snippet from body near the keyword */
     const q         = (query || '').toLowerCase();
     const excerptTc = a.excerpt_tc || '';
     const excerptEn = a.excerpt_en || '';
@@ -80,15 +82,21 @@
 
     const titleHit   = title.toLowerCase().includes(q);
     const excerptHit = excerpt.toLowerCase().includes(q);
+    const tagHit     = tags.some(t => t.toLowerCase() === q);
 
     let snippetText;
     if (titleHit || excerptHit || !q) {
       snippetText = excerpt;
     } else {
-      /* Match is in body — extract a readable snippet */
+      /* Match is in body or tags — extract a readable snippet */
       const body = lang === 'tc' ? (a.body_tc || a.body_en || '') : (a.body_en || a.body_tc || '');
-      snippetText = extractSnippet(body, query);
+      snippetText = extractSnippet(body, query) || excerpt;
     }
+
+    /* Show matched tags as chips (only those matching the query) */
+    const tagChips = tagHit
+      ? tags.filter(t => t.toLowerCase() === q).map(t => `<span class="sr-tag-chip">#${t}</span>`).join('')
+      : '';
 
     return `
       <a class="sr-card" href="/article/?slug=${a.slug}">
@@ -98,7 +106,7 @@
         <div class="sr-body">
           <div class="sr-title">${title}</div>
           <div class="sr-excerpt">${snippetText}</div>
-          <div class="sr-meta">${date}</div>
+          <div class="sr-meta">${date}${tagChips ? '<span class="sr-meta-sep">·</span>' + tagChips : ''}</div>
         </div>
       </a>`;
   }
