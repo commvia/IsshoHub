@@ -1083,7 +1083,7 @@
    1. pagehide: hide body BEFORE navigation. bfcache stores the page in this
       invisible state, so when restored it's already opacity:0 — no flash.
    2. pageshow (persisted): fire a reload to get fresh content.
-   _headers now covers all subpaths (/*/,/*/*/,/*/*/*/) with no-store so
+   _headers now covers all subpaths (one/two/three levels deep) with no-store so
    Cloudflare CDN won't cache any HTML pages either.
 ──────────────────────────────────────────────────────────────────────── */
 window.addEventListener('pagehide', function () {
