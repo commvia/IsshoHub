@@ -283,10 +283,14 @@
       if (global.IsshoEditor) global.IsshoEditor.init();
       if (global.IsshoSearch) global.IsshoSearch.init();
 
+      /* Show page immediately after nav/i18n are ready — don't wait for Supabase data.
+         Articles will render when they arrive; this prevents the 600ms CSS fallback
+         from firing before data loads and causing a stale-skeleton flash. */
+      document.body.classList.add('js-ready');
+
       /* Load featured order + ticker from site_settings, then render */
       loadFeaturedOrder().then(function () {
         renderAll();
-        document.body.classList.add('js-ready');
       });
     },
   };
