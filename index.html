@@ -1080,9 +1080,9 @@
   if (window.IsshoHotSearch) window.IsshoHotSearch.init();
   if (window.IsshoSettings) window.IsshoSettings.init();
   if (window.IsshoSearch) window.IsshoSearch.init();
-  /* Show page as soon as nav/i18n are ready — static D.hero fills the hero
-     section until Supabase settings arrive and silently update it. */
-  document.body.classList.add('js-ready');
+  /* js-ready is added inside applySettings() after hero renders with real data.
+     - Refresh: sessionStorage cache → applySettings() fires synchronously → instant reveal
+     - First visit: Supabase fetch → applySettings() → reveal (1500ms safety net in core.js backstops slow fetches) */
 })();
 </script>
 <script src="/assets/js/preview-guard.js"></script>
