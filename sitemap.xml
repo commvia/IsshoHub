@@ -91,6 +91,22 @@
   </url>
 
   <url>
+    <loc>https://isshohub.com/invest/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://isshohub.com/invest/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://isshohub.com/invest/"/>
+  </url>
+
+  <url>
+    <loc>https://isshohub.com/about/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://isshohub.com/about/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://isshohub.com/about/"/>
+  </url>
+
+  <url>
     <loc>https://isshohub.com/visa/hsp-calculator/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

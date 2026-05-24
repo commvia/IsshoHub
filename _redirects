@@ -1,14 +1,18 @@
 # Cloudflare Pages redirects
 
 # Trailing-slash normalisation
-/visa   /visa/  301
-/biz    /biz/   301
-/house  /house/ 301
-/tax    /tax/   301
-/life   /life/  301
-/places /places/ 301
-/pets   /pets/  301
-/story  /story/ 301
+/visa     /visa/    301
+/biz      /biz/     301
+/house    /house/   301
+/tax      /tax/     301
+/life     /life/    301
+/places   /places/  301
+/pets     /pets/    301
+/story    /story/   301
+/news     /news/    301
+/culture  /culture/ 301
+/invest   /invest/  301
+/about    /about/   301
 
 # Fallback — serve homepage for unknown paths (optional SPA-style)
 # /* /index.html 200

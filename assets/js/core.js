@@ -173,13 +173,13 @@
     const FOOTER_HREFS = {
       footer_r1: '/life/',
       footer_r2: '/life/driving-guide/',
-      footer_r3: '/visa/#hsp',
+      footer_r3: '/visa/hsp-calculator/',
       footer_r4: '/#newsletter',
       footer_a1: '/about/',
-      footer_a2: '/#about',
+      footer_a2: '/about/',
       footer_a3: 'javascript:void(0)',
       footer_a4: 'javascript:void(0)',
-      footer_a5: '/#privacy',
+      footer_a5: '/about/',
     };
     Object.keys(FOOTER_HREFS).forEach(key => {
       document.querySelectorAll(`a[data-i18n="${key}"]`).forEach(el => {
@@ -479,6 +479,15 @@
           await window.IsshoAuth.signOut();
           window.location.reload();
         }
+      });
+    });
+
+    /* Account settings → open profile setup modal */
+    document.querySelectorAll('[data-open-profile]').forEach(el => {
+      el.addEventListener('click', e => {
+        e.preventDefault();
+        document.getElementById('userDropdown')?.classList.remove('open');
+        showProfileSetup();
       });
     });
 
