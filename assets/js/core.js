@@ -1087,9 +1087,13 @@
    Cloudflare CDN won't cache any HTML pages either.
 ──────────────────────────────────────────────────────────────────────── */
 window.addEventListener('pagehide', function () {
-  /* Set inline opacity so bfcache captures an invisible page.
-     This runs synchronously before the browser snapshots the DOM. */
+  /* Instantly hide — disable transition first so there's no gradual fade
+     (a 150ms fade would briefly show old content before the new page loads).
+     Force synchronous layout so the browser actually repaints opacity:0
+     before handing off to the new page. */
+  document.body.style.transition = 'none';
   document.body.style.opacity = '0';
+  void document.body.offsetHeight; /* trigger synchronous repaint */
 });
 
 window.addEventListener('pageshow', function (e) {

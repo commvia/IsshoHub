@@ -984,13 +984,25 @@
     }
   }
 
-  /* Step 1: instant render from cache (eliminates flash on refresh) */
-  try {
-    const cached = sessionStorage.getItem(_SC_KEY);
-    if (cached) applySettings(JSON.parse(cached));
-  } catch (_) {}
+  /* Detect page reload (Cmd+R / F5) vs. first visit or link navigation */
+  const _isReload = (function () {
+    try {
+      const nav = performance.getEntriesByType('navigation')[0];
+      if (nav) return nav.type === 'reload';
+    } catch (_) {}
+    return !!(performance.navigation && performance.navigation.type === 1);
+  })();
 
-  /* Step 2: always fetch fresh, save, re-apply */
+  /* Step 1: instant render from cache — skip on reload so stale data never flashes.
+     On normal navigation (first visit / link click) cache gives instant hero. */
+  if (!_isReload) {
+    try {
+      const cached = sessionStorage.getItem(_SC_KEY);
+      if (cached) applySettings(JSON.parse(cached));
+    } catch (_) {}
+  }
+
+  /* Step 2: always fetch fresh from Supabase, update cache, re-apply */
   window.IsshoAPI.fetchSiteSettings().then(({ data }) => {
     if (!data) return;
     try { sessionStorage.setItem(_SC_KEY, JSON.stringify(data)); } catch (_) {}
