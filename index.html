@@ -885,12 +885,24 @@
     if (!container) return;
 
     loadCatArticles().then(function(articles) {
-      /* Group by category_key */
+      /* Group by both primary category_key AND secondary category_keys
+         (the "also appears in" multi-select in the admin import flow).
+         Without this, an article whose primary is e.g. "story" but is
+         also flagged as biz won't show up in the Business & Work section. */
       const bycat = {};
-      articles.forEach(function(a) {
-        const k = a.category_key;
+      function pushTo(k, a) {
+        if (!k) return;
         if (!bycat[k]) bycat[k] = [];
-        bycat[k].push(a);
+        /* Dedupe by id in case primary === one of the secondaries */
+        if (!bycat[k].some(function (x) { return x.id === a.id; })) {
+          bycat[k].push(a);
+        }
+      }
+      articles.forEach(function(a) {
+        pushTo(a.category_key, a);
+        if (Array.isArray(a.category_keys)) {
+          a.category_keys.forEach(function (k) { pushTo(k, a); });
+        }
       });
 
       const viewAll = lang === 'tc' ? '查看全部' : 'View all';
