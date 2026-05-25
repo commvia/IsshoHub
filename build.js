@@ -153,16 +153,27 @@ function generateSitemap(articles) {
     `  <url>\n    <loc>${p.loc}</loc>\n    <changefreq>${p.changefreq}</changefreq>\n    <priority>${p.priority}</priority>\n  </url>`
   );
 
+  /* Generate sitemap entries with xhtml:link hreflang annotations so Google
+     understands both TC and EN versions are equivalent translations. */
   const articleUrls = articles
     .filter(a => a.slug)
-    .map(a => {
+    .flatMap(a => {
       const lastmod = (a.updated_at || a.published_at || '').substring(0, 10);
-      return `  <url>\n    <loc>${BASE_URL}/article/${a.slug}/</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.8</priority>\n  </url>`;
+      const tcLoc = `${BASE_URL}/article/${a.slug}/`;
+      const enLoc = `${BASE_URL}/article/${a.slug}/en/`;
+      const altLinks =
+        `    <xhtml:link rel="alternate" hreflang="zh-Hant" href="${tcLoc}"/>\n` +
+        `    <xhtml:link rel="alternate" hreflang="en" href="${enLoc}"/>\n` +
+        `    <xhtml:link rel="alternate" hreflang="x-default" href="${tcLoc}"/>`;
+      return [
+        `  <url>\n    <loc>${tcLoc}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.8</priority>\n${altLinks}\n  </url>`,
+        `  <url>\n    <loc>${enLoc}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.8</priority>\n${altLinks}\n  </url>`,
+      ];
     });
 
   const xml = [
     '<?xml version="1.0" encoding="UTF-8"?>',
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">',
     '',
     ...staticUrls,
     '',
@@ -173,7 +184,7 @@ function generateSitemap(articles) {
   ].join('\n');
 
   fs.writeFileSync('sitemap.xml', xml, 'utf8');
-  console.log(`✓ sitemap.xml 已更新（${STATIC_PAGES.length} 靜態頁 + ${articleUrls.length} 文章）`);
+  console.log(`✓ sitemap.xml 已更新（${STATIC_PAGES.length} 靜態頁 + ${articleUrls.length} 文章 URL，含 TC/EN 雙語）`);
 }
 
 async function build() {
@@ -196,7 +207,8 @@ async function build() {
     const slug = a.slug;
     if (!slug) continue;
 
-    const canonicalUrl = `${BASE_URL}/article/${slug}/`;
+    const tcUrl  = `${BASE_URL}/article/${slug}/`;
+    const enUrl  = `${BASE_URL}/article/${slug}/en/`;
     const titleTc    = a.title_tc   || a.title_en   || '';
     const titleEn    = a.title_en   || a.title_tc   || '';
     const excerptTc  = a.excerpt_tc || '';
@@ -208,42 +220,63 @@ async function build() {
     const published  = (a.published_at || '').substring(0, 10);
     const modified   = (a.updated_at  || a.published_at || '').substring(0, 10);
 
-    const jsonLd = JSON.stringify({
-      '@context':    'https://schema.org',
-      '@type':       'Article',
-      'headline':    titleTc || titleEn,
-      'description': excerptTc || excerptEn || titleTc,
-      'image':       ogImg,
+    /* Build language-specific JSON-LD */
+    const jsonLdFor = (lang) => JSON.stringify({
+      '@context':      'https://schema.org',
+      '@type':         'Article',
+      'headline':      lang === 'en' ? (titleEn || titleTc) : (titleTc || titleEn),
+      'description':   lang === 'en' ? (excerptEn || excerptTc) : (excerptTc || excerptEn),
+      'image':         ogImg,
       'datePublished': published,
       'dateModified':  modified,
       'author':    { '@type': 'Organization', 'name': 'IsshoHub' },
       'publisher': { '@type': 'Organization', 'name': 'IsshoHub', 'url': BASE_URL },
-      'url':         canonicalUrl,
+      'inLanguage':    lang === 'en' ? 'en' : 'zh-Hant',
+      'url':           lang === 'en' ? enUrl : tcUrl,
     });
 
-    // 使用函數形式的 replace 避免 $ 符號在替換字串中的特殊行為
-    let html = template
-      .replace(/\{\{SLUG\}\}/g,          () => slug)
-      .replace(/\{\{TITLE_TC\}\}/g,      () => escHtml(titleTc))
-      .replace(/\{\{TITLE_EN\}\}/g,      () => escHtml(titleEn))
-      .replace(/\{\{EXCERPT_TC\}\}/g,    () => escHtml(excerptTc))
-      .replace(/\{\{EXCERPT_EN\}\}/g,    () => escHtml(excerptEn))
-      .replace(/\{\{CANONICAL_URL\}\}/g, () => canonicalUrl)
-      .replace(/\{\{OG_IMAGE\}\}/g,      () => ogImg)
-      .replace(/\{\{JSON_LD\}\}/g,       () => jsonLd)
-      .replace(/\{\{BODY_TC\}\}/g,       () => bodyTcHtml)
-      .replace(/\{\{BODY_EN\}\}/g,       () => bodyEnHtml)
-      .replace(/\{\{PUBLISHED_DATE\}\}/g,() => published)
-      .replace(/\{\{AUTHOR\}\}/g,        () => escHtml(a.author || ''));
+    /* Substitute template for one language variant */
+    const renderHtml = (lang) => {
+      const isEn = lang === 'en';
+      return template
+        .replace(/\{\{SLUG\}\}/g,          () => slug)
+        .replace(/\{\{HTML_LANG\}\}/g,     () => isEn ? 'en' : 'zh-Hant')
+        .replace(/\{\{BODY_LANG\}\}/g,     () => isEn ? 'en' : 'tc')
+        .replace(/\{\{TITLE\}\}/g,         () => escHtml(isEn ? titleEn : titleTc))
+        .replace(/\{\{EXCERPT\}\}/g,       () => escHtml(isEn ? excerptEn : excerptTc))
+        .replace(/\{\{TITLE_TC\}\}/g,      () => escHtml(titleTc))
+        .replace(/\{\{TITLE_EN\}\}/g,      () => escHtml(titleEn))
+        .replace(/\{\{EXCERPT_TC\}\}/g,    () => escHtml(excerptTc))
+        .replace(/\{\{EXCERPT_EN\}\}/g,    () => escHtml(excerptEn))
+        .replace(/\{\{CANONICAL_URL\}\}/g, () => isEn ? enUrl : tcUrl)
+        .replace(/\{\{TC_URL\}\}/g,        () => tcUrl)
+        .replace(/\{\{EN_URL\}\}/g,        () => enUrl)
+        .replace(/\{\{OG_LOCALE\}\}/g,     () => isEn ? 'en_US' : 'zh_TW')
+        .replace(/\{\{OG_LOCALE_ALT\}\}/g, () => isEn ? 'zh_TW' : 'en_US')
+        .replace(/\{\{IS_EN_FLAG\}\}/g,    () => isEn ? 'true' : 'false')
+        .replace(/\{\{OG_IMAGE\}\}/g,      () => ogImg)
+        .replace(/\{\{JSON_LD\}\}/g,       () => jsonLdFor(lang))
+        .replace(/\{\{BODY_TC\}\}/g,       () => bodyTcHtml)
+        .replace(/\{\{BODY_EN\}\}/g,       () => bodyEnHtml)
+        .replace(/\{\{PUBLISHED_DATE\}\}/g,() => published)
+        .replace(/\{\{AUTHOR\}\}/g,        () => escHtml(a.author || ''));
+    };
 
-    const dir = path.join('article', slug);
-    fs.mkdirSync(dir, { recursive: true });
-    fs.writeFileSync(path.join(dir, 'index.html'), html, 'utf8');
+    /* TC version: /article/<slug>/index.html */
+    const tcDir = path.join('article', slug);
+    fs.mkdirSync(tcDir, { recursive: true });
+    fs.writeFileSync(path.join(tcDir, 'index.html'), renderHtml('tc'), 'utf8');
+
+    /* EN version: /article/<slug>/en/index.html */
+    const enDir = path.join('article', slug, 'en');
+    fs.mkdirSync(enDir, { recursive: true });
+    fs.writeFileSync(path.join(enDir, 'index.html'), renderHtml('en'), 'utf8');
+
     generated++;
   }
 
   generateSitemap(articles);
-  console.log(`✓ 生成 ${generated} 篇文章靜態頁`);
+  console.log(`✓ 生成 ${generated} 篇文章 × 2 語言 = ${generated * 2} 個靜態頁`);
 }
 
 build().catch(err => { console.error('❌ Build 失敗:', err); process.exit(1); });
