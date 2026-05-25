@@ -129,6 +129,23 @@ const STATIC_PAGES = [
   { loc: `${BASE_URL}/life/driving-guide/chapter-13/`, changefreq: 'monthly', priority: '0.7' },
   { loc: `${BASE_URL}/life/driving-guide/chapter-14/`, changefreq: 'monthly', priority: '0.7' },
   { loc: `${BASE_URL}/life/driving-guide/chapter-15/`, changefreq: 'monthly', priority: '0.7' },
+  /* English versions */
+  { loc: `${BASE_URL}/life/driving-guide/en/`,           changefreq: 'weekly',  priority: '0.8' },
+  { loc: `${BASE_URL}/life/driving-guide/en/chapter-1/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/en/chapter-2/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/en/chapter-3/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/en/chapter-4/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/en/chapter-5/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/en/chapter-6/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/en/chapter-7/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/en/chapter-8/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/en/chapter-9/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/en/chapter-10/`, changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/en/chapter-11/`, changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/en/chapter-12/`, changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/en/chapter-13/`, changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/en/chapter-14/`, changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/en/chapter-15/`, changefreq: 'monthly', priority: '0.7' },
 ];
 
 function generateSitemap(articles) {
