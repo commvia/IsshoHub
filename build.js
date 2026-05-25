@@ -112,6 +112,7 @@ const STATIC_PAGES = [
   { loc: `${BASE_URL}/places/`,  changefreq: 'weekly', priority: '0.8' },
   { loc: `${BASE_URL}/pets/`,    changefreq: 'weekly', priority: '0.8' },
   { loc: `${BASE_URL}/story/`,   changefreq: 'weekly', priority: '0.8' },
+  { loc: `${BASE_URL}/life/driving-quiz/`,           changefreq: 'weekly', priority: '0.9' },
   { loc: `${BASE_URL}/life/driving-guide/`,          changefreq: 'weekly', priority: '0.8' },
   { loc: `${BASE_URL}/life/driving-guide/chapter-1/`,  changefreq: 'monthly', priority: '0.7' },
   { loc: `${BASE_URL}/life/driving-guide/chapter-2/`,  changefreq: 'monthly', priority: '0.7' },

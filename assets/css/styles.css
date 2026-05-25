@@ -3544,3 +3544,246 @@ body[data-lang="en"] .cat-articles-title { font-family: var(--sans-en); }
   .ps-title { font-size: 16px; }
   .ps-radio { font-size: 12px; padding: 5px 10px; }
 }
+
+/* ───────────────────────────────────────────────────────────── */
+/* Driving Quiz — SEO content section (magazine-style)            */
+/* ───────────────────────────────────────────────────────────── */
+
+.quiz-seo {
+  background: #faf8f2;
+  border-top: 1px solid #e8e2d4;
+  padding: 72px 0 96px;
+  margin-top: 80px;
+}
+
+.quiz-seo .container {
+  max-width: 760px;
+}
+
+.quiz-seo-kicker {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #a8762f;
+  margin-bottom: 12px;
+}
+
+.quiz-seo-title {
+  font-family: 'Zen Old Mincho', 'Shippori Mincho', 'Noto Sans TC', serif;
+  font-size: clamp(24px, 3.2vw, 32px);
+  font-weight: 700;
+  color: #0d2444;
+  margin: 0 0 28px;
+  line-height: 1.3;
+  letter-spacing: -.01em;
+}
+
+body[data-lang="en"] .quiz-seo-title {
+  font-family: 'Lora', Georgia, serif;
+  letter-spacing: -.02em;
+}
+
+/* About article */
+.quiz-seo-article {
+  margin-bottom: 72px;
+  padding-bottom: 56px;
+  border-bottom: 1px solid #ebe5d6;
+}
+
+.quiz-seo-body {
+  font-family: 'Noto Sans TC', 'Inter', sans-serif;
+  font-size: 16.5px;
+  line-height: 1.85;
+  color: #2e2e2e;
+  letter-spacing: .015em;
+}
+
+body[data-lang="en"] .quiz-seo-body {
+  font-family: 'Lora', Georgia, 'Times New Roman', serif;
+  font-size: 17px;
+  line-height: 1.85;
+}
+
+.quiz-seo-body p {
+  margin: 0 0 1.4em;
+}
+
+.quiz-seo-body p:last-child {
+  margin-bottom: 0;
+}
+
+.quiz-seo-body strong {
+  color: #0d2444;
+  font-weight: 600;
+}
+
+.quiz-seo-body a {
+  color: #a8762f;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.quiz-seo-body a:hover {
+  color: #8a5d22;
+}
+
+/* FAQ */
+.quiz-seo-faq {
+  margin-bottom: 72px;
+  padding-bottom: 56px;
+  border-bottom: 1px solid #ebe5d6;
+}
+
+.quiz-faq-item {
+  border-bottom: 1px solid #ebe5d6;
+  padding: 20px 0;
+}
+
+.quiz-faq-item:first-of-type {
+  border-top: 1px solid #ebe5d6;
+}
+
+.quiz-faq-item summary {
+  font-family: 'Noto Sans TC', 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #0d2444;
+  cursor: pointer;
+  list-style: none;
+  position: relative;
+  padding-right: 32px;
+  line-height: 1.5;
+  outline: none;
+  user-select: none;
+}
+
+body[data-lang="en"] .quiz-faq-item summary {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+}
+
+.quiz-faq-item summary::-webkit-details-marker { display: none; }
+
+.quiz-faq-item summary::after {
+  content: '+';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 22px;
+  font-weight: 300;
+  color: #a8762f;
+  transition: transform .25s ease;
+  line-height: 1;
+}
+
+.quiz-faq-item[open] summary::after {
+  content: '−';
+}
+
+.quiz-faq-item summary:hover {
+  color: #a8762f;
+}
+
+.quiz-faq-item p {
+  margin: 14px 0 0;
+  font-family: 'Noto Sans TC', 'Inter', sans-serif;
+  font-size: 15.5px;
+  line-height: 1.8;
+  color: #4a4a3e;
+  padding-right: 32px;
+}
+
+body[data-lang="en"] .quiz-faq-item p {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 16px;
+}
+
+.quiz-faq-item p strong {
+  color: #0d2444;
+  font-weight: 600;
+}
+
+.quiz-faq-item p a {
+  color: #a8762f;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Related cards */
+.quiz-seo-related-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 8px;
+}
+
+.quiz-seo-related-card {
+  display: block;
+  background: #fff;
+  border: 1px solid #ebe5d6;
+  border-radius: 14px;
+  padding: 24px 26px;
+  text-decoration: none;
+  transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+
+.quiz-seo-related-card:hover {
+  border-color: #a8762f;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(13,36,68,.08);
+}
+
+.quiz-seo-related-card-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #a8762f;
+  margin-bottom: 10px;
+}
+
+.quiz-seo-related-card-title {
+  font-family: 'Zen Old Mincho', 'Shippori Mincho', 'Noto Sans TC', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #0d2444;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+body[data-lang="en"] .quiz-seo-related-card-title {
+  font-family: 'Lora', Georgia, serif;
+}
+
+.quiz-seo-related-card-desc {
+  font-family: 'Noto Sans TC', 'Inter', sans-serif;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #5a5a4a;
+}
+
+body[data-lang="en"] .quiz-seo-related-card-desc {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Mobile */
+@media (max-width: 720px) {
+  .quiz-seo {
+    padding: 56px 0 72px;
+    margin-top: 56px;
+  }
+  .quiz-seo-article,
+  .quiz-seo-faq {
+    margin-bottom: 56px;
+    padding-bottom: 40px;
+  }
+  .quiz-seo-body { font-size: 15.5px; }
+  .quiz-seo-related-grid {
+    grid-template-columns: 1fr;
+  }
+}
