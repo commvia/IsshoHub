@@ -539,7 +539,7 @@
 <script src="/assets/js/site-settings.js?v=7"></script>
 <script src="/assets/js/search.js?v=7"></script>
 <script src="/assets/js/earthquake-alert.js" defer></script>
-<script src="/assets/js/core.js?v=1316"></script>
+<script src="/assets/js/core.js?v=1317"></script>
 <script>
 (function () {
   const D = window.ISSHO_DATA;
@@ -921,13 +921,35 @@
     });
   }
 
-  /* ── Load site settings (stale-while-revalidate) ─────────────────────────
-     1. Apply cached settings instantly (from sessionStorage) → no flash on refresh
-     2. Always fetch fresh from Supabase → save to cache → silently re-apply
-     sessionStorage scope: same tab session. Cleared when tab closes. */
+  /* ── Load site settings + articles, render ONCE, then reveal ─────────────
+     The hero flash bug came from rendering 2-4 times in sequence:
+       1. applySettings(cached)  → renderHero with static fallback (no article)
+       2. fetchArticles returns  → renderHero with article data
+       3. applySettings(fresh)   → renderHero with static fallback again
+       4. fetchArticles returns  → renderHero with article data again
+     User saw each transition as a "flash of old content."
+
+     New strategy:
+       - Body stays opacity:0 until hero AND its articles are loaded.
+       - applySettings deduplicates identical data so fresh-after-cache is a no-op.
+       - Hero is rendered exactly once per data version, with all data ready. */
   const _SC_KEY = '_iss_sc';
+  let _lastAppliedJson = '';            /* dedupe identical applySettings calls */
+  let _bodyRevealed = false;            /* guard so reveal happens once */
+
+  function revealBody() {
+    if (_bodyRevealed) return;
+    _bodyRevealed = true;
+    document.body.classList.add('js-ready');
+  }
 
   function applySettings(data) {
+    /* Skip if identical to what we last applied (e.g. fresh data matches cache) */
+    const json = JSON.stringify(data);
+    if (_lastAppliedJson === json) return;
+    const isFirstApply = _lastAppliedJson === '';
+    _lastAppliedJson = json;
+
     const map = Object.fromEntries(data.map(s => [s.key, s]));
     const lang = getLang();
 
@@ -937,7 +959,7 @@
       if (tickerEl) tickerEl.innerHTML = lang === 'tc' ? map.ticker.value_tc : map.ticker.value_en;
     }
 
-    /* Hero */
+    /* Hero settings (static fields) */
     _sbHero = {
       hero_img:       map.hero_img?.value_tc    || '',
       hero_kicker_tc: map.hero_kicker?.value_tc || '',
@@ -947,25 +969,55 @@
       hero_sub_tc:    map.hero_sub?.value_tc    || '',
       hero_sub_en:    map.hero_sub?.value_en    || '',
     };
-    renderHero(_sbHero);
-    document.body.classList.add('js-ready');
 
     /* Featured order */
     if (map.featured_order && map.featured_order.value_tc) {
       _sbFeaturedOrder = map.featured_order.value_tc.split(',').map(s => s.trim()).filter(Boolean);
     }
 
-    /* Homepage Editor Picks */
+    /* Editor picks slugs */
     if (map.homepage_picks_slugs && map.homepage_picks_slugs.value_tc) {
       const slugs = map.homepage_picks_slugs.value_tc.split(',').map(s => s.trim()).filter(Boolean);
-      if (slugs.length) { _sbPicksSlugs = slugs; renderEditor(); }
-    } else {
-      renderEditor();
+      _sbPicksSlugs = slugs.length ? slugs : null;
     }
 
+    /* Hero article + side articles */
+    const heroSlug = map.hero_article_slug && map.hero_article_slug.value_tc && map.hero_article_slug.value_tc.trim();
+    const sideRaw  = map.homepage_side_slugs && map.homepage_side_slugs.value_tc;
+    const sideSlugs = sideRaw ? sideRaw.split(',').map(s => s.trim()).filter(Boolean).slice(0, 3) : [];
+    const allSlugs  = [...new Set([heroSlug, ...sideSlugs].filter(Boolean))];
+
     /* Story articles */
+    let storySlugs = [];
     if (map.homepage_story_slugs && map.homepage_story_slugs.value_tc) {
-      const storySlugs = map.homepage_story_slugs.value_tc.split(',').map(s => s.trim()).filter(Boolean).slice(0, 3);
+      storySlugs = map.homepage_story_slugs.value_tc.split(',').map(s => s.trim()).filter(Boolean).slice(0, 3);
+    }
+
+    /* On the FIRST applySettings call, hold the reveal until hero (and its
+       article data) are ready — so the user never sees an intermediate state.
+       On subsequent calls (fresh data after cache), data is either identical
+       (deduped above) or genuinely different — in which case re-render is OK. */
+    if (allSlugs.length) {
+      window.IsshoAPI.fetchArticlesBySlug(allSlugs).then(({ data: articles }) => {
+        const bySlug = Object.fromEntries((articles || []).map(a => [a.slug, a]));
+        _sbHeroArticle  = (heroSlug && bySlug[heroSlug]) || null;
+        _sbSideArticles = sideSlugs.map(s => bySlug[s]).filter(Boolean);
+        renderHero(_sbHero);
+        revealBody();
+      }).catch(() => {
+        renderHero(_sbHero);
+        revealBody();
+      });
+    } else {
+      renderHero(_sbHero);
+      revealBody();
+    }
+
+    /* Sections below the fold — they have their own loading skeletons and
+       don't block the initial reveal. Only render on the first apply to avoid
+       redundant work; the dedupe above already prevents identical re-applies. */
+    if (isFirstApply) {
+      renderEditor();
       if (storySlugs.length) {
         window.IsshoAPI.fetchArticlesBySlug(storySlugs).then(({ data }) => {
           if (data && data.length) {
@@ -975,20 +1027,6 @@
           }
         });
       }
-    }
-
-    /* Hero article + side articles */
-    const heroSlug = map.hero_article_slug && map.hero_article_slug.value_tc && map.hero_article_slug.value_tc.trim();
-    const sideRaw  = map.homepage_side_slugs && map.homepage_side_slugs.value_tc;
-    const sideSlugs = sideRaw ? sideRaw.split(',').map(s => s.trim()).filter(Boolean).slice(0, 3) : [];
-    const allSlugs  = [...new Set([heroSlug, ...sideSlugs].filter(Boolean))];
-    if (allSlugs.length) {
-      window.IsshoAPI.fetchArticlesBySlug(allSlugs).then(({ data }) => {
-        const bySlug = Object.fromEntries((data || []).map(a => [a.slug, a]));
-        if (heroSlug && bySlug[heroSlug]) _sbHeroArticle  = bySlug[heroSlug];
-        if (sideSlugs.length) _sbSideArticles = sideSlugs.map(s => bySlug[s]).filter(Boolean);
-        renderHero(_sbHero);
-      });
     }
   }
 
@@ -1002,7 +1040,7 @@
   })();
 
   /* Step 1: instant render from cache — skip on reload so stale data never flashes.
-     On normal navigation (first visit / link click) cache gives instant hero. */
+     On normal navigation (first visit / link click) cache gives near-instant hero. */
   if (!_isReload) {
     try {
       const cached = sessionStorage.getItem(_SC_KEY);
@@ -1010,7 +1048,8 @@
     } catch (_) {}
   }
 
-  /* Step 2: always fetch fresh from Supabase, update cache, re-apply */
+  /* Step 2: always fetch fresh from Supabase, update cache, re-apply if changed.
+     The dedupe in applySettings means an unchanged fresh-after-cache is a no-op. */
   window.IsshoAPI.fetchSiteSettings().then(({ data }) => {
     if (!data) return;
     try { sessionStorage.setItem(_SC_KEY, JSON.stringify(data)); } catch (_) {}
