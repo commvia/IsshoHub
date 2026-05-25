@@ -1131,6 +1131,8 @@
       .catch(() => {});
   })();
 
+  /* renderAll: full re-render. Used for language toggle AFTER applySettings
+     has run, so _sbPicksSlugs / _sbStoryArticles are already finalized. */
   function renderAll() {
     renderHero(_sbHero);
     renderHot();
@@ -1142,10 +1144,34 @@
     renderCatSections();
   }
 
+  /* renderInitial: boot-time render. Deliberately omits renderEditor and
+     renderStories — those depend on Supabase site_settings (homepage_picks_slugs
+     / homepage_story_slugs) which haven't loaded yet. applySettings() will
+     call them once with the correct data; doing it here would race with that
+     call and cause the "sometimes 1 article, sometimes 3" inconsistency. */
+  function renderInitial() {
+    renderHero(_sbHero);
+    renderHot();
+    renderCats();
+    renderNews();
+    renderLatest();
+    renderCatSections();
+  }
+
   /* boot */
   C.init(null);
   C.onLangChange(renderAll);
-  renderAll();
+  renderInitial();
+
+  /* Fallback: if applySettings never runs (Supabase down + no cache), render
+     editor and stories from static fallback data after 3.5s so those sections
+     aren't permanently empty. Cancelled by applySettings setting _lastAppliedJson. */
+  setTimeout(function () {
+    if (!_lastAppliedJson) {
+      renderEditor();
+      renderStories();
+    }
+  }, 3500);
   if (window.IsshoEditor) window.IsshoEditor.init();
   if (window.IsshoMembers)   window.IsshoMembers.init();
   if (window.IsshoHotSearch) window.IsshoHotSearch.init();
