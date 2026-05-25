@@ -378,12 +378,13 @@
   function relatedCardHTML(a, lang) {
     var title  = lang === 'tc' ? (a.title_tc || a.title_en) : (a.title_en || a.title_tc);
     var img    = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=70';
-    var cat    = a.category_key || '';
+    var catKey = a.category_key || '';
+    var catLabel = getCatLabel(catKey, lang) || catKey;
     var date   = a.published_at ? new Date(a.published_at).toLocaleDateString(lang==='tc'?'zh-Hant':'en',{month:'short',day:'numeric'}) : '';
     return '<a class="card-compact" href="/article/'+a.slug+'/" style="text-decoration:none;">'
       + '<div class="card-compact-media" style="background-image:url(\''+img+'\')"></div>'
       + '<div class="card-compact-body">'
-      + '<div class="card-compact-tag">'+cat+'</div>'
+      + '<div class="card-compact-tag">'+catLabel+'</div>'
       + '<div class="card-compact-title">'+title+'</div>'
       + '<div class="card-compact-meta">'+date+'</div>'
       + '</div></a>';
@@ -472,6 +473,56 @@
     setMeta('meta[name="twitter:description"]','name','twitter:description'); setMeta('meta[name="twitter:description"]', 'content', excerpt || title);
     setMeta('meta[name="twitter:image"]',      'name',     'twitter:image');  setMeta('meta[name="twitter:image"]',      'content', ogImg);
     setLink('canonical', articleUrl);
+
+    /* hreflang for bilingual indexing */
+    function setHreflang(hl, href) {
+      var sel = 'link[rel="alternate"][hreflang="' + hl + '"]';
+      var el = document.querySelector(sel);
+      if (!el) { el = document.createElement('link'); el.rel = 'alternate'; el.hreflang = hl; document.head.appendChild(el); }
+      el.href = href;
+    }
+    setHreflang('zh-Hant', articleUrl);
+    setHreflang('en',      articleUrl);
+    setHreflang('x-default', articleUrl);
+
+    /* ── Article JSON-LD Schema (Google rich snippets: author, date, image) ── */
+    (function () {
+      var existing = document.getElementById('articleSchema');
+      if (existing) existing.remove();
+      var schema = {
+        '@context': 'https://schema.org',
+        '@type':    'Article',
+        'headline': title,
+        'description': excerpt || title,
+        'image':    [ogImg],
+        'datePublished': a.published_at || '',
+        'dateModified':  a.updated_at || a.published_at || '',
+        'author': {
+          '@type': 'Person',
+          'name':  author || 'IsshoHub'
+        },
+        'publisher': {
+          '@type': 'Organization',
+          'name':  'IsshoHub',
+          'logo': {
+            '@type': 'ImageObject',
+            'url':   'https://isshohub.com/favicon.ico'
+          }
+        },
+        'mainEntityOfPage': {
+          '@type': 'WebPage',
+          '@id':   articleUrl
+        },
+        'inLanguage':     lang === 'tc' ? 'zh-Hant' : 'en',
+        'articleSection': catLabel,
+        'keywords':       Array.isArray(a.tags) ? a.tags.join(', ') : ''
+      };
+      var script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.id   = 'articleSchema';
+      script.textContent = JSON.stringify(schema);
+      document.head.appendChild(script);
+    })();
 
     /* ── Hero (title / meta on navy background, no bg image) ── */
     var heroMeta =
@@ -587,14 +638,29 @@
       });
     }
 
-    /* Related articles: same sub-category first, then same category */
-    if (catKey) {
+    /* Related articles: pull from ALL the article's categories (primary +
+       secondary category_keys), dedupe by slug, sort sub-category matches
+       first, then by published date. Increases the related pool for any
+       article that "also appears in" multiple sections. */
+    var allRelCats = [catKey]
+      .concat(Array.isArray(a.category_keys) ? a.category_keys : [])
+      .filter(function (c, i, arr) { return c && arr.indexOf(c) === i; });
+
+    if (allRelCats.length) {
       var subKey = a.sub_category_key || '';
-      var relRes = await window.IsshoAPI.fetchArticles({ category: catKey, limit: 20 });
-      var pool = (relRes.data||[]).filter(function(x){ return x.slug !== s; });
-      /* Sort: matching sub_category_key first */
+      var allRes = await Promise.all(
+        allRelCats.map(function (c) { return window.IsshoAPI.fetchArticles({ category: c, limit: 10 }); })
+      );
+      var pool = [];
+      var seenSlugs = { };
+      seenSlugs[s] = true; /* exclude current article */
+      allRes.forEach(function (res) {
+        (res.data || []).forEach(function (x) {
+          if (!seenSlugs[x.slug]) { seenSlugs[x.slug] = true; pool.push(x); }
+        });
+      });
       if (subKey) {
-        pool.sort(function(x, y) {
+        pool.sort(function (x, y) {
           var xMatch = x.sub_category_key === subKey ? 0 : 1;
           var yMatch = y.sub_category_key === subKey ? 0 : 1;
           return xMatch - yMatch;
@@ -604,7 +670,7 @@
       if (others.length) {
         relSect.style.display = '';
         document.getElementById('relatedTitle').textContent = relatedLabel;
-        document.getElementById('relatedGrid').innerHTML = others.map(function(x){ return relatedCardHTML(x, lang); }).join('');
+        document.getElementById('relatedGrid').innerHTML = others.map(function (x) { return relatedCardHTML(x, lang); }).join('');
       }
     }
 
