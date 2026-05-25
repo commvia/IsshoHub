@@ -277,6 +277,173 @@ async function build() {
 
   generateSitemap(articles);
   console.log(`✓ 生成 ${generated} 篇文章 × 2 語言 = ${generated * 2} 個靜態頁`);
+
+  /* ── Homepage SSG: inject article content into empty containers so AI
+     crawlers (Gemini, ChatGPT browsing, Perplexity) and search engines see
+     actual content, not just a JS-shell. Real users still see the JS-rendered
+     version after applySettings runs — JS will overwrite these containers. */
+  await generateHomepageSSG(articles);
+}
+
+/* ── Homepage SSG helpers ───────────────────────────────────────────── */
+function fmtDate(iso) {
+  if (!iso) return '';
+  try {
+    return new Date(iso).toLocaleDateString('zh-Hant', { month: 'short', day: 'numeric' });
+  } catch { return ''; }
+}
+
+/* Build a semantic card for crawlers — JS will replace this with the styled
+   version when the page loads in a real browser. */
+function ssgCardHTML(a, opts) {
+  opts = opts || {};
+  const title   = a.title_tc || a.title_en || '';
+  const excerpt = a.excerpt_tc || a.excerpt_en || '';
+  const img     = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80';
+  const url     = `/article/${a.slug}/`;
+  const author  = a.author || '';
+  const date    = fmtDate(a.published_at);
+  const featuredCls = opts.featured ? ' featured' : '';
+  const overlayCls  = opts.overlay ? ' overlay' : '';
+  return `<article class="card${featuredCls}${overlayCls}" onclick="if(!event.target.closest('a'))window.location.href='${url}'" style="cursor:pointer"><a class="card-media" href="${url}" style="background-image: url('${img}')"></a><div class="card-body"><h3 class="card-title">${escHtml(title)}</h3><p class="card-excerpt">${escHtml(excerpt)}</p><div class="card-meta"><span class="author">${escHtml(author)}</span>${author && date ? '<span class="dot"></span>' : ''}<span>${escHtml(date)}</span></div></div></article>`;
+}
+
+function ssgHeroMain(a) {
+  if (!a) return '';
+  const title   = a.title_tc || a.title_en || '';
+  const excerpt = a.excerpt_tc || a.excerpt_en || '';
+  const img     = a.cover_image_url || '';
+  const url     = `/article/${a.slug}/`;
+  const author  = a.author || '';
+  const date    = fmtDate(a.published_at);
+  return `<div class="hero-img" style="background-image: url('${img}')"></div><div class="hero-body"><div class="hero-top"><div class="hero-chip"><i></i>FEATURED</div></div><div><h1 class="hero-title"><a href="${url}" style="color:inherit;text-decoration:none;">${escHtml(title)}</a></h1><p class="hero-sub">${escHtml(excerpt)}</p><div class="hero-meta">${author ? `<div>文／<b style="color:#fff;font-weight:500">${escHtml(author)}</b></div><div class="dot"></div>` : ''}<div>${escHtml(date)}</div></div></div></div>`;
+}
+
+function ssgHeroSide(articles) {
+  return articles.map((a, i) => {
+    const title = a.title_tc || a.title_en || '';
+    const img   = a.cover_image_url || '';
+    const date  = fmtDate(a.published_at);
+    return `<a class="side-card" href="/article/${a.slug}/"><div class="side-thumb" style="background-image: url('${img}')"><div class="side-thumb-num">${String(i + 1).padStart(2, '0')}</div></div><div class="side-body"><div class="side-tag">${escHtml(a.category_key || '')}</div><div class="side-title">${escHtml(title)}</div><div class="side-meta">${escHtml(date)}</div></div></a>`;
+  }).join('');
+}
+
+function ssgStoryCard(a) {
+  const title   = a.title_tc || a.title_en || '';
+  const excerpt = a.excerpt_tc || a.excerpt_en || '';
+  const img     = a.cover_image_url || '';
+  return `<a class="story-card" href="/article/${a.slug}/"><div class="story-img" style="background-image:url('${img}')"></div><div class="story-body"><div class="story-tag">${escHtml(a.category_key || '')}</div><h3 class="story-quote">${escHtml(title)}</h3><p class="story-excerpt">${escHtml(excerpt)}</p></div></a>`;
+}
+
+async function generateHomepageSSG(articles) {
+  /* Fetch site_settings for hero / picks / story / featured-order config */
+  const { data: settings } = await supabase.from('site_settings').select('*');
+  const map = {};
+  (settings || []).forEach(s => { map[s.key] = s; });
+
+  const bySlug = {};
+  articles.forEach(a => { bySlug[a.slug] = a; });
+
+  function slugListFromSetting(key) {
+    const val = map[key]?.value_tc;
+    if (!val) return [];
+    return val.split(',').map(s => s.trim()).filter(Boolean);
+  }
+
+  /* Hero article + side articles */
+  const heroSlug   = (map.hero_article_slug?.value_tc || '').trim();
+  const heroArticle = heroSlug ? bySlug[heroSlug] : null;
+  const sideSlugs  = slugListFromSetting('homepage_side_slugs').slice(0, 3);
+  const sideArts   = sideSlugs.map(s => bySlug[s]).filter(Boolean);
+
+  /* Editor's picks: explicit slugs, else featured=true sorted by featured_order */
+  const picksSlugs = slugListFromSetting('homepage_picks_slugs');
+  let picksArts;
+  if (picksSlugs.length) {
+    picksArts = picksSlugs.map(s => bySlug[s]).filter(Boolean).slice(0, 6);
+  } else {
+    const order = slugListFromSetting('featured_order');
+    picksArts = articles
+      .filter(a => a.featured)
+      .slice()
+      .sort((a, b) => {
+        const ia = order.indexOf(a.slug);
+        const ib = order.indexOf(b.slug);
+        return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
+      })
+      .slice(0, 6);
+  }
+
+  /* Stories */
+  const storySlugs = slugListFromSetting('homepage_story_slugs').slice(0, 3);
+  const storyArts  = storySlugs.map(s => bySlug[s]).filter(Boolean);
+
+  /* News (category=news, top 3) */
+  const newsArts = articles.filter(a => a.category_key === 'news').slice(0, 3);
+
+  /* Latest: 3 most recent (excluding hero) */
+  const latestArts = articles
+    .filter(a => a.slug !== heroSlug)
+    .slice(0, 3);
+
+  /* Category sections: group by primary + secondary categories */
+  const NAV_KEYS = ['visa','biz','house','culture','tax','life','places','pets','story'];
+  const NAV_LABELS_TC = {
+    visa: '簽證・在留資格', biz: '創業・工作', house: '住屋', culture: '文化',
+    tax: '稅務・保險・年金', life: '生活', places: '好去處', pets: '寵物', story: '人物故事'
+  };
+  const byCat = {};
+  function pushTo(k, a) {
+    if (!k) return;
+    if (!byCat[k]) byCat[k] = [];
+    if (!byCat[k].some(x => x.id === a.id)) byCat[k].push(a);
+  }
+  articles.forEach(a => {
+    pushTo(a.category_key, a);
+    (a.category_keys || []).forEach(k => pushTo(k, a));
+  });
+  const catSectionsHtml = NAV_KEYS.map(key => {
+    const arts = (byCat[key] || []).slice(0, 3);
+    if (!arts.length) return '';
+    const title = NAV_LABELS_TC[key] || key;
+    return `<section class="section"><div class="container"><div class="section-head"><div><div class="section-eyebrow">— ${escHtml(title)}</div><h2 class="section-title">${escHtml(title)}</h2></div><div class="section-actions"><a class="link-more" href="/${key}/">查看全部 →</a></div></div><div class="article-grid">${arts.map(a => ssgCardHTML(a)).join('')}</div></div></section>`;
+  }).join('');
+
+  /* Build all the section HTML strings */
+  const heroMainHtml   = ssgHeroMain(heroArticle);
+  const heroSideHtml   = ssgHeroSide(sideArts);
+  const editorHtml     = picksArts.map(a => ssgCardHTML(a, { overlay: true })).join('');
+  const newsHtml       = newsArts.map(a => ssgCardHTML(a)).join('');
+  const latestHtml     = latestArts.map(a => ssgCardHTML(a)).join('');
+  const storiesHtml    = storyArts.map(a => ssgStoryCard(a)).join('');
+
+  /* Inject into index.html — fill containers wrapped in SSG marker comments.
+     Markers make re-runs idempotent (e.g., if a previous build left content)
+     and unambiguous when the inner content contains nested HTML.
+     JS still overwrites these containers at runtime when applySettings fires,
+     so real users get the dynamic experience; crawlers get the SSG content. */
+  let html = fs.readFileSync('index.html', 'utf8');
+  function injectBetween(name, openTag, closeTag, inner) {
+    const startMarker = `<!-- SSG:${name}:start -->`;
+    const endMarker   = `<!-- SSG:${name}:end -->`;
+    const re = new RegExp(startMarker.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '[\\s\\S]*?' + endMarker.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+    const replacement = `${startMarker}${openTag}${inner}${closeTag}${endMarker}`;
+    if (re.test(html)) {
+      html = html.replace(re, replacement);
+    } else {
+      console.warn(`⚠️  SSG marker not found in index.html: ${name}`);
+    }
+  }
+  injectBetween('heroMain',  '<article class="hero-main" id="heroMain">', '</article>', heroMainHtml);
+  injectBetween('heroSide',  '<aside class="hero-side" id="heroSide">',   '</aside>',   heroSideHtml);
+  injectBetween('editor',    '<div class="article-grid" id="editorGrid">', '</div>',   editorHtml);
+  injectBetween('news',      '<div class="article-grid" id="newsGrid">',   '</div>',   newsHtml);
+  injectBetween('stories',   '<div class="stories" id="storiesGrid">',     '</div>',   storiesHtml);
+  injectBetween('latest',    '<div class="article-grid" id="latestGrid">', '</div>',   latestHtml);
+  injectBetween('catSections','<div id="catArticleSections">',             '</div>',   catSectionsHtml);
+
+  fs.writeFileSync('index.html', html, 'utf8');
+  console.log(`✓ 首頁 SSG 完成：hero + side(${sideArts.length}) + picks(${picksArts.length}) + news(${newsArts.length}) + stories(${storyArts.length}) + latest(${latestArts.length}) + ${NAV_KEYS.length} cat sections`);
 }
 
 build().catch(err => { console.error('❌ Build 失敗:', err); process.exit(1); });
