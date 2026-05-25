@@ -66,8 +66,7 @@ export async function onRequestPost(context) {
 - places → 好去處
 - pets   → 寵物
 - story  → 人物故事
-- culture→ 文化
-- invest → 投資`;
+- culture→ 文化`;
 
     let prompt;
 

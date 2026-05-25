@@ -27,7 +27,6 @@ window.ISSHO_DATA = {
         { tc: "寵物友善住宅",   en: "Pet-Friendly Housing",   url: "/house/#pets" },
       ]
     },
-    { key: "invest", url: "/invest/", tc: "投資",             en: "Investing",               short_tc: "投資",   short_en: "Invest" },
     { key: "culture",url: "/culture/",tc: "文化",             en: "Culture",                 short_tc: "文化",   short_en: "Culture" },
     { key: "tax",    url: "/tax/",    tc: "稅務・保險・年金", en: "Tax, Insurance & Pension", short_tc: "稅務",   short_en: "Tax" },
     { key: "life",   url: "/life/",   tc: "生活",         en: "Life",              short_tc: "生活",   short_en: "Life",
@@ -158,7 +157,6 @@ window.ISSHO_DATA = {
     { key: "visa",   count: 84, tc: "簽證・在留資格",   en: "Visa & Residency",        icon: "passport", url: "/visa/" },
     { key: "biz",    count: 62, tc: "創業・工作",        en: "Business & Work",         icon: "briefcase", url: "/biz/" },
     { key: "house",  count: 51, tc: "住屋",              en: "Housing",                 icon: "home",     url: "/house/" },
-    { key: "invest", count: 0,  tc: "投資",              en: "Investing",               icon: "invest",   url: "/invest/" },
     { key: "culture",count: 0,  tc: "文化",              en: "Culture",                 icon: "culture",  url: "/culture/" },
     { key: "tax",    count: 47, tc: "稅務・保險・年金",  en: "Tax, Insurance & Pension",icon: "yen",      url: "/tax/" },
     { key: "life",   count: 93, tc: "生活",          en: "Life",              icon: "life",     url: "/life/" },
@@ -573,13 +571,6 @@ window.ISSHO_DATA = {
       watermark: '文化',
       watermark_en: 'CULTURE',
       icon: '<path d="M2 9Q12 6 22 9M5 13h14M7 9v13M17 9v13"/>',
-    },
-    invest: {
-      desc_tc: '在日本的投資入門、股票、不動產、基金與資產管理——為在日生活者提供的財務增值指南。',
-      desc_en: 'Investing in Japan — stocks, real estate, funds and asset management guides for foreign residents.',
-      bg: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1400&q=80',
-      watermark: '投資',
-      icon: '<polyline points="3 17 9 11 13 15 21 7"/><polyline points="15 7 21 7 21 13"/>',
     },
   },
 

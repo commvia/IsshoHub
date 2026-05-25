@@ -14,7 +14,6 @@
     quote: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7c-2 0-3 2-3 4v6h5v-6H5"/><path d="M17 7c-2 0-3 2-3 4v6h5v-6h-4"/></svg>`,
     news:  `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 9h16"/><path d="M8 4v5"/><path d="M8 14h8"/><path d="M8 17h5"/></svg>`,
     culture:`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9Q12 6 22 9"/><path d="M5 13h14"/><path d="M7 9v13"/><path d="M17 9v13"/></svg>`,
-    invest:`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="15 7 21 7 21 13"/></svg>`,
   };
 
   /* ── State ── */
@@ -89,7 +88,7 @@
     'newsletter_title': { tc: '每月一封，送到你的信箱。', en: 'One newsletter a month. Curated for you.' },
     'newsletter_sub': { tc: '在日新政策、最新文章、社群活動——整理好，每月送到你的信箱。', en: 'New policies, fresh articles, community events — curated and delivered monthly.' },
     'newsletter_cta': { tc: '訂閱電子報', en: 'Subscribe' },
-    'footer_about':  { tc: 'IsshoHub 是面向國際讀者的繁體中文與英文雙語平台，專注於日本生活、文化資訊、簽證、投資與創業。編輯團隊來自傳媒、文化與學術領域，結合在地觀察與國際視野，為移居日本的外國人、關心日本的讀者，提供深入且實用的內容。', en: 'IsshoHub is a bilingual Traditional Chinese and English platform for international readers, focusing on life in Japan, culture, visas, investment and entrepreneurship. Our editorial team brings together expertise in media, culture and academia — combining on-the-ground insight with a global perspective to deliver in-depth, practical content for foreigners in Japan.' },
+    'footer_about':  { tc: 'IsshoHub 是面向國際讀者的繁體中文與英文雙語平台，專注於日本生活、文化資訊、簽證、創業與職場。編輯團隊來自傳媒、文化與學術領域，結合在地觀察與國際視野，為移居日本的外國人、關心日本的讀者，提供深入且實用的內容。', en: 'IsshoHub is a bilingual Traditional Chinese and English platform for international readers, focusing on life in Japan, culture, visas, careers and entrepreneurship. Our editorial team brings together expertise in media, culture and academia — combining on-the-ground insight with a global perspective to deliver in-depth, practical content for foreigners in Japan.' },
     'footer_col1':   { tc: '瀏覽分類', en: 'Explore' },
     'footer_col2':   { tc: '資源', en: 'Resources' },
     'footer_col3':   { tc: '關於', en: 'About' },
