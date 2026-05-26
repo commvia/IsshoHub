@@ -1653,14 +1653,18 @@ body[data-lang="en"] .story-quote::after { content: "\201D"; font-family: Georgi
 .footer-brand { max-width: 38ch; }
 .footer-brand .brand-name { color: #fff; }
 .footer-brand p { font-size: 13px; line-height: 1.6; margin: 16px 0 20px; color: rgba(255,255,255,0.65); }
-.footer-socials { display: flex; gap: 10px; }
-.footer-socials a {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: rgba(255,255,255,0.06);
-  display: grid; place-items: center;
-  transition: background .18s;
-}
-.footer-socials a:hover { background: var(--accent); color: #fff; }
+.footer-socials { display: flex; gap: 14px; flex-wrap: wrap; }
+.sc { display: flex; flex-direction: column; align-items: center; gap: 5px; text-decoration: none; color: rgba(255,255,255,0.8); }
+.sc__icon { width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.05); display: grid; place-items: center; border: 2.5px solid transparent; transition: transform .18s; color: #fff; }
+.sc--blue .sc__icon { border-color: #3b82f6; }
+.sc--green .sc__icon { border-color: #22c55e; }
+.sc--gray .sc__icon { border-color: #6b7280; }
+.sc:hover .sc__icon { transform: scale(1.08); }
+.sc__name { font-size: 10px; color: rgba(255,255,255,0.55); font-weight: 500; }
+.sc__badge { font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 20px; color: #fff; }
+.sc__badge--blue { background: #3b82f6; }
+.sc__badge--green { background: #22c55e; }
+.sc__badge--dark { background: #4b5563; }
 .footer-col h5 {
   font-family: var(--sans-en);
   font-size: 11px;
