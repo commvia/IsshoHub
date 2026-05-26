@@ -284,8 +284,97 @@
   /* ── FX Calculator ── handled by initFX() in index.html ── */
   function wireFX() { /* no-op: logic moved to initFX IIFE */ }
 
+  /* Build the admin bar HTML at runtime so the strings ("管理員模式",
+     "文章管理", "新增文章", "熱門搜尋", "網站設定" etc) are never present in
+     the static HTML and never get indexed by search engines. Only injected
+     for users with profile.role === 'admin'. */
+  function _buildAdminBarHTML() {
+    return ''
+      + '<div class="admin-bar-inner">'
+      +   '<span class="admin-bar-label">'
+      +     '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>'
+      +     ' 管理員模式'
+      +   '</span>'
+      +   '<div class="admin-bar-actions">'
+      +     '<a class="admin-btn" href="/admin/">'
+      +       '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>'
+      +       ' 文章管理'
+      +     '</a>'
+      +     '<button class="admin-btn" id="adminNewArticle">'
+      +       '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>'
+      +       ' 新增文章'
+      +     '</button>'
+      +     '<button class="admin-btn" id="adminMembers">'
+      +       '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>'
+      +       ' 會員管理'
+      +     '</button>'
+      +     '<button class="admin-btn" id="adminManageHotSearch">'
+      +       '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>'
+      +       ' 熱門搜尋'
+      +     '</button>'
+      +     '<button class="admin-btn" id="adminSiteSettings">'
+      +       '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>'
+      +       ' 網站設定'
+      +     '</button>'
+      +   '</div>'
+      + '</div>';
+  }
+
+  /* Same for user dropdown — keep "我的收藏 / 帳號設定 / 登出" strings out
+     of static HTML so crawlers don't index them. Page has empty container;
+     this builder fills it on login. */
+  function _buildUserDropdownHTML() {
+    const lang = state.lang;
+    const labels = lang === 'en'
+      ? { saved: 'Saved articles', settings: 'Account settings', signout: 'Sign out' }
+      : { saved: '我的收藏',          settings: '帳號設定',         signout: '登出' };
+    return ''
+      + '<a href="/bookmarks/">' + labels.saved + '</a>'
+      + '<a href="#" data-open-profile>' + labels.settings + '</a>'
+      + '<div class="user-dropdown-divider"></div>'
+      + '<a href="#" data-sign-out>' + labels.signout + '</a>';
+  }
+
+  /* Wire newly-injected dropdown actions (sign-out, profile) since the
+     original wiring happened before these elements existed. */
+  function _wireUserDropdownActions(root) {
+    root.querySelectorAll('[data-sign-out]').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        await window.IsshoAuth.signOut();
+        location.reload();
+      });
+    });
+    root.querySelectorAll('[data-open-profile]').forEach(el => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.getElementById('userDropdown')?.classList.remove('open');
+        if (window.IsshoProfile) window.IsshoProfile.open();
+      });
+    });
+  }
+
+  /* Track last auth state so onLangChange can re-render injected UI in the
+     new language without re-fetching auth state. */
+  let _lastAuthState = { user: null, profile: null };
+
+  /* On language change, re-render the user dropdown (and admin bar in case
+     we later i18n it) so the injected strings match the current language. */
+  _langListeners.push(() => {
+    if (_lastAuthState.user) {
+      document.querySelectorAll('[data-user-menu]').forEach(m => {
+        const dropdown = m.querySelector('.user-dropdown');
+        if (dropdown && dropdown.children.length) {
+          dropdown.innerHTML = _buildUserDropdownHTML();
+          _wireUserDropdownActions(dropdown);
+        }
+      });
+    }
+  });
+
   /* ── Auth state UI ── */
   function updateAuthUI(user, profile) {
+    _lastAuthState = { user, profile };
     const loginBtns = document.querySelectorAll('[data-open-login]');
     const userMenus = document.querySelectorAll('[data-user-menu]');
     const adminBars = document.querySelectorAll('[data-admin-bar]');
@@ -297,10 +386,22 @@
         m.style.display = 'flex';
         const nameEl = m.querySelector('[data-user-name]');
         if (nameEl) nameEl.textContent = profile?.name || user.email.split('@')[0];
+        // Populate dropdown links (always — handles initial fill + language
+        // change re-renders). Old DOM and its event listeners are replaced
+        // by the new innerHTML; _wireUserDropdownActions re-attaches handlers.
+        const dropdown = m.querySelector('.user-dropdown');
+        if (dropdown) {
+          dropdown.innerHTML = _buildUserDropdownHTML();
+          _wireUserDropdownActions(dropdown);
+        }
       });
-      // Show admin bar if admin
+      // Show admin bar if admin — inject the HTML on first show so the
+      // admin button labels aren't present in the page source for crawlers.
       if (profile?.role === 'admin') {
-        adminBars.forEach(b => b.style.display = 'flex');
+        adminBars.forEach(b => {
+          if (!b.children.length) b.innerHTML = _buildAdminBarHTML();
+          b.style.display = 'flex';
+        });
         document.body.classList.add('is-admin');
       }
     } else {

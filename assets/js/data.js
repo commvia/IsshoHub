@@ -153,16 +153,20 @@ window.ISSHO_DATA = {
   ],
 
   cats: [
-    { key: "news",   count: 56, tc: "新聞・資訊",        en: "News & Updates",          icon: "news",     url: "/news/" },
-    { key: "visa",   count: 84, tc: "簽證・在留資格",   en: "Visa & Residency",        icon: "passport", url: "/visa/" },
-    { key: "biz",    count: 62, tc: "創業・工作",        en: "Business & Work",         icon: "briefcase", url: "/biz/" },
-    { key: "house",  count: 51, tc: "住屋",              en: "Housing",                 icon: "home",     url: "/house/" },
-    { key: "culture",count: 0,  tc: "文化",              en: "Culture",                 icon: "culture",  url: "/culture/" },
-    { key: "tax",    count: 47, tc: "稅務・保險・年金",  en: "Tax, Insurance & Pension",icon: "yen",      url: "/tax/" },
-    { key: "life",   count: 93, tc: "生活",          en: "Life",              icon: "life",     url: "/life/" },
-    { key: "places", count: 68, tc: "好去處",            en: "Leisure",                 icon: "torii",    url: "/places/" },
-    { key: "pets",   count: 29, tc: "寵物",              en: "Pets in Japan",           icon: "paw",      url: "/pets/" },
-    { key: "story",  count: 41, tc: "人物故事",          en: "Stories",                 icon: "quote",    url: "/story/" },
+    /* count is no longer set here — actual counts come from _realCatCounts
+       populated when articles load, or from build-time SSG.
+       The stale placeholder numbers used to live here and were embarrassingly
+       wrong ("Culture: 0" while two culture articles were visible below it). */
+    { key: "news",   tc: "新聞・資訊",        en: "News & Updates",          icon: "news",     url: "/news/" },
+    { key: "visa",   tc: "簽證・在留資格",   en: "Visa & Residency",        icon: "passport", url: "/visa/" },
+    { key: "biz",    tc: "創業・工作",        en: "Business & Work",         icon: "briefcase", url: "/biz/" },
+    { key: "house",  tc: "住屋",              en: "Housing",                 icon: "home",     url: "/house/" },
+    { key: "culture",tc: "文化",              en: "Culture",                 icon: "culture",  url: "/culture/" },
+    { key: "tax",    tc: "稅務・保險・年金",  en: "Tax, Insurance & Pension",icon: "yen",      url: "/tax/" },
+    { key: "life",   tc: "生活",          en: "Life",              icon: "life",     url: "/life/" },
+    { key: "places", tc: "好去處",            en: "Leisure",                 icon: "torii",    url: "/places/" },
+    { key: "pets",   tc: "寵物",              en: "Pets in Japan",           icon: "paw",      url: "/pets/" },
+    { key: "story",  tc: "人物故事",          en: "Stories",                 icon: "quote",    url: "/story/" },
   ],
 
   featured: {

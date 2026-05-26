@@ -409,6 +409,25 @@ async function generateHomepageSSG(articles) {
     return `<section class="section"><div class="container"><div class="section-head"><div><div class="section-eyebrow">— ${escHtml(title)}</div><h2 class="section-title">${escHtml(title)}</h2></div><div class="section-actions"><a class="link-more" href="/${key}/">查看全部 →</a></div></div><div class="article-grid">${arts.map(a => ssgCardHTML(a)).join('')}</div></div></section>`;
   }).join('');
 
+  /* Browse Categories grid — use REAL counts from articles, no stale
+     placeholders. Crawlers see all 10 category names + accurate counts. */
+  const CAT_META = [
+    { key: 'news',    tc: '新聞・資訊',         en: 'News & Updates' },
+    { key: 'visa',    tc: '簽證・在留資格',     en: 'Visa & Residency' },
+    { key: 'biz',     tc: '創業・工作',         en: 'Business & Work' },
+    { key: 'house',   tc: '住屋',               en: 'Housing' },
+    { key: 'culture', tc: '文化',               en: 'Culture' },
+    { key: 'tax',     tc: '稅務・保險・年金',   en: 'Tax, Insurance & Pension' },
+    { key: 'life',    tc: '生活',               en: 'Life' },
+    { key: 'places',  tc: '好去處',             en: 'Leisure' },
+    { key: 'pets',    tc: '寵物',               en: 'Pets in Japan' },
+    { key: 'story',   tc: '人物故事',           en: 'Stories' },
+  ];
+  const catsGridHtml = CAT_META.map(c => {
+    const count = (byCat[c.key] || []).length;
+    return `<div class="cat"><a class="cat-link" href="/${c.key}/"><span class="cat-count">${count || ''}</span><div class="cat-icon"></div><div class="cat-labels"><div class="cat-label-tc">${escHtml(c.tc)}</div><div class="cat-label-en">${escHtml(c.en)}</div></div></a></div>`;
+  }).join('');
+
   /* Build all the section HTML strings */
   const heroMainHtml   = ssgHeroMain(heroArticle);
   const heroSideHtml   = ssgHeroSide(sideArts);
@@ -436,6 +455,7 @@ async function generateHomepageSSG(articles) {
   }
   injectBetween('heroMain',  '<article class="hero-main" id="heroMain">', '</article>', heroMainHtml);
   injectBetween('heroSide',  '<aside class="hero-side" id="heroSide">',   '</aside>',   heroSideHtml);
+  injectBetween('catsGrid',  '<div class="cats" id="catsGrid">',          '</div>',     catsGridHtml);
   injectBetween('editor',    '<div class="article-grid" id="editorGrid">', '</div>',   editorHtml);
   injectBetween('news',      '<div class="article-grid" id="newsGrid">',   '</div>',   newsHtml);
   injectBetween('stories',   '<div class="stories" id="storiesGrid">',     '</div>',   storiesHtml);

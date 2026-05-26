@@ -37,12 +37,7 @@
 <body>
 
 <!-- ADMIN BAR -->
-<div class="admin-bar" id="adminBar" data-admin-bar style="display:none">
-  <span class="admin-bar-user" id="adminBarUser"></span>
-  <div class="admin-bar-actions">
-    <a class="admin-btn" href="/admin/"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg> Admin</a>
-  </div>
-</div>
+<div class="admin-bar" data-admin-bar style="display:none"></div>
 
 <!-- TOP BAR -->
 <div class="topbar">
@@ -80,11 +75,8 @@
           <span data-user-name></span>
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
         </button>
-        <div class="user-dropdown" id="userDropdown">
-          <a href="/bookmarks/" data-i18n="nav_bookmarks">我的收藏</a>
-          <a href="#" data-i18n="nav_settings">帳號設定</a>
-          <div class="user-dropdown-divider"></div>
-          <a href="#" data-sign-out data-i18n="nav_signout">登出</a>
+        <div class="user-dropdown" id="userDropdown"></div>
+          <a href="#" data-sign-out data-i18n="nav_signout"></a>
         </div>
       </div>
     </div>
@@ -448,9 +440,9 @@
 })();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="/assets/js/data.js?v=6"></script>
+<script src="/assets/js/data.js?v=7"></script>
 <script src="/assets/js/supabase-client.js?v=10"></script>
-<script src="/assets/js/core.js?v=1317"></script>
+<script src="/assets/js/core.js?v=1318"></script>
 <script>
 (function () {
   window.IsshoCore.init('life');
