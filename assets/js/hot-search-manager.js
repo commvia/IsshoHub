@@ -203,9 +203,16 @@
   }
 
   /* ── Wire admin button ── */
-  function init() {
+  let _wired = false;
+  function wire() {
+    if (_wired) return;
     const btn = document.getElementById('adminManageHotSearch');
-    if (btn) btn.addEventListener('click', open);
+    if (btn) { btn.addEventListener('click', open); _wired = true; }
+  }
+  function init() {
+    wire();
+    /* Admin bar is JS-injected after login, so re-wire on the ready event. */
+    document.addEventListener('issho:admin-bar-ready', wire);
   }
 
   global.IsshoHotSearch = { init, open, close };

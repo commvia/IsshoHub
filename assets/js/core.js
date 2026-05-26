@@ -397,12 +397,20 @@
       });
       // Show admin bar if admin — inject the HTML on first show so the
       // admin button labels aren't present in the page source for crawlers.
+      // After injection, dispatch issho:admin-bar-ready so admin modules
+      // (article-editor, members-manager, hot-search-manager, site-settings)
+      // can wire their click handlers — their normal init() ran at page load
+      // when the buttons didn't exist yet.
       if (profile?.role === 'admin') {
+        let injected = false;
         adminBars.forEach(b => {
-          if (!b.children.length) b.innerHTML = _buildAdminBarHTML();
+          if (!b.children.length) { b.innerHTML = _buildAdminBarHTML(); injected = true; }
           b.style.display = 'flex';
         });
         document.body.classList.add('is-admin');
+        if (injected) {
+          document.dispatchEvent(new CustomEvent('issho:admin-bar-ready'));
+        }
       }
     } else {
       loginBtns.forEach(b => { b.style.display = ''; });

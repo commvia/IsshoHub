@@ -940,14 +940,22 @@
   }
 
   /* ── Wire admin bar buttons ── */
+  let _wired = false;
   function wireAdminButtons() {
+    if (_wired) return;
     const newBtn = document.getElementById('adminNewArticle');
-    if (newBtn) newBtn.addEventListener('click', () => openEditor(null));
+    if (newBtn) {
+      newBtn.addEventListener('click', () => openEditor(null));
+      _wired = true;
+    }
   }
 
   /* ── Init ── */
   function init() {
     wireAdminButtons();
+    /* Admin bar is injected by core.js after auth check, so the button may
+       not exist at init time. Re-try when core.js fires the ready event. */
+    document.addEventListener('issho:admin-bar-ready', wireAdminButtons);
   }
 
   global.IsshoEditor = { init, openEditor, closeEditor };
