@@ -303,7 +303,7 @@
   function open() {
     if (!document.getElementById('ssManager')) {
       document.body.insertAdjacentHTML('beforeend', buildHTML());
-      wire();
+      wireModal();
     }
     loadSettings();
     document.getElementById('ssManager').classList.add('open');
@@ -316,7 +316,7 @@
     document.body.style.overflow = '';
   }
 
-  function wire() {
+  function wireModal() {
     const overlay = document.getElementById('ssManager');
     document.getElementById('ssClose').addEventListener('click', close);
     overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
