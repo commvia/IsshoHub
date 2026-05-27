@@ -1233,15 +1233,14 @@
      3. CSS animation fallback fires at 3s if core.js itself failed to load
 ──────────────────────────────────────────────────────────────────────── */
 (function () {
-  /* 2500ms gives the homepage's "wait for hero article" flow enough time to
-     finish on typical 4G/WiFi (article fetch ≈ 200-800ms). Subpages still
-     reveal at ~50-100ms via their own js-ready call, so this only affects
-     the absolute worst-case fallback path. CSS animation backstops at 3s. */
+  /* 1000ms: enough for typical 4G/WiFi hero fetch (≈200-800ms) while keeping
+     worst-case blank-screen short. Subpages reveal at ~50ms via their own
+     js-ready call and are unaffected. CSS animation backstops at 3s. */
   var _safetyTimer = setTimeout(function () {
     if (!document.body.classList.contains('js-ready')) {
       document.body.classList.add('js-ready');
     }
-  }, 2500);
+  }, 1000);
 
   /* Cancel timer once js-ready is added normally (avoid redundant work) */
   var _observer = new MutationObserver(function (mutations) {
