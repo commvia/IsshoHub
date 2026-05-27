@@ -1029,6 +1029,10 @@
     return !!(performance.navigation && performance.navigation.type === 1);
   })();
 
+  /* Reveal body immediately so SSG content is visible without waiting for Supabase.
+     Supabase data will silently overwrite SSG content when it arrives. */
+  revealBody();
+
   /* Step 1: instant render from cache — skip on reload so stale data never flashes.
      On normal navigation (first visit / link click) cache gives near-instant hero. */
   if (!_isReload) {
