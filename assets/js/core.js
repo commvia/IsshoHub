@@ -663,8 +663,9 @@
       });
     });
 
-    /* Listen to auth state changes */
-    if (window.IsshoAuth) {
+    /* Listen to auth state changes — works whether Supabase loads sync or deferred */
+    function _setupAuthListeners() {
+      if (!window.IsshoAuth) return;
       window.IsshoAuth.onAuthChange(async (event, session) => {
         // Only treat as logged in if email is confirmed
         const user = session?.user;
@@ -699,6 +700,12 @@
           updateAuthUI(user, profile);
         }
       });
+    }
+
+    if (window.IsshoAuth) {
+      _setupAuthListeners();
+    } else {
+      window.addEventListener('issho:api:ready', _setupAuthListeners, { once: true });
     }
   }
 
