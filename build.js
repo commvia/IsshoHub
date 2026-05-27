@@ -440,6 +440,13 @@ async function generateHomepageSSG(articles) {
     return `<div class="cat"><a class="cat-link" href="/${c.key}/"><span class="cat-count">${count || ''}</span><div class="cat-icon"></div><div class="cat-labels"><div class="cat-label-tc">${escHtml(c.tc)}</div><div class="cat-label-en">${escHtml(c.en)}</div></div></a></div>`;
   }).join('');
 
+  /* Hero image preload — lets the browser start downloading the LCP image
+     immediately from <head>, without waiting for JS + Supabase API. */
+  const heroImg = heroArticle ? (heroArticle.cover_image_url || '') : '';
+  const heroPreloadHtml = heroImg
+    ? `<link rel="preload" as="image" href="${cfImg(heroImg, 1200)}" fetchpriority="high">`
+    : '';
+
   /* Build all the section HTML strings */
   const heroMainHtml   = ssgHeroMain(heroArticle);
   const heroSideHtml   = ssgHeroSide(sideArts);
@@ -465,6 +472,7 @@ async function generateHomepageSSG(articles) {
       console.warn(`⚠️  SSG marker not found in index.html: ${name}`);
     }
   }
+  injectBetween('heroPreload', '', '', heroPreloadHtml);
   injectBetween('heroMain',  '<article class="hero-main" id="heroMain">', '</article>', heroMainHtml);
   injectBetween('heroSide',  '<aside class="hero-side" id="heroSide">',   '</aside>',   heroSideHtml);
   injectBetween('catsGrid',  '<div class="cats" id="catsGrid">',          '</div>',     catsGridHtml);
