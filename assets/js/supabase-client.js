@@ -330,3 +330,8 @@
   };
 
 })(window);
+
+/* Notify page scripts that IsshoAPI is now available */
+if (window.dispatchEvent) {
+  window.dispatchEvent(new Event('issho:api:ready'));
+}

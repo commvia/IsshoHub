@@ -499,12 +499,12 @@
   </div>
 </div>
 
-<script src="/assets/js/supabase.min.js"></script>
 <script src="/assets/js/data.js?v=7"></script>
-<script src="/assets/js/supabase-client.js?v=10"></script>
-<script src="/assets/js/search.js?v=7"></script>
-<script src="/assets/js/earthquake-alert.js" defer></script>
 <script src="/assets/js/core.js?v=1321"></script>
+<script src="/assets/js/supabase.min.js" defer></script>
+<script src="/assets/js/supabase-client.js?v=10" defer></script>
+<script src="/assets/js/search.js?v=7" defer></script>
+<script src="/assets/js/earthquake-alert.js" defer></script>
 <script>
 (function () {
   const D = window.ISSHO_DATA;
@@ -514,6 +514,7 @@
   function t(obj) { return C.t(obj); }
 
   function renderHero(sbHero) {
+    if (!window.IsshoAPI && !_sbHeroArticle) return; /* keep SSG content until Supabase loads */
     const h = D.hero;
     const lang = getLang();
 
@@ -720,6 +721,7 @@
 
   async function loadSupabaseArticles() {
     if (_sbArticles) return _sbArticles;
+    if (!window.IsshoAPI) return [];
     const { data } = await window.IsshoAPI.fetchArticles({ limit: 20 });
     _sbArticles = data || [];
     return _sbArticles;
@@ -728,6 +730,7 @@
   async function loadPicksArticles() {
     if (_sbPicksArticles) return _sbPicksArticles;
     if (!_sbPicksSlugs || !_sbPicksSlugs.length) return null;
+    if (!window.IsshoAPI) return null;
     const { data } = await window.IsshoAPI.fetchArticlesBySlug(_sbPicksSlugs);
     _sbPicksArticles = (data && data.length) ? data : null;
     return _sbPicksArticles;
@@ -771,7 +774,7 @@
 
   function renderNews() {
     const newsGrid = document.getElementById('newsGrid');
-    if (!newsGrid) return;
+    if (!newsGrid || !window.IsshoAPI) return;
     window.IsshoAPI.fetchArticles({ category: 'news', limit: 3 }).then(({ data }) => {
       if (data && data.length) {
         newsGrid.innerHTML = data.map(a => sbCardHTML(a)).join('');
@@ -783,6 +786,7 @@
 
   function renderLatest() {
     const latestGrid = document.getElementById('latestGrid');
+    if (!latestGrid || !window.IsshoAPI) return;
     loadSupabaseArticles().then(articles => {
       if (articles.length > 1) {
         latestGrid.innerHTML = articles.slice(1, 4).map(a => sbCardHTML(a)).join('');
@@ -842,6 +846,7 @@
 
   async function loadCatArticles() {
     if (_catArticles) return _catArticles;
+    if (!window.IsshoAPI) return [];
     const { data } = await window.IsshoAPI.fetchArticles({ limit: 100 });
     _catArticles = data || [];
     return _catArticles;
@@ -851,7 +856,7 @@
     const lang = getLang();
     const nav = (D.nav || []);
     const container = document.getElementById('catArticleSections');
-    if (!container) return;
+    if (!container || !window.IsshoAPI) return;
 
     loadCatArticles().then(function(articles) {
       /* Group by both primary category_key AND secondary category_keys
@@ -1029,26 +1034,33 @@
     return !!(performance.navigation && performance.navigation.type === 1);
   })();
 
-  /* Reveal body immediately so SSG content is visible without waiting for Supabase.
-     Supabase data will silently overwrite SSG content when it arrives. */
-  revealBody();
-
-  /* Step 1: instant render from cache — skip on reload so stale data never flashes.
-     On normal navigation (first visit / link click) cache gives near-instant hero. */
-  if (!_isReload) {
-    try {
-      const cached = sessionStorage.getItem(_SC_KEY);
-      if (cached) applySettings(JSON.parse(cached));
-    } catch (_) {}
+  /* Start Supabase data loading — called once IsshoAPI is available (deferred).
+     Steps 1+2 are bundled so cache and fresh-fetch always run together. */
+  function _startSupabaseLoad() {
+    /* Step 1: instant render from cache */
+    if (!_isReload) {
+      try {
+        const cached = sessionStorage.getItem(_SC_KEY);
+        if (cached) applySettings(JSON.parse(cached));
+      } catch (_) {}
+    }
+    /* Step 2: fetch fresh, update cache, re-apply if changed */
+    window.IsshoAPI.fetchSiteSettings().then(({ data }) => {
+      if (!data) return;
+      try { sessionStorage.setItem(_SC_KEY, JSON.stringify(data)); } catch (_) {}
+      applySettings(data);
+    });
+    /* Re-render sections that returned early when IsshoAPI wasn't ready */
+    renderHot();
+    renderNews();
+    renderLatest();
+    renderCatSections();
   }
-
-  /* Step 2: always fetch fresh from Supabase, update cache, re-apply if changed.
-     The dedupe in applySettings means an unchanged fresh-after-cache is a no-op. */
-  window.IsshoAPI.fetchSiteSettings().then(({ data }) => {
-    if (!data) return;
-    try { sessionStorage.setItem(_SC_KEY, JSON.stringify(data)); } catch (_) {}
-    applySettings(data);
-  });
+  if (window.IsshoAPI) {
+    _startSupabaseLoad();
+  } else {
+    window.addEventListener('issho:api:ready', _startSupabaseLoad, { once: true });
+  }
 
   /* ── Live exchange rates + FX calculator ── */
   (function initFX() {
@@ -1146,6 +1158,7 @@
   C.init(null);
   C.onLangChange(renderAll);
   renderInitial();
+  revealBody(); /* Show page: nav + static SSG content ready, Supabase loads in background */
 
   /* Fallback: if applySettings never runs (Supabase down + no cache), render
      editor and stories from static fallback data after 3.5s so those sections
