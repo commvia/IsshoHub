@@ -280,10 +280,8 @@
 
       C.init(categoryKey);
       C.onLangChange(function () { renderAll(); });
-      if (global.IsshoEditor)    global.IsshoEditor.init();
-      if (global.IsshoMembers)   global.IsshoMembers.init();
-      if (global.IsshoHotSearch) global.IsshoHotSearch.init();
-      if (global.IsshoSettings)  global.IsshoSettings.init();
+      /* Admin modules load dynamically via core.js _loadAdminModules() only
+         when admin role is detected — saves ~75KB for non-admin visitors. */
       if (global.IsshoSearch)    global.IsshoSearch.init();
 
       /* Show page immediately after nav/i18n are ready — don't wait for Supabase data.

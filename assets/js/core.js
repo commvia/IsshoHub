@@ -373,6 +373,45 @@
   });
 
   /* ── Auth state UI ── */
+  /* Dynamically load admin-only JS modules. Saves ~75KB for non-admin visitors.
+     Called on admin login; idempotent (loads once per session). After all scripts
+     load, calls each module's init() and then runs the callback (which injects
+     the admin bar — must happen AFTER scripts load so button clicks are wired). */
+  let _adminModulesLoaded = false;
+  let _adminModulesLoading = false;
+  let _adminModulesCallbacks = [];
+  function _loadAdminModules(cb) {
+    if (_adminModulesLoaded) { cb(); return; }
+    _adminModulesCallbacks.push(cb);
+    if (_adminModulesLoading) return;
+    _adminModulesLoading = true;
+    const scripts = [
+      '/assets/js/article-editor.js?v=8',
+      '/assets/js/members-manager.js?v=3',
+      '/assets/js/hot-search-manager.js?v=3',
+      '/assets/js/site-settings.js?v=8',
+    ];
+    let loaded = 0;
+    scripts.forEach(src => {
+      const s = document.createElement('script');
+      s.src = src;
+      s.onload = function () {
+        loaded++;
+        if (loaded === scripts.length) {
+          _adminModulesLoaded = true;
+          if (window.IsshoEditor)    window.IsshoEditor.init();
+          if (window.IsshoMembers)   window.IsshoMembers.init();
+          if (window.IsshoHotSearch) window.IsshoHotSearch.init();
+          if (window.IsshoSettings)  window.IsshoSettings.init();
+          _adminModulesCallbacks.forEach(fn => fn());
+          _adminModulesCallbacks = [];
+        }
+      };
+      s.onerror = function () { console.error('Failed to load admin script:', src); };
+      document.head.appendChild(s);
+    });
+  }
+
   function updateAuthUI(user, profile) {
     _lastAuthState = { user, profile };
     const loginBtns = document.querySelectorAll('[data-open-login]');
@@ -402,15 +441,17 @@
       // can wire their click handlers — their normal init() ran at page load
       // when the buttons didn't exist yet.
       if (profile?.role === 'admin') {
-        let injected = false;
-        adminBars.forEach(b => {
-          if (!b.children.length) { b.innerHTML = _buildAdminBarHTML(); injected = true; }
-          b.style.display = 'flex';
+        _loadAdminModules(function () {
+          let injected = false;
+          adminBars.forEach(b => {
+            if (!b.children.length) { b.innerHTML = _buildAdminBarHTML(); injected = true; }
+            b.style.display = 'flex';
+          });
+          document.body.classList.add('is-admin');
+          if (injected) {
+            document.dispatchEvent(new CustomEvent('issho:admin-bar-ready'));
+          }
         });
-        document.body.classList.add('is-admin');
-        if (injected) {
-          document.dispatchEvent(new CustomEvent('issho:admin-bar-ready'));
-        }
       }
     } else {
       loginBtns.forEach(b => { b.style.display = ''; });
