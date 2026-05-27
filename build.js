@@ -293,6 +293,18 @@ function fmtDate(iso) {
   } catch { return ''; }
 }
 
+/* Cloudflare Image Transformations wrapper — same as core.js cfImg().
+   Used by SSG so static HTML served to crawlers uses optimized image URLs. */
+function cfImg(url, width, quality) {
+  if (!url || typeof url !== 'string') return url || '';
+  if (url.startsWith('data:')) return url;
+  if (url.indexOf('/cdn-cgi/image/') !== -1) return url;
+  if (url.startsWith('/') && !url.startsWith('//')) return url;
+  const w = width || 800;
+  const q = quality || 80;
+  return '/cdn-cgi/image/width=' + w + ',quality=' + q + ',format=auto/' + url;
+}
+
 /* Build a semantic card for crawlers — JS will replace this with the styled
    version when the page loads in a real browser. */
 function ssgCardHTML(a, opts) {
@@ -305,7 +317,7 @@ function ssgCardHTML(a, opts) {
   const date    = fmtDate(a.published_at);
   const featuredCls = opts.featured ? ' featured' : '';
   const overlayCls  = opts.overlay ? ' overlay' : '';
-  return `<article class="card${featuredCls}${overlayCls}" onclick="if(!event.target.closest('a'))window.location.href='${url}'" style="cursor:pointer"><a class="card-media" href="${url}" style="background-image: url('${img}')"></a><div class="card-body"><h3 class="card-title">${escHtml(title)}</h3><p class="card-excerpt">${escHtml(excerpt)}</p><div class="card-meta"><span class="author">${escHtml(author)}</span>${author && date ? '<span class="dot"></span>' : ''}<span>${escHtml(date)}</span></div></div></article>`;
+  return `<article class="card${featuredCls}${overlayCls}" onclick="if(!event.target.closest('a'))window.location.href='${url}'" style="cursor:pointer"><a class="card-media" href="${url}" style="background-image: url('${cfImg(img, 600)}')"></a><div class="card-body"><h3 class="card-title">${escHtml(title)}</h3><p class="card-excerpt">${escHtml(excerpt)}</p><div class="card-meta"><span class="author">${escHtml(author)}</span>${author && date ? '<span class="dot"></span>' : ''}<span>${escHtml(date)}</span></div></div></article>`;
 }
 
 function ssgHeroMain(a) {
@@ -316,7 +328,7 @@ function ssgHeroMain(a) {
   const url     = `/article/${a.slug}/`;
   const author  = a.author || '';
   const date    = fmtDate(a.published_at);
-  return `<div class="hero-img" style="background-image: url('${img}')"></div><div class="hero-body"><div class="hero-top"><div class="hero-chip"><i></i>FEATURED</div></div><div><h1 class="hero-title"><a href="${url}" style="color:inherit;text-decoration:none;">${escHtml(title)}</a></h1><p class="hero-sub">${escHtml(excerpt)}</p><div class="hero-meta">${author ? `<div>文／<b style="color:#fff;font-weight:500">${escHtml(author)}</b></div><div class="dot"></div>` : ''}<div>${escHtml(date)}</div></div></div></div>`;
+  return `<div class="hero-img" style="background-image: url('${cfImg(img, 1200)}')"></div><div class="hero-body"><div class="hero-top"><div class="hero-chip"><i></i>FEATURED</div></div><div><h1 class="hero-title"><a href="${url}" style="color:inherit;text-decoration:none;">${escHtml(title)}</a></h1><p class="hero-sub">${escHtml(excerpt)}</p><div class="hero-meta">${author ? `<div>文／<b style="color:#fff;font-weight:500">${escHtml(author)}</b></div><div class="dot"></div>` : ''}<div>${escHtml(date)}</div></div></div></div>`;
 }
 
 function ssgHeroSide(articles) {
@@ -324,7 +336,7 @@ function ssgHeroSide(articles) {
     const title = a.title_tc || a.title_en || '';
     const img   = a.cover_image_url || '';
     const date  = fmtDate(a.published_at);
-    return `<a class="side-card" href="/article/${a.slug}/"><div class="side-thumb" style="background-image: url('${img}')"><div class="side-thumb-num">${String(i + 1).padStart(2, '0')}</div></div><div class="side-body"><div class="side-tag">${escHtml(a.category_key || '')}</div><div class="side-title">${escHtml(title)}</div><div class="side-meta">${escHtml(date)}</div></div></a>`;
+    return `<a class="side-card" href="/article/${a.slug}/"><div class="side-thumb" style="background-image: url('${cfImg(img, 400)}')"><div class="side-thumb-num">${String(i + 1).padStart(2, '0')}</div></div><div class="side-body"><div class="side-tag">${escHtml(a.category_key || '')}</div><div class="side-title">${escHtml(title)}</div><div class="side-meta">${escHtml(date)}</div></div></a>`;
   }).join('');
 }
 
@@ -332,7 +344,7 @@ function ssgStoryCard(a) {
   const title   = a.title_tc || a.title_en || '';
   const excerpt = a.excerpt_tc || a.excerpt_en || '';
   const img     = a.cover_image_url || '';
-  return `<a class="story-card" href="/article/${a.slug}/"><div class="story-img" style="background-image:url('${img}')"></div><div class="story-body"><div class="story-tag">${escHtml(a.category_key || '')}</div><h3 class="story-quote">${escHtml(title)}</h3><p class="story-excerpt">${escHtml(excerpt)}</p></div></a>`;
+  return `<a class="story-card" href="/article/${a.slug}/"><div class="story-img" style="background-image:url('${cfImg(img, 800)}')"></div><div class="story-body"><div class="story-tag">${escHtml(a.category_key || '')}</div><h3 class="story-quote">${escHtml(title)}</h3><p class="story-excerpt">${escHtml(excerpt)}</p></div></a>`;
 }
 
 async function generateHomepageSSG(articles) {

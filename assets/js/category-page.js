@@ -32,7 +32,7 @@
     const articleUrl = `/article/?slug=${a.slug}`;
     return `
       <article class="card${opts.featured ? ' featured' : ''}${opts.overlay ? ' overlay' : ''}" onclick="if(!event.target.closest('a'))window.location.href='${articleUrl}'" style="cursor:pointer">
-        <a class="card-media" href="${articleUrl}" style="background-image:url('${img}');background-position:${a.cover_image_position||'50% 50%'}">
+        <a class="card-media" href="${articleUrl}" style="background-image:url('${(global.IsshoCore && global.IsshoCore.cfImg) ? global.IsshoCore.cfImg(img, 600) : img}');background-position:${a.cover_image_position||'50% 50%'}">
         </a>
         <div class="card-body">
           ${langBadge}<h3 class="card-title"><a href="${articleUrl}" style="color:inherit;text-decoration:none;">${title}</a></h3>

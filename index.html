@@ -501,7 +501,7 @@
 <script src="/assets/js/supabase-client.js?v=10"></script>
 <script src="/assets/js/search.js?v=7"></script>
 <script src="/assets/js/earthquake-alert.js" defer></script>
-<script src="/assets/js/core.js?v=1320"></script>
+<script src="/assets/js/core.js?v=1321"></script>
 <script>
 (function () {
   const D = window.ISSHO_DATA;
@@ -553,7 +553,7 @@
     heroMainEl.onclick = heroUrl ? () => { window.location.href = heroUrl; } : null;
 
     heroMainEl.innerHTML = `
-      <div class="hero-img" style="background-image: url('${img}')"></div>
+      <div class="hero-img" style="background-image: url('${window.IsshoCore.cfImg(img, 1200)}')"></div>
       <div class="hero-body">
         <div class="hero-top">
           <div class="hero-chip"><i></i>${tag}</div>
@@ -582,7 +582,7 @@
             <div class="thumb-video-play"><svg width="11" height="11" viewBox="0 0 24 24" fill="var(--navy)"><polygon points="5,3 19,12 5,21"/></svg></div>
             <div class="thumb-video-duration">${sideVid}</div>` : '';
           return `<a class="side-card" href="/article/${a.slug}/">
-            <div class="side-thumb${sideVid ? ' thumb-has-video' : ''}" style="background-image: url('${sideImg}')">
+            <div class="side-thumb${sideVid ? ' thumb-has-video' : ''}" style="background-image: url('${window.IsshoCore.cfImg(sideImg, 400)}')">
               <div class="side-thumb-num">${String(i + 1).padStart(2, '0')}</div>
               ${sideVideoOverlay}
             </div>
@@ -600,7 +600,7 @@
     /* Fall back to static */
     sideEl.innerHTML = D.hero_side.map(a => `
       <a class="side-card" href="${a.url || '#'}">
-        <div class="side-thumb" style="background-image: url('${a.img}')">
+        <div class="side-thumb" style="background-image: url('${window.IsshoCore.cfImg(a.img, 400)}')">
           <div class="side-thumb-num">${a.num}</div>
         </div>
         <div class="side-body">
@@ -687,7 +687,7 @@
     const videoLabel = vid ? `<div class="video-label">VIDEO</div>` : '';
     return `
       <article class="card ${opts.featured ? 'featured' : ''}${opts.overlay ? ' overlay' : ''}" onclick="if(!event.target.closest('a'))window.location.href='${url}'" style="cursor:pointer">
-        <a class="card-media${vid ? ' thumb-has-video' : ''}" href="${url}" style="background-image: url('${img}')">
+        <a class="card-media${vid ? ' thumb-has-video' : ''}" href="${url}" style="background-image: url('${window.IsshoCore.cfImg(img, 600)}')">
           ${videoOverlay}
         </a>
         <a class="card-edit-chip" href="/article/${a.slug}/?edit=1" title="編輯文章">
@@ -809,7 +809,7 @@
     const href  = isArticle ? `/article/${s.slug}/` : null;
     return `
       <div class="story"${href ? ` onclick="window.location.href='${href}'" style="cursor:pointer"` : ''}>
-        <div class="bg" style="background-image: url('${img}')"></div>
+        <div class="bg" style="background-image: url('${window.IsshoCore.cfImg(img, 800)}')"></div>
         <div class="story-inner">
           <div class="story-quote">「${quote}」</div>
           <div class="story-person">

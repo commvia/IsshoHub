@@ -308,7 +308,7 @@
 <script src="/assets/js/supabase-client.js?v=10"></script>
 <script src="/assets/js/inline-editor.js?v=4"></script>
 <script src="/assets/js/search.js?v=7"></script>
-<script src="/assets/js/core.js?v=1320"></script>
+<script src="/assets/js/core.js?v=1321"></script>
 <script>window.__ISSHO_SLUG = '{{SLUG}}';</script>
 <script>
 (function () {
@@ -434,8 +434,9 @@
     var img    = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&w=600&q=70';
     var cat    = a.category_key || '';
     var date   = a.published_at ? new Date(a.published_at).toLocaleDateString(lang==='tc'?'zh-Hant':'en',{month:'short',day:'numeric'}) : '';
+    var cfImgFn = (window.IsshoCore && window.IsshoCore.cfImg) ? window.IsshoCore.cfImg : function(u){return u;};
     return '<a class="card-compact" href="/article/?slug='+a.slug+'" style="text-decoration:none;">'
-      + '<div class="card-compact-media" style="background-image:url(\''+img+'\')"></div>'
+      + '<div class="card-compact-media" style="background-image:url(\''+cfImgFn(img, 600)+'\')"></div>'
       + '<div class="card-compact-body">'
       + '<div class="card-compact-tag">'+cat+'</div>'
       + '<div class="card-compact-title">'+title+'</div>'
@@ -551,8 +552,9 @@
       + '</div>';
 
     /* ── Cover image shown clearly below hero ── */
+    var cfImgFn2 = (window.IsshoCore && window.IsshoCore.cfImg) ? window.IsshoCore.cfImg : function(u){return u;};
     layoutEl.innerHTML = a.cover_image_url
-      ? '<div class="article-cover-img" style="background-image:url(\''+a.cover_image_url+'\');background-position:'+(a.cover_image_position||'50% 50%')+'"></div>'
+      ? '<div class="article-cover-img" style="background-image:url(\''+cfImgFn2(a.cover_image_url, 1200)+'\');background-position:'+(a.cover_image_position||'50% 50%')+'"></div>'
       : '';
 
     /* Body */

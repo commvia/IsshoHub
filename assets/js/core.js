@@ -2,6 +2,29 @@
 (function (global) {
   'use strict';
 
+  /* Cloudflare Image Transformations — wrap external image URLs with
+     /cdn-cgi/image/... prefix so CF auto-resizes to target width, converts
+     to WebP/AVIF (format=auto), and caches at the edge.
+
+     SKIP wrapping for: empty values, data URIs, local paths, already-wrapped
+     URLs, and any URL we want crawlers/social cards to see raw (og:image,
+     JSON-LD images — those are in HTML <meta> tags and are not run through
+     this helper).
+
+     Allowed origins (set in Cloudflare Dashboard):
+       - images.unsplash.com
+       - eupqbbfbucdkhtpsuvry.supabase.co
+       - isshohub.com */
+  function cfImg(url, width, quality) {
+    if (!url || typeof url !== 'string') return url || '';
+    if (url.startsWith('data:')) return url;
+    if (url.indexOf('/cdn-cgi/image/') !== -1) return url;
+    if (url.startsWith('/') && !url.startsWith('//')) return url;
+    var w = width || 800;
+    var q = quality || 80;
+    return '/cdn-cgi/image/width=' + w + ',quality=' + q + ',format=auto/' + url;
+  }
+
   /* ── Icon library ── */
   const ICONS = {
     passport: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><circle cx="12" cy="11" r="3.2"/><path d="M8 17h8"/></svg>`,
@@ -263,7 +286,7 @@
     const url = a.url || '#';
     return `
       <article class="card ${opts.featured ? 'featured' : ''}">
-        <a class="card-media" href="${url}" style="background-image: url('${a.img}')">
+        <a class="card-media" href="${url}" style="background-image: url('${cfImg(a.img, 600)}')">
         </a>
         <div class="card-body">
           <h3 class="card-title">${title}</h3>
@@ -1195,6 +1218,7 @@
     onLangChange,
     t,
     cardHTML,
+    cfImg,
     ICONS,
   };
 
