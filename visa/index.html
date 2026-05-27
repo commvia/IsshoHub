@@ -821,6 +821,9 @@
   C.onLangChange(function () { activeSub = 'all'; renderAll(); });
   renderAll();
   if (window.IsshoEditor) window.IsshoEditor.init();
+  if (window.IsshoMembers)   window.IsshoMembers.init();
+  if (window.IsshoHotSearch) window.IsshoHotSearch.init();
+  if (window.IsshoSettings) window.IsshoSettings.init();
   if (window.IsshoSearch) window.IsshoSearch.init();
   document.body.classList.add('js-ready');
 

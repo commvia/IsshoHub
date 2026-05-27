@@ -280,8 +280,11 @@
 
       C.init(categoryKey);
       C.onLangChange(function () { renderAll(); });
-      if (global.IsshoEditor) global.IsshoEditor.init();
-      if (global.IsshoSearch) global.IsshoSearch.init();
+      if (global.IsshoEditor)    global.IsshoEditor.init();
+      if (global.IsshoMembers)   global.IsshoMembers.init();
+      if (global.IsshoHotSearch) global.IsshoHotSearch.init();
+      if (global.IsshoSettings)  global.IsshoSettings.init();
+      if (global.IsshoSearch)    global.IsshoSearch.init();
 
       /* Show page immediately after nav/i18n are ready — don't wait for Supabase data.
          Articles will render when they arrive; this prevents the 600ms CSS fallback
