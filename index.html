@@ -615,15 +615,22 @@
   }
 
   function renderHot() {
-    if (!window.IsshoAPI) return;
     const lang = getLang();
+    const pills = document.getElementById('hotPills');
+    if (!pills) return;
+    if (!window.IsshoAPI) {
+      pills.innerHTML = D.hot.map(p =>
+        `<button class="pill ${p.fire ? 'fire' : ''}"><span class="rank">${String(p.rank).padStart(2,'0')}</span>${lang === 'tc' ? p.tc : p.en}</button>`
+      ).join('');
+      return;
+    }
     window.IsshoAPI.fetchHotSearches().then(({ data }) => {
       if (data && data.length) {
-        document.getElementById('hotPills').innerHTML = data.map((p, i) =>
+        pills.innerHTML = data.map((p, i) =>
           `<button class="pill"><span class="rank">${String(p.sort_order || i + 1).padStart(2,'0')}</span>${lang === 'tc' ? (p.keyword_tc || p.keyword_en) : (p.keyword_en || p.keyword_tc)}</button>`
         ).join('');
       } else {
-        document.getElementById('hotPills').innerHTML = D.hot.map(p =>
+        pills.innerHTML = D.hot.map(p =>
           `<button class="pill ${p.fire ? 'fire' : ''}"><span class="rank">${String(p.rank).padStart(2,'0')}</span>${lang === 'tc' ? p.tc : p.en}</button>`
         ).join('');
       }
