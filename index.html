@@ -71,7 +71,7 @@
   <meta property="og:url" content="https://isshohub.com/" />
   <meta property="og:title" content="IsshoHub — Everything you need in Japan" />
   <meta property="og:description" content="繁體中文與英文雙語資訊平台，專為在日本生活或準備移居日本的外國人而設。" />
-  <meta property="og:image" content="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1200&q=80" />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&w=1200&q=80" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:locale" content="zh_TW" />
@@ -81,7 +81,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="IsshoHub — Everything you need in Japan" />
   <meta name="twitter:description" content="繁體中文與英文雙語資訊平台，專為在日本生活或準備移居日本的外國人而設。" />
-  <meta name="twitter:image" content="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1200&q=80" />
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&w=1200&q=80" />
 
   <!-- JSON-LD: WebSite + Organization -->
   <script type="application/ld+json">
@@ -574,7 +574,7 @@
           const catNav = (D.nav || []).find(n => n.key === a.category_key);
           const catLabel = catNav ? (lang === 'tc' ? (catNav.short_tc || catNav.tc) : (catNav.short_en || catNav.en)) : (a.category_key || '');
           const sideTitle = lang === 'tc' ? (a.title_tc || a.title_en) : (a.title_en || a.title_tc);
-          const sideImg = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=70';
+          const sideImg = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&w=600&q=70';
           const pubDate = a.published_at ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', { month: 'short', day: 'numeric' }) : '';
           const sideMeta = pubDate;
           const sideVid = a.video_duration || '';
@@ -675,7 +675,7 @@
     const title = lang === 'tc' ? (a.title_tc || a.title_en) : (a.title_en || a.title_tc);
     const excerpt = lang === 'tc' ? (a.excerpt_tc || a.excerpt_en || '') : (a.excerpt_en || a.excerpt_tc || '');
     const langBadge = (lang === 'tc' && !hasTC) ? '<span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:.05em;padding:2px 6px;border-radius:4px;background:#e8f0fb;color:#1a56a8;margin-bottom:6px;">EN ONLY</span><br>' : '';
-    const img = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80';
+    const img = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&w=800&q=80';
     const cat = a.category_key || '';
     const author = a.author || '';
     const date = a.published_at ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', { month:'short', day:'numeric' }) : '';

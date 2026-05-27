@@ -23,7 +23,7 @@
     const title   = lang === 'tc' ? (a.title_tc || a.title_en) : (a.title_en || a.title_tc);
     const excerpt = lang === 'tc' ? (a.excerpt_tc || a.excerpt_en || '') : (a.excerpt_en || a.excerpt_tc || '');
     const langBadge = (lang === 'tc' && !hasTC) ? '<span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:.05em;padding:2px 6px;border-radius:4px;background:#e8f0fb;color:#1a56a8;margin-bottom:6px;">EN ONLY</span><br>' : '';
-    const img     = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80';
+    const img     = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&w=800&q=80';
     const cat     = a.category_key || '';
     const author  = a.author || '';
     const date    = a.published_at

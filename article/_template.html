@@ -431,7 +431,7 @@
   /* ── Compact card for related ── */
   function relatedCardHTML(a, lang) {
     var title  = lang === 'tc' ? (a.title_tc || a.title_en) : (a.title_en || a.title_tc);
-    var img    = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=70';
+    var img    = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&w=600&q=70';
     var cat    = a.category_key || '';
     var date   = a.published_at ? new Date(a.published_at).toLocaleDateString(lang==='tc'?'zh-Hant':'en',{month:'short',day:'numeric'}) : '';
     return '<a class="card-compact" href="/article/?slug='+a.slug+'" style="text-decoration:none;">'
@@ -503,7 +503,7 @@
 
     /* Dynamic OG / canonical for article pages */
     var articleUrl = '{{CANONICAL_URL}}';
-    var ogImg = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1200&q=80';
+    var ogImg = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&w=1200&q=80';
     function setMeta(sel, attr, val) {
       var el = document.querySelector(sel);
       if (!el) { el = document.createElement('meta'); document.head.appendChild(el); }

@@ -66,7 +66,7 @@
   /* ── Article card for results ── */
   function resultCard(a, lang, query) {
     const title = lang === 'tc' ? (a.title_tc || a.title_en) : (a.title_en || a.title_tc);
-    const img   = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400&q=70';
+    const img   = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&w=400&q=70';
     const cat   = a.category_key || '';
     const date  = a.published_at ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', { year: 'numeric', month: 'short', day: 'numeric' }) : '';
     const tags  = Array.isArray(a.tags) ? a.tags : [];

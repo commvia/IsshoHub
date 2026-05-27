@@ -216,7 +216,7 @@ async function build() {
     const bodyTcHtml = md(a.body_tc || '');
     const bodyEnHtml = md(a.body_en || '');
     const ogImg      = a.cover_image_url
-      || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1200&q=80';
+      || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&w=1200&q=80';
     const published  = (a.published_at || '').substring(0, 10);
     const modified   = (a.updated_at  || a.published_at || '').substring(0, 10);
 
@@ -299,7 +299,7 @@ function ssgCardHTML(a, opts) {
   opts = opts || {};
   const title   = a.title_tc || a.title_en || '';
   const excerpt = a.excerpt_tc || a.excerpt_en || '';
-  const img     = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80';
+  const img     = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&w=800&q=80';
   const url     = `/article/${a.slug}/`;
   const author  = a.author || '';
   const date    = fmtDate(a.published_at);

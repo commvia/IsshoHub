@@ -468,7 +468,7 @@ ${hasSubcat ? `<!-- =============== SUB-CATEGORY NAV =============== -->
     const lang    = getLang();
     const title   = lang === 'tc' ? (a.title_tc || a.title_en) : (a.title_en || a.title_tc);
     const excerpt = lang === 'tc' ? (a.excerpt_tc || '') : (a.excerpt_en || '');
-    const img     = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80';
+    const img     = a.cover_image_url || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&w=800&q=80';
     const cat     = a.category_key || '';
     const author  = a.author || '';
     const date    = a.published_at ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', { year:'numeric', month:'short', day:'numeric' }) : '';
