@@ -607,8 +607,15 @@
     ...s,
     key: (s.url || '').split('#')[1] || ''
   }));
-  let activeSub = 'all';
+  const _initHash = (location.hash || '').replace('#', '');
+  let activeSub = (_initHash && SUBS.some(s => s.key === _initHash)) ? _initHash : 'all';
   let _articles = null;
+
+  window.addEventListener('hashchange', function () {
+    const h = (location.hash || '').replace('#', '');
+    const next = (h && SUBS.some(s => s.key === h)) ? h : 'all';
+    if (next !== activeSub) { activeSub = next; renderAll(); }
+  });
 
   function getLang() { return C.getLang(); }
 

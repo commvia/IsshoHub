@@ -79,6 +79,19 @@
         activeSub = hashKey;
       }
 
+      /* React to hash changes (e.g. nav dropdown clicked while already on this page) */
+      global.addEventListener('hashchange', function () {
+        var h = (global.location.hash || '').replace('#', '');
+        var next = (h && SUBS.some(function (s) { return s.key === h; })) ? h : '';
+        if (next !== activeSub) {
+          activeSub = next;
+          document.querySelectorAll('#subcatScroll .subcat-tab').forEach(function (t) {
+            t.classList.toggle('active', t.getAttribute('data-sub') === activeSub);
+          });
+          filterAndRender();
+        }
+      });
+
       function getLang() { return C.getLang(); }
 
       /* ── Hero ── */
