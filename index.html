@@ -497,7 +497,7 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/assets/js/supabase.min.js"></script>
 <script src="/assets/js/data.js?v=7"></script>
 <script src="/assets/js/supabase-client.js?v=10"></script>
 <script src="/assets/js/search.js?v=7"></script>
@@ -1083,7 +1083,9 @@
       lastEdited === 'output' ? calcFromJPY() : calcFromForeign();
     });
 
-    fetch('https://open.er-api.com/v6/latest/JPY')
+    const _fxCtrl = new AbortController();
+    setTimeout(() => _fxCtrl.abort(), 5000);
+    fetch('https://open.er-api.com/v6/latest/JPY', { signal: _fxCtrl.signal })
       .then(r => r.json())
       .then(json => {
         if (json.result !== 'success' || !json.rates) return;
@@ -1156,6 +1158,6 @@
      - First visit: Supabase fetch → applySettings() → reveal (1500ms safety net in core.js backstops slow fetches) */
 })();
 </script>
-<script src="/assets/js/preview-guard.js"></script>
+<script src="/assets/js/preview-guard.js" defer></script>
 </body>
 </html>
