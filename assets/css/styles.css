@@ -1,8 +1,4 @@
 /* IsshoHub — shared styles */
-/* Anti-FOUC: hide body until JS finishes first render (3s fallback — JS should always win first) */
-body { opacity: 0; animation: fouc-show 0s 3s forwards; }
-body.js-ready { opacity: 1; transition: opacity 0.15s ease; animation: none; }
-@keyframes fouc-show { to { opacity: 1; } }
 :root {
   --navy: #0d2444;
   --navy-2: #142f55;

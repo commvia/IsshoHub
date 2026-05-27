@@ -13,7 +13,7 @@
      Must be inline + at the very top of <head> so the browser applies it
      on the very first paint, before styles.css finishes downloading.
      The 3s animation is a safety net — if JS fails entirely, page still reveals. -->
-<style>html{background:#FBFAF7}body{opacity:0;background:#FBFAF7;animation:fouc-show 0s 3s forwards}body.js-ready{opacity:1;transition:opacity .15s ease;animation:none}@keyframes fouc-show{to{opacity:1}}</style>
+<style>html{background:#FBFAF7}body{opacity:0;background:#FBFAF7;animation:fouc-show 0.001s 3s forwards}body.js-ready{opacity:1;transition:opacity .15s ease;animation:none}@keyframes fouc-show{to{opacity:1}}</style>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -615,6 +615,7 @@
   }
 
   function renderHot() {
+    if (!window.IsshoAPI) return;
     const lang = getLang();
     window.IsshoAPI.fetchHotSearches().then(({ data }) => {
       if (data && data.length) {
