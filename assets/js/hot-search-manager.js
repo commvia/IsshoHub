@@ -180,7 +180,7 @@
   function open() {
     if (!document.getElementById('hsManager')) {
       document.body.insertAdjacentHTML('beforeend', buildHTML());
-      wire();
+      wireModal();
     }
     reload();
     document.getElementById('hsManager').classList.add('open');
@@ -193,7 +193,7 @@
     document.body.style.overflow = '';
   }
 
-  function wire() {
+  function wireModal() {
     const overlay = document.getElementById('hsManager');
     document.getElementById('hsClose').addEventListener('click', close);
     overlay.addEventListener('click', e => { if (e.target === overlay) close(); });

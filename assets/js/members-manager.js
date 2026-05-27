@@ -158,8 +158,8 @@
       + '<div class="mm-summary-item"><span class="mm-summary-num mm-num-grey">' + noPurchase + '</span><span>未購買</span></div>';
   }
 
-  /* ── Wire events ── */
-  function wire() {
+  /* ── Wire modal events ── */
+  function wireModal() {
     var overlay = document.getElementById('mmManager');
     document.getElementById('mmClose').addEventListener('click', close);
     overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
@@ -183,7 +183,7 @@
   async function open() {
     if (!document.getElementById('mmManager')) {
       document.body.insertAdjacentHTML('beforeend', buildHTML());
-      wire();
+      wireModal();
     } else {
       /* Reset to loading state for fresh data */
       document.getElementById('mmBody').innerHTML =
