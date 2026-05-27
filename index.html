@@ -9,11 +9,12 @@
 <title>IsshoHub — Everything you need in Japan</title>
 <meta name="description" content="繁體中文與英文雙語資訊平台，專為在日本生活或準備移居日本的外國人而設。" />
 
-<!-- Critical anti-FOUC: hide body BEFORE external CSS loads.
-     Must be inline + at the very top of <head> so the browser applies it
-     on the very first paint, before styles.css finishes downloading.
-     The 3s animation is a safety net — if JS fails entirely, page still reveals. -->
-<style>html{background:#FBFAF7}body{opacity:0;background:#FBFAF7}body.js-ready{opacity:1;transition:opacity .15s ease}</style>
+<!-- Stage 2 test: removed body{opacity:0} FOUC protection to verify it was
+     the root cause of FCP staying at ~15s despite revealBody() running.
+     If FCP drops to <5s after this change, opacity:0 was the cause and
+     we keep this approach (handle minor FOUC granularly in Stage 3).
+     If FCP doesn't improve, revert and continue diagnosing. -->
+<style>html{background:#FBFAF7}body{background:#FBFAF7}</style>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
