@@ -255,4 +255,7 @@
 
   global.IsshoSearch = { init, open, close };
 
+  /* Auto-init: this script is defer-loaded, so DOM is ready when it runs */
+  init();
+
 })(window);
