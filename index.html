@@ -745,8 +745,12 @@ window.addEventListener('load',function(){
 
   /* Homepage card fields only — excludes body_tc/body_en (5-10KB each) and
      other unused columns. Cuts fetchArticles transfer by ~75-85%. If you
-     need a new field in card display, add it here. */
-  const HOMEPAGE_CARD_COLUMNS = 'id, slug, title_tc, title_en, excerpt_tc, excerpt_en, cover_image_url, category_key, category_keys, published_at, featured, author, video_duration';
+     need a new field in card display, add it here.
+     NOTE: video_duration is referenced in sbCardHTML but the DB column doesn't
+     exist (dead code waiting for future feature). Don't add it back until the
+     column is added to the articles table — Supabase rejects the whole query
+     with 42703 if any selected column is missing. */
+  const HOMEPAGE_CARD_COLUMNS = 'id, slug, title_tc, title_en, excerpt_tc, excerpt_en, cover_image_url, category_key, category_keys, published_at, featured, author';
 
   async function loadSupabaseArticles() {
     if (_sbArticles) return _sbArticles;
