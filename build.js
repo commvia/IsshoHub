@@ -320,15 +320,38 @@ function ssgCardHTML(a, opts) {
   return `<article class="card${featuredCls}${overlayCls}" onclick="if(!event.target.closest('a'))window.location.href='${url}'" style="cursor:pointer"><a class="card-media" href="${url}" style="background-image: url('${cfImg(img, 600)}')"></a><div class="card-body"><h3 class="card-title">${escHtml(title)}</h3><p class="card-excerpt">${escHtml(excerpt)}</p><div class="card-meta"><span class="author">${escHtml(author)}</span>${author && date ? '<span class="dot"></span>' : ''}<span>${escHtml(date)}</span></div></div></article>`;
 }
 
-function ssgHeroMain(a) {
+/* Category labels for SSG hero chip + kicker, mirroring data.js D.nav[].short_tc
+   and D.nav[].tc. Keep in sync with data.js. Used so SSG hero output matches
+   what JS renderHero would produce → eliminates SSG→JS hero flash on refresh. */
+const NAV_SHORT_LABELS_TC = {
+  news: '新聞', visa: '簽證', biz: '創業', house: '住屋',
+  culture: '文化', tax: '稅務', life: '生活',
+  places: '好去處', pets: '寵物', story: '故事',
+};
+const NAV_LONG_LABELS_TC = {
+  news: '新聞・資訊', visa: '簽證・在留資格', biz: '創業・工作',
+  house: '住屋', culture: '文化', tax: '稅務・保險・年金',
+  life: '生活', places: '好去處', pets: '寵物', story: '人物故事',
+};
+
+function ssgHeroMain(a, settings) {
   if (!a) return '';
-  const title   = a.title_tc || a.title_en || '';
-  const excerpt = a.excerpt_tc || a.excerpt_en || '';
-  const img     = a.cover_image_url || '';
-  const url     = `/article/${a.slug}/`;
-  const author  = a.author || '';
-  const date    = fmtDate(a.published_at);
-  return `<div class="hero-img" style="background-image: url('${cfImg(img, 1200)}')"></div><div class="hero-body"><div class="hero-top"><div class="hero-chip"><i></i>FEATURED</div></div><div><h1 class="hero-title"><a href="${url}" style="color:inherit;text-decoration:none;">${escHtml(title)}</a></h1><p class="hero-sub">${escHtml(excerpt)}</p><div class="hero-meta">${author ? `<div>文／<b style="color:#fff;font-weight:500">${escHtml(author)}</b></div><div class="dot"></div>` : ''}<div>${escHtml(date)}</div></div></div></div>`;
+  settings = settings || {};
+  /* Match JS renderHero (index.html line 575-586) output exactly so the
+     post-fetch DOM swap is invisible. Priority chains mirror JS code:
+       img:    settings.hero_img → article.cover_image_url
+       title:  article.title_tc → settings.hero_title_tc → article.title_en
+       sub:    article.excerpt_tc → settings.hero_sub_tc → article.excerpt_en
+       tag:    NAV_SHORT_LABELS_TC[cat] → NAV_LONG_LABELS_TC[cat] → 'FEATURED'
+       kicker: settings.hero_kicker_tc → NAV_LONG_LABELS_TC[cat] → '' */
+  const img    = settings.hero_img || a.cover_image_url || '';
+  const url    = `/article/${a.slug}/`;
+  const title  = a.title_tc || settings.hero_title_tc || a.title_en || '';
+  const sub    = a.excerpt_tc || settings.hero_sub_tc || a.excerpt_en || '';
+  const catKey = a.category_key;
+  const tag    = NAV_SHORT_LABELS_TC[catKey] || NAV_LONG_LABELS_TC[catKey] || 'FEATURED';
+  const kicker = settings.hero_kicker_tc || NAV_LONG_LABELS_TC[catKey] || '';
+  return `<div class="hero-img" style="background-image: url('${cfImg(img, 1200)}')"></div><div class="hero-body"><div class="hero-top"><div class="hero-chip"><i></i>${escHtml(tag)}</div></div><div><div class="hero-kicker">${escHtml(kicker)}</div><h1 class="hero-title"><a href="${url}" style="color:inherit;text-decoration:none;">${escHtml(title)}</a></h1><p class="hero-sub">${escHtml(sub)}</p></div></div>`;
 }
 
 function ssgHeroSide(articles) {
@@ -452,7 +475,12 @@ async function generateHomepageSSG(articles) {
     : '';
 
   /* Build all the section HTML strings */
-  const heroMainHtml   = ssgHeroMain(heroArticle);
+  const heroMainHtml   = ssgHeroMain(heroArticle, {
+    hero_img:       map.hero_img?.value_tc       || '',
+    hero_kicker_tc: map.hero_kicker?.value_tc    || '',
+    hero_title_tc:  map.hero_title?.value_tc     || '',
+    hero_sub_tc:    map.hero_sub?.value_tc       || '',
+  });
   const heroSideHtml   = ssgHeroSide(sideArts);
   const editorHtml     = picksArts.map(a => ssgCardHTML(a, { overlay: true })).join('');
   const newsHtml       = newsArts.map(a => ssgCardHTML(a)).join('');
