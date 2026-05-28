@@ -348,8 +348,12 @@ function ssgStoryCard(a) {
 }
 
 async function generateHomepageSSG(articles) {
-  /* Fetch site_settings for hero / picks / story / featured-order config */
-  const { data: settings } = await supabase.from('site_settings').select('*');
+  /* Fetch site_settings + hot_searches in parallel for hero / picks / story /
+     featured-order config and hot search pills SSG. */
+  const [{ data: settings }, { data: hotSearches }] = await Promise.all([
+    supabase.from('site_settings').select('*'),
+    supabase.from('hot_searches').select('keyword_tc, keyword_en, sort_order').eq('active', true).order('sort_order'),
+  ]);
   const map = {};
   (settings || []).forEach(s => { map[s.key] = s; });
 
@@ -454,6 +458,9 @@ async function generateHomepageSSG(articles) {
   const newsHtml       = newsArts.map(a => ssgCardHTML(a)).join('');
   const latestHtml     = latestArts.map(a => ssgCardHTML(a)).join('');
   const storiesHtml    = storyArts.map(a => ssgStoryCard(a)).join('');
+  const hotPillsHtml   = (hotSearches || [])
+    .map((p, i) => `<button class="pill"><span class="rank">${String(p.sort_order || i + 1).padStart(2, '0')}</span>${escHtml(p.keyword_tc || p.keyword_en || '')}</button>`)
+    .join('');
 
   /* Inject into index.html — fill containers wrapped in SSG marker comments.
      Markers make re-runs idempotent (e.g., if a previous build left content)
@@ -481,9 +488,10 @@ async function generateHomepageSSG(articles) {
   injectBetween('stories',   '<div class="stories" id="storiesGrid">',     '</div>',   storiesHtml);
   injectBetween('latest',    '<div class="article-grid" id="latestGrid">', '</div>',   latestHtml);
   injectBetween('catSections','<div id="catArticleSections">',             '</div>',   catSectionsHtml);
+  injectBetween('hotPills',  '<div class="hot-pills" id="hotPills">',      '</div>',   hotPillsHtml);
 
   fs.writeFileSync('index.html', html, 'utf8');
-  console.log(`✓ 首頁 SSG 完成：hero + side(${sideArts.length}) + picks(${picksArts.length}) + news(${newsArts.length}) + stories(${storyArts.length}) + latest(${latestArts.length}) + ${NAV_KEYS.length} cat sections`);
+  console.log(`✓ 首頁 SSG 完成：hero + side(${sideArts.length}) + picks(${picksArts.length}) + news(${newsArts.length}) + stories(${storyArts.length}) + latest(${latestArts.length}) + hotPills(${(hotSearches||[]).length}) + ${NAV_KEYS.length} cat sections`);
 }
 
 build().catch(err => { console.error('❌ Build 失敗:', err); process.exit(1); });

@@ -236,7 +236,7 @@ window.addEventListener('load',function(){
         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color: var(--rose)"><path d="M12 2C8.7 2 6 4.7 6 8c0 3.5 3 6.3 5.5 9.3.5.6 1.1.6 1.5 0C15 14.3 18 11.5 18 8c0-3.3-2.7-6-6-6zm0 8a2 2 0 110-4 2 2 0 010 4z"/></svg>
         <span data-i18n="hot_search"></span>
       </div>
-      <div class="hot-pills" id="hotPills"></div>
+      <!-- SSG:hotPills:start --><div class="hot-pills" id="hotPills"></div><!-- SSG:hotPills:end -->
     </div>
   </div>
 </section>
@@ -634,12 +634,11 @@ window.addEventListener('load',function(){
     const lang = getLang();
     const pills = document.getElementById('hotPills');
     if (!pills) return;
-    if (!window.IsshoAPI) {
-      pills.innerHTML = D.hot.map(p =>
-        `<button class="pill ${p.fire ? 'fire' : ''}"><span class="rank">${String(p.rank).padStart(2,'0')}</span>${lang === 'tc' ? p.tc : p.en}</button>`
-      ).join('');
-      return;
-    }
+    /* SSG (build.js) fills hot pills at deploy time, so don't overwrite with
+       stale D.hot fallback when IsshoAPI is still loading (defer). The fetch
+       below replaces SSG content once Supabase is reachable. D.hot is kept
+       as last-resort fallback in the fetch's empty-data branch below. */
+    if (!window.IsshoAPI) return;
     window.IsshoAPI.fetchHotSearches().then(({ data }) => {
       if (data && data.length) {
         pills.innerHTML = data.map((p, i) =>
