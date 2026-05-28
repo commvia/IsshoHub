@@ -90,9 +90,12 @@
   }
 
   async function fetchArticles(options = {}) {
+    /* options.columns: pass a Postgres select string (e.g. 'id, slug, title_tc')
+       to avoid downloading large fields like body_tc/body_en when not needed
+       (e.g. homepage cards). Defaults to '*' for full backward compatibility. */
     let query = getClient()
       .from('articles')
-      .select('*')
+      .select(options.columns || '*')
       .eq('status', 'published')
       .order('published_at', { ascending: false });
 

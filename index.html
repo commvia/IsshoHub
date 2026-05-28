@@ -518,7 +518,7 @@ window.addEventListener('load',function(){
 <script src="/assets/js/data.js?v=7"></script>
 <script src="/assets/js/core.js?v=1322"></script>
 <script src="/assets/js/supabase.min.js" defer></script>
-<script src="/assets/js/supabase-client.js?v=10" defer></script>
+<script src="/assets/js/supabase-client.js?v=11" defer></script>
 <script src="/assets/js/search.js?v=8" defer></script>
 <script src="/assets/js/earthquake-alert.js" defer></script>
 <script>
@@ -743,10 +743,15 @@ window.addEventListener('load',function(){
   let _sbSideArticles = null;  /* side articles (from site_settings homepage_side_slugs) */
   let _catArticles = null;     /* cache: articles for category sections */
 
+  /* Homepage card fields only — excludes body_tc/body_en (5-10KB each) and
+     other unused columns. Cuts fetchArticles transfer by ~75-85%. If you
+     need a new field in card display, add it here. */
+  const HOMEPAGE_CARD_COLUMNS = 'id, slug, title_tc, title_en, excerpt_tc, excerpt_en, cover_image_url, category_key, category_keys, published_at, featured, author, video_duration';
+
   async function loadSupabaseArticles() {
     if (_sbArticles) return _sbArticles;
     if (!window.IsshoAPI) return [];
-    const { data } = await window.IsshoAPI.fetchArticles({ limit: 20 });
+    const { data } = await window.IsshoAPI.fetchArticles({ limit: 20, columns: HOMEPAGE_CARD_COLUMNS });
     _sbArticles = data || [];
     return _sbArticles;
   }
@@ -871,7 +876,7 @@ window.addEventListener('load',function(){
   async function loadCatArticles() {
     if (_catArticles) return _catArticles;
     if (!window.IsshoAPI) return [];
-    const { data } = await window.IsshoAPI.fetchArticles({ limit: 100 });
+    const { data } = await window.IsshoAPI.fetchArticles({ limit: 100, columns: HOMEPAGE_CARD_COLUMNS });
     _catArticles = data || [];
     return _catArticles;
   }
