@@ -21,6 +21,7 @@
 <link rel="canonical" href="https://isshohub.com/life/driving-guide/" />
 <link rel="alternate" hreflang="zh-Hant" href="https://isshohub.com/life/driving-guide/" />
 <link rel="alternate" hreflang="en" href="https://isshohub.com/life/driving-guide/en/" />
+<link rel="alternate" hreflang="id" href="https://isshohub.com/life/driving-guide/id/" />
 <link rel="alternate" hreflang="x-default" href="https://isshohub.com/life/driving-guide/" />
 
 <!-- JSON-LD: Course schema for Google rich snippets -->
@@ -98,6 +99,7 @@
       <div class="lang-toggle" id="langToggle">
         <button data-lang-set="tc">繁中</button>
         <button data-lang-set="en">EN</button>
+        <button data-lang-set="id">ID</button>
       </div>
       <button class="btn-login" data-open-login>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
@@ -326,10 +328,11 @@
 </div>
 
 <script>
-// 語言跳轉：若使用者選了 EN，自動跳英文版目錄
+// 語言跳轉：若使用者選了 EN/ID，自動跳對應版目錄
 (function() {
   var lang = localStorage.getItem('issho.lang');
   if (lang === 'en') { window.location.replace('/life/driving-guide/en/'); }
+  if (lang === 'id') { window.location.replace('/life/driving-guide/id/'); }
 })();
 </script>
 <script src="/assets/js/supabase.min.js"></script>
@@ -343,6 +346,7 @@
 // 即時語言切換跳轉
 window.onLangChange = function(lang) {
   if (lang === 'en') { window.location.replace('/life/driving-guide/en/'); }
+  if (lang === 'id') { window.location.replace('/life/driving-guide/id/'); }
 };
 </script>
 <script src="/assets/js/preview-guard.js" defer></script>

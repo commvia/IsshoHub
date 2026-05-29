@@ -146,6 +146,9 @@ const STATIC_PAGES = [
   { loc: `${BASE_URL}/life/driving-guide/en/chapter-13/`, changefreq: 'monthly', priority: '0.7' },
   { loc: `${BASE_URL}/life/driving-guide/en/chapter-14/`, changefreq: 'monthly', priority: '0.7' },
   { loc: `${BASE_URL}/life/driving-guide/en/chapter-15/`, changefreq: 'monthly', priority: '0.7' },
+  /* Indonesian versions (in progress — only chapter-1 + hub built; add more as they ship) */
+  { loc: `${BASE_URL}/life/driving-guide/id/`,           changefreq: 'weekly',  priority: '0.8' },
+  { loc: `${BASE_URL}/life/driving-guide/id/chapter-1/`,  changefreq: 'monthly', priority: '0.7' },
 ];
 
 function generateSitemap(articles) {
