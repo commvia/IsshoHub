@@ -53,7 +53,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700&family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Old+Mincho:wght@400;500;600;700&display=swap"></noscript>
 <!-- Critical anti-FOUC: hide body BEFORE external CSS loads. -->
 <style>html{background:#FBFAF7}body{opacity:0;background:#FBFAF7;animation:fouc-show 0.001s 3s forwards}body.js-ready{opacity:1;transition:opacity .15s ease;animation:none}@keyframes fouc-show{to{opacity:1}}</style>
-<link rel="stylesheet" href="/assets/css/styles.css?v=38">
+<link rel="stylesheet" href="/assets/css/styles.css?v=39">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'><circle cx='40' cy='40' r='36' fill='%230d2444'/><path d='M 40 8 A 32 32 0 0 1 40 72' stroke='%23d9b683' stroke-width='4' fill='none' stroke-linecap='round'/><text x='40' y='48' text-anchor='middle' font-family='Zen Old Mincho, Shippori Mincho, serif' font-size='26' fill='%23f6f3ec' letter-spacing='-1'>%E4%B8%80</text></svg>">
 <style>
   .brand .brand-mark, .footer-brand .brand-mark, .modal-brand .brand-mark, .mobile-menu-head .brand-mark {
@@ -100,7 +100,6 @@
       <div class="lang-toggle" id="langToggle">
         <button data-lang-set="tc">繁中</button>
         <button data-lang-set="en">EN</button>
-        <button data-lang-set="id">ID</button>
       </div>
       <button class="btn-login" data-open-login>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
@@ -146,6 +145,19 @@
 <!-- CHAPTER LIST -->
 <div class="container" style="padding-bottom:60px;">
   <div style="max-width:760px;">
+
+    <div style="display:flex;justify-content:flex-end;margin:24px 0 0;">
+      <div class="lang-more">
+        <button type="button" class="lang-more-btn" aria-haspopup="true" aria-expanded="false">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18"/></svg>
+          <span>Bahasa lain</span>
+          <svg class="lang-more-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="lang-more-menu">
+          <a href="/life/driving-guide/id/" class="active">Bahasa Indonesia</a>
+        </div>
+      </div>
+    </div>
 
     <h2 style="font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#888;margin:32px 0 12px;">Tersedia</h2>
 
@@ -326,18 +338,10 @@
   </div>
 </div>
 
-<script>
-// Language redirect: if user picked TC/EN previously, redirect to the matching hub
-(function() {
-  var lang = localStorage.getItem('issho.lang');
-  if (lang === 'tc') { window.location.replace('/life/driving-guide/'); }
-  if (lang === 'en') { window.location.replace('/life/driving-guide/en/'); }
-})();
-</script>
 <script src="/assets/js/supabase.min.js"></script>
 <script src="/assets/js/data.js?v=7"></script>
 <script src="/assets/js/supabase-client.js?v=11"></script>
-<script src="/assets/js/core.js?v=1322"></script>
+<script src="/assets/js/core.js?v=1323"></script>
 <script>
 (function () {
   window.IsshoCore.init('life');

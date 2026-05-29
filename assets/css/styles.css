@@ -779,6 +779,36 @@ a.brand *, a.brand svg, a.brand text { text-decoration: none !important; }
   color: #fff;
 }
 
+/* 其他語言下拉（中英以外，目前僅外免天書印尼版用） */
+.lang-more { position: relative; display: inline-block; font-family: var(--sans-en); }
+.lang-more-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 12px; border-radius: 999px;
+  border: 1px solid var(--line); background: #fff;
+  color: var(--ink-2); font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: all .18s; white-space: nowrap;
+}
+.lang-more-btn:hover { border-color: var(--navy); color: var(--navy); }
+.lang-more-caret { transition: transform .18s; }
+.lang-more:hover .lang-more-caret,
+.lang-more:focus-within .lang-more-caret { transform: rotate(180deg); }
+.lang-more-menu {
+  position: absolute; top: calc(100% + 6px); right: 0;
+  min-width: 184px; background: #fff;
+  border: 1px solid var(--line); border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(13,36,68,.12);
+  padding: 6px; display: none; z-index: 50;
+}
+.lang-more:hover .lang-more-menu,
+.lang-more:focus-within .lang-more-menu { display: block; }
+.lang-more-menu a {
+  display: block; padding: 9px 12px; border-radius: 8px;
+  color: var(--ink); font-size: 13px; font-weight: 500;
+  text-decoration: none; white-space: nowrap;
+}
+.lang-more-menu a:hover { background: var(--paper-2); }
+.lang-more-menu a.active { background: var(--navy); color: #fff; }
+
 .btn-login {
   padding: 8px 18px;
   background: var(--navy);

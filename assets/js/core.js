@@ -42,7 +42,8 @@
   /* ── State ── */
   function _detectLang() {
     var saved = localStorage.getItem('issho.lang');
-    if (saved) return saved;
+    /* 全站語言只有 tc/en；其他（如外免天書專屬的 id）不是全域語言，忽略殘留值 */
+    if (saved === 'tc' || saved === 'en') return saved;
     var bl = (navigator.languages && navigator.languages[0]) || navigator.language || '';
     bl = bl.toLowerCase();
     if (bl.startsWith('zh')) return 'tc';
