@@ -146,9 +146,23 @@ const STATIC_PAGES = [
   { loc: `${BASE_URL}/life/driving-guide/en/chapter-13/`, changefreq: 'monthly', priority: '0.7' },
   { loc: `${BASE_URL}/life/driving-guide/en/chapter-14/`, changefreq: 'monthly', priority: '0.7' },
   { loc: `${BASE_URL}/life/driving-guide/en/chapter-15/`, changefreq: 'monthly', priority: '0.7' },
-  /* Indonesian versions (in progress — only chapter-1 + hub built; add more as they ship) */
+  /* Indonesian versions (chapters 1–15 + hub built) */
   { loc: `${BASE_URL}/life/driving-guide/id/`,           changefreq: 'weekly',  priority: '0.8' },
   { loc: `${BASE_URL}/life/driving-guide/id/chapter-1/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/id/chapter-2/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/id/chapter-3/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/id/chapter-4/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/id/chapter-5/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/id/chapter-6/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/id/chapter-7/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/id/chapter-8/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/id/chapter-9/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/id/chapter-10/`, changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/id/chapter-11/`, changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/id/chapter-12/`, changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/id/chapter-13/`, changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/id/chapter-14/`, changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/id/chapter-15/`, changefreq: 'monthly', priority: '0.7' },
 ];
 
 function generateSitemap(articles) {
