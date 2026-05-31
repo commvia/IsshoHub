@@ -163,6 +163,23 @@ const STATIC_PAGES = [
   { loc: `${BASE_URL}/life/driving-guide/id/chapter-13/`, changefreq: 'monthly', priority: '0.7' },
   { loc: `${BASE_URL}/life/driving-guide/id/chapter-14/`, changefreq: 'monthly', priority: '0.7' },
   { loc: `${BASE_URL}/life/driving-guide/id/chapter-15/`, changefreq: 'monthly', priority: '0.7' },
+  /* Vietnamese versions (chapters 1–15 + hub) */
+  { loc: `${BASE_URL}/life/driving-guide/vi/`,           changefreq: 'weekly',  priority: '0.8' },
+  { loc: `${BASE_URL}/life/driving-guide/vi/chapter-1/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/vi/chapter-2/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/vi/chapter-3/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/vi/chapter-4/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/vi/chapter-5/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/vi/chapter-6/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/vi/chapter-7/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/vi/chapter-8/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/vi/chapter-9/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/vi/chapter-10/`, changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/vi/chapter-11/`, changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/vi/chapter-12/`, changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/vi/chapter-13/`, changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/vi/chapter-14/`, changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/vi/chapter-15/`, changefreq: 'monthly', priority: '0.7' },
 ];
 
 function generateSitemap(articles) {
