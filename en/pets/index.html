@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-TSE650LL7P"></script>
@@ -7,18 +7,8 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="color-scheme" content="light" />
-<!-- Auto-redirect EN users who previously chose EN — see brainstorming 2026-05-31 -->
-<script>
-(function() {
-  try {
-    if (localStorage.getItem('issho.lang') === 'en') {
-      window.location.replace('/en/pets/');
-    }
-  } catch (_) {}
-})();
-</script>
-<title>寵物 — IsshoHub</title>
-<meta name="description" content="帶寵物入境日本的全流程、寵物友善住宅、獸醫資訊與入籍手續完整指南。" />
+<title>Pets — IsshoHub</title>
+<meta name="description" content="Bringing pets to Japan: import procedures, pet-friendly housing, vets and registration — your complete pet guide." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://eupqbbfbucdkhtpsuvry.supabase.co">
@@ -38,7 +28,7 @@
 </style>
 
   <!-- SEO: canonical + hreflang -->
-  <link rel="canonical" href="https://isshohub.com/pets/" />
+  <link rel="canonical" href="https://isshohub.com/en/pets/" />
   <link rel="alternate" hreflang="zh-Hant" href="https://isshohub.com/pets/" />
   <link rel="alternate" hreflang="en" href="https://isshohub.com/en/pets/" />
   <link rel="alternate" hreflang="x-default" href="https://isshohub.com/pets/" />
@@ -46,22 +36,22 @@
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="IsshoHub" />
-  <meta property="og:url" content="https://isshohub.com/pets/" />
-  <meta property="og:title" content="寵物 — IsshoHub" />
-  <meta property="og:description" content="帶寵物入境日本的全流程、寵物友善住宅、獸醫資訊與入籍手續完整指南。" />
+  <meta property="og:url" content="https://isshohub.com/en/pets/" />
+  <meta property="og:title" content="Pets — IsshoHub" />
+  <meta property="og:description" content="Bringing pets to Japan: import procedures, pet-friendly housing, vets and registration — your complete pet guide." />
   <meta property="og:image" content="https://images.unsplash.com/photo-1583511655826-05700d52f4d9?auto=format&w=1200&q=80" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:locale" content="zh_TW" />
-  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="zh_TW" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="寵物 — IsshoHub" />
-  <meta name="twitter:description" content="帶寵物入境日本的全流程、寵物友善住宅、獸醫資訊與入籍手續完整指南。" />
+  <meta name="twitter:title" content="Pets — IsshoHub" />
+  <meta name="twitter:description" content="Bringing pets to Japan: import procedures, pet-friendly housing, vets and registration — your complete pet guide." />
   <meta name="twitter:image" content="https://images.unsplash.com/photo-1583511655826-05700d52f4d9?auto=format&w=1200&q=80" />
 </head>
-<body data-lang="tc">
+<body data-lang="en">
 
 <div class="admin-bar" data-admin-bar style="display:none"></div>
 
@@ -124,7 +114,7 @@
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" id="catIconSvg"></svg>
       </div>
       <div class="cat-hero-body">
-        <div class="cat-hero-breadcrumb"><a href="/">首頁</a><span class="breadcrumb-sep">/</span><span class="current" id="heroBreadcrumbCurrent"></span></div>
+        <div class="cat-hero-breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep">/</span><span class="current" id="heroBreadcrumbCurrent"></span></div>
         <div class="cat-hero-eyebrow" id="catHeroEyebrow"></div>
         <h1 class="cat-hero-title" id="catHeroTitle"></h1>
         <div class="cat-hero-en" id="catHeroEn"></div>
@@ -201,7 +191,7 @@
     <button class="fx-close" id="fxClose"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <div class="fx-head"><h4 data-i18n="fx_title"></h4><span class="live"><i></i><span data-i18n="fx_live"></span></span></div>
     <div class="fx-asof" data-i18n="fx_asof"></div>
-    <div class="fx-row"><label class="fx-ccy"><span id="fxFromFlag"></span><span id="fxFromLabel">HKD</span><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg><select id="fxFrom"><option value="HKD">HKD 港幣</option><option value="TWD">TWD 新台幣</option><option value="USD">USD 美元</option><option value="EUR">EUR 歐元</option><option value="GBP">GBP 英鎊</option><option value="CAD">CAD 加元</option><option value="AUD">AUD 澳元</option><option value="SGD">SGD 坡元</option></select></label><input type="number" class="fx-input" id="fxInput" value="1000" min="0" /></div>
+    <div class="fx-row"><label class="fx-ccy"><span id="fxFromFlag"></span><span id="fxFromLabel">HKD</span><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg><select id="fxFrom"><option value="HKD">HKD Hong Kong Dollar</option><option value="TWD">TWD Taiwan Dollar</option><option value="USD">USD US Dollar</option><option value="EUR">EUR Euro</option><option value="GBP">GBP British Pound</option><option value="CAD">CAD Canadian Dollar</option><option value="AUD">AUD Australian Dollar</option><option value="SGD">SGD Singapore Dollar</option></select></label><input type="number" class="fx-input" id="fxInput" value="1000" min="0" /></div>
     <div class="fx-equals">&#8645;</div>
     <div class="fx-row to"><div class="fx-ccy"><span>&#127471;&#127477;</span>JPY</div><input type="number" class="fx-input" id="fxOutput" /></div>
     <div class="fx-rates" id="fxRates"></div>

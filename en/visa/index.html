@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-TSE650LL7P"></script>
@@ -7,18 +7,8 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="color-scheme" content="light" />
-<!-- Auto-redirect EN users who previously chose EN — see brainstorming 2026-05-31 -->
-<script>
-(function() {
-  try {
-    if (localStorage.getItem('issho.lang') === 'en') {
-      window.location.replace('/en/visa/');
-    }
-  } catch (_) {}
-})();
-</script>
-<title>簽證・在留資格 — IsshoHub</title>
-<meta name="description" content="在日本的所有簽證類型、在留資格詳解：經營管理簽證、高度人才、永住權、J-Find、數位遊牧，一站式雙語指南。" />
+<title>Visa & Residence Status — IsshoHub</title>
+<meta name="description" content="Every visa and residence status in Japan: Business Manager, Highly Skilled Professional, Permanent Residency, J-Find, Digital Nomad — your complete bilingual guide." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://eupqbbfbucdkhtpsuvry.supabase.co">
@@ -203,7 +193,7 @@
 </style>
 
   <!-- SEO: canonical + hreflang -->
-  <link rel="canonical" href="https://isshohub.com/visa/" />
+  <link rel="canonical" href="https://isshohub.com/en/visa/" />
   <link rel="alternate" hreflang="zh-Hant" href="https://isshohub.com/visa/" />
   <link rel="alternate" hreflang="en" href="https://isshohub.com/en/visa/" />
   <link rel="alternate" hreflang="x-default" href="https://isshohub.com/visa/" />
@@ -211,22 +201,22 @@
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="IsshoHub" />
-  <meta property="og:url" content="https://isshohub.com/visa/" />
-  <meta property="og:title" content="簽證・在留資格 — IsshoHub" />
-  <meta property="og:description" content="在日本的所有簽證類型、在留資格詳解：經營管理簽證、高度人才、永住權、J-Find、數位遊牧，一站式雙語指南。" />
+  <meta property="og:url" content="https://isshohub.com/en/visa/" />
+  <meta property="og:title" content="Visa & Residence Status — IsshoHub" />
+  <meta property="og:description" content="Every visa and residence status in Japan: Business Manager, Highly Skilled Professional, Permanent Residency, J-Find, Digital Nomad — your complete bilingual guide." />
   <meta property="og:image" content="https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&w=1200&q=80" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:locale" content="zh_TW" />
-  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="zh_TW" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="簽證・在留資格 — IsshoHub" />
-  <meta name="twitter:description" content="在日本的所有簽證類型、在留資格詳解：經營管理簽證、高度人才、永住權、J-Find、數位遊牧，一站式雙語指南。" />
+  <meta name="twitter:title" content="Visa & Residence Status — IsshoHub" />
+  <meta name="twitter:description" content="Every visa and residence status in Japan: Business Manager, Highly Skilled Professional, Permanent Residency, J-Find, Digital Nomad — your complete bilingual guide." />
   <meta name="twitter:image" content="https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&w=1200&q=80" />
 </head>
-<body data-lang="tc">
+<body data-lang="en">
 
 <!-- =============== ADMIN BAR =============== -->
 <div class="admin-bar" data-admin-bar style="display:none"></div>
@@ -353,7 +343,7 @@
       </div>
       <div class="cat-hero-body">
         <div class="cat-hero-breadcrumb">
-          <a href="/" data-i18n="home_breadcrumb">首頁</a>
+          <a href="/" data-i18n="home_breadcrumb">Home</a>
           <span class="breadcrumb-sep">/</span>
           <span class="current" id="heroBreadcrumbCurrent"></span>
         </div>
@@ -497,17 +487,17 @@
         <span id="fxFromLabel">HKD</span>
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
         <select id="fxFrom">
-          <option value="HKD">HKD 港幣</option>
-          <option value="TWD">TWD 新台幣</option>
-          <option value="USD">USD 美元</option>
-          <option value="EUR">EUR 歐元</option>
-          <option value="GBP">GBP 英鎊</option>
-          <option value="CAD">CAD 加元</option>
-          <option value="AUD">AUD 澳元</option>
-          <option value="SGD">SGD 坡元</option>
+          <option value="HKD">HKD Hong Kong Dollar</option>
+          <option value="TWD">TWD Taiwan Dollar</option>
+          <option value="USD">USD US Dollar</option>
+          <option value="EUR">EUR Euro</option>
+          <option value="GBP">GBP British Pound</option>
+          <option value="CAD">CAD Canadian Dollar</option>
+          <option value="AUD">AUD Australian Dollar</option>
+          <option value="SGD">SGD Singapore Dollar</option>
         </select>
       </label>
-      <input type="number" class="fx-input" id="fxInput" value="1000" min="0" placeholder="外幣金額" />
+      <input type="number" class="fx-input" id="fxInput" value="1000" min="0" placeholder="Foreign currency amount" />
     </div>
     <div class="fx-equals">⇅</div>
     <div class="fx-row to">
@@ -515,7 +505,7 @@
         <span>🇯🇵</span>
         JPY 日圓
       </div>
-      <input type="number" class="fx-input" id="fxOutput" placeholder="日圓金額" />
+      <input type="number" class="fx-input" id="fxOutput" placeholder="JPY amount" />
     </div>
     <div class="fx-rates" id="fxRates"></div>
   </div>

@@ -7,6 +7,16 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="color-scheme" content="light" />
+<!-- Auto-redirect EN users who previously chose EN — see brainstorming 2026-05-31 -->
+<script>
+(function() {
+  try {
+    if (localStorage.getItem('issho.lang') === 'en') {
+      window.location.replace('/en/culture/');
+    }
+  } catch (_) {}
+})();
+</script>
 <title>文化 — IsshoHub</title>
 <meta name="description" content="日本的音樂、藝術、電影、傳統文化與當代創作——深入了解日本獨特的文化面貌。" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,7 +40,7 @@
   <!-- SEO: canonical + hreflang -->
   <link rel="canonical" href="https://isshohub.com/culture/" />
   <link rel="alternate" hreflang="zh-Hant" href="https://isshohub.com/culture/" />
-  <link rel="alternate" hreflang="en" href="https://isshohub.com/culture/" />
+  <link rel="alternate" hreflang="en" href="https://isshohub.com/en/culture/" />
   <link rel="alternate" hreflang="x-default" href="https://isshohub.com/culture/" />
 
   <!-- Open Graph -->

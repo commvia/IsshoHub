@@ -7,6 +7,16 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="color-scheme" content="light" />
+<!-- Auto-redirect EN users who previously chose EN — see brainstorming 2026-05-31 -->
+<script>
+(function() {
+  try {
+    if (localStorage.getItem('issho.lang') === 'en') {
+      window.location.replace('/en/news/');
+    }
+  } catch (_) {}
+})();
+</script>
 <title>新聞・資訊 — IsshoHub</title>
 <meta name="description" content="最新在日政策動態、簽證更新、生活資訊及社群消息，掌握第一手在日生活情報。" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,7 +40,7 @@
   <!-- SEO: canonical + hreflang -->
   <link rel="canonical" href="https://isshohub.com/news/" />
   <link rel="alternate" hreflang="zh-Hant" href="https://isshohub.com/news/" />
-  <link rel="alternate" hreflang="en" href="https://isshohub.com/news/" />
+  <link rel="alternate" hreflang="en" href="https://isshohub.com/en/news/" />
   <link rel="alternate" hreflang="x-default" href="https://isshohub.com/news/" />
 
   <!-- Open Graph -->

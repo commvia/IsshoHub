@@ -7,6 +7,16 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="color-scheme" content="light" />
+<!-- Auto-redirect EN users who previously chose EN — see brainstorming 2026-05-31 -->
+<script>
+(function() {
+  try {
+    if (localStorage.getItem('issho.lang') === 'en') {
+      window.location.replace('/en/about/');
+    }
+  } catch (_) {}
+})();
+</script>
 <title>關於我們 — IsshoHub</title>
 <meta name="description" content="IsshoHub 是面向國際讀者的繁體中文與英文雙語平台，專注於日本生活、文化資訊、簽證、創業與職場。" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -168,7 +178,7 @@
   <!-- SEO: canonical + hreflang -->
   <link rel="canonical" href="https://isshohub.com/about/" />
   <link rel="alternate" hreflang="zh-Hant" href="https://isshohub.com/about/" />
-  <link rel="alternate" hreflang="en" href="https://isshohub.com/about/" />
+  <link rel="alternate" hreflang="en" href="https://isshohub.com/en/about/" />
   <link rel="alternate" hreflang="x-default" href="https://isshohub.com/about/" />
 
   <!-- Open Graph -->

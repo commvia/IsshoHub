@@ -101,18 +101,32 @@ function md(text) {
 }
 
 const STATIC_PAGES = [
-  { loc: `${BASE_URL}/`,         changefreq: 'daily',  priority: '1.0' },
-  { loc: `${BASE_URL}/news/`,    changefreq: 'daily',  priority: '0.9' },
-  { loc: `${BASE_URL}/visa/`,    changefreq: 'weekly', priority: '0.9' },
-  { loc: `${BASE_URL}/biz/`,     changefreq: 'weekly', priority: '0.9' },
-  { loc: `${BASE_URL}/house/`,   changefreq: 'weekly', priority: '0.9' },
-  { loc: `${BASE_URL}/tax/`,     changefreq: 'weekly', priority: '0.9' },
-  { loc: `${BASE_URL}/en/tax/`,  changefreq: 'weekly', priority: '0.9' },
-  { loc: `${BASE_URL}/life/`,    changefreq: 'weekly', priority: '0.9' },
-  { loc: `${BASE_URL}/culture/`, changefreq: 'weekly', priority: '0.8' },
-  { loc: `${BASE_URL}/places/`,  changefreq: 'weekly', priority: '0.8' },
-  { loc: `${BASE_URL}/pets/`,    changefreq: 'weekly', priority: '0.8' },
-  { loc: `${BASE_URL}/story/`,   changefreq: 'weekly', priority: '0.8' },
+  { loc: `${BASE_URL}/`,           changefreq: 'daily',  priority: '1.0' },
+  { loc: `${BASE_URL}/news/`,      changefreq: 'daily',  priority: '0.9' },
+  { loc: `${BASE_URL}/en/news/`,   changefreq: 'daily',  priority: '0.9' },
+  { loc: `${BASE_URL}/visa/`,      changefreq: 'weekly', priority: '0.9' },
+  { loc: `${BASE_URL}/en/visa/`,   changefreq: 'weekly', priority: '0.9' },
+  { loc: `${BASE_URL}/biz/`,       changefreq: 'weekly', priority: '0.9' },
+  { loc: `${BASE_URL}/en/biz/`,    changefreq: 'weekly', priority: '0.9' },
+  { loc: `${BASE_URL}/house/`,     changefreq: 'weekly', priority: '0.9' },
+  { loc: `${BASE_URL}/en/house/`,  changefreq: 'weekly', priority: '0.9' },
+  { loc: `${BASE_URL}/tax/`,       changefreq: 'weekly', priority: '0.9' },
+  { loc: `${BASE_URL}/en/tax/`,    changefreq: 'weekly', priority: '0.9' },
+  { loc: `${BASE_URL}/life/`,      changefreq: 'weekly', priority: '0.9' },
+  { loc: `${BASE_URL}/en/life/`,   changefreq: 'weekly', priority: '0.9' },
+  { loc: `${BASE_URL}/culture/`,   changefreq: 'weekly', priority: '0.8' },
+  { loc: `${BASE_URL}/en/culture/`, changefreq: 'weekly', priority: '0.8' },
+  { loc: `${BASE_URL}/places/`,    changefreq: 'weekly', priority: '0.8' },
+  { loc: `${BASE_URL}/en/places/`, changefreq: 'weekly', priority: '0.8' },
+  { loc: `${BASE_URL}/pets/`,      changefreq: 'weekly', priority: '0.8' },
+  { loc: `${BASE_URL}/en/pets/`,   changefreq: 'weekly', priority: '0.8' },
+  { loc: `${BASE_URL}/story/`,     changefreq: 'weekly', priority: '0.8' },
+  { loc: `${BASE_URL}/en/story/`,  changefreq: 'weekly', priority: '0.8' },
+  { loc: `${BASE_URL}/about/`,     changefreq: 'monthly', priority: '0.6' },
+  { loc: `${BASE_URL}/en/about/`,  changefreq: 'monthly', priority: '0.6' },
+  { loc: `${BASE_URL}/privacy/`,   changefreq: 'monthly', priority: '0.4' },
+  { loc: `${BASE_URL}/en/privacy/`, changefreq: 'monthly', priority: '0.4' },
+  { loc: `${BASE_URL}/visa/hsp-calculator/`, changefreq: 'monthly', priority: '0.5' },
   { loc: `${BASE_URL}/life/driving-quiz/`,           changefreq: 'weekly', priority: '0.9' },
   { loc: `${BASE_URL}/life/driving-guide/`,          changefreq: 'weekly', priority: '0.8' },
   { loc: `${BASE_URL}/life/driving-guide/chapter-1/`,  changefreq: 'monthly', priority: '0.7' },
@@ -212,8 +226,20 @@ const STATIC_PAGES = [
    Currently covers driving-guide (5 langs × 16 pages) + category pages.
 */
 const HREFLANG_GROUPS = [
-  /* Category pages (phase 1: only /tax/ has EN; phase 2 will add others) */
-  { 'zh-Hant': '/tax/', 'en': '/en/tax/', 'x-default': '/tax/' },
+  /* Category & info pages (TC ↔ EN translation pairs) */
+  { 'zh-Hant': '/tax/',     'en': '/en/tax/',     'x-default': '/tax/' },
+  { 'zh-Hant': '/news/',    'en': '/en/news/',    'x-default': '/news/' },
+  { 'zh-Hant': '/visa/',    'en': '/en/visa/',    'x-default': '/visa/' },
+  { 'zh-Hant': '/biz/',     'en': '/en/biz/',     'x-default': '/biz/' },
+  { 'zh-Hant': '/house/',   'en': '/en/house/',   'x-default': '/house/' },
+  { 'zh-Hant': '/culture/', 'en': '/en/culture/', 'x-default': '/culture/' },
+  { 'zh-Hant': '/life/',    'en': '/en/life/',    'x-default': '/life/' },
+  { 'zh-Hant': '/places/',  'en': '/en/places/',  'x-default': '/places/' },
+  { 'zh-Hant': '/pets/',    'en': '/en/pets/',    'x-default': '/pets/' },
+  { 'zh-Hant': '/story/',   'en': '/en/story/',   'x-default': '/story/' },
+  { 'zh-Hant': '/about/',   'en': '/en/about/',   'x-default': '/about/' },
+  { 'zh-Hant': '/privacy/', 'en': '/en/privacy/', 'x-default': '/privacy/' },
+  { 'zh-Hant': '/',         'en': '/en/',         'x-default': '/' },
 
   /* Driving guide hub */
   {

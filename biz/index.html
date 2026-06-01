@@ -7,6 +7,16 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="color-scheme" content="light" />
+<!-- Auto-redirect EN users who previously chose EN — see brainstorming 2026-05-31 -->
+<script>
+(function() {
+  try {
+    if (localStorage.getItem('issho.lang') === 'en') {
+      window.location.replace('/en/biz/');
+    }
+  } catch (_) {}
+})();
+</script>
 <title>創業・工作 — IsshoHub</title>
 <meta name="description" content="在日本創業、開公司、銀行開戶、補助申請到稅務安排，從零開始的完整創業指南。" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,7 +40,7 @@
   <!-- SEO: canonical + hreflang -->
   <link rel="canonical" href="https://isshohub.com/biz/" />
   <link rel="alternate" hreflang="zh-Hant" href="https://isshohub.com/biz/" />
-  <link rel="alternate" hreflang="en" href="https://isshohub.com/biz/" />
+  <link rel="alternate" hreflang="en" href="https://isshohub.com/en/biz/" />
   <link rel="alternate" hreflang="x-default" href="https://isshohub.com/biz/" />
 
   <!-- Open Graph -->
