@@ -200,10 +200,59 @@ const STATIC_PAGES = [
   { loc: `${BASE_URL}/life/driving-guide/fil/chapter-15/`, changefreq: 'monthly', priority: '0.7' },
 ];
 
+/* Hreflang translation groups for STATIC_PAGES.
+   Each entry maps language code → URL path. Used by generateSitemap to emit
+   <xhtml:link rel="alternate" hreflang="..."> annotations so Google understands
+   which URLs are translations of the same content.
+
+   Languages: zh-Hant (default TC), en, id, vi, fil, x-default.
+   Paths must start with `/` (BASE_URL is prepended at emit time).
+
+   To add a new translation pair: add the URL paths to the appropriate group.
+   Currently covers driving-guide (5 langs × 16 pages) + category pages.
+*/
+const HREFLANG_GROUPS = [
+  /* Category pages (phase 1: only /tax/ has EN; phase 2 will add others) */
+  { 'zh-Hant': '/tax/', 'en': '/en/tax/', 'x-default': '/tax/' },
+
+  /* Driving guide hub */
+  {
+    'zh-Hant': '/life/driving-guide/',
+    'en': '/life/driving-guide/en/',
+    'id': '/life/driving-guide/id/',
+    'vi': '/life/driving-guide/vi/',
+    'fil': '/life/driving-guide/fil/',
+    'x-default': '/life/driving-guide/',
+  },
+
+  /* Driving guide chapters 1-15 */
+  ...Array.from({ length: 15 }, (_, i) => i + 1).map(n => ({
+    'zh-Hant': `/life/driving-guide/chapter-${n}/`,
+    'en':      `/life/driving-guide/en/chapter-${n}/`,
+    'id':      `/life/driving-guide/id/chapter-${n}/`,
+    'vi':      `/life/driving-guide/vi/chapter-${n}/`,
+    'fil':     `/life/driving-guide/fil/chapter-${n}/`,
+    'x-default': `/life/driving-guide/chapter-${n}/`,
+  })),
+];
+
+/* Find the HREFLANG_GROUPS entry that contains the given full URL.
+   Returns null if the URL has no translation pairs. */
+function findHreflangGroup(fullLoc) {
+  const path = fullLoc.replace(BASE_URL, '');
+  return HREFLANG_GROUPS.find(g => Object.values(g).includes(path)) || null;
+}
+
 function generateSitemap(articles) {
-  const staticUrls = STATIC_PAGES.map(p =>
-    `  <url>\n    <loc>${p.loc}</loc>\n    <changefreq>${p.changefreq}</changefreq>\n    <priority>${p.priority}</priority>\n  </url>`
-  );
+  const staticUrls = STATIC_PAGES.map(p => {
+    const group = findHreflangGroup(p.loc);
+    const altsHtml = group
+      ? '\n' + Object.entries(group).map(
+          ([lang, path]) => `    <xhtml:link rel="alternate" hreflang="${lang}" href="${BASE_URL}${path}"/>`
+        ).join('\n')
+      : '';
+    return `  <url>\n    <loc>${p.loc}</loc>\n    <changefreq>${p.changefreq}</changefreq>\n    <priority>${p.priority}</priority>${altsHtml}\n  </url>`;
+  });
 
   /* Generate sitemap entries with xhtml:link hreflang annotations so Google
      understands both TC and EN versions are equivalent translations. */
