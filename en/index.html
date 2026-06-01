@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
 <!-- Google tag (gtag.js) — deferred until 1s after window.load to avoid GTM forced
      reflow (~824ms observed) blocking FCP. dataLayer stub stays inline so any
@@ -21,18 +21,8 @@ window.addEventListener('load',function(){
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="color-scheme" content="light" />
-<!-- Auto-redirect EN users who previously chose EN — see brainstorming 2026-05-31 -->
-<script>
-(function() {
-  try {
-    if (localStorage.getItem('issho.lang') === 'en') {
-      window.location.replace('/en/');
-    }
-  } catch (_) {}
-})();
-</script>
-<title>IsshoHub — Everything you need in Japan</title>
-<meta name="description" content="繁體中文與英文雙語資訊平台，專為在日本生活或準備移居日本的外國人而設。" />
+<title>IsshoHub — Everything You Need in Japan | Bilingual Guide for Foreigners</title>
+<meta name="description" content="Bilingual Traditional Chinese and English platform for foreigners living in Japan: visa, life, culture, business, tax, housing — everything you need." />
 
 <!-- Stage 2 test: removed body{opacity:0} FOUC protection to verify it was
      the root cause of FCP staying at ~15s despite revealBody() running.
@@ -90,7 +80,7 @@ window.addEventListener('load',function(){
 </style>
 
   <!-- SEO: canonical + hreflang -->
-  <link rel="canonical" href="https://isshohub.com/" />
+  <link rel="canonical" href="https://isshohub.com/en/" />
   <link rel="alternate" hreflang="zh-Hant" href="https://isshohub.com/" />
   <link rel="alternate" hreflang="en" href="https://isshohub.com/en/" />
   <link rel="alternate" hreflang="x-default" href="https://isshohub.com/" />
@@ -98,19 +88,19 @@ window.addEventListener('load',function(){
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="IsshoHub" />
-  <meta property="og:url" content="https://isshohub.com/" />
-  <meta property="og:title" content="IsshoHub — Everything you need in Japan" />
-  <meta property="og:description" content="繁體中文與英文雙語資訊平台，專為在日本生活或準備移居日本的外國人而設。" />
+  <meta property="og:url" content="https://isshohub.com/en/" />
+  <meta property="og:title" content="IsshoHub — Everything You Need in Japan | Bilingual Guide for Foreigners" />
+  <meta property="og:description" content="Bilingual Traditional Chinese and English platform for foreigners living in Japan: visa, life, culture, business, tax, housing — everything you need." />
   <meta property="og:image" content="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&w=1200&q=80" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:locale" content="zh_TW" />
-  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="zh_TW" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="IsshoHub — Everything you need in Japan" />
-  <meta name="twitter:description" content="繁體中文與英文雙語資訊平台，專為在日本生活或準備移居日本的外國人而設。" />
+  <meta name="twitter:title" content="IsshoHub — Everything You Need in Japan | Bilingual Guide for Foreigners" />
+  <meta name="twitter:description" content="Bilingual Traditional Chinese and English platform for foreigners living in Japan: visa, life, culture, business, tax, housing — everything you need." />
   <meta name="twitter:image" content="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&w=1200&q=80" />
 
   <!-- JSON-LD: WebSite + Organization -->
@@ -137,7 +127,7 @@ window.addEventListener('load',function(){
   }
   </script>
 </head>
-<body data-lang="tc">
+<body data-lang="en">
 
 <!-- =============== ADMIN BAR =============== -->
 <div class="admin-bar" data-admin-bar style="display:none"></div>
