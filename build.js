@@ -107,6 +107,7 @@ const STATIC_PAGES = [
   { loc: `${BASE_URL}/biz/`,     changefreq: 'weekly', priority: '0.9' },
   { loc: `${BASE_URL}/house/`,   changefreq: 'weekly', priority: '0.9' },
   { loc: `${BASE_URL}/tax/`,     changefreq: 'weekly', priority: '0.9' },
+  { loc: `${BASE_URL}/en/tax/`,  changefreq: 'weekly', priority: '0.9' },
   { loc: `${BASE_URL}/life/`,    changefreq: 'weekly', priority: '0.9' },
   { loc: `${BASE_URL}/culture/`, changefreq: 'weekly', priority: '0.8' },
   { loc: `${BASE_URL}/places/`,  changefreq: 'weekly', priority: '0.8' },
