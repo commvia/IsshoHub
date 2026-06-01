@@ -180,6 +180,23 @@ const STATIC_PAGES = [
   { loc: `${BASE_URL}/life/driving-guide/vi/chapter-13/`, changefreq: 'monthly', priority: '0.7' },
   { loc: `${BASE_URL}/life/driving-guide/vi/chapter-14/`, changefreq: 'monthly', priority: '0.7' },
   { loc: `${BASE_URL}/life/driving-guide/vi/chapter-15/`, changefreq: 'monthly', priority: '0.7' },
+  /* Filipino versions (chapters 1–15 + hub) */
+  { loc: `${BASE_URL}/life/driving-guide/fil/`,           changefreq: 'weekly',  priority: '0.8' },
+  { loc: `${BASE_URL}/life/driving-guide/fil/chapter-1/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/fil/chapter-2/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/fil/chapter-3/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/fil/chapter-4/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/fil/chapter-5/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/fil/chapter-6/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/fil/chapter-7/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/fil/chapter-8/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/fil/chapter-9/`,  changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/fil/chapter-10/`, changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/fil/chapter-11/`, changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/fil/chapter-12/`, changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/fil/chapter-13/`, changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/fil/chapter-14/`, changefreq: 'monthly', priority: '0.7' },
+  { loc: `${BASE_URL}/life/driving-guide/fil/chapter-15/`, changefreq: 'monthly', priority: '0.7' },
 ];
 
 function generateSitemap(articles) {
