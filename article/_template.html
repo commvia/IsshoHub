@@ -313,7 +313,7 @@
 <script src="/assets/js/inline-editor.js?v=4"></script>
 <script src="/assets/js/search.js?v=8"></script>
 <script src="/assets/js/core.js?v=1323"></script>
-<script src="/assets/js/embeds.js?v=2" defer></script>
+<script src="/assets/js/embeds.js?v=3" defer></script>
 <script>window.__ISSHO_SLUG = '{{SLUG}}';</script>
 <script>
 (function () {
@@ -350,6 +350,31 @@
     }
     var style = extraStyle ? 'style="' + extraStyle + '"' : '';
     return '<img src="' + src + '" alt="' + cleanAlt + '" loading="lazy" class="article-inline-img" ' + style + '>';
+  }
+
+  /* Standalone-URL → social embed. Mirrors build.js's tryUrlEmbed.
+     Only triggers when a line is JUST a URL (no surrounding text, no markdown
+     link wrapper). Returns embed HTML or null. */
+  function tryUrlEmbed(line) {
+    function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+    var m;
+    m = line.match(/^https?:\/\/(?:www\.|mobile\.)?(?:twitter|x)\.com\/[\w\.]+\/status\/\d+(?:\/\S*)?$/i);
+    if (m) return '<blockquote class="twitter-tweet"><a href="' + esc(line) + '"></a></blockquote>';
+    m = line.match(/^(https?:\/\/(?:www\.)?instagram\.com\/(?:p|reel)\/[A-Za-z0-9_-]+)\/?.*$/i);
+    if (m) {
+      var igUrl = m[1] + '/';
+      return '<blockquote class="instagram-media" data-instgrm-permalink="' + esc(igUrl) + '" data-instgrm-version="14"><a href="' + esc(igUrl) + '"></a></blockquote>';
+    }
+    m = line.match(/^https?:\/\/(?:www\.)?threads\.(?:net|com)\/@[\w\.]+\/post\/[A-Za-z0-9_-]+(?:\/\S*)?$/i);
+    if (m) return '<blockquote class="text-post-media" data-text-post-permalink="' + esc(line) + '"><a href="' + esc(line) + '">View on Threads</a></blockquote>';
+    m = line.match(/^https?:\/\/(?:www\.|m\.)?facebook\.com\/[^\/\s]+\/(?:posts|videos)\/[\d_]+(?:\/\S*)?$/i);
+    if (m) return '<div class="fb-post" data-href="' + esc(line) + '"></div>';
+    m = line.match(/^https?:\/\/(?:www\.)?(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{6,15})(?:[?&]\S*)?$/i);
+    if (m) {
+      var ytId = m[1];
+      return '<div class="yt-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin:24px 0;border-radius:8px;"><iframe src="https://www.youtube.com/embed/' + ytId + '" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>';
+    }
+    return null;
   }
 
   function md(text) {
@@ -421,6 +446,9 @@
       var om = t.match(/^\d+\. (.+)/);
       if (om) { closeBq(); if(inUl){out.push('</ul>');inUl=false;} if(!inOl){out.push('<ol>');inOl=true;} out.push('<li>'+inline(om[1])+'</li>'); continue; }
       if (t === '') { closeLists(); closeBq(); out.push(''); continue; }
+      /* Standalone-URL → social embed (X/IG/Threads/FB/YouTube). */
+      var embed = tryUrlEmbed(t);
+      if (embed) { closeLists(); closeBq(); out.push(embed); continue; }
       closeLists(); closeBq(); out.push(inline(t));
     }
     closeLists(); closeBq(); closeTable();
@@ -586,6 +614,13 @@
       + '<button class="share-btn share-btn-more" id="shareMore" aria-label="More sharing options"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg>'+(lang === 'tc' ? '更多' : 'More')+'</button>'
       + '</div>'
       + '</div>';
+
+    /* Notify embeds.js — body just got innerHTML-rendered, so any X/IG/Threads/FB
+       blockquotes from tryUrlEmbed are now in DOM. embeds.js's initial detect()
+       ran before body was loaded and missed them; this triggers a re-scan. */
+    if (window.__isshoEmbeds && window.__isshoEmbeds.detect) {
+      window.__isshoEmbeds.detect();
+    }
 
     /* Copy link */
     var copyBtn = document.getElementById('shareCopy');

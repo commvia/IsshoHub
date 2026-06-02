@@ -59,6 +59,12 @@
     });
   }
 
+  /* Public API: pages that load embed markup dynamically (e.g. article template
+     calling loadArticle().then(render)) can call window.__isshoEmbeds.detect()
+     after they insert the body HTML, so the IntersectionObserver picks up the
+     newly added blockquotes. Safe to call multiple times — loaded[] dedupes. */
+  window.__isshoEmbeds = { detect: detect };
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', detect);
   } else {
