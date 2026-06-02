@@ -24,6 +24,45 @@ function escHtml(str) {
     .replace(/"/g, '&quot;');
 }
 
+/* Standalone-URL → social embed converter.
+   Detects a bare URL on its own line (no surrounding text, no markdown link
+   syntax) and returns the platform's official embed HTML. Returns null if URL
+   doesn't match any supported platform.
+   Supported: X/Twitter, Instagram, Threads, Facebook posts/videos, YouTube.
+   Inline links (within a paragraph) and markdown [text](url) links are NEVER
+   matched here — they're handled by inline()'s regular link rendering. */
+function tryUrlEmbed(line) {
+  var m;
+  // X / Twitter — must have /username/status/digits
+  m = line.match(/^https?:\/\/(?:www\.|mobile\.)?(?:twitter|x)\.com\/[\w\.]+\/status\/\d+(?:\/\S*)?$/i);
+  if (m) {
+    return '<blockquote class="twitter-tweet"><a href="' + escHtml(line) + '"></a></blockquote>';
+  }
+  // Instagram — /p/<id> or /reel/<id>
+  m = line.match(/^(https?:\/\/(?:www\.)?instagram\.com\/(?:p|reel)\/[A-Za-z0-9_-]+)\/?.*$/i);
+  if (m) {
+    var igUrl = m[1] + '/';
+    return '<blockquote class="instagram-media" data-instgrm-permalink="' + escHtml(igUrl) + '" data-instgrm-version="14"><a href="' + escHtml(igUrl) + '"></a></blockquote>';
+  }
+  // Threads — /@user/post/<id>
+  m = line.match(/^https?:\/\/(?:www\.)?threads\.(?:net|com)\/@[\w\.]+\/post\/[A-Za-z0-9_-]+(?:\/\S*)?$/i);
+  if (m) {
+    return '<blockquote class="text-post-media" data-text-post-permalink="' + escHtml(line) + '"><a href="' + escHtml(line) + '">View on Threads</a></blockquote>';
+  }
+  // Facebook — posts/videos with numeric id (avoid matching profiles)
+  m = line.match(/^https?:\/\/(?:www\.|m\.)?facebook\.com\/[^\/\s]+\/(?:posts|videos)\/[\d_]+(?:\/\S*)?$/i);
+  if (m) {
+    return '<div class="fb-post" data-href="' + escHtml(line) + '"></div>';
+  }
+  // YouTube — watch?v=, youtu.be/, or /shorts/
+  m = line.match(/^https?:\/\/(?:www\.)?(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{6,15})(?:[?&]\S*)?$/i);
+  if (m) {
+    var ytId = m[1];
+    return '<div class="yt-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin:24px 0;border-radius:8px;"><iframe src="https://www.youtube.com/embed/' + ytId + '" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>';
+  }
+  return null;
+}
+
 function md(text) {
   if (!text) return '';
   var lines = text.split('\n');
@@ -89,13 +128,18 @@ function md(text) {
     var om = t.match(/^\d+\. (.+)/);
     if (om) { closeBq(); if(inUl){out.push('</ul>');inUl=false;} if(!inOl){out.push('<ol>');inOl=true;} out.push('<li>'+inline(om[1])+'</li>'); continue; }
     if (t === '') { closeLists(); closeBq(); out.push(''); continue; }
+    /* Standalone-URL → social embed (X/IG/Threads/FB/YouTube). Must be on its
+       own line, no surrounding text. Falls through if no platform pattern matches. */
+    var embed = tryUrlEmbed(t);
+    if (embed) { closeLists(); closeBq(); out.push(embed); continue; }
     closeLists(); closeBq(); out.push(inline(t));
   }
   closeLists(); closeBq(); closeTable();
   return out.join('\n').split(/\n{2,}/).map(function(b){
     b = b.trim();
     if (!b) return '';
-    if (/^<(h[1-6]|ul|ol|li|hr|blockquote|p|table)/.test(b)) return b;
+    /* iframe + div added so YouTube/FB embed wrappers from tryUrlEmbed pass through. */
+    if (/^<(h[1-6]|ul|ol|li|hr|blockquote|p|table|div|iframe)/.test(b)) return b;
     return '<p>'+b.replace(/\n/g,'<br>')+'</p>';
   }).filter(Boolean).join('\n');
 }
