@@ -9,15 +9,33 @@
   'use strict';
 
   var PLATFORMS = [
-    { name: 'instagram', sel: '.instagram-media',                src: 'https://www.instagram.com/embed.js' },
-    { name: 'twitter',   sel: '.twitter-tweet,.twitter-timeline', src: 'https://platform.twitter.com/widgets.js' },
-    { name: 'threads',   sel: '.text-post-media',                src: 'https://www.threads.net/embed.js' },
-    { name: 'facebook',  sel: '.fb-post,.fb-video,.fb-page',     src: 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0' }
+    {
+      name: 'instagram', sel: '.instagram-media',
+      src: 'https://www.instagram.com/embed.js',
+      reprocess: function() { if (window.instgrm && window.instgrm.Embeds) window.instgrm.Embeds.process(); }
+    },
+    {
+      name: 'twitter', sel: '.twitter-tweet,.twitter-timeline',
+      src: 'https://platform.twitter.com/widgets.js',
+      reprocess: function() { if (window.twttr && window.twttr.widgets) window.twttr.widgets.load(); }
+    },
+    {
+      name: 'threads', sel: '.text-post-media',
+      src: 'https://www.threads.net/embed.js',
+      reprocess: function() { /* Threads auto-processes; no public API */ }
+    },
+    {
+      name: 'facebook', sel: '.fb-post,.fb-video,.fb-page',
+      src: 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0',
+      reprocess: function() { if (window.FB && window.FB.XFBML) window.FB.XFBML.parse(); }
+    }
   ];
 
-  var loaded = {};
+  var loaded = {};   // script tag injected
+  var ready  = {};   // script fully loaded (init done)
 
   function loadScript(p) {
+    if (ready[p.name]) { p.reprocess(); return; }
     if (loaded[p.name]) return;
     loaded[p.name] = true;
     if (p.name === 'facebook' && !document.getElementById('fb-root')) {
@@ -29,6 +47,7 @@
     s.async = true;
     s.src = p.src;
     if (p.name === 'facebook') s.crossOrigin = 'anonymous';
+    s.onload = function() { ready[p.name] = true; /* slight delay so platform globals initialize */ setTimeout(p.reprocess, 50); };
     document.body.appendChild(s);
   }
 
