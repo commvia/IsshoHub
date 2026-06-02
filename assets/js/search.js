@@ -99,7 +99,7 @@
       : '';
 
     return `
-      <a class="sr-card" href="/article/?slug=${a.slug}">
+      <a class="sr-card" href="/article/${a.slug}/">
         <div class="sr-thumb" style="background-image:url('${img}')">
           <span class="sr-tag cat-${cat}">${cat}</span>
         </div>

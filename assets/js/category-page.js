@@ -29,7 +29,7 @@
     const date    = a.published_at
       ? new Date(a.published_at).toLocaleDateString(lang === 'tc' ? 'zh-Hant' : 'en', { year: 'numeric', month: 'short', day: 'numeric' })
       : '';
-    const articleUrl = `/article/?slug=${a.slug}`;
+    const articleUrl = `/article/${a.slug}/`;
     return `
       <article class="card${opts.featured ? ' featured' : ''}${opts.overlay ? ' overlay' : ''}" onclick="if(!event.target.closest('a'))window.location.href='${articleUrl}'" style="cursor:pointer">
         <a class="card-media" href="${articleUrl}" style="background-image:url('${(global.IsshoCore && global.IsshoCore.cfImg) ? global.IsshoCore.cfImg(img, 600) : img}');background-position:${a.cover_image_position||'50% 50%'}">
